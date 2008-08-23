@@ -1,0 +1,48 @@
+madshelf (0.1-1) unstable; urgency=low
+
+  * 0.1 release
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Sat, 23 Aug 2008 20:50:38 +0000
+
+madshelf (0.0-1.oi1) unstable; urgency=low
+
+  * version number sex 
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Sun, 20 Jul 2008 15:59:32 +0000
+
+madshelf (0.0-1.oi2+b0351752) unstable; urgency=low
+
+  * scripts fixed
+  * shutdown script
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Sun, 20 Jul 2008 14:22:24 +0000
+
+madshelf (0.0-1.oi1+6c444acd) unstable; urgency=low
+
+  * fixed version number
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Sat, 19 Jul 2008 20:45:33 +0000
+
+madshelf (0.0+6c444acd-1.oi3) unstable; urgency=low
+
+  * more bugfixes
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Sat, 19 Jul 2008 18:25:22 +0000
+
+madshelf (0.0+82009928-1.oi2) unstable; urgency=low
+
+  * bugfix release
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Fri, 18 Jul 2008 20:24:51 +0000
+
+madshelf (0.0+00d19649-1.oi1) unstable; urgency=low
+
+  * First snapshot release.
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Thu, 17 Jul 2008 19:03:11 +0000
+
+madshelf (0.0+20080715-1) unstable; urgency=low
+
+  * First snapshot release.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Sat, 05 Jul 2008 21:04:05 +0700

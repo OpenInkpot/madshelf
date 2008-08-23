@@ -1,0 +1,26 @@
+[roots]
+Home=/home/
+SD=/mnt/
+[apps]
+.fb2=FBReader
+.tar=FBReader
+.gz=FBReader
+.tgz=FBReader
+.bz2=FBReader
+.zip=FBReader
+.chm=FBReader
+.rtf=FBReader
+.txt=FBReader
+.mobi=FBReader
+.pdb=FBReader
+.prc=FBReader
+.deb=dpkg_script
+[icons]
+.fb2=book.png
+.rtf=book.png
+.mobi=book.png
+.pdb=book.png
+.prc=book.png
+.txt=book.png
+[scripts]
+Shutdown V3=poweroff.sh
