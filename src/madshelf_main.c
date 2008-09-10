@@ -518,6 +518,7 @@ void update_list()
     Ewl_Widget **separator;
     Ewl_Widget **typeicon;
     Ewl_Widget *arrow_widget;
+    Ewl_Widget *statuslabel;
     int *showflag;
     const char *extracted_title = NULL;
     const char *extracted_author = NULL;
@@ -550,9 +551,8 @@ void update_list()
         sprintf (tempname, "labelsbox%d",count);
         labelsbox[count] = ewl_widget_name_find(tempname);
     }
-    sprintf (tempname, "arrow_widget");
-    arrow_widget = ewl_widget_name_find(tempname);
-    
+    arrow_widget = ewl_widget_name_find("arrow_widget");
+    statuslabel=ewl_widget_name_find("statuslabel");
 
     for(count=0;count<num_books;count++)
     {
@@ -564,7 +564,7 @@ void update_list()
         ewl_widget_hide(infolabel[count]);
         ewl_widget_hide(typeicon[count]);
     }
-
+    ewl_widget_hide(arrow_widget);
     for(count = 0; count < num_books; count++)
     {
         if(current_index + count >= g_nfileslist)
@@ -646,10 +646,14 @@ void update_list()
         showflag[count]=1;
 
         free(time_str);
+        
+        
     }
 
     if(next_page_exists() && prev_page_exists())
         ewl_widget_state_set(arrow_widget,"both_on",EWL_STATE_PERSISTENT);
+    else if(!next_page_exists() && !prev_page_exists())
+    	ewl_widget_state_set(arrow_widget,"both_off",EWL_STATE_PERSISTENT);
     else if(next_page_exists())
         ewl_widget_state_set(arrow_widget,"right_only",EWL_STATE_PERSISTENT);
     else if(prev_page_exists())
@@ -660,13 +664,32 @@ void update_list()
         if(showflag[count])
         {
             ewl_widget_show(typeicon[count]);
+            ewl_widget_configure(typeicon[count]);
             ewl_widget_show(authorlabel[count]);
+            ewl_widget_configure(authorlabel[count]);
             ewl_widget_show(titlelabel[count]);
+            ewl_widget_configure(titlelabel[count]);
             ewl_widget_show(infolabel[count]);
+            ewl_widget_configure(infolabel[count]);
             ewl_widget_show(separator[count]);
+            ewl_widget_configure(separator[count]);
             ewl_widget_show(labelsbox[count]);
+            ewl_widget_configure(labelsbox[count]);
             ewl_widget_show(bookbox[count]);
+            ewl_widget_configure(bookbox[count]);
         }
+    }
+    ewl_widget_show(arrow_widget);
+    ewl_widget_configure(arrow_widget);
+    //show pages in statuslabel
+    char *statstr;
+    if(g_nfileslist==0)
+        ewl_label_text_set(EWL_LABEL(statuslabel),gettext("no books"));
+    else
+    {
+        asprintf(&statstr,"%d/%d",current_index/num_books+1,(g_nfileslist-(g_nfileslist%num_books))/num_books+((g_nfileslist%num_books)?1:0));
+        ewl_label_text_set(EWL_LABEL(statuslabel),statstr);
+        free(statstr);
     }
 }
 
@@ -725,9 +748,11 @@ void update_menu()
     char tempname[30];
     char temptext[40];
     int i=0;
+    int realwidth=0;
     Ewl_Widget *curwidget;
     curwidget = ewl_widget_name_find("okmenu");
     ewl_button_label_set(EWL_BUTTON(curwidget),gettext("Menu"));
+
     for(i=0;i<7;i++)
     {
         sprintf(tempname,"menuitem%d",i+1);
@@ -738,6 +763,7 @@ void update_menu()
             sprintf(temptext,"%s",gettext(tempstrings[i]));
         ewl_button_label_set(EWL_BUTTON(curwidget),temptext);
     }
+    
     
     char *tempstrings2[]={"Paste"};
     for(i=0;i<1;i++)
@@ -847,6 +873,22 @@ void destroy_cb ( Ewl_Widget *w, void *event, void *data )
     ewl_widget_destroy ( w );
     ewl_main_quit();
 }
+
+
+int sighup_signal_handler(void *data, int type, void *event)
+{
+    int old_ci=current_index;
+    int old_ns=nav_sel;
+    init_filelist();
+    if(old_ci<g_nfileslist)
+        current_index=old_ci;
+    if((old_ci+old_ns)<g_nfileslist)
+        nav_sel=old_ns;
+    update_filelist_in_gui();
+    
+    return 1;
+}
+
 
 /* Confirm dialog stuff */
 #define CONFIRM_DIALOG_NO 0
@@ -977,7 +1019,7 @@ void doActionForNum(unsigned int num)
         {
             /* Sin */
             g_handler = handler;
-            g_file = file;
+            g_file = strdup(file);
             ewl_main_quit();
         }
         else
@@ -997,7 +1039,7 @@ void popupContext(unsigned int num)
     char tempname[30];
     Ewl_Widget *curwidget,*selected;
  
-    key_shifted=0;
+    toggle_key_shifted();//=0;
     
     sprintf(tempname,"bookbox%d",num-1);
     selected = ewl_widget_name_find(tempname);
@@ -1011,8 +1053,21 @@ void popupContext(unsigned int num)
     ewl_popup_mouse_position_set(EWL_POPUP(curwidget),ewl_object_current_x_get(EWL_OBJECT(selected))+ewl_object_current_w_get(EWL_OBJECT(selected))-PREFERRED_W(curwidget),ewl_object_current_y_get(EWL_OBJECT(selected)));
     context_index=num-1;
     ewl_widget_show(curwidget);
+    ewl_widget_configure(curwidget);
     ewl_window_raise(EWL_WINDOW(curwidget));
     ewl_widget_focus_send(curwidget);
+}
+void toggle_key_shifted()
+{
+    Ewl_Widget *curwidget;
+    key_shifted=!key_shifted;
+    curwidget = ewl_widget_name_find("keystatelabel");
+    if(key_shifted)
+        ewl_label_text_set(EWL_LABEL(curwidget),"↑");
+    else
+        ewl_label_text_set(EWL_LABEL(curwidget),"");
+    
+    
 }
 void change_root(int item)
 {
@@ -1111,7 +1166,7 @@ void main_ok(void)
 
 void main_shift(void)
 {
-    key_shifted=!key_shifted;
+    toggle_key_shifted();
 }
 
 void main_nav_up(void)
@@ -1905,6 +1960,20 @@ int valid_dir(const char* dir)
     return res == 0 && S_ISDIR(st.st_mode) && ((S_IRUSR | S_IXUSR) & st.st_mode);
 }
 
+static void idialog_reveal(Ewl_Widget *w, void *ev, void *data) {
+	Ewl_Widget *win;
+	win = ewl_widget_name_find("mainwindow");
+	ewl_window_move(EWL_WINDOW(w), CURRENT_X(win) + (CURRENT_W(win) - CURRENT_W(w)) / 2, CURRENT_Y(win) + (CURRENT_H(win) - CURRENT_H(w)) / 2);
+	ewl_window_keyboard_grab_set(EWL_WINDOW(w), 1);
+}
+
+static void idialog_unrealize(Ewl_Widget *w, void *ev, void *data) {
+	Ewl_Widget *win;
+	win = ewl_widget_name_find("mainwindow");
+	if(win)
+		ewl_window_keyboard_grab_set(EWL_WINDOW(win), 1);
+}
+
 int main ( int argc, char ** argv )
 {
     int file_desc;
@@ -1930,6 +1999,8 @@ int main ( int argc, char ** argv )
     Ewl_Widget *arrow_widget=NULL;
     Ewl_Widget *sorttypetext;
     Ewl_Widget *dividewidget;
+    Ewl_Widget *statuslabel;
+    Ewl_Widget *keystatelabel;
     char *homedir;
     char *configfile;
     int count=0;
@@ -2068,6 +2139,7 @@ int main ( int argc, char ** argv )
 
         ewl_container_child_append(EWL_CONTAINER(menubar),temp);
         ewl_widget_name_set(temp,"okmenu");
+        ewl_object_fill_policy_set(EWL_OBJECT(temp),EWL_FLAG_FILL_HSHRINKABLE);
         set_key_handler(EWL_MENU(temp)->popup, &main_menu_info);
 
         ewl_widget_show(temp);
@@ -2187,8 +2259,24 @@ int main ( int argc, char ** argv )
         ewl_widget_show(temp3);
 
     }
+    statuslabel = ewl_label_new();
+    ewl_container_child_append(EWL_CONTAINER(menubar), statuslabel);
+    ewl_widget_name_set(statuslabel,"statuslabel");
+    ewl_object_fill_policy_set(EWL_OBJECT(statuslabel),EWL_FLAG_FILL_HFILL);
+    ewl_label_text_set(EWL_LABEL(statuslabel),"");
+    ewl_widget_show(statuslabel);
+    
+    keystatelabel= ewl_label_new();
+    ewl_container_child_append(EWL_CONTAINER(menubar), keystatelabel);
+    ewl_widget_name_set(keystatelabel,"keystatelabel");
+    ewl_object_fill_policy_set(EWL_OBJECT(keystatelabel),EWL_FLAG_FILL_HSHRINKABLE);
+    ewl_object_minimum_w_set(EWL_OBJECT(keystatelabel),30);
+    ewl_label_text_set(EWL_LABEL(keystatelabel),"");
+    ewl_widget_show(keystatelabel);
+    
+    
     ewl_container_child_append(EWL_CONTAINER(box2),menubar);
-
+    
     update_menu();
     ewl_widget_show(menubar);
 
@@ -2310,9 +2398,14 @@ int main ( int argc, char ** argv )
         Ewl_Widget *yeslabel;
         
         idialog=ewl_dialog_new();
+        ewl_window_title_set ( EWL_WINDOW ( idialog ), "EWL_DIALOG" );
+        ewl_window_name_set ( EWL_WINDOW (  idialog ), "EWL_DIALOG" );
+        ewl_window_class_set ( EWL_WINDOW ( idialog ), "EWLDialog" );
         ewl_theme_data_str_set(EWL_WIDGET(idialog),"/dialog/group","ewl/dialog/oi_confirmdialog");
         ewl_theme_data_str_set(EWL_WIDGET(idialog),"/dialog/vbox/hseparator/group","ewl/dialog/oi_confirmdialog/spacer");
         ewl_theme_data_str_set(EWL_WIDGET(idialog),"/dialog/vbox/actionarea/group","ewl/dialog/oi_confirmdialog/actionarea");
+        ewl_callback_append(idialog, EWL_CALLBACK_REVEAL, idialog_reveal, NULL);
+        ewl_callback_append(idialog, EWL_CALLBACK_UNREALIZE, idialog_unrealize, NULL);
         set_key_handler(idialog, &confirm_dialog_info);
         ewl_widget_name_set(idialog,"confirm_dialog");
         ewl_window_dialog_set(EWL_WINDOW(idialog),1);
@@ -2353,6 +2446,7 @@ int main ( int argc, char ** argv )
     update_list();
     ewl_widget_focus_send(EWL_WIDGET(border));
 
+    ecore_event_handler_add(ECORE_EVENT_SIGNAL_HUP,sighup_signal_handler,NULL);
     ewl_main();
 
     save_state();
