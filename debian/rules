@@ -43,7 +43,7 @@ install: build
 	cp themes/*.png $(CURDIR)/debian/madshelf/usr/share/madshelf
 	
 	mkdir -p $(CURDIR)/debian/madshelf/home
-	mkdir -p $(CURDIR)/debia/madshelf/usr/lib/madshelf/extractors
+	mkdir -p $(CURDIR)/debian/madshelf/usr/lib/madshelf/extractors
 	cp -a $(CURDIR)/debian/.madshelf $(CURDIR)/debian/madshelf/home
 
 binary-arch: build install

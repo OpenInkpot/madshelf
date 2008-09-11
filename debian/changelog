@@ -1,3 +1,9 @@
+madshelf (0.1-3) unstable; urgency=low
+
+  * bug fixes
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Wed, 10 Sep 2008 21:17:01 +0000
+
 madshelf (0.1-2) unstable; urgency=low
 
   * added /usr/lib/madshelf/extractors 
