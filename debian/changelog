@@ -1,3 +1,9 @@
+madshelf (0.1-5) unstable; urgency=low
+
+  * SIGHUP handler
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Wed, 24 Sep 2008 21:16:50 +0000
+
 madshelf (0.1-4) unstable; urgency=low
 
   * more bug fixes
