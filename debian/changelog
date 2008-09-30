@@ -1,3 +1,10 @@
+madshelf (0.1-6) unstable; urgency=low
+
+  * new theme
+  * fixed side buttons handling
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Tue, 30 Sep 2008 16:13:41 +0000
+
 madshelf (0.1-5) unstable; urgency=low
 
   * SIGHUP handler
