@@ -1,6 +1,6 @@
 [roots]
-Home=/home/
 SD=/mnt/
+Home=/home/
 [apps]
 .fb2=FBReader
 .tar=FBReader
@@ -8,6 +8,9 @@ SD=/mnt/
 .tgz=FBReader
 .bz2=FBReader
 .zip=FBReader
+.gz=FBReader
+.bz2=FBReader
+.tar=FBReader
 .chm=FBReader
 .rtf=FBReader
 .txt=FBReader
@@ -15,6 +18,10 @@ SD=/mnt/
 .pdb=FBReader
 .prc=FBReader
 .deb=dpkg_script
+.html=FBReader
+.htm=FBReader
+.oeb=FBReader
+.epub=FBReader
 [icons]
 .fb2=book.png
 .rtf=book.png
@@ -22,5 +29,8 @@ SD=/mnt/
 .pdb=book.png
 .prc=book.png
 .txt=book.png
+.chm=book.png
+.oeb=book.png
+.epub=book.png
 [scripts]
 Shutdown V3=poweroff.sh
