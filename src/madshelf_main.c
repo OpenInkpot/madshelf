@@ -755,7 +755,7 @@ void update_sort_label()
 
 void update_menu()
 {
-    char *tempstrings[]={"Sort by Name","Sort by Time","Reverse Sort Order","Language Settings","Go to","Scripts","Edit"};
+    char *tempstrings[]={gettext("Sort by Name"),gettext("Sort by Time"),gettext("Reverse Sort Order"),gettext("Language Settings"),gettext("Go to"),gettext("Scripts"),gettext("Edit")};
     char tempname[30];
     char temptext[40];
     int i=0;
@@ -769,29 +769,29 @@ void update_menu()
         sprintf(tempname,"menuitem%d",i+1);
         curwidget = ewl_widget_name_find(tempname);
         if(nav_mode==0)
-            sprintf(temptext,"%d. %s",i+1,gettext(tempstrings[i]));
+            sprintf(temptext,"%d. %s",i+1,tempstrings[i]);
         else
-            sprintf(temptext,"%s",gettext(tempstrings[i]));
+            sprintf(temptext,"%s",tempstrings[i]);
         ewl_button_label_set(EWL_BUTTON(curwidget),temptext);
     }
     
     
-    char *tempstrings2[]={"Paste"};
+    char *tempstrings2[]={gettext("Paste")};
     for(i=0;i<1;i++)
     {
         sprintf(tempname,"fileopsmenuitem%d",i+1);
         curwidget = ewl_widget_name_find(tempname);
         if(nav_mode==0)
-            sprintf(temptext,"%d. %s",i+1,gettext(tempstrings2[i]));
+            sprintf(temptext,"%d. %s",i+1,tempstrings2[i]);
         else
-            sprintf(temptext,"%s",gettext(tempstrings2[i]));
+            sprintf(temptext,"%s",tempstrings2[i]);
         ewl_button_label_set(EWL_BUTTON(curwidget),temptext);
     }
 }
 
 void update_context_menu()
 {
-    char *tempstrings[]={"Cut","Copy","Delete"};
+    char *tempstrings[]={gettext("Cut"),gettext("Copy"),gettext("Delete")};
     char tempname[30];
     char temptext[40];
     int i=0;
@@ -802,9 +802,9 @@ void update_context_menu()
         sprintf(tempname,"mc_menuitem%d",i+1);
         curwidget = ewl_widget_name_find(tempname);
         if(nav_mode==0)
-            sprintf(temptext,"%d. %s",i+1,gettext(tempstrings[i]));
+            sprintf(temptext,"%d. %s",i+1,tempstrings[i]);
         else
-            sprintf(temptext,"%s",gettext(tempstrings[i]));
+            sprintf(temptext,"%s",tempstrings[i]);
         ewl_button_label_set(EWL_BUTTON(curwidget),temptext);
     }
 }
@@ -1426,7 +1426,10 @@ static language_t g_languages[] =
     { "English", "en" },
     { "Français", "fr" },
     { "Русский", "ru" },
+    { "Беларуская", "be" }
+/* Temporarily disabled until some Chinese font is added in
     { "简体中文", "zh_CN" }
+ */
 };
 
 static const int g_nlanguages = sizeof(g_languages)/sizeof(language_t);
@@ -2296,7 +2299,8 @@ int main ( int argc, char ** argv )
     sorttypetext=ewl_label_new();
     ewl_container_child_append(EWL_CONTAINER(box3), sorttypetext);
     ewl_widget_name_set(sorttypetext,"sortlabel");
-    ewl_theme_data_str_set(EWL_WIDGET(sorttypetext),"/label/textpart","ewl/oi_label/sorttext");
+    ewl_theme_data_str_set(EWL_WIDGET(sorttypetext),"/label/group","ewl/oi_label/sorttext");
+    ewl_theme_data_str_set(EWL_WIDGET(sorttypetext),"/label/textpart","ewl/oi_label/sorttext/text");
     update_sort_label();
     ewl_widget_show(sorttypetext);
 
@@ -2335,7 +2339,8 @@ int main ( int argc, char ** argv )
         ewl_widget_name_set(authorlabel,tempname3 );
         ewl_label_text_set(EWL_LABEL(authorlabel), "Unknown Author");
         ewl_object_padding_set(EWL_OBJECT(authorlabel),3,0,0,0);
-        ewl_theme_data_str_set(EWL_WIDGET(authorlabel),"/label/textpart","ewl/oi_label/authortext");
+        ewl_theme_data_str_set(EWL_WIDGET(authorlabel),"/label/group","ewl/oi_label/authortext");
+        ewl_theme_data_str_set(EWL_WIDGET(authorlabel),"/label/textpart","ewl/oi_label/authortext/text");
         ewl_object_fill_policy_set(EWL_OBJECT(authorlabel), EWL_FLAG_FILL_VSHRINK| EWL_FLAG_FILL_HFILL);
 
         sprintf (tempname3, "titlelabel%d",count);
@@ -2344,18 +2349,18 @@ int main ( int argc, char ** argv )
         ewl_widget_name_set(titlelabel,tempname3 );
         ewl_label_text_set(EWL_LABEL(titlelabel), "");
         ewl_object_padding_set(EWL_OBJECT(titlelabel),3,0,0,0);
-        ewl_theme_data_str_set(EWL_WIDGET(titlelabel),"/label/textpart","ewl/oi_label/titletext");
+        ewl_theme_data_str_set(EWL_WIDGET(titlelabel),"/label/group","ewl/oi_label/titletext");
+        ewl_theme_data_str_set(EWL_WIDGET(titlelabel),"/label/textpart","ewl/oi_label/titletext/text");
         ewl_object_fill_policy_set(EWL_OBJECT(titlelabel), EWL_FLAG_FILL_VSHRINK| EWL_FLAG_FILL_HFILL);
 
         sprintf (tempname3, "infolabel%d",count);
         infolabel = ewl_label_new();
         ewl_container_child_append(EWL_CONTAINER(box5), infolabel);
         ewl_widget_name_set(infolabel,tempname3 );
-        ewl_label_text_set(EWL_LABEL(infolabel), "blala");
         ewl_object_padding_set(EWL_OBJECT(infolabel),0,3,0,0);
         ewl_object_alignment_set(EWL_OBJECT(infolabel),EWL_FLAG_ALIGN_RIGHT|EWL_FLAG_ALIGN_BOTTOM);
-
-        ewl_theme_data_str_set(EWL_WIDGET(infolabel),"/label/textpart","ewl/oi_label/infotext");
+        ewl_theme_data_str_set(EWL_WIDGET(infolabel),"/label/group","ewl/oi_label/infotext");
+        ewl_theme_data_str_set(EWL_WIDGET(infolabel),"/label/textpart","ewl/oi_label/infotext/text");
         ewl_object_fill_policy_set(EWL_OBJECT(infolabel), EWL_FLAG_FILL_VSHRINK| EWL_FLAG_FILL_HFILL);
 
         sprintf(tempname4,"separator%d",count);
