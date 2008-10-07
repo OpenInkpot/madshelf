@@ -1,3 +1,9 @@
+madshelf (0.1-10) unstable; urgency=low
+
+  * bugfixes
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Tue, 07 Oct 2008 14:21:01 +0000
+
 madshelf (0.1-9) unstable; urgency=low
 
   * added missing package.png
