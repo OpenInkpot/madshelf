@@ -515,6 +515,31 @@ int move_file(const char* old, const char* new)
         return res;
 }
 
+/* Returns the string which need to be free(3) ed*/
+char* get_authors_string(EXTRACTOR_KeywordList* keywords)
+{
+    char* authors = calloc(1, sizeof(char));
+    size_t len = 1;
+
+    while(keywords)
+    {
+        if(keywords->keywordType == EXTRACTOR_AUTHOR)
+        {
+            if(authors[0])
+            {
+                authors = realloc(authors, len + 2);
+                len += 2;
+                strcat(authors, ", ");
+            }
+            authors = realloc(authors, len + strlen(keywords->keyword));
+            len += strlen(keywords->keyword);
+            strcat(authors, keywords->keyword);
+        }
+        keywords = keywords->next;
+    }
+    return authors;
+}
+
 void update_list()
 {
     int count=0;
@@ -532,7 +557,6 @@ void update_list()
     Ewl_Widget *statuslabel;
     int *showflag;
     const char *extracted_title = NULL;
-    const char *extracted_author = NULL;
     count=0;
 
     labelsbox=(Ewl_Widget**)alloca(num_books*sizeof(Ewl_Widget*));
@@ -606,7 +630,7 @@ void update_list()
             ewl_label_text_set(EWL_LABEL(titlelabel[count]),ecore_file_strip_ext(file));
 
             ewl_label_text_set(EWL_LABEL(infolabel[count]),time_str);
-            ewl_label_text_set(EWL_LABEL(authorlabel[count]),"Folder");
+            ewl_label_text_set(EWL_LABEL(authorlabel[count]),"");
             ewl_image_file_path_set(EWL_IMAGE(typeicon[count]),"/usr/share/madshelf/folder.png");
         }
         else
@@ -619,7 +643,7 @@ void update_list()
             mykeys = extractor_get_keywords(extractors, file);
 
             extracted_title = extractor_get_last(EXTRACTOR_TITLE, mykeys);
-            extracted_author = extractor_get_last(EXTRACTOR_AUTHOR, mykeys);
+
 
             if(extracted_title && extracted_title[0])
                 ewl_label_text_set(EWL_LABEL(titlelabel[count]), extracted_title);
@@ -636,10 +660,9 @@ void update_list()
 
             ewl_label_text_set(EWL_LABEL(infolabel[count]),infostr);
 
-            if(extracted_author && extracted_author[0])
-                ewl_label_text_set(EWL_LABEL(authorlabel[count]), extracted_author);
-            else
-                ewl_label_text_set(EWL_LABEL(authorlabel[count]), gettext("Unknown Author"));
+            char* authors = get_authors_string(mykeys);
+            ewl_label_text_set(EWL_LABEL(authorlabel[count]), authors);
+            free(authors);
 
             pointptr=strrchr(file,'.');
             if(pointptr==NULL)
@@ -809,9 +832,36 @@ void update_context_menu()
     }
 }
 
-static int rev_alphasort(const void* lhs, const void* rhs)
+static char isdir(const struct dirent* e)
 {
-    return alphasort(rhs, lhs);
+    if(e->d_type != DT_UNKNOWN)
+        return e->d_type == DT_DIR;
+
+    struct stat st;
+    if(stat(e->d_name, &st))
+        return 0;
+
+    return S_ISDIR(st.st_mode);
+}
+
+static int dir_alphasort(const void* lhs, const void* rhs)
+{
+    int lhsdir = isdir(*(const struct dirent**)lhs);
+    int rhsdir = isdir(*(const struct dirent**)rhs);
+
+    if(lhsdir == rhsdir)
+        return alphasort(lhs, rhs);
+    return rhsdir - lhsdir;
+}
+
+static int rev_dir_alphasort(const void* lhs, const void* rhs)
+{
+    int lhsdir = isdir(*(const struct dirent**)lhs);
+    int rhsdir = isdir(*(const struct dirent**)rhs);
+
+    if(lhsdir == rhsdir)
+        return alphasort(rhs, lhs);
+    return rhsdir - lhsdir;
 }
 
 static long long rel_file_mtime(const char* f)
@@ -860,7 +910,7 @@ void init_filelist()
     fini_filelist();
 
     if(sort_type == SORT_BY_NAME)
-        cmp = (compar_t)(sort_order == ECORE_SORT_MIN ? alphasort : rev_alphasort);
+        cmp = (compar_t)(sort_order == ECORE_SORT_MIN ? dir_alphasort : rev_dir_alphasort);
     else
         cmp = (compar_t)(sort_order == ECORE_SORT_MIN ? date_cmp : rev_date_cmp);
 
@@ -2337,7 +2387,7 @@ int main ( int argc, char ** argv )
         authorlabel = ewl_label_new();
         ewl_container_child_append(EWL_CONTAINER(box5), authorlabel);
         ewl_widget_name_set(authorlabel,tempname3 );
-        ewl_label_text_set(EWL_LABEL(authorlabel), "Unknown Author");
+        ewl_label_text_set(EWL_LABEL(authorlabel), "");
         ewl_object_padding_set(EWL_OBJECT(authorlabel),3,0,0,0);
         ewl_theme_data_str_set(EWL_WIDGET(authorlabel),"/label/group","ewl/oi_label/authortext");
         ewl_theme_data_str_set(EWL_WIDGET(authorlabel),"/label/textpart","ewl/oi_label/authortext/text");
