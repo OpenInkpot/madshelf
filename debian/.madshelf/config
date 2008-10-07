@@ -32,5 +32,13 @@ Home=/home/
 .chm=book.png
 .oeb=book.png
 .epub=book.png
+.tar=package.png
+.gz=package.png
+.tgz=package.png
+.bz2=package.png
+.zip=package.png
+.gz=package.png
+.bz2=package.png
+.tar=package.png
 [scripts]
 Shutdown V3=poweroff.sh
