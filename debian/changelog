@@ -1,3 +1,9 @@
+madshelf (0.1-11) unstable; urgency=low
+
+  * theme fixed
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Tue, 07 Oct 2008 21:21:57 +0000
+
 madshelf (0.1-10) unstable; urgency=low
 
   * bugfixes
