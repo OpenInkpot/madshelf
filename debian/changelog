@@ -1,3 +1,10 @@
+madshelf (0.1-12) unstable; urgency=low
+
+  * theme fixed again
+  * "no books" on start issue fixed
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Wed, 08 Oct 2008 20:39:12 +0000
+
 madshelf (0.1-11) unstable; urgency=low
 
   * theme fixed
