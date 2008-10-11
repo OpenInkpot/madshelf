@@ -1,3 +1,9 @@
+madshelf (0.1-14) unstable; urgency=low
+
+  * reboot script
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Sat, 11 Oct 2008 23:02:05 +0000
+
 madshelf (0.1-13) unstable; urgency=low
 
   * theme fixed again
