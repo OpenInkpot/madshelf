@@ -22,6 +22,8 @@ Home=/home/
 .htm=FBReader
 .oeb=FBReader
 .epub=FBReader
+.tcr=FBReader
+.ztxt=FBReader
 [icons]
 .fb2=book.png
 .rtf=book.png
@@ -32,6 +34,10 @@ Home=/home/
 .chm=book.png
 .oeb=book.png
 .epub=book.png
+.htm=book.png
+.html=book.png
+.tcr=book.png
+.ztxt=book.png
 .tar=package.png
 .gz=package.png
 .tgz=package.png
@@ -42,3 +48,4 @@ Home=/home/
 .tar=package.png
 [scripts]
 Shutdown V3=poweroff.sh
+Reboot V3=reboot.sh
