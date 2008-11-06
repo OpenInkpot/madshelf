@@ -49,3 +49,5 @@ Home=/home/
 [scripts]
 Shutdown V3=poweroff.sh
 Reboot V3=reboot.sh
+[tags]
+tagnames=Favorite,Read,Hidden

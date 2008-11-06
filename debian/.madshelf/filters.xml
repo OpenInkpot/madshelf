@@ -1,0 +1,35 @@
+<filterlist>
+    <filter name="Supported Books">
+        <condition type="match" domain="extension" matchcase="no">fb2</condition>
+		<condition type="match" domain="extension" matchcase="no">tar</condition>
+		<condition type="match" domain="extension" matchcase="no">gz</condition>
+		<condition type="match" domain="extension" matchcase="no">tgz</condition>
+		<condition type="match" domain="extension" matchcase="no">bz2</condition>
+		<condition type="match" domain="extension" matchcase="no">zip</condition>
+		<condition type="match" domain="extension" matchcase="no">chm</condition>
+		<condition type="match" domain="extension" matchcase="no">rtf</condition>
+		<condition type="match" domain="extension" matchcase="no">txt</condition>
+		<condition type="match" domain="extension" matchcase="no">mobi</condition>
+		<condition type="match" domain="extension" matchcase="no">prc</condition>
+		<condition type="match" domain="extension" matchcase="no">pdb</condition>
+		<condition type="match" domain="extension" matchcase="no">html</condition>
+		<condition type="match" domain="extension" matchcase="no">htm</condition>
+		<condition type="match" domain="extension" matchcase="no">oeb</condition>
+		<condition type="match" domain="extension" matchcase="no">epub</condition>
+		<condition type="match" domain="extension" matchcase="no">tcr</condition>
+		<condition type="match" domain="extension" matchcase="no">ztxt</condition>
+    </filter>
+    <filter name="Favorites">
+        <condition type="match" domain="tag" matchcase="no">Favorite</condition>
+    </filter>
+    <filter name="Unread">
+        <not>
+            <condition type="match" domain="tag" matchcase="no">Read</condition>
+        </not>
+    </filter>
+    <filter name="Hide hidden">
+		<not>
+			<condition type="match" domain="tag" matchcase="no">Hidden</condition>
+		</not>
+    </filter>
+</filterlist>
