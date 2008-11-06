@@ -44,7 +44,10 @@
 #include <time.h>
 #include <unistd.h>
 #include <libgen.h>
-
+#include "Keyhandler.h"
+#include "filefilter.h"
+#include "Dialogs.h"
+#include "database.h"
 #define BUFSIZE 4096
 
 /* Forward declarations */
@@ -106,15 +109,18 @@ char* current_dir;
 
 int sort_type=SORT_BY_NAME;
 int sort_order=ECORE_SORT_MIN;
+long filters_modtime=-1;
+int *filterstatus=NULL;
 //***********
 int num_books=8;
-int nav_mode;
+
 int nav_sel=0;
 int nav_menu_sel=0;
 int nav_lang_menu_sel=0;
 int nav_goto_menu_sel=0;
 int nav_scripts_menu_sel=0;
 int nav_fileops_menu_sel=0;
+int nav_sort_menu_sel=0;
 int nav_mc_menu_sel=0;
 int key_shifted=0;
 int context_index=0;
@@ -516,30 +522,69 @@ int move_file(const char* old, const char* new)
 }
 
 /* Returns the string which need to be free(3) ed*/
-char* get_authors_string(EXTRACTOR_KeywordList* keywords)
+char* get_authors_string(char *authors[],int authornum)
 {
-    char* authors = calloc(1, sizeof(char));
-    size_t len = 1;
-
-    while(keywords)
+     
+    char* authorstr=NULL;
+    
+    int length=0;
+    int i;
+    for(i=0;i<authornum;i++)
     {
-        if(keywords->keywordType == EXTRACTOR_AUTHOR)
-        {
-            if(authors[0])
-            {
-                authors = realloc(authors, len + 2);
-                len += 2;
-                strcat(authors, ", ");
-            }
-            authors = realloc(authors, len + strlen(keywords->keyword));
-            len += strlen(keywords->keyword);
-            strcat(authors, keywords->keyword);
-        }
-        keywords = keywords->next;
+        
+        length+=strlen(authors[i])+2;
+        
     }
-    return authors;
+    length--;
+    
+    authorstr=malloc(length*sizeof(char));
+    authorstr[0]='\0';
+    for(i=0;i<authornum;i++)
+    {
+        
+        strcat(authorstr,authors[i]);
+        if(i<(authornum-1))
+            strcat(authorstr,", ");
+    }
+    
+    return authorstr;
 }
-
+char* get_tag_string(char *tags[],int tagnum)
+{
+     
+    char* tagstr=NULL;
+    
+    int length=2;
+    int i;
+    for(i=0;i<tagnum;i++)
+    {
+        
+        length+=strlen(tags[i])+2;
+        
+    }
+    length--;
+    
+    tagstr=malloc(length*sizeof(char));
+    tagstr[0]='[';
+    tagstr[1]='\0';
+    for(i=0;i<tagnum;i++)
+    {
+        
+        strcat(tagstr,tags[i]);
+        if(i<(tagnum-1))
+            strcat(tagstr,", ");
+        else
+            strcat(tagstr,"]");
+    }
+    
+    return tagstr;
+}
+void reset_file_position()
+{
+    current_index=0;
+    nav_sel=0;
+    
+}
 void update_list()
 {
     int count=0;
@@ -549,7 +594,9 @@ void update_list()
     Ewl_Widget **labelsbox;
     Ewl_Widget **titlelabel;
     Ewl_Widget **authorlabel;
+    Ewl_Widget **infobox;
     Ewl_Widget **infolabel;
+    Ewl_Widget **taglabel;
     Ewl_Widget **bookbox;
     Ewl_Widget **separator;
     Ewl_Widget **typeicon;
@@ -562,7 +609,9 @@ void update_list()
     labelsbox=(Ewl_Widget**)alloca(num_books*sizeof(Ewl_Widget*));
     titlelabel=(Ewl_Widget**)alloca(num_books*sizeof(Ewl_Widget*));
     authorlabel=(Ewl_Widget**)alloca(num_books*sizeof(Ewl_Widget*));
+    infobox=(Ewl_Widget**)alloca(num_books*sizeof(Ewl_Widget*));
     infolabel=(Ewl_Widget**)alloca(num_books*sizeof(Ewl_Widget*));
+    taglabel=(Ewl_Widget**)alloca(num_books*sizeof(Ewl_Widget*));
     bookbox=(Ewl_Widget**)alloca(num_books*sizeof(Ewl_Widget*));
     separator=(Ewl_Widget**)alloca(num_books*sizeof(Ewl_Widget*));
     typeicon=(Ewl_Widget**)alloca(num_books*sizeof(Ewl_Widget*));
@@ -575,6 +624,10 @@ void update_list()
         titlelabel[count] = ewl_widget_name_find(tempname);
         sprintf (tempname, "authorlabel%d",count);
         authorlabel[count] = ewl_widget_name_find(tempname);
+        sprintf (tempname, "infobox%d",count);
+        infobox[count] = ewl_widget_name_find(tempname);
+        sprintf (tempname, "taglabel%d",count);
+        taglabel[count] = ewl_widget_name_find(tempname);
         sprintf (tempname, "infolabel%d",count);
         infolabel[count] = ewl_widget_name_find(tempname);
         sprintf (tempname, "bookbox%d",count);
@@ -596,6 +649,8 @@ void update_list()
         ewl_widget_hide(separator[count]);
         ewl_widget_hide(authorlabel[count]);
         ewl_widget_hide(titlelabel[count]);
+        ewl_widget_hide(infobox[count]);
+        ewl_widget_hide(taglabel[count]);
         ewl_widget_hide(infolabel[count]);
         ewl_widget_hide(typeicon[count]);
     }
@@ -608,7 +663,7 @@ void update_list()
             continue;
         }
 
-        if(nav_mode==1)
+        if(get_nav_mode()==1)
         {
             if(count==nav_sel)
                 ewl_widget_state_set(bookbox[count],"select",EWL_STATE_PERSISTENT);
@@ -618,6 +673,13 @@ void update_list()
             
         char* file = g_fileslist[current_index + count]->d_name;
 
+        char *rel_file;
+        char* cwd = get_current_dir_name();
+        asprintf(&rel_file, "%s/%s", cwd,file);
+        free(cwd);
+        
+        
+        
         struct stat stat_p;
         char* time_str;
         char *extension = strrchr(file, '.');
@@ -631,6 +693,7 @@ void update_list()
 
             ewl_label_text_set(EWL_LABEL(infolabel[count]),time_str);
             ewl_label_text_set(EWL_LABEL(authorlabel[count]),"");
+            ewl_label_text_set(EWL_LABEL(taglabel[count]),"");
             ewl_image_file_path_set(EWL_IMAGE(typeicon[count]),"/usr/share/madshelf/folder.png");
         }
         else
@@ -638,18 +701,22 @@ void update_list()
             char* size_str = format_size(stat_p.st_size);
             char* infostr;
             char* imagefile;
-
-            EXTRACTOR_KeywordList* mykeys;
-            mykeys = extractor_get_keywords(extractors, file);
-
-            extracted_title = extractor_get_last(EXTRACTOR_TITLE, mykeys);
+            
+            char **titlearr=NULL;
+            int titlenum=get_titles(rel_file,&titlearr);
 
 
-            if(extracted_title && extracted_title[0])
-                ewl_label_text_set(EWL_LABEL(titlelabel[count]), extracted_title);
+            if(titlenum>0)
+                ewl_label_text_set(EWL_LABEL(titlelabel[count]),titlearr[0]);
             else
                 ewl_label_text_set(EWL_LABEL(titlelabel[count]),ecore_file_strip_ext(file));
-
+            int i;
+            for(i=0;i<titlenum;i++)
+                free(titlearr[i]);
+            if(titlearr)
+                free(titlearr);
+            
+            
             extension = strrchr(file, '.');
 
             asprintf(&infostr, "%s%s%s   %s",
@@ -659,11 +726,52 @@ void update_list()
                      size_str);
 
             ewl_label_text_set(EWL_LABEL(infolabel[count]),infostr);
-
-            char* authors = get_authors_string(mykeys);
-            ewl_label_text_set(EWL_LABEL(authorlabel[count]), authors);
-            free(authors);
-
+            
+            char **authorarr=NULL;
+            int numauthors=get_authors(rel_file,&authorarr);
+            
+            
+            if(numauthors>0)
+            {
+                char* authors = get_authors_string(authorarr,numauthors);
+                ewl_label_text_set(EWL_LABEL(authorlabel[count]), authors);
+                
+                free(authors);
+            }
+            else
+                ewl_label_text_set(EWL_LABEL(authorlabel[count]),"");
+            
+            for(i=0;i<numauthors;i++)
+                free(authorarr[i]);
+            
+            if(authorarr)
+                free(authorarr);
+            
+            
+            
+            char **tagarr=NULL;
+            int numtags=get_tags(rel_file,&tagarr);
+            
+            
+            if(numtags>0)
+            {
+                char* tags = get_tag_string(tagarr,numtags);
+                ewl_label_text_set(EWL_LABEL(taglabel[count]), tags);
+                
+                free(tags);
+            }
+            else
+                ewl_label_text_set(EWL_LABEL(taglabel[count]),"");
+            
+            for(i=0;i<numtags;i++)
+                free(tagarr[i]);
+            
+            if(tagarr)
+                free(tagarr);
+            
+            
+            
+            
             pointptr=strrchr(file,'.');
             if(pointptr==NULL)
                 tempstr2=ReadString("icons",".","default.png");
@@ -680,7 +788,7 @@ void update_list()
         showflag[count]=1;
 
         free(time_str);
-        
+        free(rel_file);
         
     }
 
@@ -703,8 +811,12 @@ void update_list()
             ewl_widget_configure(authorlabel[count]);
             ewl_widget_show(titlelabel[count]);
             ewl_widget_configure(titlelabel[count]);
+            ewl_widget_show(taglabel[count]);
+            ewl_widget_configure(taglabel[count]);
             ewl_widget_show(infolabel[count]);
             ewl_widget_configure(infolabel[count]);
+            ewl_widget_show(infobox[count]);
+            ewl_widget_configure(infobox[count]);
             ewl_widget_show(separator[count]);
             ewl_widget_configure(separator[count]);
             ewl_widget_show(labelsbox[count]);
@@ -778,7 +890,7 @@ void update_sort_label()
 
 void update_menu()
 {
-    char *tempstrings[]={gettext("Sort by Name"),gettext("Sort by Time"),gettext("Reverse Sort Order"),gettext("Language Settings"),gettext("Go to"),gettext("Scripts"),gettext("Edit")};
+    char *tempstrings[]={gettext("File Filters..."),gettext("Edit"),gettext("Go to"),gettext("Sorting Options"),gettext("Languages"),gettext("Scripts")};
     char tempname[30];
     char temptext[40];
     int i=0;
@@ -787,11 +899,11 @@ void update_menu()
     curwidget = ewl_widget_name_find("okmenu");
     ewl_button_label_set(EWL_BUTTON(curwidget),gettext("Menu"));
 
-    for(i=0;i<7;i++)
+    for(i=0;i<6;i++)
     {
         sprintf(tempname,"menuitem%d",i+1);
         curwidget = ewl_widget_name_find(tempname);
-        if(nav_mode==0)
+        if(get_nav_mode()==0)
             sprintf(temptext,"%d. %s",i+1,tempstrings[i]);
         else
             sprintf(temptext,"%s",tempstrings[i]);
@@ -804,27 +916,39 @@ void update_menu()
     {
         sprintf(tempname,"fileopsmenuitem%d",i+1);
         curwidget = ewl_widget_name_find(tempname);
-        if(nav_mode==0)
+        if(get_nav_mode()==0)
             sprintf(temptext,"%d. %s",i+1,tempstrings2[i]);
         else
             sprintf(temptext,"%s",tempstrings2[i]);
+        ewl_button_label_set(EWL_BUTTON(curwidget),temptext);
+    }
+    
+    char *tempstrings3[]={gettext("Sort by Name"),gettext("Sort by Time"),gettext("Reverse Sort Order")};
+    for(i=0;i<3;i++)
+    {
+        sprintf(tempname,"sortmenuitem%d",i+1);
+        curwidget = ewl_widget_name_find(tempname);
+        if(get_nav_mode()==0)
+            sprintf(temptext,"%d. %s",i+1,tempstrings3[i]);
+        else
+            sprintf(temptext,"%s",tempstrings3[i]);
         ewl_button_label_set(EWL_BUTTON(curwidget),temptext);
     }
 }
 
 void update_context_menu()
 {
-    char *tempstrings[]={gettext("Cut"),gettext("Copy"),gettext("Delete")};
+    char *tempstrings[]={gettext("Cut"),gettext("Copy"),gettext("Delete"),gettext("Tags...")};
     char tempname[30];
     char temptext[40];
     int i=0;
     Ewl_Widget *curwidget;
     curwidget = ewl_widget_name_find("main_context");
-    for(i=0;i<3;i++)
+    for(i=0;i<4;i++)
     {
         sprintf(tempname,"mc_menuitem%d",i+1);
         curwidget = ewl_widget_name_find(tempname);
-        if(nav_mode==0)
+        if(get_nav_mode()==0)
             sprintf(temptext,"%d. %s",i+1,tempstrings[i]);
         else
             sprintf(temptext,"%s",tempstrings[i]);
@@ -917,18 +1041,153 @@ void init_filelist()
     g_nfileslist = scandir(".", &g_fileslist,
                            &filter_dotfiles,
                            cmp);
-
     if(g_nfileslist == -1)
     {
         /* FIXME: handle somehow */
 
         g_nfileslist = 0;
     }
+    update_file_database();
+    filter_filelist();
+    
+    
 
     current_index = 0;
     nav_sel = 0;
 }
-
+void update_file_database()
+{
+    int i;
+    for(i=0;i<g_nfileslist;i++)
+    {
+        if(!ecore_file_is_dir(g_fileslist[i]->d_name))
+        {
+            char *rel_file;
+            char* cwd = get_current_dir_name();
+            asprintf(&rel_file, "%s/%s", cwd,g_fileslist[i]->d_name);
+            free(cwd);
+            
+            
+            
+            int recstatus=get_file_record_status(rel_file);
+            if(recstatus==RECORD_STATUS_ERROR || recstatus==RECORD_STATUS_OK || recstatus==RECORD_STATUS_EXISTS_BUT_UNKNOWN) //will have to deal with some of these cases differently later
+            {
+                
+            }
+            else if(recstatus==RECORD_STATUS_OUT_OF_DATE)
+            {
+                clear_file_extractor_data(rel_file);
+                update_file_mod_time(rel_file);
+                extract_and_cache(rel_file);
+            }
+            else if(recstatus==RECORD_STATUS_ABSENT)
+            {
+                if(!extract_and_cache(rel_file))
+                    create_empty_record(rel_file);
+            }
+            free(rel_file);
+        }
+        
+    }
+}
+int extract_and_cache(char *filename)
+{
+    int retval=0;
+    EXTRACTOR_KeywordList* mykeys;
+    mykeys = extractor_get_keywords(extractors, filename);
+    
+    
+    
+    
+    //process titles    
+    char *extracted_title = extractor_get_last(EXTRACTOR_TITLE, mykeys);
+    if(extracted_title && extracted_title[0])
+    {
+        const char *titlearr[]={extracted_title};
+        set_titles(filename,titlearr,1);
+        retval=1;
+    }
+    //process authors
+    EXTRACTOR_KeywordList* keypt=mykeys;
+    int authorcount=0;
+    while(keypt)
+    {
+        if(keypt->keywordType == EXTRACTOR_AUTHOR && keypt->keyword && keypt->keyword[0])
+            authorcount++;    
+        keypt = keypt->next;
+    }
+    keypt=mykeys;
+    char **authorarr=(char**)malloc(sizeof(char*)*authorcount);
+    int count=0;
+    while(keypt)
+    {
+        if(keypt->keywordType == EXTRACTOR_AUTHOR && keypt->keyword && keypt->keyword[0])
+        {
+            authorarr[count]=keypt->keyword;
+            count++;
+        }
+        keypt = keypt->next;
+    }
+    if(authorcount>0)
+    {
+        set_authors(filename,authorarr,authorcount);
+        retval=1;
+    }
+    free(authorarr);
+    return retval;
+    
+}
+int filter_filelist()
+{
+    struct dirent** new_g_fileslist=(struct dirent**)malloc(sizeof(struct dirent*)*g_nfileslist);
+    int i,j;
+    int count=0;
+    int retval=0;
+    for(i=0;i<g_nfileslist;i++)
+    {
+        int flag=1;
+        if(!ecore_file_is_dir(g_fileslist[i]->d_name))
+        {
+            for(j=0;j<getNumFilters();j++)
+            {
+                if(isFilterActive(j))
+                {
+                    char *rel_file;
+                    char* cwd = get_current_dir_name();
+                    asprintf(&rel_file, "%s/%s", cwd,g_fileslist[i]->d_name);
+                    free(cwd);
+                    
+                    if(!evaluateFilter(j,rel_file))
+                    {
+                        flag=0;
+                        retval=1;
+                        break;
+                    }
+                    free(rel_file);
+                }
+            }
+        }
+        if(flag)
+        {
+            new_g_fileslist[count]=g_fileslist[i];
+            count++;
+        }
+        else
+            free(g_fileslist[i]);
+        
+    }
+    g_nfileslist=count;
+    free(g_fileslist);
+    g_fileslist=new_g_fileslist;    
+    return retval;
+}
+void update_filters()
+{
+    int i;
+    for(i=0;i<getNumFilters();i++)
+        filterstatus[i]=isFilterActive(i);
+    
+}
 void destroy_cb ( Ewl_Widget *w, void *event, void *data )
 {
     ewl_widget_destroy ( w );
@@ -988,7 +1247,7 @@ void show_confirm_dialog(confirm_handler nohandler,confirm_handler yeshandler,ch
     
     ewl_label_text_set(EWL_LABEL(wmessage),message);
     
-    if(nav_mode==0)
+    if(get_nav_mode()==0)
     {
         sprintf(notext,"1. %s",gettext("No"));
         sprintf(yestext,"2. %s",gettext("Yes"));
@@ -1129,6 +1388,22 @@ void popupContext(unsigned int num)
     
     ewl_popup_mouse_position_set(EWL_POPUP(curwidget),ewl_object_current_x_get(EWL_OBJECT(selected))+ewl_object_current_w_get(EWL_OBJECT(selected))-PREFERRED_W(curwidget),ewl_object_current_y_get(EWL_OBJECT(selected)));
     context_index=num-1;
+    
+    //Hide or show tags option, based on whether directory.
+    Ewl_Widget *tags_item=ewl_widget_name_find("mc_menuitem4");
+    char* file = g_fileslist[current_index + num-1]->d_name;
+    if(ecore_file_is_dir(file))
+    {
+        ewl_widget_hide(tags_item);    
+        
+    }
+    else
+    {
+        ewl_widget_show(tags_item);
+        ewl_widget_configure(tags_item);
+    }
+    
+    
     ewl_widget_show(curwidget);
     ewl_widget_configure(curwidget);
     ewl_window_raise(EWL_WINDOW(curwidget));
@@ -1154,67 +1429,9 @@ void change_root(int item)
 
 /* GUI */
 
-typedef void (*key_handler_t)();
-typedef void (*item_handler_t)(int index);
-
-typedef struct
-{
-    key_handler_t ok_handler;
-    key_handler_t esc_handler;
-    key_handler_t nav_up_handler;
-    key_handler_t nav_down_handler;
-    key_handler_t nav_left_handler;
-    key_handler_t nav_right_handler;
-    key_handler_t nav_sel_handler;
-    key_handler_t nav_menubtn_handler;
-    key_handler_t shift_handler;
-    item_handler_t item_handler;
-} key_handler_info_t;
-
-
-
-/* FIXME: HACK */
-static void _key_handler(Ewl_Widget* w, void *event, void *context)
-{
-    Ewl_Event_Key_Up* e = (Ewl_Event_Key_Up*)event;
-    key_handler_info_t* handler_info = (key_handler_info_t*)context;
-
-    const char* k = e->base.keyname;
-
-#define HANDLE_ITEM(h, params) { if(handler_info->h) (*handler_info->h)(params);}
-#define HANDLE_KEY(h) {if(handler_info->h) (*handler_info->h)();}
-
-    if(!strcmp(k, "Return")) {
-        if(nav_mode == 1)            HANDLE_KEY(nav_sel_handler)
-        else                         HANDLE_KEY(ok_handler)
-    }
-    else if(!strcmp(k, "Escape"))    HANDLE_KEY(esc_handler)
-    else if (isdigit(k[0]) && !k[1]) HANDLE_ITEM(item_handler, k[0]-'0')
-    else if (!strcmp(k,"Up")) {
-        if(nav_mode == 1)            HANDLE_KEY(nav_up_handler)
-        else                         HANDLE_KEY(nav_right_handler)
-    }
-    else if (!strcmp(k, "Down")) {
-        if(nav_mode == 1)            HANDLE_KEY(nav_down_handler)
-        else                         HANDLE_KEY(nav_left_handler)
-    }
-    else if (!strcmp(k, "Left"))     HANDLE_KEY(nav_left_handler)
-    else if (!strcmp(k, "Right"))    HANDLE_KEY(nav_right_handler)
-    else if (!strcmp(k, "F2"))       HANDLE_KEY(nav_menubtn_handler)
-    else if (!strcmp(k, "+"))        HANDLE_KEY(shift_handler)
-    else fprintf(stderr,k);
-
-}
-
-void set_key_handler(Ewl_Widget* widget, key_handler_info_t* handler_info)
-{
-    ewl_callback_append(widget, EWL_CALLBACK_KEY_UP,
-                        &_key_handler, handler_info);
-}
-
 /* Main key handler */
 
-void main_esc()
+void main_esc(Ewl_Widget *widget)
 {
     int i;
     char* cwd = get_current_dir_name();
@@ -1236,17 +1453,17 @@ void main_esc()
     update_filelist_in_gui();
 }
 
-void main_ok(void)
+void main_ok(Ewl_Widget *widget)
 {
     show_main_menu();
 }
 
-void main_shift(void)
+void main_shift(Ewl_Widget *widget)
 {
     toggle_key_shifted();
 }
 
-void main_nav_up(void)
+void main_nav_up(Ewl_Widget *widget)
 {
     char tempname[30];
     Ewl_Widget *curwidget=NULL;
@@ -1262,7 +1479,7 @@ void main_nav_up(void)
     }       
 }
 
-void main_nav_down(void)
+void main_nav_down(Ewl_Widget *widget)
 {
     char tempname[30];
     Ewl_Widget *curwidget=NULL;
@@ -1278,19 +1495,19 @@ void main_nav_down(void)
     }
 }
 
-void main_nav_left(void)
+void main_nav_left(Ewl_Widget *widget)
 {
     nav_sel=0;
     prev_page();
 }
 
-void main_nav_right(void)
+void main_nav_right(Ewl_Widget *widget)
 {
     nav_sel=0;
     next_page();
 }
 
-void main_nav_sel(void)
+void main_nav_sel(Ewl_Widget *widget)
 {
     if(key_shifted)
         popupContext(nav_sel+1);
@@ -1298,13 +1515,13 @@ void main_nav_sel(void)
         doActionForNum(nav_sel+1);
     
 }
-void main_nav_menubtn(void)
+void main_nav_menubtn(Ewl_Widget *widget)
 {
     
     show_main_menu();
     
 }
-void main_item(int item)
+void main_item(Ewl_Widget *widget,int item)
 {
     if(item == 0)
         next_page();
@@ -1343,7 +1560,7 @@ void hide_main_menu()
     ewl_menu_collapse(EWL_MENU(ewl_widget_name_find("okmenu")));
 }
 
-void main_menu_nav_up(void)
+void main_menu_nav_up(Ewl_Widget *widget)
 {
     char tempname[30];
     Ewl_Widget *oldselwid=NULL;
@@ -1363,7 +1580,7 @@ void main_menu_nav_up(void)
     }       
 }
 
-void main_menu_nav_down(void)
+void main_menu_nav_down(Ewl_Widget *widget)
 {
     char tempname[30];
     Ewl_Widget *oldselwid=NULL;
@@ -1382,48 +1599,31 @@ void main_menu_nav_down(void)
     }
 }
 
-void main_menu_esc()
+void main_menu_esc(Ewl_Widget *widget)
 {
     hide_main_menu();
 }
 
-void main_menu_item(int item)
+void main_menu_item(Ewl_Widget *widget,int item)
 {
     Ewl_Widget* curwidget;
 
     switch(item)
     {
     case 1:
-        sort_order=ECORE_SORT_MIN;
-        sort_type=SORT_BY_NAME;
-
-        init_filelist();
-
-        update_list();
-        update_sort_label();
         hide_main_menu();
+        FiltersDialog();
         break;
+
     case 2:
-        sort_order=ECORE_SORT_MIN;
-        sort_type=SORT_BY_TIME;
-
-        init_filelist();
-
-        update_list();
-        update_sort_label();
-        hide_main_menu();
+        curwidget = ewl_widget_name_find("menuitem2");
+        ewl_menu_cb_expand(curwidget,NULL,NULL);
+        ewl_widget_focus_send(EWL_WIDGET(EWL_MENU(curwidget)->popup));
         break;
     case 3:
-        if(sort_order==ECORE_SORT_MIN)
-            sort_order=ECORE_SORT_MAX;
-        else
-            sort_order=ECORE_SORT_MIN;
-
-        init_filelist();
-
-        update_list();
-        update_sort_label();
-        hide_main_menu();
+        curwidget = ewl_widget_name_find("menuitem3");
+        ewl_menu_cb_expand(curwidget,NULL,NULL);
+        ewl_widget_focus_send(EWL_WIDGET(EWL_MENU(curwidget)->popup));
         break;
     case 4:
         curwidget = ewl_widget_name_find("menuitem4");
@@ -1440,17 +1640,13 @@ void main_menu_item(int item)
         ewl_menu_cb_expand(curwidget,NULL,NULL);
         ewl_widget_focus_send(EWL_WIDGET(EWL_MENU(curwidget)->popup));
         break;
-    case 7:
-        curwidget = ewl_widget_name_find("menuitem7");
-        ewl_menu_cb_expand(curwidget,NULL,NULL);
-        ewl_widget_focus_send(EWL_WIDGET(EWL_MENU(curwidget)->popup));
-        break;
+
     }
 }
 
-void main_menu_nav_sel(void)
+void main_menu_nav_sel(Ewl_Widget *widget)
 {
-    main_menu_item(nav_menu_sel+1);
+    main_menu_item(widget,nav_menu_sel+1);
 }
 
 static key_handler_info_t main_menu_info =
@@ -1476,7 +1672,10 @@ static language_t g_languages[] =
     { "English", "en" },
     { "Français", "fr" },
     { "Русский", "ru" },
-    { "Беларуская", "be" }
+    { "Беларуская", "be" },
+    { "Español", "es" },
+    { "Polish", "pl" },
+    
 /* Temporarily disabled until some Chinese font is added in
     { "简体中文", "zh_CN" }
  */
@@ -1484,12 +1683,12 @@ static language_t g_languages[] =
 
 static const int g_nlanguages = sizeof(g_languages)/sizeof(language_t);
 
-void lang_menu_esc()
+void lang_menu_esc(Ewl_Widget *widget)
 {
-    ewl_menu_collapse(EWL_MENU(ewl_widget_name_find("menuitem4")));
+    ewl_menu_collapse(EWL_MENU(ewl_widget_name_find("menuitem5")));
     hide_main_menu();
 }
-void lang_menu_nav_up(void)
+void lang_menu_nav_up(Ewl_Widget *widget)
 {
     char tempname[30];
     Ewl_Widget *oldselwid=NULL;
@@ -1509,7 +1708,7 @@ void lang_menu_nav_up(void)
     }       
 }
 
-void lang_menu_nav_down(void)
+void lang_menu_nav_down(Ewl_Widget *widget)
 {
     char tempname[30];
     Ewl_Widget *oldselwid=NULL;
@@ -1526,7 +1725,7 @@ void lang_menu_nav_down(void)
     ewl_widget_state_set((EWL_MENU_ITEM(newselwid)->button).label_object,"select",EWL_STATE_PERSISTENT);
 }
 
-void lang_menu_item(int item)
+void lang_menu_item(Ewl_Widget *widget,int item)
 {
     Ewl_Widget* curwidget;
 
@@ -1542,7 +1741,7 @@ void lang_menu_item(int item)
         ++_nl_msg_cat_cntr;
     }
 
-    curwidget = ewl_widget_name_find("menuitem4");
+    curwidget = ewl_widget_name_find("menuitem5");
     ewl_menu_collapse(EWL_MENU(curwidget));
     hide_main_menu();
     update_title();
@@ -1550,9 +1749,9 @@ void lang_menu_item(int item)
     update_menu();
 }
 
-void lang_menu_nav_sel(void)
+void lang_menu_nav_sel(Ewl_Widget *widget)
 {
-    lang_menu_item(nav_lang_menu_sel+1);
+    lang_menu_item(widget,nav_lang_menu_sel+1);
 }
 
 static key_handler_info_t lang_menu_info =
@@ -1567,13 +1766,13 @@ static key_handler_info_t lang_menu_info =
 
 /* "Go to" menu */
 
-void goto_menu_esc()
+void goto_menu_esc(Ewl_Widget *widget)
 {
-    ewl_menu_collapse(EWL_MENU(ewl_widget_name_find("menuitem5")));
+    ewl_menu_collapse(EWL_MENU(ewl_widget_name_find("menuitem3")));
     hide_main_menu();
 }
 
-void goto_menu_nav_up(void)
+void goto_menu_nav_up(Ewl_Widget *widget)
 {
     char tempname[30];
     Ewl_Widget *oldselwid=NULL;
@@ -1593,7 +1792,7 @@ void goto_menu_nav_up(void)
     }       
 }
 
-void goto_menu_nav_down(void)
+void goto_menu_nav_down(Ewl_Widget *widget)
 {
     char tempname[30];
     Ewl_Widget *oldselwid=NULL;
@@ -1610,7 +1809,7 @@ void goto_menu_nav_down(void)
 }
 
 
-void goto_menu_item(int item)
+void goto_menu_item(Ewl_Widget *widget,int item)
 {
     if(item == 0)
         item = 10;
@@ -1620,16 +1819,16 @@ void goto_menu_item(int item)
     if(item < 0 || item >= g_roots->nroots)
         return;
 
-    ewl_menu_collapse(EWL_MENU(ewl_widget_name_find("menuitem5")));
+    ewl_menu_collapse(EWL_MENU(ewl_widget_name_find("menuitem3")));
     hide_main_menu();
 
     change_root(item);
     change_dir_in_gui();
 }
 
-void goto_menu_nav_sel(void)
+void goto_menu_nav_sel(Ewl_Widget *widget)
 {
-    goto_menu_item(nav_goto_menu_sel+1);
+    goto_menu_item(widget,nav_goto_menu_sel+1);
 }
 
 static key_handler_info_t goto_menu_info =
@@ -1644,13 +1843,13 @@ static key_handler_info_t goto_menu_info =
 
 /* "Scripts" menu */
 
-void scripts_menu_esc()
+void scripts_menu_esc(Ewl_Widget *widget)
 {
     ewl_menu_collapse(EWL_MENU(ewl_widget_name_find("menuitem6")));
     hide_main_menu();
 }
 
-void scripts_menu_nav_up(void)
+void scripts_menu_nav_up(Ewl_Widget *widget)
 {
     char tempname[30];
     Ewl_Widget *oldselwid=NULL;
@@ -1669,7 +1868,7 @@ void scripts_menu_nav_up(void)
     }       
 }
 
-void scripts_menu_nav_down(void)
+void scripts_menu_nav_down(Ewl_Widget *widget)
 {
     char tempname[30];
     Ewl_Widget *oldselwid=NULL;
@@ -1686,14 +1885,14 @@ void scripts_menu_nav_down(void)
 }
 
 
-void scripts_menu_item(int item)
+void scripts_menu_item(Ewl_Widget *widget,int item)
 {
     const char* tempstr;
     char* handler_path;
 
     item--;
 
-    ewl_menu_collapse(EWL_MENU(ewl_widget_name_find("menuitem5")));
+    ewl_menu_collapse(EWL_MENU(ewl_widget_name_find("menuitem6")));
     hide_main_menu();
 
     /* ?! */
@@ -1709,9 +1908,9 @@ void scripts_menu_item(int item)
     free(handler_path);
 }
 
-void scripts_menu_nav_sel(void)
+void scripts_menu_nav_sel(Ewl_Widget *widget)
 {
-    scripts_menu_item(nav_scripts_menu_sel+1);
+    scripts_menu_item(widget,nav_scripts_menu_sel+1);
 }
 
 static key_handler_info_t scripts_menu_info =
@@ -1726,12 +1925,12 @@ static key_handler_info_t scripts_menu_info =
 
 /* Main Context menu */
 
-void mc_menu_esc()
+void mc_menu_esc(Ewl_Widget *widget)
 {
     ewl_widget_hide(ewl_widget_name_find("main_context"));
 }
 
-void mc_menu_nav_up(void)
+void mc_menu_nav_up(Ewl_Widget *widget)
 {
     char tempname[30];
     Ewl_Widget *oldselwid=NULL;
@@ -1751,7 +1950,7 @@ void mc_menu_nav_up(void)
     }       
 }
 
-void mc_menu_nav_down(void)
+void mc_menu_nav_down(Ewl_Widget *widget)
 {
     char tempname[30];
     Ewl_Widget *oldselwid=NULL;
@@ -1790,10 +1989,10 @@ void mc_menu_delete_confirm_no(void)
         
 }
 
-void mc_menu_item(int item)
+void mc_menu_item(Ewl_Widget *widget,int item)
 {
     Ewl_Widget *curwidget;
-    if(item <= 0 || item>3)
+    if(item <= 0 || item>4)
         return;
     char* cwd = get_current_dir_name();
     action_filename=(char *)malloc((strlen(g_fileslist[current_index+context_index]->d_name)+2+strlen(cwd))*sizeof(char));
@@ -1811,12 +2010,18 @@ void mc_menu_item(int item)
         file_action=FILE_NO_ACTION;
         
     }
+    else if(item==4)
+    {
+        TagsDialog(action_filename);
+        free(action_filename);
+        action_filename=NULL;
+    }
     
 }
 
-void mc_menu_nav_sel(void)
+void mc_menu_nav_sel(Ewl_Widget *widget)
 {
-    mc_menu_item(nav_mc_menu_sel+1);
+    mc_menu_item(widget,nav_mc_menu_sel+1);
 }
 
 
@@ -1833,13 +2038,13 @@ static key_handler_info_t mc_menu_info =
 };
 
 /* FileOps menu */
-void fileops_menu_esc()
+void fileops_menu_esc(Ewl_Widget *widget)
 {
-    ewl_menu_collapse(EWL_MENU(ewl_widget_name_find("menuitem7")));
+    ewl_menu_collapse(EWL_MENU(ewl_widget_name_find("menuitem2")));
     hide_main_menu();
 }
 
-void fileops_menu_nav_up(void)
+void fileops_menu_nav_up(Ewl_Widget *widget)
 {
     char tempname[30];
     Ewl_Widget *oldselwid=NULL;
@@ -1859,7 +2064,7 @@ void fileops_menu_nav_up(void)
     }       
 }
 
-void fileops_menu_nav_down(void)
+void fileops_menu_nav_down(Ewl_Widget *widget)
 {
     char tempname[30];
     Ewl_Widget *oldselwid=NULL;
@@ -1876,12 +2081,12 @@ void fileops_menu_nav_down(void)
 }
 
 
-void fileops_menu_item(int item)
+void fileops_menu_item(Ewl_Widget *widget,int item)
 {
     if(item < 0 || item >1)
         return;
 
-    ewl_menu_collapse(EWL_MENU(ewl_widget_name_find("menuitem7")));
+    ewl_menu_collapse(EWL_MENU(ewl_widget_name_find("menuitem2")));
     hide_main_menu();
     
     if(item==1)
@@ -1912,9 +2117,9 @@ void fileops_menu_item(int item)
     }
 }
 
-void fileops_menu_nav_sel(void)
+void fileops_menu_nav_sel(Ewl_Widget *widget)
 {
-    fileops_menu_item(nav_fileops_menu_sel+1);
+    fileops_menu_item(widget,nav_fileops_menu_sel+1);
 }
 
 static key_handler_info_t fileops_menu_info =
@@ -1927,31 +2132,135 @@ static key_handler_info_t fileops_menu_info =
     .item_handler = &fileops_menu_item,
 };
 
+/* Sort menu */
+void sort_menu_esc(Ewl_Widget *widget)
+{
+    ewl_menu_collapse(EWL_MENU(ewl_widget_name_find("menuitem4")));
+    hide_main_menu();
+}
+
+void sort_menu_nav_up(Ewl_Widget *widget)
+{
+    char tempname[30];
+    Ewl_Widget *oldselwid=NULL;
+    Ewl_Widget *newselwid=NULL;
+    if((nav_sort_menu_sel-1)>=0)
+    {
+        
+        sprintf (tempname, "sortmenuitem%d",nav_sort_menu_sel+1);
+        oldselwid = ewl_widget_name_find(tempname);
+        sprintf (tempname, "sortmenuitem%d",nav_sort_menu_sel);
+        newselwid = ewl_widget_name_find(tempname);
+        if(!oldselwid||!newselwid)
+            return;
+        ewl_widget_state_set((EWL_MENU_ITEM(oldselwid)->button).label_object,"unselect",EWL_STATE_PERSISTENT);
+        nav_sort_menu_sel--;
+        ewl_widget_state_set((EWL_MENU_ITEM(newselwid)->button).label_object,"select",EWL_STATE_PERSISTENT);
+    }       
+}
+
+void sort_menu_nav_down(Ewl_Widget *widget)
+{
+    char tempname[30];
+    Ewl_Widget *oldselwid=NULL;
+    Ewl_Widget *newselwid=NULL;
+    sprintf (tempname, "sortmenuitem%d",nav_sort_menu_sel+1);
+    oldselwid = ewl_widget_name_find(tempname);
+    sprintf (tempname, "sortmenuitem%d",nav_sort_menu_sel+2);
+    newselwid = ewl_widget_name_find(tempname);
+    if(!oldselwid||!newselwid)
+        return;
+    ewl_widget_state_set((EWL_MENU_ITEM(oldselwid)->button).label_object,"unselect",EWL_STATE_PERSISTENT);
+    nav_sort_menu_sel++;
+    ewl_widget_state_set((EWL_MENU_ITEM(newselwid)->button).label_object,"select",EWL_STATE_PERSISTENT);
+}
+
+
+void sort_menu_item(Ewl_Widget *widget,int item)
+{
+    if(item < 0 || item >3)
+        return;
+
+    ewl_menu_collapse(EWL_MENU(ewl_widget_name_find("menuitem4")));
+    hide_main_menu();
+    
+    if(item==1)
+    {
+    
+        sort_order=ECORE_SORT_MIN;
+        sort_type=SORT_BY_NAME;
+
+        init_filelist();
+
+        update_list();
+        update_sort_label();
+        hide_main_menu();
+    }
+    else if(item==2)
+    {
+        sort_order=ECORE_SORT_MIN;
+        sort_type=SORT_BY_TIME;
+
+        init_filelist();
+
+        update_list();
+        update_sort_label();
+        hide_main_menu();
+     }
+     else if(item==3)
+     {
+        if(sort_order==ECORE_SORT_MIN)
+            sort_order=ECORE_SORT_MAX;
+        else
+            sort_order=ECORE_SORT_MIN;
+
+        init_filelist();
+
+        update_list();
+        update_sort_label();
+        hide_main_menu();
+     }
+}
+
+void sort_menu_nav_sel(Ewl_Widget *widget)
+{
+    sort_menu_item(widget,nav_sort_menu_sel+1);
+}
+
+static key_handler_info_t sort_menu_info =
+{
+    .ok_handler = &sort_menu_esc,
+    .esc_handler = &sort_menu_esc,
+    .nav_up_handler=&sort_menu_nav_up,
+    .nav_down_handler=&sort_menu_nav_down,
+    .nav_sel_handler=&sort_menu_nav_sel,
+    .item_handler = &sort_menu_item,
+};
 /* Confirm dialog key handlers */
 
-void confirm_dialog_nav_sel(void)
+void confirm_dialog_nav_sel(Ewl_Widget *widget)
 {
     confirm_dialog_action_perform();
 }
 
-void confirm_dialog_nav_right(void)
+void confirm_dialog_nav_right(Ewl_Widget *widget)
 {
     if(confirm_dialog_choice_get()!=CONFIRM_DIALOG_YES)
         confirm_dialog_choice_set(CONFIRM_DIALOG_YES);
 }
 
-void confirm_dialog_nav_left(void)
+void confirm_dialog_nav_left(Ewl_Widget *widget)
 {
     if(confirm_dialog_choice_get()!=CONFIRM_DIALOG_NO)
         confirm_dialog_choice_set(CONFIRM_DIALOG_NO);
 }
 
-void confirm_dialog_ok(void)
+void confirm_dialog_ok(Ewl_Widget *widget)
 {
     confirm_dialog_action_perform();
 }
 
-void confirm_dialog_item(int item)
+void confirm_dialog_item(Ewl_Widget *widget,int item)
 {
     if(item <1 || item >2)
         return;
@@ -1993,6 +2302,8 @@ void save_state()
     eet_write(state,"curdir",cwd,sizeof(char)*(strlen(cwd)+1),0);
     eet_write(state,"sort_type",(void *)&sort_type,sizeof(int),0);
     eet_write(state,"sort_order",(void *)&sort_order,sizeof(int),0);
+    eet_write(state,"filters_modtime",(void *)&filters_modtime,sizeof(long),0);
+    eet_write(state,"filterstatus",(void *)filterstatus,sizeof(int)*getNumFilters(),0);
     eet_close(state);
 
     free(cwd);
@@ -2007,7 +2318,7 @@ void refresh_state()
     if(!state || !eet_read(state, "statesaved", &size))
     {
         eet_close(state);
-        init_filelist();
+        //init_filelist();
         return;
     }
 
@@ -2021,13 +2332,33 @@ void refresh_state()
     }
 
     chdir_to((char*)eet_read(state, "curdir", &size));
-    init_filelist();
-    current_index = *((int*)eet_read(state,"curindex", &size));
+    //init_filelist();
+    int *temppt=(int*)eet_read(state,"curindex", &size);
+    if(temppt)
+        current_index = *temppt;
+    else
+        current_index = 0;
     if(current_index < 0 || current_index > g_nfileslist)
         current_index = 0;
-
-    sort_type=*((int*)eet_read(state, "sort_type", &size));
-    sort_order=*((int*)eet_read(state, "sort_order", &size));
+    
+    temppt=(int*)eet_read(state, "sort_type", &size);
+    if(temppt)
+        sort_type=*temppt;
+    else
+        sort_type=SORT_BY_NAME;
+    temppt=(int*)eet_read(state, "sort_order", &size);
+    if(temppt)
+        sort_order=*temppt;
+    else
+        sort_order=ECORE_SORT_MIN;
+    
+    temppt=(int*)eet_read(state, "filters_modtime", &size);
+    if(temppt)
+        filters_modtime=*temppt;
+    else
+        filters_modtime=0;
+    
+    filterstatus=(int *)eet_read(state, "filterstatus", &size);
     eet_close(state);
 }
 
@@ -2069,9 +2400,11 @@ int main ( int argc, char ** argv )
     Ewl_Widget *box2=NULL;
     Ewl_Widget *box3=NULL;
     Ewl_Widget *box5=NULL;
+    Ewl_Widget *box6=NULL;
     Ewl_Widget *authorlabel;
     Ewl_Widget *titlelabel;
     Ewl_Widget *infolabel;
+    Ewl_Widget *taglabel;
     Ewl_Widget *iconimage;
     Ewl_Widget *menubar=NULL;
     Ewl_Widget *arrow_widget=NULL;
@@ -2081,6 +2414,8 @@ int main ( int argc, char ** argv )
     Ewl_Widget *keystatelabel;
     char *homedir;
     char *configfile;
+    char *filterfile;
+    char *dbfile;
     int count=0;
     int count2=0;
     char *tempstr4;
@@ -2099,14 +2434,48 @@ int main ( int argc, char ** argv )
     setlocale(LC_ALL, "");
     textdomain("madshelf");
 
+    
+    
+    
+    //end database testing
     homedir=getenv("HOME");
+    
+    
+    filterfile=(char *)calloc(strlen(homedir) + 23, sizeof(char));
+    strcat(filterfile,homedir);
+    strcat(filterfile,"/.madshelf/");
+    if(!ecore_file_path_dir_exists(filterfile))
+    {
+        ecore_file_mkpath(filterfile);
+    }
+    strcat(filterfile,"filters.xml");
+
+    struct stat filterstat;
+    int filtexists;
+    filtexists = stat(filterfile, &filterstat);
+    if(filtexists>=0)
+    {
+        load_filters(filterfile);
+    }
+    
+    free(filterfile);
+    
+    
+    
+    
+   
+    
+    dbfile=(char *)calloc(strlen(homedir) + 23, sizeof(char));
+    strcat(dbfile,homedir);
+    strcat(dbfile,"/.madshelf/");
+    strcat(dbfile,"madshelf.db");
+    init_database(dbfile);
+    free(dbfile);
+    
+    
     configfile=(char *)calloc(strlen(homedir) + 1+18 + 1, sizeof(char));
     strcat(configfile,homedir);
     strcat(configfile,"/.madshelf/");
-    if(!ecore_file_path_dir_exists(configfile))
-    {
-        ecore_file_mkpath(configfile);
-    }
     strcat(configfile,"config");
     if(!ecore_file_exists(configfile))
     {
@@ -2120,8 +2489,8 @@ int main ( int argc, char ** argv )
     }
     OpenIniFile (configfile);
     free(configfile);
-
-    nav_mode=ReadInt("general","nav_mode",0);
+    
+    set_nav_mode(ReadInt("general","nav_mode",0));
     
     extractors= load_extractors();
 
@@ -2164,6 +2533,32 @@ int main ( int argc, char ** argv )
 
     refresh_state();
 
+    if(filtexists>=0)
+    {
+        if(filters_modtime!=filterstat.st_mtime)
+        {
+            if(filterstatus!=NULL)
+                free(filterstatus);
+            filterstatus=(int *)malloc(sizeof(int)*getNumFilters());
+            int i;
+            for(i=0;i<getNumFilters();i++)
+                filterstatus[i]=0;
+            current_index=0;
+            nav_sel=0;
+        }
+        filters_modtime=filterstat.st_mtime;
+        
+        
+        
+    }
+    int i;
+    for(i=0;i<getNumFilters();i++)
+        setFilterActive(i,filterstatus[i]);
+    
+    
+    init_filelist();
+    
+    
     win = ewl_window_new();
     ewl_window_title_set ( EWL_WINDOW ( win ), "EWL_WINDOW" );
     ewl_window_name_set ( EWL_WINDOW ( win ), "EWL_WINDOW" );
@@ -2216,27 +2611,80 @@ int main ( int argc, char ** argv )
         ewl_widget_name_set(temp2,"menuitem1");
 
         ewl_container_child_append(EWL_CONTAINER(temp),temp2);
-        if(nav_mode==1)
+        if(get_nav_mode()==1)
             ewl_widget_state_set((EWL_MENU_ITEM(temp2)->button).label_object,"select",EWL_STATE_PERSISTENT);
         ewl_widget_show(temp2);
 
-        temp2=ewl_menu_item_new();
 
+        temp2=ewl_menu_new();
+        ewl_container_child_append(EWL_CONTAINER(temp),temp2);
         ewl_widget_name_set(temp2,"menuitem2");
-        ewl_container_child_append(EWL_CONTAINER(temp),temp2);
+        set_key_handler(EWL_MENU(temp2)->popup, &fileops_menu_info);
         ewl_widget_show(temp2);
 
-        temp2=ewl_menu_item_new();
+        temp3=ewl_menu_item_new();
+        ewl_container_child_append(EWL_CONTAINER(temp2),temp3);
+        if(get_nav_mode()==1)
+            ewl_widget_state_set((EWL_MENU_ITEM(temp3)->button).label_object,"select",EWL_STATE_PERSISTENT);
+        ewl_widget_name_set(temp3,"fileopsmenuitem1");
+        ewl_widget_show(temp3);
 
+        temp2=ewl_menu_new();
+        ewl_container_child_append(EWL_CONTAINER(temp),temp2);
         ewl_widget_name_set(temp2,"menuitem3");
-        ewl_container_child_append(EWL_CONTAINER(temp),temp2);
+
+        set_key_handler(EWL_MENU(temp2)->popup, &goto_menu_info);
         ewl_widget_show(temp2);
 
+        for(i = 0; i < MIN(g_roots->nroots, 8); ++i)
+        {
+            temp3=ewl_menu_item_new();
+            tempstr4=(char *)calloc(strlen(g_roots->roots[i].name)+3+1,sizeof(char));
+            if(get_nav_mode()==0)
+                sprintf(tempstr4,"%d. %s",i+1, g_roots->roots[i].name);
+            else
+                sprintf(tempstr4,"%s",g_roots->roots[i].name);
+            ewl_button_label_set(EWL_BUTTON(temp3),tempstr4);
+            free(tempstr4);
+            ewl_container_child_append(EWL_CONTAINER(temp2),temp3);
+            if(get_nav_mode()==1 && i==0)
+                ewl_widget_state_set((EWL_MENU_ITEM(temp3)->button).label_object,"select",EWL_STATE_PERSISTENT);
+            sprintf(tempname6,"gotomenuitem%d",i+1);
+            ewl_widget_name_set(EWL_WIDGET(temp3),tempname6);
+            ewl_widget_show(temp3);
+            count++;
+        }
+
+
+        temp2=ewl_menu_new();
+        ewl_container_child_append(EWL_CONTAINER(temp),temp2);
+        ewl_widget_name_set(temp2,"menuitem4");
+        set_key_handler(EWL_MENU(temp2)->popup, &sort_menu_info);
+        ewl_widget_show(temp2);
+
+        temp3=ewl_menu_item_new();
+        ewl_container_child_append(EWL_CONTAINER(temp2),temp3);
+        if(get_nav_mode()==1)
+            ewl_widget_state_set((EWL_MENU_ITEM(temp3)->button).label_object,"select",EWL_STATE_PERSISTENT);
+        ewl_widget_name_set(temp3,"sortmenuitem1");
+        ewl_widget_show(temp3);
+        
+        temp3=ewl_menu_item_new();
+        ewl_container_child_append(EWL_CONTAINER(temp2),temp3);
+        ewl_widget_name_set(temp3,"sortmenuitem2");
+        ewl_widget_show(temp3);        
+        
+        temp3=ewl_menu_item_new();
+        ewl_container_child_append(EWL_CONTAINER(temp2),temp3);
+        ewl_widget_name_set(temp3,"sortmenuitem3");
+        ewl_widget_show(temp3);        
+        
+        
         temp2=ewl_menu_new();
 
         ewl_container_child_append(EWL_CONTAINER(temp),temp2);
 
-        ewl_widget_name_set(temp2,"menuitem4");
+        ewl_widget_name_set(temp2,"menuitem5");
 
         set_key_handler(EWL_MENU(temp2)->popup, &lang_menu_info);
 
@@ -2246,43 +2694,17 @@ int main ( int argc, char ** argv )
         {
             Ewl_Widget* lang_menu_item = ewl_menu_item_new();
             tempstr4=(char *)calloc(strlen(g_languages[i].name)+3+1,sizeof(char));
-            if(nav_mode==0)
+            if(get_nav_mode()==0)
                 sprintf(tempstr4,"%d. %s",i+1, g_languages[i].name);
             else
                 sprintf(tempstr4,"%s",g_languages[i].name);
             ewl_button_label_set(EWL_BUTTON(lang_menu_item),tempstr4);
             ewl_container_child_append(EWL_CONTAINER(temp2), lang_menu_item);
-            if(nav_mode==1 && i==0)
+            if(get_nav_mode()==1 && i==0)
                 ewl_widget_state_set((EWL_MENU_ITEM(lang_menu_item)->button).label_object,"select",EWL_STATE_PERSISTENT);
             sprintf(tempname6,"langmenuitem%d",i+1);
             ewl_widget_name_set(lang_menu_item,tempname6);
             ewl_widget_show(lang_menu_item);
-        }
-
-        temp2=ewl_menu_new();
-        ewl_container_child_append(EWL_CONTAINER(temp),temp2);
-        ewl_widget_name_set(temp2,"menuitem5");
-
-        set_key_handler(EWL_MENU(temp2)->popup, &goto_menu_info);
-        ewl_widget_show(temp2);
-
-        for(i = 0; i < MIN(g_roots->nroots, 8); ++i)
-        {
-            temp3=ewl_menu_item_new();
-            tempstr4=(char *)calloc(strlen(g_roots->roots[i].name)+3+1,sizeof(char));
-            if(nav_mode==0)
-                sprintf(tempstr4,"%d. %s",i+1, g_roots->roots[i].name);
-            else
-                sprintf(tempstr4,"%s",g_roots->roots[i].name);
-            ewl_button_label_set(EWL_BUTTON(temp3),tempstr4);
-            free(tempstr4);
-            ewl_container_child_append(EWL_CONTAINER(temp2),temp3);
-            if(nav_mode==1 && i==0)
-                ewl_widget_state_set((EWL_MENU_ITEM(temp3)->button).label_object,"select",EWL_STATE_PERSISTENT);
-            sprintf(tempname6,"gotomenuitem%d",i+1);
-            ewl_widget_name_set(EWL_WIDGET(temp3),tempname6);
-            ewl_widget_show(temp3);
-            count++;
         }
 
         temp2=ewl_menu_new();
@@ -2297,33 +2719,26 @@ int main ( int argc, char ** argv )
         {
             temp3=ewl_menu_item_new();
             tempstr4=(char *)calloc(strlen(scriptstrlist[count])+3+1,sizeof(char));
-            if(nav_mode==0)
+            if(get_nav_mode()==0)
                 sprintf(tempstr4,"%d. %s",count+1,scriptstrlist[count]);
             else
                 sprintf(tempstr4,"%s",scriptstrlist[count]);
             ewl_button_label_set(EWL_BUTTON(temp3),tempstr4);
             free(tempstr4);
             ewl_container_child_append(EWL_CONTAINER(temp2),temp3);
-            if(nav_mode==1 && count==0)
+            if(get_nav_mode()==1 && count==0)
                 ewl_widget_state_set((EWL_MENU_ITEM(temp3)->button).label_object,"select",EWL_STATE_PERSISTENT);
             sprintf(tempname6,"scriptsmenuitem%d",count+1);
             ewl_widget_name_set(temp3,tempname6);
             ewl_widget_show(temp3);
             count++;
         }
-        
-        temp2=ewl_menu_new();
-        ewl_container_child_append(EWL_CONTAINER(temp),temp2);
-        ewl_widget_name_set(temp2,"menuitem7");
-        set_key_handler(EWL_MENU(temp2)->popup, &fileops_menu_info);
-        ewl_widget_show(temp2);
 
-        temp3=ewl_menu_item_new();
-        ewl_container_child_append(EWL_CONTAINER(temp2),temp3);
-        if(nav_mode==1)
-            ewl_widget_state_set((EWL_MENU_ITEM(temp3)->button).label_object,"select",EWL_STATE_PERSISTENT);
-        ewl_widget_name_set(temp3,"fileopsmenuitem1");
-        ewl_widget_show(temp3);
+        
+        
+        
+        
+
 
     }
     statuslabel = ewl_label_new();
@@ -2363,7 +2778,7 @@ int main ( int argc, char ** argv )
         ewl_container_child_append(EWL_CONTAINER(box3), box);
         sprintf(tempname5,"%d",count+1);
         ewl_theme_data_str_set(EWL_WIDGET(box),"/hbox/group","ewl/box/oi_bookbox");//tempname5);
-        if(nav_mode==0)
+        if(get_nav_mode()==0)
             ewl_widget_appearance_part_text_set(box,"ewl/box/oi_bookbox/text",tempname5);
         
         ewl_widget_name_set(box,tempname1 );
@@ -2405,15 +2820,32 @@ int main ( int argc, char ** argv )
         ewl_theme_data_str_set(EWL_WIDGET(titlelabel),"/label/textpart","ewl/oi_label/titletext/text");
         ewl_object_fill_policy_set(EWL_OBJECT(titlelabel), EWL_FLAG_FILL_VSHRINK| EWL_FLAG_FILL_HFILL);
 
+        
+        sprintf (tempname3, "infobox%d",count);
+        box6 = ewl_hbox_new();
+        ewl_container_child_append(EWL_CONTAINER(box5),box6);
+        ewl_widget_name_set(box6,tempname3 );
+        ewl_theme_data_str_set(EWL_WIDGET(box6),"/hbox/group","ewl/blank");
+        ewl_object_fill_policy_set(EWL_OBJECT(box6),EWL_FLAG_FILL_HFILL);
+        
+        
+        
+        sprintf (tempname3, "taglabel%d",count);
+        taglabel = ewl_label_new();
+        ewl_container_child_append(EWL_CONTAINER(box6), taglabel);
+        ewl_widget_name_set(taglabel,tempname3 );
+        ewl_theme_data_str_set(EWL_WIDGET(taglabel),"/label/group","ewl/oi_label/tagtext");
+        ewl_theme_data_str_set(EWL_WIDGET(taglabel),"/label/textpart","ewl/oi_label/tagtext/text");
+        ewl_object_fill_policy_set(EWL_OBJECT(taglabel), EWL_FLAG_FILL_HFILL);
+
+        
         sprintf (tempname3, "infolabel%d",count);
         infolabel = ewl_label_new();
-        ewl_container_child_append(EWL_CONTAINER(box5), infolabel);
+        ewl_container_child_append(EWL_CONTAINER(box6), infolabel);
         ewl_widget_name_set(infolabel,tempname3 );
-        ewl_object_padding_set(EWL_OBJECT(infolabel),0,3,0,0);
-        ewl_object_alignment_set(EWL_OBJECT(infolabel),EWL_FLAG_ALIGN_RIGHT|EWL_FLAG_ALIGN_BOTTOM);
         ewl_theme_data_str_set(EWL_WIDGET(infolabel),"/label/group","ewl/oi_label/infotext");
         ewl_theme_data_str_set(EWL_WIDGET(infolabel),"/label/textpart","ewl/oi_label/infotext/text");
-        ewl_object_fill_policy_set(EWL_OBJECT(infolabel), EWL_FLAG_FILL_VSHRINK| EWL_FLAG_FILL_HFILL);
+        ewl_object_fill_policy_set(EWL_OBJECT(infolabel), EWL_FLAG_FILL_HFILL);
 
         sprintf(tempname4,"separator%d",count);
         dividewidget = ewl_hseparator_new();
@@ -2443,7 +2875,7 @@ int main ( int argc, char ** argv )
         ewl_widget_name_set(cont_item,"mc_menuitem1");
         
         ewl_container_child_append(EWL_CONTAINER(context),cont_item);
-        if(nav_mode==1)
+        if(get_nav_mode()==1)
             ewl_widget_state_set((EWL_MENU_ITEM(cont_item)->button).label_object,"select",EWL_STATE_PERSISTENT);
         ewl_widget_show(cont_item);
         
@@ -2455,6 +2887,12 @@ int main ( int argc, char ** argv )
         
         cont_item=ewl_menu_item_new();
         ewl_widget_name_set(cont_item,"mc_menuitem3");
+        
+        ewl_container_child_append(EWL_CONTAINER(context),cont_item);
+        ewl_widget_show(cont_item);
+        
+        cont_item=ewl_menu_item_new();
+        ewl_widget_name_set(cont_item,"mc_menuitem4");
         
         ewl_container_child_append(EWL_CONTAINER(context),cont_item);
         ewl_widget_show(cont_item);
@@ -2526,17 +2964,20 @@ int main ( int argc, char ** argv )
 
     save_state();
     free(statefilename);
+    
+    free_filters();
+    fini_database();
     eet_shutdown();
     CloseIniFile ();
     fini_filelist();
 
     roots_destroy(g_roots);
-
+    
     free(scriptstrlist);
     unload_extractors(extractors);
     if(action_filename)
         free(action_filename);
-    
+    free(filterstatus);
     
     if (g_file)
     {
@@ -2562,6 +3003,6 @@ int main ( int argc, char ** argv )
         perror("madshelf: execlp");
         return 1;
     }
-
+    
     return 0;
 }
