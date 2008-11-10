@@ -1,3 +1,9 @@
+madshelf (0.1-16) unstable; urgency=low
+
+  * some fixes
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Mon, 10 Nov 2008 14:58:06 +0000
+
 madshelf (0.1-15) unstable; urgency=low
 
   * new features: tagging and filtering
