@@ -1869,7 +1869,9 @@ static key_handler_info_t main_info =
 
 void show_main_menu()
 {
-    ewl_menu_cb_expand(ewl_widget_name_find("okmenu"),NULL,NULL);
+    Ewl_Widget *curwidget=ewl_widget_name_find("okmenu");
+    ewl_menu_cb_expand(curwidget,NULL,NULL);
+    ewl_widget_focus_send(EWL_WIDGET(EWL_MENU(curwidget)->popup));
 }
 
 void hide_main_menu()
@@ -3009,7 +3011,8 @@ int main ( int argc, char ** argv )
     ewl_object_fill_policy_set(EWL_OBJECT(border), EWL_FLAG_FILL_ALL);
     ewl_container_child_append(EWL_CONTAINER(box2),border);
     ewl_widget_name_set(border,"mainborder");
-    ewl_object_maximum_w_set(EWL_OBJECT(EWL_BORDER(border)->label),500);
+    //ewl_object_maximum_w_set(EWL_OBJECT(EWL_BORDER(border)->label),500);
+    ewl_object_fill_policy_set(EWL_OBJECT(EWL_BORDER(border)->label), EWL_FLAG_FILL_HSHRINK);//EWL_FLAG_FILL_VSHRINK|EWL_FLAG_FILL_HFILL);
     ewl_widget_show(border);
 
     update_title();
@@ -3361,6 +3364,7 @@ int main ( int argc, char ** argv )
         
         update_context_menu();
         ewl_widget_realize(context);
+        update_context_menu();
         //ewl_object_init(EWL_OBJECT(context));
         //ewl_widget_configure(context);
     }
