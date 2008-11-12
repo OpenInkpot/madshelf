@@ -47,6 +47,7 @@ Home=/home/
 .bz2=package.png
 .tar=package.png
 [scripts]
+Set clock=etimetool.sh
 Shutdown V3=poweroff.sh
 Reboot V3=reboot.sh
 [tags]
