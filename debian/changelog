@@ -1,3 +1,12 @@
+madshelf (0.1-18) unstable; urgency=low
+
+  * series label fix
+  * fixed memory leak
+  * new ewl release
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Mon, 05 Jan 2009 15:49:37 +0000
+
+
 madshelf (0.1-17) unstable; urgency=low
 
   * series label fix

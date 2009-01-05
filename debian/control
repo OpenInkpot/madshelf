@@ -2,7 +2,7 @@ Source: madshelf
 Section: media
 Maintainer: Mikhail Gusarov <dottedmag@dottedmag.net>
 XCS-Cross-Host-Build-Depends: debhelper (>> 2.0.0)
-XCS-Cross-Build-Depends: libeet-dev, libewl-dev, libfontconfig-dev, libextractor-dummy-dev
+XCS-Cross-Build-Depends: libeet-dev, libewl1-dev, libfontconfig-dev, libextractor-dummy-dev
 Priority: optional
 Standards-Version: 3.6.2
 
