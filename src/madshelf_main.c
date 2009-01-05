@@ -890,6 +890,7 @@ void update_list()
             {
                 ewl_widget_show(serieslabel[count]);
                 ewl_widget_configure(serieslabel[count]);
+                ewl_widget_reveal(serieslabel[count]);
                 ewl_widget_show(seriesnumlabel[count]);
                 ewl_widget_configure(seriesnumlabel[count]);
                 ewl_widget_show(seriesbox[count]);
