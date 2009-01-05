@@ -1,3 +1,9 @@
+madshelf (0.1-19) unstable; urgency=low
+
+  * new version
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Mon, 05 Jan 2009 22:53:12 +0000
+
 madshelf (0.1-18) unstable; urgency=low
 
   * series label fix
@@ -5,7 +11,6 @@ madshelf (0.1-18) unstable; urgency=low
   * new ewl release
 
  -- Alexander Kerner <lunohod@openinkpot.org>  Mon, 05 Jan 2009 15:49:37 +0000
-
 
 madshelf (0.1-17) unstable; urgency=low
 
