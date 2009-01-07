@@ -25,6 +25,7 @@ Home=/home/
 .epub=FBReader
 .tcr=FBReader
 .ztxt=FBReader
+.pdf=locopdf
 [icons]
 .fb2=book.png
 .rtf=book.png
@@ -40,6 +41,7 @@ Home=/home/
 .html=book.png
 .tcr=book.png
 .ztxt=book.png
+.pdf=book.png
 .tar=package.png
 .gz=package.png
 .tgz=package.png
