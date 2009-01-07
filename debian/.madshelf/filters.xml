@@ -18,6 +18,8 @@
 		<condition type="match" domain="extension" matchcase="no">epub</condition>
 		<condition type="match" domain="extension" matchcase="no">tcr</condition>
 		<condition type="match" domain="extension" matchcase="no">ztxt</condition>
+		<condition type="match" domain="extension" matchcase="no">oebzip</condition>
+		<condition type="match" domain="extension" matchcase="no">pdf</condition>
     </filter>
     <filter name="Favorites">
         <condition type="match" domain="tag" matchcase="no">Favorite</condition>
