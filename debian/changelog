@@ -1,3 +1,10 @@
+madshelf (0.1-21) unstable; urgency=low
+
+  * multiple file handler support
+  * added cr3 as second file handler
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Sun, 18 Jan 2009 12:56:33 +0000
+
 madshelf (0.1-20) unstable; urgency=low
 
   * .pdf support
