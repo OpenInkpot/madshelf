@@ -20,6 +20,10 @@
 		<condition type="match" domain="extension" matchcase="no">ztxt</condition>
 		<condition type="match" domain="extension" matchcase="no">oebzip</condition>
 		<condition type="match" domain="extension" matchcase="no">pdf</condition>
+		<condition type="match" domain="extension" matchcase="no">jpg</condition>
+		<condition type="match" domain="extension" matchcase="no">jpeg</condition>
+		<condition type="match" domain="extension" matchcase="no">png</condition>
+		<condition type="match" domain="extension" matchcase="no">gif</condition>
     </filter>
     <filter name="Favorites">
         <condition type="match" domain="tag" matchcase="no">Favorite</condition>

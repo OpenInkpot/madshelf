@@ -1,6 +1,6 @@
 [roots]
-SD=/mnt/
-Home=/home/
+SD=/media/sd
+Storage=/mnt/storage
 [apps]
 .fb2=FBReader:cr3
 .tar=FBReader
@@ -23,9 +23,13 @@ Home=/home/
 .oeb=FBReader
 .oebzip=FBReader
 .epub=FBReader:cr3
-.tcr=FBReader
+.tcr=FBReader:cr3
 .ztxt=FBReader
 .pdf=locopdf
+.jpg=madeye
+.jpeg=madeye
+.png=madeye
+.gif=madeye
 [icons]
 .fb2=book.png
 .rtf=book.png
