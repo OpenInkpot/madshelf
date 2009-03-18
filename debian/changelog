@@ -1,3 +1,9 @@
+madshelf (0.1-23) asimov; urgency=low
+
+  * fixed dependencies
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Wed, 18 Mar 2009 11:01:08 +0100
+
 madshelf (0.1-22) unstable; urgency=low
 
   * fixed locations; added image formats
