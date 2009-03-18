@@ -1,10 +1,11 @@
 Source: madshelf
 Section: media
 Maintainer: Mikhail Gusarov <dottedmag@dottedmag.net>
-XCS-Cross-Host-Build-Depends: debhelper (>> 2.0.0)
-XCS-Cross-Build-Depends: libeet-dev, libewl1-dev, libfontconfig-dev, libextractor-dummy-dev
+XCS-Cross-Host-Build-Depends: debhelper (>> 2.0.0), autoconf, automake, libtool, pkg-config
+XCS-Cross-Build-Depends: libeet-dev, libewl1-dev, libfontconfig-dev, libextractor-dummy-dev, libsqlite3-dev
 Priority: optional
 Standards-Version: 3.6.2
+Format: 3.0 (native)
 
 Package: madshelf
 Architecture: any
