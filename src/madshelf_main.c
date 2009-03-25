@@ -1929,32 +1929,32 @@ void main_menu_item(Ewl_Widget *widget,int item, unsigned char lp)
     case 2:
         curwidget = ewl_widget_name_find("menuitem2");
         ewl_menu_cb_expand(curwidget,NULL,NULL);
-        ewl_widget_focus_send(EWL_WIDGET(EWL_MENU(curwidget)->popup));
+		ewl_window_keyboard_grab_set(EWL_WIDGET(EWL_MENU(curwidget)->popup), 1);
         break;
     case 3:
         curwidget = ewl_widget_name_find("menuitem3");
         ewl_menu_cb_expand(curwidget,NULL,NULL);
-        ewl_widget_focus_send(EWL_WIDGET(EWL_MENU(curwidget)->popup));
+		ewl_window_keyboard_grab_set(EWL_WIDGET(EWL_MENU(curwidget)->popup), 1);
         break;
     case 4:
         curwidget = ewl_widget_name_find("menuitem4");
         ewl_menu_cb_expand(curwidget,NULL,NULL);
-        ewl_widget_focus_send(EWL_WIDGET(EWL_MENU(curwidget)->popup));
+		ewl_window_keyboard_grab_set(EWL_WIDGET(EWL_MENU(curwidget)->popup), 1);
         break;
     case 5:
         curwidget = ewl_widget_name_find("menuitem5");
         ewl_menu_cb_expand(curwidget,NULL,NULL);
-        ewl_widget_focus_send(EWL_WIDGET(EWL_MENU(curwidget)->popup));
+		ewl_window_keyboard_grab_set(EWL_WIDGET(EWL_MENU(curwidget)->popup), 1);
         break;
     case 6:
         curwidget = ewl_widget_name_find("menuitem6");
         ewl_menu_cb_expand(curwidget,NULL,NULL);
-        ewl_widget_focus_send(EWL_WIDGET(EWL_MENU(curwidget)->popup));
+		ewl_window_keyboard_grab_set(EWL_WIDGET(EWL_MENU(curwidget)->popup), 1);
         break;
     case 7:
         curwidget = ewl_widget_name_find("menuitem7");
         ewl_menu_cb_expand(curwidget,NULL,NULL);
-        ewl_widget_focus_send(EWL_WIDGET(EWL_MENU(curwidget)->popup));
+		ewl_window_keyboard_grab_set(EWL_WIDGET(EWL_MENU(curwidget)->popup), 1);
         break;
     }
 }
