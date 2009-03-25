@@ -1,3 +1,9 @@
+madshelf (0.1-24) asimov; urgency=low
+
+  * fixed menu issue
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Wed, 25 Mar 2009 14:19:44 +0100
+
 madshelf (0.1-23) asimov; urgency=low
 
   * fixed dependencies
