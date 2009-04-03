@@ -1,3 +1,9 @@
+madshelf (0.1-24+b1) asimov; urgency=low
+
+  * Rebuild with new toolchain.
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Fri, 03 Apr 2009 17:36:12 +0200
+
 madshelf (0.1-24) asimov; urgency=low
 
   * fixed menu issue
