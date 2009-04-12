@@ -1,3 +1,7 @@
+[general]
+nav_mode=0
+num_books=9
+item_labels=1,2,3,4,5,6,7,8,9
 [roots]
 SD=/media/sd
 Storage=/mnt/storage
@@ -56,7 +60,28 @@ Storage=/mnt/storage
 .tar=package.png
 [scripts]
 Set clock=etimetool.sh
-Shutdown V3=poweroff.sh
-Reboot V3=reboot.sh
+Shutdown=poweroff.sh
+Reboot=reboot.sh
 [tags]
-tagnames=Favorite,Read,Hidden
+tagnames=Read,Hidden
+[keys]
+Menu=MENU
+Return=MENU
+Escape=BACK
+XF86AudioPlay=MOD
+0=MOD
+Right=NEXT
+Down=NEXT
+Next=NEXT
+Left=PREVIOUS
+Up=PREVIOUS
+Prior=PREVIOUS
+1=1
+2=2
+3=3
+4=4
+5=5
+6=6
+7=7
+8=8
+9=9

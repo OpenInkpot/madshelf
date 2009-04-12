@@ -9,6 +9,24 @@ Format: 3.0 (native)
 
 Package: madshelf
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, madshelf-settings
 Description: Bookshelf application
  Bookshelf application.
+
+Package: madshelf-settings-v3
+Architecture: any
+Depends: madshelf (>= 0.1-25)
+Provides: madshelf-settings
+Conflicts: madshelf-settings
+Replaces: madshelf-settings
+Description: Settings for madshelf (V3)
+ Settings for madshelf (V3)
+
+Package: madshelf-settings-n516
+Architecture: any
+Depends: madshelf (>= 0.1-25)
+Provides: madshelf-settings
+Conflicts: madshelf-settings
+Replaces: madshelf-settings
+Description: Settings for madshelf (n516)
+ Settings for madshelf (n516)

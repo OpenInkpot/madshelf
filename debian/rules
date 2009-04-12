@@ -11,6 +11,8 @@ else
 	CFLAGS += -O2
 endif
 
+flavours := v3 n516
+
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
@@ -45,6 +47,13 @@ install: build
 	mkdir -p $(CURDIR)/debian/madshelf/home
 	mkdir -p $(CURDIR)/debian/madshelf/usr/lib/madshelf/extractors
 	cp -a $(CURDIR)/debian/.madshelf $(CURDIR)/debian/madshelf/home
+
+	for FLAVOUR in $(flavours); do \
+		CONF_DIR=$(CURDIR)/debian/madshelf-settings-$$FLAVOUR/home/.madshelf; \
+		mkdir -p $$CONF_DIR; \
+		install -m 0644 $(CURDIR)/debian/config-$$FLAVOUR $$CONF_DIR; \
+	done
+
 
 binary-arch: build install
 	dh_testdir
