@@ -51,7 +51,7 @@ install: build
 	for FLAVOUR in $(flavours); do \
 		CONF_DIR=$(CURDIR)/debian/madshelf-settings-$$FLAVOUR/home/.madshelf; \
 		mkdir -p $$CONF_DIR; \
-		install -m 0644 $(CURDIR)/debian/config-$$FLAVOUR $$CONF_DIR; \
+		install -T -m 0644 $(CURDIR)/debian/config-$$FLAVOUR $$CONF_DIR/config; \
 	done
 
 
