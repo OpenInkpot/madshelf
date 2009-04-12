@@ -8,13 +8,13 @@ Standards-Version: 3.6.2
 Format: 3.0 (native)
 
 Package: madshelf
-Architecture: any
+Architecture: all
 Depends: ${shlibs:Depends}, madshelf-settings
 Description: Bookshelf application
  Bookshelf application.
 
 Package: madshelf-settings-v3
-Architecture: any
+Architecture: all
 Depends: madshelf (>= 0.1-25)
 Provides: madshelf-settings
 Conflicts: madshelf-settings
