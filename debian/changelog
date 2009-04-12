@@ -1,3 +1,9 @@
+madshelf (0.1-27) asimov; urgency=low
+
+  * fixed Architecture for non-binary packages
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Sun, 12 Apr 2009 21:20:43 +0200
+
 madshelf (0.1-26) asimov; urgency=low
 
   * fixed debian/rules
