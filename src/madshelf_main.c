@@ -41,6 +41,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <sys/statvfs.h>
 #include <time.h>
 #include <unistd.h>
 #include <libgen.h>
@@ -975,10 +976,44 @@ void update_list()
     }
 }
 
+/*******************************************************
+ * function:
+ *  get_disk_usage
+ * 
+ * params:
+ *  path - const char* - path to check for
+ *  usage_output - char* - format of used / total space
+ *
+ * author:
+ *  Harris Bhatti
+ *******************************************************/
+void get_disk_usage(const char* path, char* usage_output)
+{   
+	struct statvfs vfs_data;
+    
+	if (statvfs(path, &vfs_data) != 0)
+	{   
+		strncpy(usage_output, "NA MB / NA MB", 19);
+ 	}
+ 	else
+ 	{   
+		// 9.54e-7 is precalculate 1/1024*1024 diving the
+		// the number of bytes by this gives us megabytes.
+ 		// The factor is pre-calculate for some gain.
+ 		const double factor = vfs_data.f_bsize * 9.54e-7;
+ 		const double total = vfs_data.f_blocks * factor;
+ 		const double used = total - vfs_data.f_bfree * factor;
+   
+		sprintf(usage_output, "%gMB / %gMB", used, total);
+	}
+}
+
 void update_title()
 {
     char* titletext;
     char* cwd = get_current_dir_name();
+	char disk_usage[22] = "\0";
+	get_disk_usage(cwd, disk_usage);
 
     int notroot;
     if(file_list_mode==FILE_LIST_FOLDER_MODE || file_list_mode==FILE_LIST_LOCATION_MODE)
@@ -989,14 +1024,18 @@ void update_title()
             notroot=0;
         
         
-        asprintf(&titletext, "Madshelf | %s%s%s",
-                 g_roots->roots[current_root].name,
-                 notroot ? "://" : "",
-                 notroot ? cwd + strlen(g_roots->roots[current_root].path) : "");
+        asprintf
+		(
+			&titletext, "Madshelf | %s%s%s | %s",
+			g_roots->roots[current_root].name,
+			notroot ? "://" : "",
+			notroot ? cwd + strlen(g_roots->roots[current_root].path) : "",
+			disk_usage			
+		);
     }
     else if(file_list_mode==FILE_LIST_ALL_MODE)
     {
-        asprintf(&titletext, "Madshelf | %s",gettext("All Locations"));
+        asprintf(&titletext, "Madshelf | %s | %s",gettext("All Locations"), disk_usage);
     }
     ewl_border_label_set(EWL_BORDER(ewl_widget_name_find("mainborder")),
                          titletext);
