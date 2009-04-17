@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 Alexander Kerner <lunohod@openinkpot.org>
+ * Copyright (C) 2008 Marc Lajoie
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 #include "madshelf.h"
 #include "database.h"
 #include "IniFile.h"
+#include "tags.h"
 // Options dialogs
 static int filterschanged=0;
 static long minl(long a, long b)
@@ -85,7 +86,7 @@ void FiltersDialog()
             
             asprintf(&values[i],"inactive");
         }
-        asprintf(&initchoices[i],"%d. %s",i+1,getFilterName(i));
+        asprintf(&initchoices[i],"%s",getFilterName(i));
     }
     
     
@@ -216,6 +217,14 @@ void tags_dialog_choicehandler(int choice, Ewl_Widget *parent,void *userdata)
     curinfo->tagschanged=1;
 }
 
+/*const int num_predef_tags=1;
+const char *predef_tags[] = { 		
+		"_favorite",
+	};
+const char *predef_tag_names[] = {
+        "Favorite",
+    };*/
+
 void TagsDialog(char *filename)
 {
     if(getNumFilters()<=0)
@@ -243,7 +252,7 @@ void TagsDialog(char *filename)
         }
         tok = strtok(NULL,",");
     }
-    
+    tagcount+=get_num_predef_tags();
     free(tempo);
 	char **initchoices,**values,**choices;
     initchoices=(char**)malloc(sizeof(char*)*tagcount);
@@ -259,26 +268,54 @@ void TagsDialog(char *filename)
     int count=0;
     
     asprintf(&tempo,tagstring);
+    
+    //loop for predefined tags
+      
+    for(;count<get_num_predef_tags();count++)
+    {
+        asprintf(&(initchoices[count]),"%s",get_predef_tag_display_name(get_predef_tag(count)));
+        asprintf(&(choices[count]),"%s",get_predef_tag(count));
+        int j;
+        for(j=0;j<numfiletags;j++)
+        {
+            if(strcmp(choices[count],filetags[j])==0)
+            {
+                asprintf(&(values[count]),"assigned");
+                break;
+            }
+                
+        }
+        if(j==numfiletags)
+        {
+            asprintf(&(values[count]),"");
+        
+        }
+        
+    }
+    
+    
+    
     tok = strtok(tempo, ",");
     if(!tok || !tok[0])
         return;
     while (tok != NULL) {
         // Do something with the tok
+        while(*tok=='_')tok++;
         if(tok[0])
         {
             
-            asprintf(&(initchoices[count]),"%d. %s",count+1,tok);
-            asprintf(&(choices[count]),tok);
             int j;
+            
+            asprintf(&(initchoices[count]),"%s",tok);
+            asprintf(&(choices[count]),"%s",tok);
             for(j=0;j<numfiletags;j++)
             {
-                if(strcmp(tok,filetags[j])==0)
+                
+                if(strcmp(choices[count],filetags[j])==0)
                 {
                     asprintf(&(values[count]),"assigned");
-            
                     break;
                 }
-                
                 
             }
             if(j==numfiletags)
@@ -306,6 +343,97 @@ void TagsDialog(char *filename)
 	ewl_widget_show(init_choicebox(initchoices, values, tagcount, tags_dialog_choicehandler, tags_dialog_closehandler,"Assign Tags", w, (void *)infostruct,TRUE));
     int i;
     for(i=0;i<tagcount;i++)
+    {
+        free(initchoices[i]);
+        
+        
+    }
+    free(initchoices);
+    
+}
+// file handler dialog
+typedef struct _handler_dlg_info {
+    int nchoices;
+    char **choices;
+} handler_dlg_info;
+void handler_dialog_closehandler(Ewl_Widget *widget,void *userdata)
+{
+    handler_dlg_info *curinfo=(handler_dlg_info *)userdata;
+    int i,j;
+    for(i=0;i<curinfo->nchoices;i++)
+    {
+        free(curinfo->choices[i]);
+    }
+    free(curinfo->choices);
+}
+void handler_dialog_choicehandler(int choice, Ewl_Widget *parent,void *userdata)
+{
+    handler_dlg_info *curinfo=(handler_dlg_info *)userdata;
+    set_g_handler(strdup(curinfo->choices[choice]));
+    fini_choicebox(parent);
+    ewl_main_quit();
+}
+
+void HandlerDialog(char *handlerstr)
+{
+    if(getNumFilters()<=0)
+        return;
+	Ewl_Widget *w = ewl_widget_name_find("mainwindow");
+    
+    
+    int tokencount=0;
+    char *mod_handlerstr;
+    asprintf(&mod_handlerstr,"%s",handlerstr);
+    char *tok = strtok(mod_handlerstr, ":");
+    if(!tok || !tok[0])
+    {
+        free(mod_handlerstr);
+        return;
+    }
+    while (tok != NULL) {
+        // Do something with the tok
+        if(tok[0])
+        {
+        
+            tokencount++;
+        }
+        tok = strtok(NULL,":");
+    }
+    free(mod_handlerstr);
+       
+	char **initchoices,**choices;
+    initchoices=(char**)malloc(sizeof(char*)*tokencount);
+    choices=(char**)malloc(sizeof(char*)*tokencount);
+    
+    asprintf(&mod_handlerstr,handlerstr);
+    tok = strtok(mod_handlerstr, ":");
+    if(!tok || !tok[0])
+    {
+        free(mod_handlerstr);
+        return;
+    }
+    int count=0;
+    while (tok != NULL) {
+        // Do something with the tok
+        if(tok[0])
+        {
+            
+            asprintf(&(initchoices[count]),"%s",tok);
+            asprintf(&(choices[count]),"%s",tok);
+            count++;
+        }
+        tok = strtok(NULL,":");
+        
+    }
+   
+    
+    free(mod_handlerstr);
+    handler_dlg_info *infostruct=malloc(sizeof(handler_dlg_info));
+    infostruct->nchoices=tokencount;
+    infostruct->choices=choices;
+    ewl_widget_show(init_choicebox(initchoices,NULL,tokencount,handler_dialog_choicehandler, handler_dialog_closehandler,"Open With:", w,infostruct,TRUE));
+    int i;
+    for(i=0;i<tokencount;i++)
     {
         free(initchoices[i]);
         
