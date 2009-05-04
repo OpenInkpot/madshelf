@@ -79,7 +79,6 @@ typedef struct
 
 roots_t* g_roots;
 char **scriptstrlist;
-char *statefilename=NULL;
 
 int g_nfileslist;
 
@@ -2848,10 +2847,10 @@ static key_handler_info_t confirm_dialog_info =
 
 /* State */
 
-void save_state()
+void save_state(const char* state_file)
 {
     Eet_File *state;
-    state=eet_open(statefilename,EET_FILE_MODE_WRITE);
+    state=eet_open(state_file, EET_FILE_MODE_WRITE);
     const int a=1;
     char* cwd = get_current_dir_name();
 
@@ -2871,12 +2870,12 @@ void save_state()
     free(cwd);
 }
 
-void refresh_state()
+void refresh_state(const char* state_file)
 {
     change_root(0);
 
     int size;
-    Eet_File* state = eet_open(statefilename, EET_FILE_MODE_READ);
+    Eet_File* state = eet_open(state_file, EET_FILE_MODE_READ);
     if(!state || !eet_read(state, "statesaved", &size))
     {
         eet_close(state);
@@ -2953,6 +2952,23 @@ static void idialog_unrealize(Ewl_Widget *w, void *ev, void *data) {
 		ewl_window_keyboard_grab_set(EWL_WINDOW(win), 1);
 }
 
+static void create_empty_config(const char* config_file)
+{
+    const char* home_dir = getenv("HOME");
+
+    int fd = open(config_file, O_CREAT | O_RDWR, 0644);
+
+    write(fd, "[general]\nnav_mode=0\nnum_books=8\nitem_labels=1,2,3,4,5,6,7,8\n",
+          strlen("[general]nav_mode=0\nnum_books=8\nitem_labels=1,2,3,4,5,6,7,8\n"));
+    write(fd, "[roots]\nHome=", 13*sizeof(char));
+    write(fd, home_dir, strlen(home_dir) * sizeof(char));
+    if(home_dir[strlen(home_dir)] != '/')
+        write(fd, "/", sizeof(char));
+    write(fd, "\n[apps]\n[icons]\n[scripts]",15*sizeof(char));
+
+    close(fd);
+}
+
 int main ( int argc, char ** argv )
 {
     int file_desc;
@@ -2984,8 +3000,7 @@ int main ( int argc, char ** argv )
     Ewl_Widget *dividewidget;
     Ewl_Widget *statuslabel;
     Ewl_Widget *keystatelabel;
-    char *homedir;
-    char *configfile;
+    //char *homedir;
     char *filterfile;
     char *dbfile;
     int count=0;
@@ -3010,58 +3025,30 @@ int main ( int argc, char ** argv )
     
     
     //end database testing
-    homedir=getenv("HOME");
-    
-    
-    filterfile=(char *)calloc(strlen(homedir) + 23, sizeof(char));
-    strcat(filterfile,homedir);
-    strcat(filterfile,"/.madshelf/");
-    if(!ecore_file_path_dir_exists(filterfile))
-    {
-        ecore_file_mkpath(filterfile);
-    }
-    strcat(filterfile,"filters.xml");
+    //homedir=getenv("HOME");
 
-    struct stat filterstat;
-    int filtexists;
-    filtexists = stat(filterfile, &filterstat);
-    if(filtexists>=0)
-    {
-        load_filters(filterfile);
-    }
-    
-    free(filterfile);
-    
-    
-    
-    
-   
-    
-    dbfile=(char *)calloc(strlen(homedir) + 23, sizeof(char));
-    strcat(dbfile,homedir);
-    strcat(dbfile,"/.madshelf/");
-    strcat(dbfile,"madshelf.db");
-    init_database(dbfile);
-    free(dbfile);
-    
-    
-    configfile=(char *)calloc(strlen(homedir) + 1+18 + 1, sizeof(char));
-    strcat(configfile,homedir);
-    strcat(configfile,"/.madshelf/");
-    strcat(configfile,"config");
-    if(!ecore_file_exists(configfile))
-    {
-        file_desc=open(configfile, O_CREAT |O_RDWR | O_CREAT,S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-        write(file_desc,"[roots]\nHome=", 13*sizeof(char));
-        write(file_desc,getenv("HOME"),strlen(getenv("HOME"))*sizeof(char));
-        if(homedir&&homedir[strlen(homedir)-1]!='/')
-            write(file_desc,"/",sizeof(char));
-        write(file_desc,"\n[apps]\n[icons]\n[scripts]",15*sizeof(char));
-        close(file_desc);
-    }
-    OpenIniFile (configfile);
-    free(configfile);
-    
+    const char* configdir;
+    asprintf(&configdir, "%s/.madshelf", getenv("HOME"));
+    ecore_file_mkpath(configdir);
+
+    const char* filters_file;
+    asprintf(&filters_file, "%s/filters.xml", configdir);
+    if(ecore_file_exists(filters_file))
+        load_filters(filters_file);
+
+    const char* db_file;
+    asprintf(&db_file, "%s/madshelf.db", configdir);
+    init_database(db_file);
+    free(db_file);
+
+    const char* config_file;
+    asprintf(&config_file, "%s/config", configdir);
+    if(!ecore_file_exists(config_file))
+        create_empty_config(config_file);
+    OpenIniFile (config_file);
+    free(config_file);
+
+
     set_nav_mode(ReadInt("general","nav_mode",0));
     num_books=ReadInt("general","num_books",8);
     extractors= load_extractors();
@@ -3099,15 +3086,16 @@ int main ( int argc, char ** argv )
     g_roots = roots_create();
     current_root = 0;
 
-    statefilename=(char *)calloc(strlen(homedir) + 1+21 + 1, sizeof(char));
-    strcat(statefilename,homedir);
-    strcat(statefilename,"/.madshelf/state.eet");
+    const char* state_file;
+    asprintf(&state_file, "%s/state.eet", configdir);
+    refresh_state(state_file);
 
-    refresh_state();
+    free(configdir);
 
-    if(filtexists>=0)
+    long long filter_mtime = ecore_file_mod_time(filters_file);
+    if(filter_mtime)
     {
-        if(filters_modtime!=filterstat.st_mtime)
+        if(filters_modtime != filter_mtime)
         {
             if(filterstatus!=NULL)
                 free(filterstatus);
@@ -3118,15 +3106,15 @@ int main ( int argc, char ** argv )
             current_index=0;
             nav_sel=0;
         }
-        filters_modtime=filterstat.st_mtime;
-        
-        
-        
+        filters_modtime = filter_mtime;
     }
+    free(filters_file);
+
     int i;
     for(i=0;i<getNumFilters();i++)
         setFilterActive(i,filterstatus[i]);
-    
+
+
     
     init_filelist(0);
     
@@ -3619,8 +3607,8 @@ int main ( int argc, char ** argv )
     ecore_event_handler_add(ECORE_EVENT_SIGNAL_HUP,sighup_signal_handler,NULL);
     ewl_main();
 
-    save_state();
-    free(statefilename);
+    save_state(state_file);
+    free(state_file);
     
     free_filters();
     fini_database();
