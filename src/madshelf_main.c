@@ -2,7 +2,7 @@
  * MadShelf - bookshelf application.
  *
  * Copyright (C) 2008 by Marc Lajoie
- * Copyright (C) 2008 Mikhail Gusarov <dottedmag@dottedmag.net>
+ * Copyright (C) 2008,2009 Mikhail Gusarov <dottedmag@dottedmag.net>
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
