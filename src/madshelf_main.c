@@ -56,6 +56,7 @@
 
 void show_main_menu();
 
+//#define USE_DB_CACHE 1
 
 #define SCRIPTS_DIR "/.madshelf/scripts/"
 
@@ -547,6 +548,7 @@ int move_file(const char* old, const char* new)
         return res;
 }
 
+#ifdef USE_DB_CACHE
 /* Returns the string which need to be free(3) ed*/
 char* get_authors_string(char *authors[],int authornum)
 {
@@ -569,6 +571,31 @@ char* get_authors_string(char *authors[],int authornum)
 
     return authorstr;
 }
+#else
+char* get_authors_string(EXTRACTOR_KeywordList* keywords)
+{
+    char* authors = calloc(1, sizeof(char));
+    size_t len = 1;
+
+    while(keywords)
+    {
+        if(keywords->keywordType == EXTRACTOR_AUTHOR)
+        {
+            if(authors[0])
+            {
+                authors = realloc(authors, len + 2);
+                len += 2;
+                strcat(authors, ", ");
+            }
+            authors = realloc(authors, len + strlen(keywords->keyword));
+            len += strlen(keywords->keyword);
+            strcat(authors, keywords->keyword);
+        }
+        keywords = keywords->next;
+    }
+    return authors;
+}
+#endif
 
 int get_item_labels_array(char ***stringarr)
 {
@@ -756,8 +783,7 @@ void update_list()
         
         asprintf(&rel_file, "%s/%s", get_mad_file(current_index+count)->path,file);
         
-        
-        
+        int i;
         
         struct stat stat_p;
         char* time_str;
@@ -782,6 +808,13 @@ void update_list()
             char* infostr;
             char* imagefile;
 
+#ifndef USE_DB_CACHE
+            EXTRACTOR_KeywordList* mykeys;
+            mykeys = extractor_get_keywords(extractors, file);
+
+#endif
+
+#if USE_DB_CACHE
             char **titlearr=NULL;
             int titlenum=get_titles(rel_file,&titlearr);
 
@@ -789,14 +822,23 @@ void update_list()
                 ewl_label_text_set(EWL_LABEL(titlelabel[count]),titlearr[0]);
             else
                 ewl_label_text_set(EWL_LABEL(titlelabel[count]),ecore_file_strip_ext(file));
-            int i;
             for(i=0;i<titlenum;i++)
                 free(titlearr[i]);
             if(titlearr)
                 free(titlearr);
+#else
+            extracted_title = extractor_get_last(EXTRACTOR_TITLE, mykeys);
 
+            if(extracted_title && extracted_title[0])
+                ewl_label_text_set(EWL_LABEL(titlelabel[count]), extracted_title);
+            else
+                ewl_label_text_set(EWL_LABEL(titlelabel[count]),ecore_file_strip_ext(file));
+#endif
+
+#if USE_DB_CACHE
             char **seriesarr=NULL;
             int *seriesindex=NULL;
+
             int seriesnum=get_series(rel_file,&seriesarr,&seriesindex);
 
             if(seriesnum>0 && seriesarr && seriesarr[0])
@@ -828,6 +870,41 @@ void update_list()
                 free(seriesarr);
             if(seriesindex)
                 free(seriesindex);
+#else
+            char *extracted_series=extractor_get_last(EXTRACTOR_ALBUM,mykeys);
+            char *extracted_seriesnum=extractor_get_last(EXTRACTOR_TRACK_NUMBER,mykeys);
+
+            if(extracted_series && extracted_series[0])
+            {
+                int seriesnum=-1;
+                if(extracted_seriesnum && extracted_seriesnum[0])
+                {
+                    seriesnum=(int)strtol(extracted_seriesnum,NULL,10);
+                    if(seriesnum<=0)
+                        seriesnum=-1;
+                }
+
+                ewl_label_text_set(EWL_LABEL(serieslabel[count]), extracted_series);
+                if(seriesnum > 0) {
+                    char *tempstr;
+                    asprintf(&tempstr,"#%d",seriesnum);
+                    ewl_label_text_set(EWL_LABEL(seriesnumlabel[count]),tempstr);
+                    free(tempstr);
+                } else
+                    ewl_label_text_set(EWL_LABEL(seriesnumlabel[count]), "");
+                seriesshowflag[count]=1;
+            } else {
+                ewl_label_text_set(EWL_LABEL(serieslabel[count]),"");
+                ewl_label_text_set(EWL_LABEL(seriesnumlabel[count]),"");
+                seriesshowflag[count]=0;
+            }
+
+            if(extracted_series)
+                free(extracted_series);
+
+            if(extracted_seriesnum)
+                free(extracted_seriesnum);
+#endif
 
             extension = strrchr(file, '.');
 
@@ -839,6 +916,7 @@ void update_list()
 
             ewl_label_text_set(EWL_LABEL(infolabel[count]),infostr);
 
+#if USE_DB_CACHE
             char **authorarr=NULL;
             int numauthors=get_authors(rel_file,&authorarr);
 
@@ -856,6 +934,11 @@ void update_list()
 
             if(authorarr)
                 free(authorarr);
+#else
+            char* authors = get_authors_string(mykeys);
+            ewl_label_text_set(EWL_LABEL(authorlabel[count]), authors);
+            free(authors);
+#endif
 
             char **tagarr=NULL;
             int numtags=get_tags(rel_file,&tagarr);
@@ -1388,7 +1471,9 @@ void init_filelist(int reset)
     }
     if(g_nfileslist>0)
     {
+#if USE_DB_CACHE
         update_file_database();
+#endif
         if(file_list_mode==FILE_LIST_FOLDER_MODE)
             filter_filelist(0);
         else if(file_list_mode==FILE_LIST_LOCATION_MODE || file_list_mode==FILE_LIST_ALL_MODE)
