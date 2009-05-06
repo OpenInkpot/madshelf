@@ -1,3 +1,24 @@
+madshelf (0.1-29) asimov; urgency=low
+
+  [ Alexander Kerner ]
+  * disabled metadata caching
+  * theme installation
+
+  [ Mikhail Gusarov ]
+  * Nobody wants the libtool
+  * Add eina to required libs
+  * Whitespace cleanup
+  * Update copyright year
+  * DeWTFy loading config files a bit.
+
+  [ M. Harris Bhatti ]
+  * Show current disk usage at the top of bookshelf window
+
+  [ Marc Lajoie ]
+  * fixed item labels in scripts menu
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Wed, 06 May 2009 18:31:11 +0200
+
 madshelf (0.1-28) asimov; urgency=low
 
   * fix for previous fix
