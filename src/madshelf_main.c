@@ -2,7 +2,7 @@
  * MadShelf - bookshelf application.
  *
  * Copyright (C) 2008 by Marc Lajoie
- * Copyright (C) 2008 Mikhail Gusarov <dottedmag@dottedmag.net>
+ * Copyright (C) 2008,2009 Mikhail Gusarov <dottedmag@dottedmag.net>
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -13,7 +13,7 @@
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -41,6 +41,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <sys/statvfs.h>
 #include <time.h>
 #include <unistd.h>
 #include <libgen.h>
@@ -55,6 +56,7 @@
 
 void show_main_menu();
 
+//#define USE_DB_CACHE 1
 
 #define SCRIPTS_DIR "/.madshelf/scripts/"
 
@@ -78,7 +80,6 @@ typedef struct
 
 roots_t* g_roots;
 char **scriptstrlist;
-char *statefilename=NULL;
 
 int g_nfileslist;
 
@@ -240,7 +241,7 @@ roots_t* roots_create()
 
 void set_g_handler(const char* new_g_handler)
 {
-    g_handler=new_g_handler;    
+    g_handler=new_g_handler;
 }
 /*
 * Destroys the passed roots info.
@@ -459,7 +460,7 @@ int copy_file(const char* old, const char* new)
         errno = saved_errno;
         return -1;
     }
-    
+
     int wfd = creat(new, s.st_mode);
     if(wfd == -1)
     {
@@ -547,34 +548,54 @@ int move_file(const char* old, const char* new)
         return res;
 }
 
+#ifdef USE_DB_CACHE
 /* Returns the string which need to be free(3) ed*/
 char* get_authors_string(char *authors[],int authornum)
 {
-     
     char* authorstr=NULL;
-    
+
     int length=0;
     int i;
     for(i=0;i<authornum;i++)
-    {
-        
         length+=strlen(authors[i])+2;
-        
-    }
     length--;
-    
+
     authorstr=malloc(length*sizeof(char));
     authorstr[0]='\0';
     for(i=0;i<authornum;i++)
     {
-        
         strcat(authorstr,authors[i]);
         if(i<(authornum-1))
             strcat(authorstr,", ");
     }
-    
+
     return authorstr;
 }
+#else
+char* get_authors_string(EXTRACTOR_KeywordList* keywords)
+{
+    char* authors = calloc(1, sizeof(char));
+    size_t len = 1;
+
+    while(keywords)
+    {
+        if(keywords->keywordType == EXTRACTOR_AUTHOR)
+        {
+            if(authors[0])
+            {
+                authors = realloc(authors, len + 2);
+                len += 2;
+                strcat(authors, ", ");
+            }
+            authors = realloc(authors, len + strlen(keywords->keyword));
+            len += strlen(keywords->keyword);
+            strcat(authors, keywords->keyword);
+        }
+        keywords = keywords->next;
+    }
+    return authors;
+}
+#endif
 
 int get_item_labels_array(char ***stringarr)
 {
@@ -591,7 +612,7 @@ int get_item_labels_array(char ***stringarr)
     while(tok)
     {
         count++;
-        tok=strtok(NULL,",");    
+        tok=strtok(NULL,",");
     }
     free(item_labels);
     item_labels=strdup(item_labels_const);
@@ -603,7 +624,6 @@ int get_item_labels_array(char ***stringarr)
         asprintf(&(retarr[i]),"%s",tok);
         i++;
         tok=strtok(NULL,",");
-        
     }
     free(item_labels);
     *stringarr=retarr;
@@ -613,15 +633,13 @@ void free_item_labels_array(char **stringarr,int num)
 {
     int i;
     for(i=0;i<num;i++)
-        free(stringarr[i]);    
+        free(stringarr[i]);
     free(stringarr);
-    
 }
 char* get_tag_string(char *tags[],int tagnum)
 {
-     
     char* tagstr=NULL;
-    
+
     int length=2;
     int i;
     for(i=0;i<tagnum;i++)
@@ -630,10 +648,9 @@ char* get_tag_string(char *tags[],int tagnum)
             length+=strlen(get_predef_tag_display_name(tags[i]))+2;
         else
             length+=strlen(tags[i])+2;
-        
     }
     length--;
-    
+
     tagstr=malloc(length*sizeof(char));
     tagstr[0]='[';
     tagstr[1]='\0';
@@ -648,14 +665,13 @@ char* get_tag_string(char *tags[],int tagnum)
         else
             strcat(tagstr,"]");
     }
-    
+
     return tagstr;
 }
 void reset_file_position()
 {
     current_index=0;
     nav_sel=0;
-    
 }
 void update_list()
 {
@@ -767,8 +783,7 @@ void update_list()
         
         asprintf(&rel_file, "%s/%s", get_mad_file(current_index+count)->path,file);
         
-        
-        
+        int i;
         
         struct stat stat_p;
         char* time_str;
@@ -792,31 +807,45 @@ void update_list()
             char* size_str = format_size(stat_p.st_size);
             char* infostr;
             char* imagefile;
-            
+
+#ifndef USE_DB_CACHE
+            EXTRACTOR_KeywordList* mykeys;
+            mykeys = extractor_get_keywords(extractors, file);
+
+#endif
+
+#if USE_DB_CACHE
             char **titlearr=NULL;
             int titlenum=get_titles(rel_file,&titlearr);
-
 
             if(titlenum>0)
                 ewl_label_text_set(EWL_LABEL(titlelabel[count]),titlearr[0]);
             else
                 ewl_label_text_set(EWL_LABEL(titlelabel[count]),ecore_file_strip_ext(file));
-            int i;
             for(i=0;i<titlenum;i++)
                 free(titlearr[i]);
             if(titlearr)
                 free(titlearr);
-            
+#else
+            extracted_title = extractor_get_last(EXTRACTOR_TITLE, mykeys);
+
+            if(extracted_title && extracted_title[0])
+                ewl_label_text_set(EWL_LABEL(titlelabel[count]), extracted_title);
+            else
+                ewl_label_text_set(EWL_LABEL(titlelabel[count]),ecore_file_strip_ext(file));
+#endif
+
+#if USE_DB_CACHE
             char **seriesarr=NULL;
             int *seriesindex=NULL;
+
             int seriesnum=get_series(rel_file,&seriesarr,&seriesindex);
-            
 
             if(seriesnum>0 && seriesarr && seriesarr[0])
             {
                 //char *series_str=get_series_string(seriesarr,seriesindex,seriesnum);
                 ewl_label_text_set(EWL_LABEL(serieslabel[count]),seriesarr[0]);//series_str);
-                
+
                 if(seriesindex[0]>0)
                 {
                     char *tempstr;
@@ -841,8 +870,42 @@ void update_list()
                 free(seriesarr);
             if(seriesindex)
                 free(seriesindex);
+#else
+            char *extracted_series=extractor_get_last(EXTRACTOR_ALBUM,mykeys);
+            char *extracted_seriesnum=extractor_get_last(EXTRACTOR_TRACK_NUMBER,mykeys);
 
-            
+            if(extracted_series && extracted_series[0])
+            {
+                int seriesnum=-1;
+                if(extracted_seriesnum && extracted_seriesnum[0])
+                {
+                    seriesnum=(int)strtol(extracted_seriesnum,NULL,10);
+                    if(seriesnum<=0)
+                        seriesnum=-1;
+                }
+
+                ewl_label_text_set(EWL_LABEL(serieslabel[count]), extracted_series);
+                if(seriesnum > 0) {
+                    char *tempstr;
+                    asprintf(&tempstr,"#%d",seriesnum);
+                    ewl_label_text_set(EWL_LABEL(seriesnumlabel[count]),tempstr);
+                    free(tempstr);
+                } else
+                    ewl_label_text_set(EWL_LABEL(seriesnumlabel[count]), "");
+                seriesshowflag[count]=1;
+            } else {
+                ewl_label_text_set(EWL_LABEL(serieslabel[count]),"");
+                ewl_label_text_set(EWL_LABEL(seriesnumlabel[count]),"");
+                seriesshowflag[count]=0;
+            }
+
+            if(extracted_series)
+                free(extracted_series);
+
+            if(extracted_seriesnum)
+                free(extracted_seriesnum);
+#endif
+
             extension = strrchr(file, '.');
 
             asprintf(&infostr, "%s%s%s   %s",
@@ -852,52 +915,50 @@ void update_list()
                      size_str);
 
             ewl_label_text_set(EWL_LABEL(infolabel[count]),infostr);
-            
+
+#if USE_DB_CACHE
             char **authorarr=NULL;
             int numauthors=get_authors(rel_file,&authorarr);
-            
-            
+
             if(numauthors>0)
             {
                 char* authors = get_authors_string(authorarr,numauthors);
                 ewl_label_text_set(EWL_LABEL(authorlabel[count]), authors);
-                
                 free(authors);
             }
             else
                 ewl_label_text_set(EWL_LABEL(authorlabel[count]),"");
-            
+
             for(i=0;i<numauthors;i++)
                 free(authorarr[i]);
-            
+
             if(authorarr)
                 free(authorarr);
-            
-            
-            
+#else
+            char* authors = get_authors_string(mykeys);
+            ewl_label_text_set(EWL_LABEL(authorlabel[count]), authors);
+            free(authors);
+#endif
+
             char **tagarr=NULL;
             int numtags=get_tags(rel_file,&tagarr);
-            
-            
+
             if(numtags>0)
             {
                 char* tags = get_tag_string(tagarr,numtags);
                 ewl_label_text_set(EWL_LABEL(taglabel[count]), tags);
-                
+
                 free(tags);
             }
             else
                 ewl_label_text_set(EWL_LABEL(taglabel[count]),"");
-            
+
             for(i=0;i<numtags;i++)
                 free(tagarr[i]);
-            
+
             if(tagarr)
                 free(tagarr);
-            
-            
-            
-            
+
             pointptr=strrchr(file,'.');
             if(pointptr==NULL)
                 tempstr2=ReadString("icons",".","default.png");
@@ -915,7 +976,6 @@ void update_list()
 
         free(time_str);
         free(rel_file);
-        
     }
 
     if(next_page_exists() && prev_page_exists())
@@ -975,10 +1035,44 @@ void update_list()
     }
 }
 
+/*******************************************************
+ * function:
+ *  get_disk_usage
+ *
+ * params:
+ *  path - const char* - path to check for
+ *  usage_output - char* - format of used / total space
+ *
+ * author:
+ *  Harris Bhatti
+ *******************************************************/
+void get_disk_usage(const char* path, char* usage_output)
+{
+	struct statvfs vfs_data;
+
+	if (statvfs(path, &vfs_data) != 0)
+	{
+		strncpy(usage_output, "NA MB / NA MB", 19);
+ 	}
+ 	else
+ 	{
+		// 9.54e-7 is precalculate 1/1024*1024 diving the
+		// the number of bytes by this gives us megabytes.
+ 		// The factor is pre-calculate for some gain.
+ 		const double factor = vfs_data.f_bsize * 9.54e-7;
+ 		const double total = vfs_data.f_blocks * factor;
+ 		const double used = total - vfs_data.f_bfree * factor;
+
+		sprintf(usage_output, "%gMB / %gMB", used, total);
+	}
+}
+
 void update_title()
 {
     char* titletext;
     char* cwd = get_current_dir_name();
+	char disk_usage[22] = "\0";
+	get_disk_usage(cwd, disk_usage);
 
     int notroot;
     if(file_list_mode==FILE_LIST_FOLDER_MODE || file_list_mode==FILE_LIST_LOCATION_MODE)
@@ -987,16 +1081,19 @@ void update_title()
             notroot= strcmp(g_roots->roots[current_root].path, cwd);
         else if(file_list_mode==FILE_LIST_LOCATION_MODE)
             notroot=0;
-        
-        
-        asprintf(&titletext, "Madshelf | %s%s%s",
-                 g_roots->roots[current_root].name,
-                 notroot ? "://" : "",
-                 notroot ? cwd + strlen(g_roots->roots[current_root].path) : "");
+
+        asprintf
+		(
+			&titletext, "Madshelf | %s%s%s | %s",
+			g_roots->roots[current_root].name,
+			notroot ? "://" : "",
+			notroot ? cwd + strlen(g_roots->roots[current_root].path) : "",
+			disk_usage
+		);
     }
     else if(file_list_mode==FILE_LIST_ALL_MODE)
     {
-        asprintf(&titletext, "Madshelf | %s",gettext("All Locations"));
+        asprintf(&titletext, "Madshelf | %s | %s",gettext("All Locations"), disk_usage);
     }
     ewl_border_label_set(EWL_BORDER(ewl_widget_name_find("mainborder")),
                          titletext);
@@ -1065,8 +1162,7 @@ void update_menu()
         ewl_button_label_set(EWL_BUTTON(curwidget),temptext);
         free(temptext);
     }
-    
-    
+
     char *tempstrings2[]={gettext("Paste")};
     for(i=0;i<1;i++)
     {
@@ -1086,7 +1182,7 @@ void update_menu()
         ewl_button_label_set(EWL_BUTTON(curwidget),temptext);
         free(temptext);
     }
-    
+
     char *tempstrings3[]={gettext("Sort by Name"),gettext("Sort by Time"),gettext("Reverse Sort Order")};
     for(i=0;i<3;i++)
     {
@@ -1106,7 +1202,7 @@ void update_menu()
         ewl_button_label_set(EWL_BUTTON(curwidget),temptext);
         free(temptext);
     }
-    
+
     char *tempstrings4[]={gettext("Folder Mode"),gettext("Location Mode"),gettext("All Locations Mode")};
     for(i=0;i<3;i++)
     {
@@ -1187,7 +1283,6 @@ static int mad_scandir(const char *dir, mad_file ***namelist, int (*selector) (c
     int total = numfiles;
 
     mad_namelist = (mad_file **)malloc(sizeof(mad_file*) * numfiles);
-    
 
     int i;
     for(i = 0; i < numfiles; i++)
@@ -1240,18 +1335,16 @@ static int dir_alphasort(const void* lhs, const void* rhs)
     char *lhs_filename,*rhs_filename;
     asprintf(&(lhs_filename),"%s/%s",(*(mad_file**)lhs)->path,(*(mad_file**)lhs)->filestr->d_name);
     asprintf(&(rhs_filename),"%s/%s",(*(mad_file**)rhs)->path,(*(mad_file**)rhs)->filestr->d_name);
-    
+
     int lhsdir = ecore_file_is_dir(lhs_filename);
     int rhsdir = ecore_file_is_dir(rhs_filename);
-        
+
     free(lhs_filename);
     free(rhs_filename);
-    
+
     if(lhsdir == rhsdir)
     {
-        
         return alphasort(&((*(mad_file**)lhs)->filestr),&((*(mad_file**)rhs)->filestr));
-
     }
     return rhsdir - lhsdir;
 }
@@ -1261,18 +1354,16 @@ static int rev_dir_alphasort(const void* lhs, const void* rhs)
     char *lhs_filename,*rhs_filename;
     asprintf(&(lhs_filename),"%s/%s",(*(mad_file**)lhs)->path,(*(mad_file**)lhs)->filestr->d_name);
     asprintf(&(rhs_filename),"%s/%s",(*(mad_file**)rhs)->path,(*(mad_file**)rhs)->filestr->d_name);
-    
+
     int lhsdir = ecore_file_is_dir(lhs_filename);
     int rhsdir = ecore_file_is_dir(rhs_filename);
 
     free(lhs_filename);
     free(rhs_filename);
-    
+
     if(lhsdir == rhsdir)
     {
-        
         return alphasort(&((*(mad_file**)rhs)->filestr),&((*(mad_file**)lhs)->filestr));
-
     }
     return rhsdir - lhsdir;
 }
@@ -1289,14 +1380,12 @@ static int date_cmp(const struct dirent** lhs, const struct dirent** rhs)
     char *lhs_filename,*rhs_filename;
     asprintf(&(lhs_filename),"%s/%s",(*(mad_file**)lhs)->path,(*(mad_file**)lhs)->filestr->d_name);
     asprintf(&(rhs_filename),"%s/%s",(*(mad_file**)rhs)->path,(*(mad_file**)rhs)->filestr->d_name);
-    
+
     long long lhs_mtime = rel_file_mtime(lhs_filename);
     long long rhs_mtime = rel_file_mtime(rhs_filename);
-    
+
     free(lhs_filename);
     free(rhs_filename);
-    
-    
 
     if(lhs_mtime > rhs_mtime) return 1;
     if(lhs_mtime < rhs_mtime) return -1;
@@ -1365,25 +1454,15 @@ void init_filelist(int reset)
                 g_fileslist[j]=templist2[j];
             for(j=g_nfileslist;j<(g_nfileslist+ntemplist);j++)
                 g_fileslist[j]=templist[j-g_nfileslist];
-                
+
             if(templist2)
                 free(templist2);
             free(templist);
             g_nfileslist+=ntemplist;
         }
         qsort ((void *)g_fileslist,g_nfileslist,sizeof(mad_file*),cmp);
-        
-        
-        
-        
     }
-    
-    
-    
-    
-    
-    
-    
+
     if(g_nfileslist == -1)
     {
         /* FIXME: handle somehow */
@@ -1392,14 +1471,15 @@ void init_filelist(int reset)
     }
     if(g_nfileslist>0)
     {
+#if USE_DB_CACHE
         update_file_database();
+#endif
         if(file_list_mode==FILE_LIST_FOLDER_MODE)
             filter_filelist(0);
         else if(file_list_mode==FILE_LIST_LOCATION_MODE || file_list_mode==FILE_LIST_ALL_MODE)
             filter_filelist(1);
     }
 
-    
     if(reset)
     {
         current_index = 0;
@@ -1415,33 +1495,25 @@ void update_file_database()
         asprintf(&rel_file, "%s/%s",get_mad_file(i)->path,get_mad_file(i)->filestr->d_name);
         if(!ecore_file_is_dir(rel_file))
         {
-            
-            
-            
             int recstatus=get_file_record_status(rel_file);
             if(recstatus==RECORD_STATUS_ERROR || recstatus==RECORD_STATUS_OK || recstatus==RECORD_STATUS_EXISTS_BUT_UNKNOWN) //will have to deal with some of these cases differently later
             {
-                
             }
             else if(recstatus==RECORD_STATUS_OUT_OF_DATE)
             {
                 clear_file_extractor_data(rel_file);
-            
+
                 update_file_mod_time(rel_file);
-            
+
                 extract_and_cache(rel_file);
-            
             }
             else if(recstatus==RECORD_STATUS_ABSENT)
             {
                 if(!extract_and_cache(rel_file))
                     create_empty_record(rel_file);
-       
             }
-            
         }
         free(rel_file);
-       
     }
 }
 int extract_and_cache(char *filename)
@@ -1449,11 +1521,8 @@ int extract_and_cache(char *filename)
     int retval=0;
     EXTRACTOR_KeywordList* mykeys;
     mykeys = extractor_get_keywords(extractors, filename);
-    
-    
-    
-    
-    //process titles    
+
+    //process titles
     char *extracted_title = extractor_get_last(EXTRACTOR_TITLE, mykeys);
     if(extracted_title && extracted_title[0])
     {
@@ -1474,7 +1543,7 @@ int extract_and_cache(char *filename)
             if(seriesnum<=0)
                 seriesnum=-1;
         }
-        
+
         set_series(filename,seriesarr,&seriesnum,1);
         retval=1;
     }
@@ -1484,7 +1553,7 @@ int extract_and_cache(char *filename)
     while(keypt)
     {
         if(keypt->keywordType == EXTRACTOR_AUTHOR && keypt->keyword && keypt->keyword[0])
-            authorcount++;    
+            authorcount++;
         keypt = keypt->next;
     }
     keypt=mykeys;
@@ -1506,7 +1575,6 @@ int extract_and_cache(char *filename)
     }
     free(authorarr);
     return retval;
-    
 }
 int filter_filelist(int removedirs)
 {
@@ -1526,8 +1594,6 @@ int filter_filelist(int removedirs)
             {
                 if(isFilterActive(j))
                 {
-                    
-                    
                     if(!evaluateFilter(j,rel_file))
                     {
                         flag=0;
@@ -1558,7 +1624,7 @@ int filter_filelist(int removedirs)
     }
     g_nfileslist=count;
     free(g_fileslist);
-    g_fileslist=new_g_fileslist;    
+    g_fileslist=new_g_fileslist;
     return retval;
 }
 void update_filters()
@@ -1566,7 +1632,6 @@ void update_filters()
     int i;
     for(i=0;i<getNumFilters();i++)
         filterstatus[i]=isFilterActive(i);
-    
 }
 void destroy_cb ( Ewl_Widget *w, void *event, void *data )
 {
@@ -1601,7 +1666,7 @@ int sighup_signal_handler(void *data, int type, void *event)
     if((old_ci+old_ns)<g_nfileslist)
         nav_sel=old_ns;
     update_filelist_in_gui();
-    
+
     return 1;
 }
 
@@ -1621,12 +1686,12 @@ void show_confirm_dialog(confirm_handler nohandler,confirm_handler yeshandler,ch
     Ewl_Widget *yeslabel=ewl_widget_name_find("confirm_dialog_yeslabel");
     Ewl_Widget *nolabel=ewl_widget_name_find("confirm_dialog_nolabel");
     char yestext[20],notext[20];
-    
+
     confirm_dialog_no_handler=nohandler;
     confirm_dialog_yes_handler=yeshandler;
-    
+
     ewl_label_text_set(EWL_LABEL(wmessage),message);
-    
+
     if(get_nav_mode()==0)
     {
         sprintf(notext,"1. %s",gettext("No"));
@@ -1639,13 +1704,11 @@ void show_confirm_dialog(confirm_handler nohandler,confirm_handler yeshandler,ch
         ewl_label_text_set(EWL_LABEL(nolabel),gettext("No"));
         ewl_label_text_set(EWL_LABEL(yeslabel),gettext("Yes"));
     }
-    
-    
+
     confirm_dialog_choice_set(CONFIRM_DIALOG_NO);
-    
+
     ewl_widget_show(wdialog);
     ewl_widget_configure(wdialog);
-    
 }
 int confirm_dialog_choice_get(void)
 {
@@ -1665,7 +1728,6 @@ void confirm_dialog_choice_set(int choice)
     {
         ewl_widget_state_set(yeslabel,"select",EWL_STATE_PERSISTENT);
         ewl_widget_state_set(nolabel,"unselect",EWL_STATE_PERSISTENT);
-        
     }
 }
 void confirm_dialog_action_perform(void)
@@ -1673,12 +1735,12 @@ void confirm_dialog_action_perform(void)
     Ewl_Widget *wdialog=ewl_widget_name_find("confirm_dialog");
     if(confirm_dialog_choice_get()==CONFIRM_DIALOG_NO)
     {
-        ewl_widget_hide(wdialog);    
+        ewl_widget_hide(wdialog);
         (confirm_dialog_no_handler)();
     }
     else if(confirm_dialog_choice_get()==CONFIRM_DIALOG_YES)
     {
-        ewl_widget_hide(wdialog);    
+        ewl_widget_hide(wdialog);
         (confirm_dialog_yes_handler)();
     }
 }
@@ -1750,7 +1812,6 @@ void doActionForNum(unsigned int num, unsigned char lp)
                 free(copystring);
                 ewl_main_quit();
             }
-            
         }
         else
         {
@@ -1769,9 +1830,9 @@ void popupContext(unsigned int num)
 {
     char tempname[30];
     Ewl_Widget *curwidget,*selected;
- 
+
     toggle_key_shifted();//=0;
-    
+
     sprintf(tempname,"bookbox%d",num-1);
     selected = ewl_widget_name_find(tempname);
     if(selected==NULL)
@@ -1780,27 +1841,25 @@ void popupContext(unsigned int num)
         return;
     curwidget=ewl_widget_name_find("main_context");
     ewl_popup_follow_set(EWL_POPUP(curwidget),selected);
-    
+
     ewl_popup_mouse_position_set(EWL_POPUP(curwidget),ewl_object_current_x_get(EWL_OBJECT(selected))+ewl_object_current_w_get(EWL_OBJECT(selected))-PREFERRED_W(curwidget),ewl_object_current_y_get(EWL_OBJECT(selected)));
     context_index=num-1;
-    
+
     //Hide or show tags option, based on whether directory.
     Ewl_Widget *tags_item=ewl_widget_name_find("mc_menuitem4");
     char* file;
     asprintf(&file,"%s/%s",get_mad_file(current_index+num-1)->path,get_mad_file(current_index+num-1)->filestr->d_name);
-    
+
     if(ecore_file_is_dir(file))
     {
-        ewl_widget_hide(tags_item);    
-        
+        ewl_widget_hide(tags_item);
     }
     else
     {
         ewl_widget_show(tags_item);
         ewl_widget_configure(tags_item);
     }
-    
-    
+
     ewl_widget_show(curwidget);
     ewl_widget_configure(curwidget);
     ewl_window_raise(EWL_WINDOW(curwidget));
@@ -1816,8 +1875,6 @@ void toggle_key_shifted()
         ewl_label_text_set(EWL_LABEL(curwidget),"↑");
     else
         ewl_label_text_set(EWL_LABEL(curwidget),"");
-    
-    
 }
 void change_root(int item)
 {
@@ -1876,7 +1933,7 @@ void main_nav_up(Ewl_Widget *widget, unsigned char lp)
         sprintf (tempname, "bookbox%d",nav_sel);
         curwidget = ewl_widget_name_find(tempname);
         ewl_widget_state_set(curwidget,"select",EWL_STATE_PERSISTENT);
-    }       
+    }
 }
 
 void main_nav_down(Ewl_Widget *widget, unsigned char lp)
@@ -1913,14 +1970,8 @@ void main_nav_sel(Ewl_Widget *widget, unsigned char lp)
         popupContext(nav_sel+1);
     else
         doActionForNum(nav_sel+1,lp);
-    
 }
-/*void main_nav_menubtn(Ewl_Widget *widget, unsigned char lp)
-{
-    
-    show_main_menu();
-    
-}*/
+
 void main_next(Ewl_Widget *widget, unsigned char lp)
 {
     next_page();
@@ -1933,14 +1984,12 @@ void main_item(Ewl_Widget *widget,int item, unsigned char lp)
 {
     if(item<1 || item>num_books)
         return;
-    
+
     else if(key_shifted)
         popupContext(item);
     else
         doActionForNum(item,lp);
-    
 }
-
 
 static key_handler_info_t main_info =
 {
@@ -1978,7 +2027,6 @@ void main_menu_nav_up(Ewl_Widget *widget, unsigned char lp)
     Ewl_Widget *newselwid=NULL;
     if((nav_menu_sel-1)>=0)
     {
-        
         sprintf (tempname, "menuitem%d",nav_menu_sel+1);
         oldselwid = ewl_widget_name_find(tempname);
         sprintf (tempname, "menuitem%d",nav_menu_sel);
@@ -1988,7 +2036,7 @@ void main_menu_nav_up(Ewl_Widget *widget, unsigned char lp)
         ewl_widget_state_set((EWL_MENU_ITEM(oldselwid)->button).label_object,"unselect",EWL_STATE_PERSISTENT);
         nav_menu_sel--;
         ewl_widget_state_set((EWL_MENU_ITEM(newselwid)->button).label_object,"select",EWL_STATE_PERSISTENT);
-    }       
+    }
 }
 
 void main_menu_nav_down(Ewl_Widget *widget, unsigned char lp)
@@ -2111,7 +2159,6 @@ void lang_menu_nav_up(Ewl_Widget *widget, unsigned char lp)
     Ewl_Widget *newselwid=NULL;
     if((nav_lang_menu_sel-1)>=0)
     {
-        
         sprintf (tempname, "langmenuitem%d",nav_lang_menu_sel+1);
         oldselwid = ewl_widget_name_find(tempname);
         sprintf (tempname, "langmenuitem%d",nav_lang_menu_sel);
@@ -2121,7 +2168,7 @@ void lang_menu_nav_up(Ewl_Widget *widget, unsigned char lp)
         ewl_widget_state_set((EWL_MENU_ITEM(oldselwid)->button).label_object,"unselect",EWL_STATE_PERSISTENT);
         nav_lang_menu_sel--;
         ewl_widget_state_set((EWL_MENU_ITEM(newselwid)->button).label_object,"select",EWL_STATE_PERSISTENT);
-    }       
+    }
 }
 
 void lang_menu_nav_down(Ewl_Widget *widget, unsigned char lp)
@@ -2129,7 +2176,7 @@ void lang_menu_nav_down(Ewl_Widget *widget, unsigned char lp)
     char tempname[30];
     Ewl_Widget *oldselwid=NULL;
     Ewl_Widget *newselwid=NULL;
-    
+
     sprintf (tempname, "langmenuitem%d",nav_lang_menu_sel+1);
     oldselwid = ewl_widget_name_find(tempname);
     sprintf (tempname, "langmenuitem%d",nav_lang_menu_sel+2);
@@ -2195,7 +2242,6 @@ void goto_menu_nav_up(Ewl_Widget *widget, unsigned char lp)
     Ewl_Widget *newselwid=NULL;
     if((nav_goto_menu_sel-1)>=0)
     {
-        
         sprintf (tempname, "gotomenuitem%d",nav_goto_menu_sel+1);
         oldselwid = ewl_widget_name_find(tempname);
         sprintf (tempname, "gotomenuitem%d",nav_goto_menu_sel);
@@ -2205,7 +2251,7 @@ void goto_menu_nav_up(Ewl_Widget *widget, unsigned char lp)
         ewl_widget_state_set((EWL_MENU_ITEM(oldselwid)->button).label_object,"unselect",EWL_STATE_PERSISTENT);
         nav_goto_menu_sel--;
         ewl_widget_state_set((EWL_MENU_ITEM(newselwid)->button).label_object,"select",EWL_STATE_PERSISTENT);
-    }       
+    }
 }
 
 void goto_menu_nav_down(Ewl_Widget *widget, unsigned char lp)
@@ -2281,7 +2327,7 @@ void scripts_menu_nav_up(Ewl_Widget *widget, unsigned char lp)
         ewl_widget_state_set((EWL_MENU_ITEM(oldselwid)->button).label_object,"unselect",EWL_STATE_PERSISTENT);
         nav_scripts_menu_sel--;
         ewl_widget_state_set((EWL_MENU_ITEM(newselwid)->button).label_object,"select",EWL_STATE_PERSISTENT);
-    }       
+    }
 }
 
 void scripts_menu_nav_down(Ewl_Widget *widget, unsigned char lp)
@@ -2353,7 +2399,6 @@ void mc_menu_nav_up(Ewl_Widget *widget, unsigned char lp)
     Ewl_Widget *newselwid=NULL;
     if((nav_mc_menu_sel-1)>=0)
     {
-        
         sprintf (tempname, "mc_menuitem%d",nav_mc_menu_sel+1);
         oldselwid = ewl_widget_name_find(tempname);
         sprintf (tempname, "mc_menuitem%d",nav_mc_menu_sel);
@@ -2363,7 +2408,7 @@ void mc_menu_nav_up(Ewl_Widget *widget, unsigned char lp)
         ewl_widget_state_set((EWL_MENU_ITEM(oldselwid)->button).label_object,"unselect",EWL_STATE_PERSISTENT);
         nav_mc_menu_sel--;
         ewl_widget_state_set((EWL_MENU_ITEM(newselwid)->button).label_object,"select",EWL_STATE_PERSISTENT);
-    }       
+    }
 }
 
 void mc_menu_nav_down(Ewl_Widget *widget, unsigned char lp)
@@ -2392,17 +2437,14 @@ void mc_menu_delete_confirm_yes(void)
         init_filelist(1);
         update_filelist_in_gui();
     }
-    
 }
 void mc_menu_delete_confirm_no(void)
 {
     if(action_filename)
-    { 
+    {
         free(action_filename);
         action_filename=NULL;
     }
-        
-        
 }
 
 void mc_menu_item(Ewl_Widget *widget,int item, unsigned char lp)
@@ -2421,10 +2463,8 @@ void mc_menu_item(Ewl_Widget *widget,int item, unsigned char lp)
         file_action=FILE_COPY;
     else if(item==3)
     {
-        
         show_confirm_dialog(mc_menu_delete_confirm_no,mc_menu_delete_confirm_yes,gettext("Delete file?"));
         file_action=FILE_NO_ACTION;
-        
     }
     else if(item==4)
     {
@@ -2432,7 +2472,6 @@ void mc_menu_item(Ewl_Widget *widget,int item, unsigned char lp)
         free(action_filename);
         action_filename=NULL;
     }
-    
 }
 
 void mc_menu_nav_sel(Ewl_Widget *widget, unsigned char lp)
@@ -2467,7 +2506,6 @@ void fileops_menu_nav_up(Ewl_Widget *widget, unsigned char lp)
     Ewl_Widget *newselwid=NULL;
     if((nav_fileops_menu_sel-1)>=0)
     {
-        
         sprintf (tempname, "fileopsmenuitem%d",nav_fileops_menu_sel+1);
         oldselwid = ewl_widget_name_find(tempname);
         sprintf (tempname, "fileopsmenuitem%d",nav_fileops_menu_sel);
@@ -2477,7 +2515,7 @@ void fileops_menu_nav_up(Ewl_Widget *widget, unsigned char lp)
         ewl_widget_state_set((EWL_MENU_ITEM(oldselwid)->button).label_object,"unselect",EWL_STATE_PERSISTENT);
         nav_fileops_menu_sel--;
         ewl_widget_state_set((EWL_MENU_ITEM(newselwid)->button).label_object,"select",EWL_STATE_PERSISTENT);
-    }       
+    }
 }
 
 void fileops_menu_nav_down(Ewl_Widget *widget, unsigned char lp)
@@ -2504,7 +2542,7 @@ void fileops_menu_item(Ewl_Widget *widget,int item, unsigned char lp)
 
     ewl_menu_collapse(EWL_MENU(ewl_widget_name_find("menuitem2")));
     hide_main_menu();
-    
+
     if(item==1)
     {
         if(file_action==FILE_NO_ACTION)
@@ -2518,12 +2556,12 @@ void fileops_menu_item(Ewl_Widget *widget,int item, unsigned char lp)
 
         free(filename_copy);
         free(cwd);
-        
+
         if(file_action==FILE_CUT)
-            move_file(action_filename,target_filename);            
+            move_file(action_filename,target_filename);
         else if(file_action==FILE_COPY)
             copy_file(action_filename,target_filename);
-        
+
         file_action=FILE_NO_ACTION;
         free(target_filename);
         free(action_filename);
@@ -2562,7 +2600,6 @@ void sort_menu_nav_up(Ewl_Widget *widget, unsigned char lp)
     Ewl_Widget *newselwid=NULL;
     if((nav_sort_menu_sel-1)>=0)
     {
-        
         sprintf (tempname, "sortmenuitem%d",nav_sort_menu_sel+1);
         oldselwid = ewl_widget_name_find(tempname);
         sprintf (tempname, "sortmenuitem%d",nav_sort_menu_sel);
@@ -2572,7 +2609,7 @@ void sort_menu_nav_up(Ewl_Widget *widget, unsigned char lp)
         ewl_widget_state_set((EWL_MENU_ITEM(oldselwid)->button).label_object,"unselect",EWL_STATE_PERSISTENT);
         nav_sort_menu_sel--;
         ewl_widget_state_set((EWL_MENU_ITEM(newselwid)->button).label_object,"select",EWL_STATE_PERSISTENT);
-    }       
+    }
 }
 
 void sort_menu_nav_down(Ewl_Widget *widget, unsigned char lp)
@@ -2599,10 +2636,9 @@ void sort_menu_item(Ewl_Widget *widget,int item, unsigned char lp)
 
     ewl_menu_collapse(EWL_MENU(ewl_widget_name_find("menuitem5")));
     hide_main_menu();
-    
+
     if(item==1)
     {
-    
         sort_order=ECORE_SORT_MIN;
         sort_type=SORT_BY_NAME;
 
@@ -2610,7 +2646,6 @@ void sort_menu_item(Ewl_Widget *widget,int item, unsigned char lp)
 
         update_list();
         update_sort_label();
-        
     }
     else if(item==2)
     {
@@ -2621,7 +2656,6 @@ void sort_menu_item(Ewl_Widget *widget,int item, unsigned char lp)
 
         update_list();
         update_sort_label();
-        
      }
      else if(item==3)
      {
@@ -2634,7 +2668,6 @@ void sort_menu_item(Ewl_Widget *widget,int item, unsigned char lp)
 
         update_list();
         update_sort_label();
-        
      }
 }
 
@@ -2667,7 +2700,6 @@ void filemode_menu_nav_up(Ewl_Widget *widget, unsigned char lp)
     Ewl_Widget *newselwid=NULL;
     if((nav_filemode_menu_sel-1)>=0)
     {
-        
         sprintf (tempname, "filemodemenuitem%d",nav_filemode_menu_sel+1);
         oldselwid = ewl_widget_name_find(tempname);
         sprintf (tempname, "filemodemenuitem%d",nav_filemode_menu_sel);
@@ -2677,7 +2709,7 @@ void filemode_menu_nav_up(Ewl_Widget *widget, unsigned char lp)
         ewl_widget_state_set((EWL_MENU_ITEM(oldselwid)->button).label_object,"unselect",EWL_STATE_PERSISTENT);
         nav_filemode_menu_sel--;
         ewl_widget_state_set((EWL_MENU_ITEM(newselwid)->button).label_object,"select",EWL_STATE_PERSISTENT);
-    }       
+    }
 }
 
 void filemode_menu_nav_down(Ewl_Widget *widget, unsigned char lp)
@@ -2704,38 +2736,33 @@ void filemode_menu_item(Ewl_Widget *widget,int item, unsigned char lp)
 
     ewl_menu_collapse(EWL_MENU(ewl_widget_name_find("menuitem4")));
     hide_main_menu();
-    
+
     if(item==1)
     {
-        
         file_list_mode=FILE_LIST_FOLDER_MODE;
         init_filelist(1);
 
         update_list();
         update_title();
-        
     }
     else if(item==2)
     {
         file_list_mode=FILE_LIST_LOCATION_MODE;
-        
+
         init_filelist(1);
 
         update_list();
         update_title();
-        
      }
      else if(item==3)
      {
         file_list_mode=FILE_LIST_ALL_MODE;
-        
+
         init_filelist(1);
 
         update_list();
         update_title();
-        
      }
-     
 }
 
 void filemode_menu_nav_sel(Ewl_Widget *widget, unsigned char lp)
@@ -2782,7 +2809,7 @@ void confirm_dialog_item(Ewl_Widget *widget,int item, unsigned char lp)
 {
     if(item <1 || item >2)
         return;
-    
+
     if(item==1)
     {
         if(confirm_dialog_choice_get()!=CONFIRM_DIALOG_NO)
@@ -2809,10 +2836,10 @@ static key_handler_info_t confirm_dialog_info =
 
 /* State */
 
-void save_state()
+void save_state(const char* state_file)
 {
     Eet_File *state;
-    state=eet_open(statefilename,EET_FILE_MODE_WRITE);
+    state=eet_open(state_file, EET_FILE_MODE_WRITE);
     const int a=1;
     char* cwd = get_current_dir_name();
 
@@ -2826,18 +2853,18 @@ void save_state()
     eet_write(state,"file_list_mode",(void *)&file_list_mode,sizeof(int),0);
     eet_write(state,"filters_modtime",(void *)&filters_modtime,sizeof(long),0);
     eet_write(state,"filterstatus",(void *)filterstatus,sizeof(int)*getNumFilters(),0);
-    
+
     eet_close(state);
 
     free(cwd);
 }
 
-void refresh_state()
+void refresh_state(const char* state_file)
 {
     change_root(0);
 
     int size;
-    Eet_File* state = eet_open(statefilename, EET_FILE_MODE_READ);
+    Eet_File* state = eet_open(state_file, EET_FILE_MODE_READ);
     if(!state || !eet_read(state, "statesaved", &size))
     {
         eet_close(state);
@@ -2855,16 +2882,15 @@ void refresh_state()
     }
 
     chdir_to((char*)eet_read(state, "curdir", &size));
-    //init_filelist(1);
     int *temppt=(int*)eet_read(state,"curindex", &size);
- 
+
     if(temppt)
         current_index = *temppt;
     else
         current_index = 0;
     if(current_index < 0)// || current_index > g_nfileslist)
         current_index = 0;
-    
+
     temppt=(int*)eet_read(state, "sort_type", &size);
     if(temppt)
         sort_type=*temppt;
@@ -2875,7 +2901,7 @@ void refresh_state()
         sort_order=*temppt;
     else
         sort_order=ECORE_SORT_MIN;
-    
+
     temppt=(int*)eet_read(state, "file_list_mode", &size);
     if(temppt)
         file_list_mode=*temppt;
@@ -2887,7 +2913,7 @@ void refresh_state()
         filters_modtime=*temppt2;
     else
         filters_modtime=0;
-    
+
     filterstatus=(int *)eet_read(state, "filterstatus", &size);
     eet_close(state);
 }
@@ -2912,6 +2938,23 @@ static void idialog_unrealize(Ewl_Widget *w, void *ev, void *data) {
 	win = ewl_widget_name_find("mainwindow");
 	if(win)
 		ewl_window_keyboard_grab_set(EWL_WINDOW(win), 1);
+}
+
+static void create_empty_config(const char* config_file)
+{
+    const char* home_dir = getenv("HOME");
+
+    int fd = open(config_file, O_CREAT | O_RDWR, 0644);
+
+    write(fd, "[general]\nnav_mode=0\nnum_books=8\nitem_labels=1,2,3,4,5,6,7,8\n",
+          strlen("[general]nav_mode=0\nnum_books=8\nitem_labels=1,2,3,4,5,6,7,8\n"));
+    write(fd, "[roots]\nHome=", 13*sizeof(char));
+    write(fd, home_dir, strlen(home_dir) * sizeof(char));
+    if(home_dir[strlen(home_dir)] != '/')
+        write(fd, "/", sizeof(char));
+    write(fd, "\n[apps]\n[icons]\n[scripts]",15*sizeof(char));
+
+    close(fd);
 }
 
 int main ( int argc, char ** argv )
@@ -2945,8 +2988,7 @@ int main ( int argc, char ** argv )
     Ewl_Widget *dividewidget;
     Ewl_Widget *statuslabel;
     Ewl_Widget *keystatelabel;
-    char *homedir;
-    char *configfile;
+    //char *homedir;
     char *filterfile;
     char *dbfile;
     int count=0;
@@ -2967,67 +3009,32 @@ int main ( int argc, char ** argv )
     setlocale(LC_ALL, "");
     textdomain("madshelf");
 
-    
-    
-    
-    //end database testing
-    homedir=getenv("HOME");
-    
-    
-    filterfile=(char *)calloc(strlen(homedir) + 23, sizeof(char));
-    strcat(filterfile,homedir);
-    strcat(filterfile,"/.madshelf/");
-    if(!ecore_file_path_dir_exists(filterfile))
-    {
-        ecore_file_mkpath(filterfile);
-    }
-    strcat(filterfile,"filters.xml");
+    const char* configdir;
+    asprintf(&configdir, "%s/.madshelf", getenv("HOME"));
+    ecore_file_mkpath(configdir);
 
-    struct stat filterstat;
-    int filtexists;
-    filtexists = stat(filterfile, &filterstat);
-    if(filtexists>=0)
-    {
-        load_filters(filterfile);
-    }
-    
-    free(filterfile);
-    
-    
-    
-    
-   
-    
-    dbfile=(char *)calloc(strlen(homedir) + 23, sizeof(char));
-    strcat(dbfile,homedir);
-    strcat(dbfile,"/.madshelf/");
-    strcat(dbfile,"madshelf.db");
-    init_database(dbfile);
-    free(dbfile);
-    
-    
-    configfile=(char *)calloc(strlen(homedir) + 1+18 + 1, sizeof(char));
-    strcat(configfile,homedir);
-    strcat(configfile,"/.madshelf/");
-    strcat(configfile,"config");
-    if(!ecore_file_exists(configfile))
-    {
-        file_desc=open(configfile, O_CREAT |O_RDWR | O_CREAT,S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-        write(file_desc,"[roots]\nHome=", 13*sizeof(char));
-        write(file_desc,getenv("HOME"),strlen(getenv("HOME"))*sizeof(char));
-        if(homedir&&homedir[strlen(homedir)-1]!='/')
-            write(file_desc,"/",sizeof(char));
-        write(file_desc,"\n[apps]\n[icons]\n[scripts]",15*sizeof(char));
-        close(file_desc);
-    }
-    OpenIniFile (configfile);
-    free(configfile);
-    
+    const char* filters_file;
+    asprintf(&filters_file, "%s/filters.xml", configdir);
+    if(ecore_file_exists(filters_file))
+        load_filters(filters_file);
+
+    const char* db_file;
+    asprintf(&db_file, "%s/madshelf.db", configdir);
+    init_database(db_file);
+    free(db_file);
+
+    const char* config_file;
+    asprintf(&config_file, "%s/config", configdir);
+    if(!ecore_file_exists(config_file))
+        create_empty_config(config_file);
+    OpenIniFile (config_file);
+    free(config_file);
+
     set_nav_mode(ReadInt("general","nav_mode",0));
     num_books=ReadInt("general","num_books",8);
     extractors= load_extractors();
 
-        //load scripts
+    //load scripts
     count2=0;
     scriptlist=FindSection("scripts");
     if (scriptlist && scriptlist->pNext)
@@ -3060,15 +3067,16 @@ int main ( int argc, char ** argv )
     g_roots = roots_create();
     current_root = 0;
 
-    statefilename=(char *)calloc(strlen(homedir) + 1+21 + 1, sizeof(char));
-    strcat(statefilename,homedir);
-    strcat(statefilename,"/.madshelf/state.eet");
+    const char* state_file;
+    asprintf(&state_file, "%s/state.eet", configdir);
+    refresh_state(state_file);
 
-    refresh_state();
+    free(configdir);
 
-    if(filtexists>=0)
+    long long filter_mtime = ecore_file_mod_time(filters_file);
+    if(filter_mtime)
     {
-        if(filters_modtime!=filterstat.st_mtime)
+        if(filters_modtime != filter_mtime)
         {
             if(filterstatus!=NULL)
                 free(filterstatus);
@@ -3079,19 +3087,16 @@ int main ( int argc, char ** argv )
             current_index=0;
             nav_sel=0;
         }
-        filters_modtime=filterstat.st_mtime;
-        
-        
-        
+        filters_modtime = filter_mtime;
     }
+    free(filters_file);
+
     int i;
     for(i=0;i<getNumFilters();i++)
         setFilterActive(i,filterstatus[i]);
-    
-    
+
     init_filelist(0);
-    
-    
+
     win = ewl_window_new();
     ewl_window_title_set ( EWL_WINDOW ( win ), "EWL_WINDOW" );
     ewl_window_name_set ( EWL_WINDOW ( win ), "EWL_WINDOW" );
@@ -3106,27 +3111,25 @@ int main ( int argc, char ** argv )
     box2 = ewl_vbox_new();
     ewl_container_child_append(EWL_CONTAINER(win),box2);
     ewl_object_fill_policy_set(EWL_OBJECT(box2), EWL_FLAG_FILL_ALL);
-        //ewl_theme_data_str_set(EWL_WIDGET(box2),"/vbox/group","ewl/box/mainbox");
     ewl_widget_show(box2);
 
     border=ewl_border_new();
     ewl_object_fill_policy_set(EWL_OBJECT(border), EWL_FLAG_FILL_ALL);
     ewl_container_child_append(EWL_CONTAINER(box2),border);
     ewl_widget_name_set(border,"mainborder");
-    //ewl_object_maximum_w_set(EWL_OBJECT(EWL_BORDER(border)->label),500);
-    ewl_object_fill_policy_set(EWL_OBJECT(EWL_BORDER(border)->label), EWL_FLAG_FILL_HSHRINK);//EWL_FLAG_FILL_VSHRINK|EWL_FLAG_FILL_HFILL);
+    ewl_object_fill_policy_set(EWL_OBJECT(EWL_BORDER(border)->label), EWL_FLAG_FILL_HSHRINK);
     ewl_widget_show(border);
 
     update_title();
 
     box3 = ewl_vbox_new();
     ewl_container_child_append(EWL_CONTAINER(border),box3);
-    ewl_object_fill_policy_set(EWL_OBJECT(box3), EWL_FLAG_FILL_FILL);//EWL_FLAG_FILL_VSHRINK|EWL_FLAG_FILL_HFILL);
+    ewl_object_fill_policy_set(EWL_OBJECT(box3), EWL_FLAG_FILL_FILL);
     ewl_widget_show(box3);
 
     char **item_labels;
     int nitem_labels=get_item_labels_array(&item_labels);
-    
+
     menubar=ewl_hmenubar_new();
 
     {
@@ -3179,7 +3182,7 @@ int main ( int argc, char ** argv )
             //tempstr4=(char *)calloc(strlen(g_roots->roots[i].name)+3+1,sizeof(char));
             if(get_nav_mode()==0)
             {
-                if(!nitem_labels)    
+                if(!nitem_labels)
                     asprintf(&tempstr4,"%d. %s",i+1, g_roots->roots[i].name);
                 else if(i<nitem_labels)
                     asprintf(&tempstr4,"%s. %s",item_labels[i], g_roots->roots[i].name);
@@ -3211,17 +3214,16 @@ int main ( int argc, char ** argv )
             ewl_widget_state_set((EWL_MENU_ITEM(temp3)->button).label_object,"select",EWL_STATE_PERSISTENT);
         ewl_widget_name_set(temp3,"filemodemenuitem1");
         ewl_widget_show(temp3);
-        
+
         temp3=ewl_menu_item_new();
         ewl_container_child_append(EWL_CONTAINER(temp2),temp3);
         ewl_widget_name_set(temp3,"filemodemenuitem2");
         ewl_widget_show(temp3);
-        
+
         temp3=ewl_menu_item_new();
         ewl_container_child_append(EWL_CONTAINER(temp2),temp3);
         ewl_widget_name_set(temp3,"filemodemenuitem3");
         ewl_widget_show(temp3);
-        
 
         temp2=ewl_menu_new();
         ewl_container_child_append(EWL_CONTAINER(temp),temp2);
@@ -3235,18 +3237,17 @@ int main ( int argc, char ** argv )
             ewl_widget_state_set((EWL_MENU_ITEM(temp3)->button).label_object,"select",EWL_STATE_PERSISTENT);
         ewl_widget_name_set(temp3,"sortmenuitem1");
         ewl_widget_show(temp3);
-        
+
         temp3=ewl_menu_item_new();
         ewl_container_child_append(EWL_CONTAINER(temp2),temp3);
         ewl_widget_name_set(temp3,"sortmenuitem2");
-        ewl_widget_show(temp3);        
-        
+        ewl_widget_show(temp3);
+
         temp3=ewl_menu_item_new();
         ewl_container_child_append(EWL_CONTAINER(temp2),temp3);
         ewl_widget_name_set(temp3,"sortmenuitem3");
-        ewl_widget_show(temp3);        
-        
-        
+        ewl_widget_show(temp3);
+
         temp2=ewl_menu_new();
 
         ewl_container_child_append(EWL_CONTAINER(temp),temp2);
@@ -3299,7 +3300,7 @@ int main ( int argc, char ** argv )
                 if(!nitem_labels)
                     asprintf(&tempstr4,"%d. %s",count+1,scriptstrlist[count]);
                 else if(count<nitem_labels)
-                    asprintf(&tempstr4,"%s. %s",item_labels[i],scriptstrlist[count]);
+                    asprintf(&tempstr4,"%s. %s",item_labels[count],scriptstrlist[count]);
                 else
                     asprintf(&tempstr4,"%s",scriptstrlist[count]);
             }
@@ -3315,13 +3316,6 @@ int main ( int argc, char ** argv )
             ewl_widget_show(temp3);
             count++;
         }
-
-        
-        
-        
-        
-
-
     }
     statuslabel = ewl_label_new();
     ewl_container_child_append(EWL_CONTAINER(menubar), statuslabel);
@@ -3329,7 +3323,7 @@ int main ( int argc, char ** argv )
     ewl_object_fill_policy_set(EWL_OBJECT(statuslabel),EWL_FLAG_FILL_HFILL);
     ewl_label_text_set(EWL_LABEL(statuslabel),"");
     ewl_widget_show(statuslabel);
-    
+
     keystatelabel= ewl_label_new();
     ewl_container_child_append(EWL_CONTAINER(menubar), keystatelabel);
     ewl_widget_name_set(keystatelabel,"keystatelabel");
@@ -3337,10 +3331,9 @@ int main ( int argc, char ** argv )
     ewl_object_minimum_w_set(EWL_OBJECT(keystatelabel),30);
     ewl_label_text_set(EWL_LABEL(keystatelabel),"");
     ewl_widget_show(keystatelabel);
-    
-    
+
     ewl_container_child_append(EWL_CONTAINER(box2),menubar);
-    
+
     update_menu();
     ewl_widget_show(menubar);
 
@@ -3352,7 +3345,7 @@ int main ( int argc, char ** argv )
     ewl_object_alignment_set(EWL_OBJECT(sorttypetext),EWL_FLAG_ALIGN_RIGHT);
     update_sort_label();
     ewl_widget_show(sorttypetext);
-    
+
     for(count=0;count<num_books;count++)
     {
         sprintf(tempname1,"bookbox%d",count);
@@ -3363,7 +3356,6 @@ int main ( int argc, char ** argv )
         else if(count<nitem_labels)
         {
             asprintf(&tempname5,"%s",item_labels[count]);
-            
         }
         else
             asprintf(&tempname5,"");
@@ -3388,7 +3380,6 @@ int main ( int argc, char ** argv )
         ewl_container_child_append(EWL_CONTAINER(box),box5);
         ewl_widget_name_set(box5,tempname3 );
         ewl_object_fill_policy_set(EWL_OBJECT(box5), EWL_FLAG_FILL_ALL);
-        
 
         sprintf (tempname3, "authorlabel%d",count);
         authorlabel = ewl_label_new();
@@ -3416,7 +3407,7 @@ int main ( int argc, char ** argv )
         ewl_widget_name_set(box7,tempname3 );
         ewl_theme_data_str_set(EWL_WIDGET(box7),"/hbox/group","ewl/blank");
         ewl_object_fill_policy_set(EWL_OBJECT(box7),EWL_FLAG_FILL_HFILL|EWL_FLAG_FILL_VSHRINKABLE);
-        
+
         sprintf (tempname3, "serieslabel%d",count);
         serieslabel = ewl_label_new();
         ewl_container_child_append(EWL_CONTAINER(box7), serieslabel);
@@ -3424,27 +3415,21 @@ int main ( int argc, char ** argv )
         ewl_theme_data_str_set(EWL_WIDGET(serieslabel),"/label/group","ewl/oi_label/seriestext");
         ewl_theme_data_str_set(EWL_WIDGET(serieslabel),"/label/textpart","ewl/oi_label/seriestext/text");
         ewl_object_fill_policy_set(EWL_OBJECT(serieslabel),EWL_FLAG_FILL_HSHRINK);
-        
-        
+
         sprintf (tempname3, "seriesnumlabel%d",count);
         seriesnumlabel = ewl_label_new();
         ewl_container_child_append(EWL_CONTAINER(box7), seriesnumlabel);
         ewl_widget_name_set(seriesnumlabel,tempname3 );
         ewl_theme_data_str_set(EWL_WIDGET(seriesnumlabel),"/label/group","ewl/oi_label/seriesnumtext");
         ewl_theme_data_str_set(EWL_WIDGET(seriesnumlabel),"/label/textpart","ewl/oi_label/seriesnumtext/text");
-        
-        
-        
-        
+
         sprintf (tempname3, "infobox%d",count);
         box6 = ewl_hbox_new();
         ewl_container_child_append(EWL_CONTAINER(box5),box6);
         ewl_widget_name_set(box6,tempname3 );
         ewl_theme_data_str_set(EWL_WIDGET(box6),"/hbox/group","ewl/blank");
         ewl_object_fill_policy_set(EWL_OBJECT(box6),EWL_FLAG_FILL_HFILL|EWL_FLAG_FILL_VSHRINKABLE);
-        
-        
-        
+
         sprintf (tempname3, "taglabel%d",count);
         taglabel = ewl_label_new();
         ewl_container_child_append(EWL_CONTAINER(box6), taglabel);
@@ -3453,7 +3438,6 @@ int main ( int argc, char ** argv )
         ewl_theme_data_str_set(EWL_WIDGET(taglabel),"/label/textpart","ewl/oi_label/tagtext/text");
         ewl_object_fill_policy_set(EWL_OBJECT(taglabel), EWL_FLAG_FILL_HFILL);
 
-        
         sprintf (tempname3, "infolabel%d",count);
         infolabel = ewl_label_new();
         ewl_container_child_append(EWL_CONTAINER(box6), infolabel);
@@ -3469,65 +3453,64 @@ int main ( int argc, char ** argv )
         ewl_widget_name_set(dividewidget,tempname4 );
     }
     free_item_labels_array(item_labels,nitem_labels);
-    
+
     arrow_widget = ewl_widget_new();
     ewl_container_child_append(EWL_CONTAINER(box3), arrow_widget);
     ewl_widget_name_set(arrow_widget,"arrow_widget");
     ewl_object_alignment_set(EWL_OBJECT(arrow_widget),EWL_FLAG_ALIGN_RIGHT|EWL_FLAG_ALIGN_TOP);
     ewl_theme_data_str_set(EWL_WIDGET(arrow_widget),"/group","ewl/widget/oi_arrows");
     ewl_widget_show(arrow_widget);
-    
+
     {
         Ewl_Widget *context;
         Ewl_Widget *cont_item;
-        
+
         context=ewl_context_menu_new();
         ewl_widget_name_set(context,"main_context");
         ewl_popup_type_set(EWL_POPUP(context),EWL_POPUP_TYPE_MOUSE);
         set_key_handler(context, &mc_menu_info);
         ewl_context_menu_attach(EWL_CONTEXT_MENU(context), EWL_WIDGET(win));
-        
-        
+
         cont_item=ewl_menu_item_new();
         ewl_widget_name_set(cont_item,"mc_menuitem1");
-        
+
         ewl_container_child_append(EWL_CONTAINER(context),cont_item);
         if(get_nav_mode()==1)
             ewl_widget_state_set((EWL_MENU_ITEM(cont_item)->button).label_object,"select",EWL_STATE_PERSISTENT);
         ewl_widget_show(cont_item);
-        
+
         cont_item=ewl_menu_item_new();
         ewl_widget_name_set(cont_item,"mc_menuitem2");
-        
+
         ewl_container_child_append(EWL_CONTAINER(context),cont_item);
         ewl_widget_show(cont_item);
-        
+
         cont_item=ewl_menu_item_new();
         ewl_widget_name_set(cont_item,"mc_menuitem3");
-        
+
         ewl_container_child_append(EWL_CONTAINER(context),cont_item);
         ewl_widget_show(cont_item);
-        
+
         cont_item=ewl_menu_item_new();
         ewl_widget_name_set(cont_item,"mc_menuitem4");
-        
+
         ewl_container_child_append(EWL_CONTAINER(context),cont_item);
         ewl_widget_show(cont_item);
-        
+
         update_context_menu();
         ewl_widget_realize(context);
         update_context_menu();
         //ewl_object_init(EWL_OBJECT(context));
         //ewl_widget_configure(context);
     }
-    
+
     {
         Ewl_Widget *idialog;
         Ewl_Widget *confirmlabel;
         Ewl_Widget *yesnobox;
         Ewl_Widget *nolabel;
         Ewl_Widget *yeslabel;
-        
+
         idialog=ewl_dialog_new();
         ewl_window_title_set ( EWL_WINDOW ( idialog ), "EWL_DIALOG" );
         ewl_window_name_set ( EWL_WINDOW (  idialog ), "EWL_DIALOG" );
@@ -3541,18 +3524,17 @@ int main ( int argc, char ** argv )
         ewl_widget_name_set(idialog,"confirm_dialog");
         ewl_window_dialog_set(EWL_WINDOW(idialog),1);
         ewl_window_transient_for(EWL_WINDOW(idialog),EWL_WINDOW(win));
-        
+
         ewl_object_fill_policy_set(EWL_OBJECT(EWL_DIALOG(idialog)->action_area),EWL_FLAG_FILL_HFILL);
         ewl_object_fill_policy_set(EWL_OBJECT(EWL_DIALOG(idialog)->action_box),EWL_FLAG_FILL_HFILL);
-        
-        
+
         confirmlabel=ewl_label_new();
-        
+
         ewl_object_fill_policy_set(EWL_OBJECT(confirmlabel),EWL_FLAG_FILL_HFILL);
         ewl_container_child_append(EWL_CONTAINER(EWL_DIALOG(idialog)->vbox),confirmlabel);
         ewl_widget_name_set(confirmlabel,"confirm_dialog_message");
         ewl_widget_show(confirmlabel);
-        
+
         nolabel=ewl_label_new();
         ewl_label_text_set(EWL_LABEL(nolabel),"No");
         ewl_object_fill_policy_set(EWL_OBJECT(nolabel),EWL_FLAG_FILL_HFILL);
@@ -3561,7 +3543,7 @@ int main ( int argc, char ** argv )
         ewl_theme_data_str_set(EWL_WIDGET(nolabel),"/label/textpart","ewl/dialog/oi_confirmdialog/reverse_label/text");
         ewl_widget_name_set(nolabel,"confirm_dialog_nolabel");
         ewl_widget_show(nolabel);
-                
+
         yeslabel=ewl_label_new();
         ewl_label_text_set(EWL_LABEL(yeslabel),"Yes");
         ewl_object_fill_policy_set(EWL_OBJECT(yeslabel),EWL_FLAG_FILL_HFILL);
@@ -3570,7 +3552,6 @@ int main ( int argc, char ** argv )
         ewl_theme_data_str_set(EWL_WIDGET(yeslabel),"/label/textpart","ewl/dialog/oi_confirmdialog/reverse_label/text");
         ewl_widget_name_set(yeslabel,"confirm_dialog_yeslabel");
         ewl_widget_show(yeslabel);
-        
     }
     free(theme_file);
 
@@ -3580,9 +3561,9 @@ int main ( int argc, char ** argv )
     ecore_event_handler_add(ECORE_EVENT_SIGNAL_HUP,sighup_signal_handler,NULL);
     ewl_main();
 
-    save_state();
-    free(statefilename);
-    
+    save_state(state_file);
+    free(state_file);
+
     free_filters();
     fini_database();
     eet_shutdown();
@@ -3590,13 +3571,13 @@ int main ( int argc, char ** argv )
     fini_filelist();
 
     roots_destroy(g_roots);
-    
+
     free(scriptstrlist);
     unload_extractors(extractors);
     if(action_filename)
         free(action_filename);
     free(filterstatus);
-    
+
     if (g_file)
     {
         const char* home = getenv("HOME");
@@ -3621,6 +3602,6 @@ int main ( int argc, char ** argv )
         perror("madshelf: execlp");
         return 1;
     }
-    
+
     return 0;
 }
