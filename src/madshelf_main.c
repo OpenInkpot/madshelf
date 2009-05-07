@@ -3076,9 +3076,9 @@ int main ( int argc, char ** argv )
 
     free(configdir);
 
-    long long filter_mtime = ecore_file_mod_time(filters_file);
-    if(filter_mtime)
+    if(ecore_file_exists(filters_file))
     {
+        long long filter_mtime = ecore_file_mod_time(filters_file);
         if(filters_modtime != filter_mtime)
         {
             if(filterstatus!=NULL)
