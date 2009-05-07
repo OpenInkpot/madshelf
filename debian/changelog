@@ -1,3 +1,9 @@
+madshelf (0.1-31) asimov; urgency=low
+
+  * another segfault fixed
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Fri, 08 May 2009 00:47:54 +0200
+
 madshelf (0.1-30) asimov; urgency=low
 
   * fixed segfault when starting without state.eet
