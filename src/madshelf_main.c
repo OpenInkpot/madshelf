@@ -1432,6 +1432,9 @@ void init_filelist(int reset)
     /*g_nfileslist = scandir(".", &g_fileslist,
                            &filter_dotfiles,
                            cmp);*/
+	if(!current_dir)
+		emergency_chdir();
+
     if(file_list_mode==FILE_LIST_FOLDER_MODE)
         g_nfileslist=mad_scandir(current_dir,&g_fileslist,&filter_dotfiles,cmp,0);
     else if(file_list_mode==FILE_LIST_LOCATION_MODE)
