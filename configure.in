@@ -1,18 +1,22 @@
-AC_INIT(configure.in)
+AC_PREREQ(2.57)
+AC_INIT(madshelf, 0.1, quickhand@openinkpot.org)
+AM_INIT_AUTOMAKE(foreign)
 
 AM_CONFIG_HEADER(src/config.h)
-AM_INIT_AUTOMAKE(madshelf, 0.1)
 
 AC_PROG_CC
-AM_PROG_LIBTOOL
 
 PKG_PROG_PKG_CONFIG
 
-AM_WITH_EXPAT
-
 PKG_CHECK_MODULES(EINA, [eina-0])
-PKG_CHECK_MODULES(EWL, [ewl >= 0.5.2.042])
-PKG_CHECK_MODULES(EET, [eet >= 1.0.1])
+#PKG_CHECK_MODULES(EET, [eet >= 1.0.1])
 PKG_CHECK_MODULES(EXTRACT, [libextractor])
 PKG_CHECK_MODULES(SQLITE, [sqlite3])
+PKG_CHECK_MODULES(ECORE_EVAS, [ecore-evas])
+PKG_CHECK_MODULES(ECORE_CONFIG, [ecore-config])
+PKG_CHECK_MODULES(EFREET, [efreet])
+PKG_CHECK_MODULES(EFREET_MIME, [efreet-mime])
+PKG_CHECK_MODULES(EDJE, [edje])
+PKG_CHECK_MODULES(ECHOICEBOX, [echoicebox])
+
 AC_OUTPUT(Makefile src/Makefile themes/Makefile po/Makefile)

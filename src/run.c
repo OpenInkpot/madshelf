@@ -18,29 +18,36 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef MADSHELF_DATABASE_H
-#define MADSHELF_DATABASE_H
+#include <Efreet.h>
 
-#include <stdbool.h>
+#include "run.h"
+#include "handlers.h"
+#include "fileinfo.h"
 
-typedef struct tags_t tags_t;
-
-tags_t* tags_init(const char* filename, char** errstr);
-void tags_fini(tags_t*);
-
-typedef enum
+void run_default_handler(handlers_t* handlers, const char* filename)
 {
-    DB_SORT_NAME,
-    DB_SORT_NAMEREV,
-    DB_SORT_ORDER,
-} tags_sort_t;
+     fileinfo_t* fileinfo = fileinfo_create(filename);
+     Eina_List* handlers_list = handlers_get(handlers, fileinfo->mime_type);
+     fileinfo_destroy(fileinfo);
 
-typedef void (*tags_list_t)(const char* filename, int serial, void* param);
+     if(!handlers_list)
+         return;
 
-void tag_add(tags_t* db, const char* tag, const char* filename);
-void tag_remove(tags_t* db, const char* tag, const char* filename);
-bool has_tag(tags_t* db, const char* tag, const char* filename);
-void tag_list(tags_t* db, const char* tag, tags_sort_t sort, tags_list_t callback, void* param);
-void tag_clear(tags_t* db, const char* tag);
+     Efreet_Desktop* handler = eina_list_data_get(handlers_list);
 
+#ifdef OLD_ECORE
+     Ecore_List* l = ecore_list_new();
+     ecore_list_append(l, (void*)filename);
+#else
+     Eina_List* l = NULL;
+     l = eina_list_append(l, filename);
 #endif
+
+     efreet_desktop_exec(handler, l, NULL);
+
+#ifdef OLD_ECORE
+     ecore_list_destroy(l);
+#else
+     eina_list_free(l);
+#endif
+}

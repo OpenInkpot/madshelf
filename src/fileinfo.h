@@ -18,29 +18,34 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef MADSHELF_DATABASE_H
-#define MADSHELF_DATABASE_H
+#ifndef FILEINFO_H
+#define FILEINFO_H
 
 #include <stdbool.h>
+#include <Eina.h>
 
-typedef struct tags_t tags_t;
-
-tags_t* tags_init(const char* filename, char** errstr);
-void tags_fini(tags_t*);
-
-typedef enum
+typedef struct
 {
-    DB_SORT_NAME,
-    DB_SORT_NAMEREV,
-    DB_SORT_ORDER,
-} tags_sort_t;
+    char* filename;
+    char* basename;
+    long long mtime;
+    long long size;
+    bool exists;
+    bool is_dir;
 
-typedef void (*tags_list_t)(const char* filename, int serial, void* param);
+    char* mime_type;
+    char* author;
+    char* title;
+    char* series;
+    int series_num;
+} fileinfo_t;
 
-void tag_add(tags_t* db, const char* tag, const char* filename);
-void tag_remove(tags_t* db, const char* tag, const char* filename);
-bool has_tag(tags_t* db, const char* tag, const char* filename);
-void tag_list(tags_t* db, const char* tag, tags_sort_t sort, tags_list_t callback, void* param);
-void tag_clear(tags_t* db, const char* tag);
+void fileinfo_init();
+
+fileinfo_t* fileinfo_create(const char* filename);
+
+void fileinfo_destroy(fileinfo_t*);
+
+void fileinfo_fini();
 
 #endif

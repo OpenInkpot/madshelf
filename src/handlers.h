@@ -18,29 +18,24 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef MADSHELF_DATABASE_H
-#define MADSHELF_DATABASE_H
+#ifndef HANDLERS_H
+#define HANDLERS_H
 
-#include <stdbool.h>
+#include <Eina.h>
 
-typedef struct tags_t tags_t;
+typedef struct handlers_t handlers_t;
 
-tags_t* tags_init(const char* filename, char** errstr);
-void tags_fini(tags_t*);
+handlers_t* handlers_init();
 
-typedef enum
-{
-    DB_SORT_NAME,
-    DB_SORT_NAMEREV,
-    DB_SORT_ORDER,
-} tags_sort_t;
+/*
+ * Returns list of Efreet_Desktop* handlers for given mime type, sorted by the
+ * decreasing of priority. Returns empty list if no handler exists for given
+ * mime type.
+ *
+ * To be freed by eina_list_free().
+ */
+Eina_List* handlers_get(handlers_t* handlers, const char* mime_type);
 
-typedef void (*tags_list_t)(const char* filename, int serial, void* param);
-
-void tag_add(tags_t* db, const char* tag, const char* filename);
-void tag_remove(tags_t* db, const char* tag, const char* filename);
-bool has_tag(tags_t* db, const char* tag, const char* filename);
-void tag_list(tags_t* db, const char* tag, tags_sort_t sort, tags_list_t callback, void* param);
-void tag_clear(tags_t* db, const char* tag);
+void handlers_fini(handlers_t* handlers);
 
 #endif

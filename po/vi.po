@@ -54,7 +54,7 @@ msgstr "Định Dạng Ngôn Ngữ"
 
 #: madshelf_main.c:758
 msgid "Go to"
-msgstr Chuyển Đến""
+msgstr "Chuyển Đến"
 
 #: madshelf_main.c:758
 msgid "Scripts"

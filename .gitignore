@@ -1,4 +1,5 @@
 *.o
+*.mo
 *~
 .deps
 INSTALL
@@ -19,3 +20,4 @@ ltmain.sh
 madshelf
 missing
 stamp-h1
+themes/echoicebox.edci

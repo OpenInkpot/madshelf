@@ -3,7 +3,7 @@
 DEB_HOST_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 
-CFLAGS = -Wall -g
+CFLAGS= -g
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
@@ -11,13 +11,14 @@ else
 	CFLAGS += -O2
 endif
 
+CFLAGS += -DOLD_ECORE
+
 flavours := v3 n516
 
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	autoreconf -fiv
-	CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr
+	CFLAGS="$(CFLAGS)" ./autogen.sh --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --sysconfdir=/etc
 	touch $@
 
 build: build-stamp
@@ -40,26 +41,13 @@ install: build
 
 	$(MAKE) install DESTDIR=$(CURDIR)/debian/madshelf
 
-	mkdir -p $(CURDIR)/debian/madshelf/usr/share/madshelf
-	cp themes/*.edj $(CURDIR)/debian/madshelf/usr/share/madshelf
-	cp themes/*.png $(CURDIR)/debian/madshelf/usr/share/madshelf
-	
-	mkdir -p $(CURDIR)/debian/madshelf/home
 	mkdir -p $(CURDIR)/debian/madshelf/usr/lib/madshelf/extractors
-	cp -a $(CURDIR)/debian/.madshelf $(CURDIR)/debian/madshelf/home
-
-	for FLAVOUR in $(flavours); do \
-		CONF_DIR=$(CURDIR)/debian/madshelf-settings-$$FLAVOUR/home/.madshelf; \
-		mkdir -p $$CONF_DIR; \
-		install -T -m 0644 $(CURDIR)/debian/config-$$FLAVOUR $$CONF_DIR/config; \
-	done
-
+	mkdir -p $(CURDIR)/debian/madshelf/etc/madshelf
+	install -m 0644 $(CURDIR)/debian/disks.conf $(CURDIR)/debian/madshelf/etc/madshelf
 
 binary-arch: build install
 	dh_testdir
 	dh_testroot
-#	dh_installdocs
-#	dh_installchangelogs
 	dh_compress
 	dh_fixperms
 	dh_makeshlibs
@@ -67,7 +55,6 @@ binary-arch: build install
 	dh_installdeb
 	dh_shlibdeps
 	dh_gencontrol
-	dh_md5sums
 	dh_builddeb
 
 binary-indep: build install

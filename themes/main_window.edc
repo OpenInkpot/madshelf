@@ -1,0 +1,429 @@
+#include <echoicebox.edci>
+
+images {
+   image, "icon-battery-000.png" COMP;
+   image, "icon-battery-020.png" COMP;
+   image, "icon-battery-040.png" COMP;
+   image, "icon-battery-060.png" COMP;
+   image, "icon-battery-080.png" COMP;
+   image, "icon-battery-100.png" COMP;
+
+
+   image, "grid1-side-right.png" COMP;
+   image, "grid1-body.png" COMP;
+   image, "grid1-side-left.png" COMP;
+   image, "grid2-side-right.png" COMP;
+   image, "grid2-body.png" COMP;
+   image, "grid2-side-left.png" COMP;
+   image, "sel-side.png" COMP;
+
+   image, "sort-none.png" COMP;
+   image, "sort-name.png" COMP;
+   image, "sort-namerev.png" COMP;
+   image, "sort-order.png" COMP;
+}
+
+styles {
+   style {
+      name, "title";
+      base, "font=serif font_size=28 color=#000 align=left valign=bottom";
+      tag, "inactive" "+color=#888";
+      tag, "/inactive" "-";
+   }
+}
+
+
+collections {
+    group {
+        name, "main_window";
+        parts {
+            part {
+                name, "background";
+                type, RECT;
+                mouse_events, 0;
+                description {
+                    state, "default" 0.0;
+                    color, 0 0 0 255;
+                    rel1 { relative, 0.0 0.0; offset, 0 0; }
+                    rel2 { relative, 1.0 1.0; offset, -1 -1; }
+                }
+            }
+            part {
+               name, "contents-background";
+               type, RECT;
+               mouse_events, 0;
+               description {
+                  state, "default" 0.0;
+                  color, 255 255 255 255;
+                  rel1 { relative, 0.0 0.0; offset, 0 49; }
+                  rel2 { relative, 1.0 1.0; offset, -1 -50; }
+               }
+            }
+            part {
+               name, "contents";
+               type, SWALLOW;
+               description {
+                  state, "default" 0.0;
+                  rel1 { relative, 0.0 0.0; offset, 0 49; }
+                  rel2 { relative, 1.0 1.0; offset, -1 -50; }
+               }
+            }
+            part {
+               name, "title";
+               type, TEXT;
+               description {
+                  state, "default" 0.0;
+                  color, 255 255 255 255;
+                  text {
+                     text, "path";
+                     font, "serif";
+                     size, 28;
+                     align, 0.0 0.5;
+                  }
+                  rel1 { relative, 0.0 0.0; offset, 5 0; }
+                  rel2 { relative, 1.0 0.0; offset, -1 49; }
+               }
+            }
+            part {
+               name, "footer";
+               type, TEXT;
+               description {
+                  state, "default" 0.0;
+                  color, 255 255 255 255;
+                  text {
+                     text, "[footer]";
+                     font, "serif";
+                     size, 28;
+                  }
+                  rel1 {
+                     relative, 0.0 1.0;
+                     offset, 0 -49;
+                  }
+                  rel2 {
+                     relative, 1.0 1.0;
+                     offset, -1 -1;
+                  }
+               }
+            }
+            part {
+                name, "battery";
+                type, IMAGE;
+                mouse_events, 0;
+                description {
+                    state, "default" 0.0;
+                    rel1 { relative, 1.0 1.0; offset, -51 -34; }
+                    rel2 { relative, 1.0 1.0; offset, -16 -16; }
+                    image { normal, "icon-battery-000.png"; }
+                }
+                description {
+                    state, "1/4" 0.0;
+                    inherit, "default" 0.0;
+                    image { normal, "icon-battery-020.png"; }
+                }
+                description {
+                    state, "2/4" 0.0;
+                    inherit, "default" 0.0;
+                    image { normal, "icon-battery-040.png"; }
+                }
+                description {
+                    state, "3/4" 0.0;
+                    inherit, "default" 0.0;
+                    image { normal, "icon-battery-060.png"; }
+                }
+                description {
+                    state, "4/4" 0.0;
+                    inherit, "default" 0.0;
+                    image { normal, "icon-battery-080.png"; }
+                }
+                description {
+                    state, "full" 0.0;
+                    inherit, "default" 0.0;
+                    image { normal, "icon-battery-100.png"; }
+                }
+            }
+            part {
+                name, "sort-icon";
+                type, IMAGE;
+                mouse_events, 0;
+                description {
+                    state, "default" 0.0;
+                    rel1 { relative, 0.0 1.0; offset, 9 -40; }
+                    rel2 { relative, 0.0 1.0; offset, 39 -10; }
+                    image { normal, "sort-none.png"; }
+                }
+                description {
+                    state, "name" 0.0;
+                    inherit, "default" 0.0;
+                    image { normal, "sort-name.png"; }
+                }
+                description {
+                    state, "namerev" 0.0;
+                    inherit, "default" 0.0;
+                    image { normal, "sort-namerev.png"; }
+                }
+                description {
+                    state, "order" 0.0;
+                    inherit, "default" 0.0;
+                    image { normal, "sort-order.png"; }
+                }
+            }
+            part {
+               name, "left-context-menu";
+               type, SWALLOW;
+               description {
+                  state, "default" 0.0;
+                  rel1 { relative, 0.0 0.0; offset, 0 0; }
+                  rel2 { relative, 0.5 1.0; offset, -1 -1; }
+               }
+            }
+            part {
+               name, "right-context-menu";
+               type, SWALLOW;
+               description {
+                  state, "default" 0.0;
+                  rel1 { relative, 0.5 0.0; offset, 0 0; }
+                  rel2 { relative, 1.0 1.0; offset, -1 -1; }
+               }
+            }
+        }
+        programs {
+            program {
+                name, "set_batt_full";
+                signal, "set_batt_full";
+                script {
+                    set_state(PART:"battery", "full", 0.0);
+                }
+            }
+            program {
+                name, "set_batt_1/4";
+                signal, "set_batt_1/4";
+                script {
+                    set_state(PART:"battery", "1/4", 0.0);
+                }
+            }
+            program {
+                name, "set_batt_2/4";
+                signal, "set_batt_2/4";
+                script {
+                    set_state(PART:"battery", "2/4", 0.0);
+                }
+            }
+            program {
+                name, "set_batt_3/4";
+                signal, "set_batt_3/4";
+                script {
+                    set_state(PART:"battery", "3/4", 0.0);
+                }
+            }
+            program {
+                name, "set_batt_4/4";
+                signal, "set_batt_4/4";
+                script {
+                    set_state(PART:"battery", "4/4", 0.0);
+                }
+            }
+            program {
+                name, "set_batt_empty";
+                signal, "set_batt_empty";
+                script {
+                    set_state(PART:"battery", "default", 0.0);
+                }
+            }
+
+            program {
+                name, "set-sort-none";
+                signal, "set-sort-none";
+                script {
+                    set_state(PART:"sort-icon", "default", 0.0);
+                }
+            }
+            program {
+                name, "set-sort-name";
+                signal, "set-sort-name";
+                script {
+                    set_state(PART:"sort-icon", "name", 0.0);
+                }
+            }
+            program {
+                name, "set-sort-namerev";
+                signal, "set-sort-namerev";
+                script {
+                    set_state(PART:"sort-icon", "namerev", 0.0);
+                }
+            }
+            program {
+                name, "set-sort-order";
+                signal, "set-sort-order";
+                script {
+                    set_state(PART:"sort-icon", "order", 0.0);
+                }
+            }
+        }
+    }
+    group {
+        name, "settings";
+        parts {
+            part {
+                name, "background";
+                type, RECT;
+                mouse_events, 0;
+                description {
+                    state, "default" 0.0;
+                    color, 0 0 0 255;
+                    rel1 { relative, 0.0 0.0; offset, 0 0; }
+                    rel2 { relative, 1.0 1.0; offset, -1 -1; }
+                }
+            }
+            part {
+               name, "contents-background";
+               type, RECT;
+               mouse_events, 0;
+               description {
+                  state, "default" 0.0;
+                  color, 255 255 255 255;
+                  rel1 { relative, 0.0 0.0; offset, 0 49; }
+                  rel2 { relative, 1.0 1.0; offset, -1 -50; }
+               }
+            }
+            part {
+               name, "contents";
+               type, SWALLOW;
+               description {
+                  state, "default" 0.0;
+                  rel1 { relative, 0.0 0.0; offset, 0 49; }
+                  rel2 { relative, 1.0 1.0; offset, -1 -50; }
+               }
+            }
+            part {
+               name, "title";
+               type, TEXT;
+               description {
+                  state, "default" 0.0;
+                  color, 255 255 255 255;
+                  text {
+                     text, "path";
+                     font, "serif";
+                     size, 28;
+                     align, 0.0 0.5;
+                  }
+                  rel1 { relative, 0.0 0.0; offset, 5 0; }
+                  rel2 { relative, 1.0 0.0; offset, -1 49; }
+               }
+            }
+            part {
+               name, "footer";
+               type, TEXT;
+               description {
+                  state, "default" 0.0;
+                  color, 255 255 255 255;
+                  text {
+                     text, "[footer]";
+                     font, "serif";
+                     size, 28;
+                  }
+                  rel1 {
+                     relative, 0.0 1.0;
+                     offset, 0 -49;
+                  }
+                  rel2 {
+                     relative, 1.0 1.0;
+                     offset, -1 -1;
+                  }
+               }
+            }
+        }
+    }
+    START_FULL_SIZE_ITEM_GROUP("fileitem")
+         part {
+            name, "title";
+            type, TEXTBLOCK;
+            mouse_events, 0;
+            clip_to, "clipper";
+            description {
+               state, "default" 0.0;
+               text {
+                  style, "title";
+                  text, "";
+               }
+               rel1 { relative, 0.0 0.0; offset, 17 21; }
+               rel2 { relative, 1.0 1.0; offset, -18 -22; }
+            }
+         }
+         part {
+            name, "author";
+            type, TEXT;
+            mouse_events, 0;
+            clip_to, "clipper";
+            description {
+               state, "default" 0.0;
+               color, 0 0 0 255;
+               text {
+                  align, 0.0 0.0;
+                  text, "";
+                  font, "serif";
+                  size, 20;
+                  text_class, "chrome";
+               }
+               rel1 { relative, 0.0 0.0; offset, 17 0; }
+               rel2 { relative, 1.0 1.0; offset, -18 -1; }
+            }
+         }
+         part {
+            name, "series";
+            type, TEXT;
+            mouse_events, 0;
+            clip_to, "clipper";
+            description {
+               state, "default" 0.0;
+               color, 0 0 0 255;
+               text {
+                  align, 0.0 1.0;
+                  text, "";
+                  font, "serif";
+                  size, 20;
+                  text_class, "chrome";
+               }
+               rel1 { relative, 0.0 0.0; offset, 17 0; }
+               rel2 { relative, 1.0 1.0; offset, -18 -1; }
+            }
+         }
+         part {
+            name, "type";
+            type, TEXT;
+            mouse_events, 0;
+            clip_to, "clipper";
+            description {
+               state, "default" 0.0;
+               color, 0 0 0 255;
+               text {
+                  align, 1.0 0.0;
+                  text, "";
+                  font, "serif";
+                  size, 20;
+                  text_class, "chrome";
+               }
+               rel1 { relative, 0.0 0.0; offset, 17 0; }
+               rel2 { relative, 1.0 1.0; offset, -18 -1; }
+            }
+         }
+         part {
+            name, "size";
+            type, TEXT;
+            mouse_events, 0;
+            clip_to, "clipper";
+            description {
+               state, "default" 0.0;
+               color, 0 0 0 255;
+               text {
+                  align, 1.0 1.0;
+                  text, "";
+                  font, "serif";
+                  size, 20;
+                  text_class, "chrome";
+               }
+               rel1 { relative, 0.0 0.0; offset, 17 0; }
+               rel2 { relative, 1.0 1.0; offset, -18 -1; }
+            }
+         }
+    END_FULL_SIZE_ITEM_GROUP
+}

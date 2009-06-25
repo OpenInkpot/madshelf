@@ -18,29 +18,12 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef MADSHELF_DATABASE_H
-#define MADSHELF_DATABASE_H
+#ifndef FAVORITES_MENU_H
+#define FAVORITES_MENU_H
 
-#include <stdbool.h>
+#include <Eina.h>
+#include "madshelf.h"
 
-typedef struct tags_t tags_t;
-
-tags_t* tags_init(const char* filename, char** errstr);
-void tags_fini(tags_t*);
-
-typedef enum
-{
-    DB_SORT_NAME,
-    DB_SORT_NAMEREV,
-    DB_SORT_ORDER,
-} tags_sort_t;
-
-typedef void (*tags_list_t)(const char* filename, int serial, void* param);
-
-void tag_add(tags_t* db, const char* tag, const char* filename);
-void tag_remove(tags_t* db, const char* tag, const char* filename);
-bool has_tag(tags_t* db, const char* tag, const char* filename);
-void tag_list(tags_t* db, const char* tag, tags_sort_t sort, tags_list_t callback, void* param);
-void tag_clear(tags_t* db, const char* tag);
+madshelf_loc_t* favorites_menu_make(madshelf_state_t* state);
 
 #endif

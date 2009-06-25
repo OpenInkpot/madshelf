@@ -18,29 +18,12 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef MADSHELF_DATABASE_H
-#define MADSHELF_DATABASE_H
+#ifndef RUN_H
+#define RUN_H
 
-#include <stdbool.h>
+#include "handlers.h"
 
-typedef struct tags_t tags_t;
-
-tags_t* tags_init(const char* filename, char** errstr);
-void tags_fini(tags_t*);
-
-typedef enum
-{
-    DB_SORT_NAME,
-    DB_SORT_NAMEREV,
-    DB_SORT_ORDER,
-} tags_sort_t;
-
-typedef void (*tags_list_t)(const char* filename, int serial, void* param);
-
-void tag_add(tags_t* db, const char* tag, const char* filename);
-void tag_remove(tags_t* db, const char* tag, const char* filename);
-bool has_tag(tags_t* db, const char* tag, const char* filename);
-void tag_list(tags_t* db, const char* tag, tags_sort_t sort, tags_list_t callback, void* param);
-void tag_clear(tags_t* db, const char* tag);
+void run_default_handler(handlers_t* handlers, const char* filename);
 
 #endif
+

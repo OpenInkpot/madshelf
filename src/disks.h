@@ -18,29 +18,34 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef MADSHELF_DATABASE_H
-#define MADSHELF_DATABASE_H
+#ifndef DISKS_H
+#define DISKS_H
 
 #include <stdbool.h>
+#include <Efreet.h>
 
-typedef struct tags_t tags_t;
-
-tags_t* tags_init(const char* filename, char** errstr);
-void tags_fini(tags_t*);
-
-typedef enum
+typedef struct
 {
-    DB_SORT_NAME,
-    DB_SORT_NAMEREV,
-    DB_SORT_ORDER,
-} tags_sort_t;
+    char* name;
+    char* short_name;
+    char* path;
+    bool copy_target;
 
-typedef void (*tags_list_t)(const char* filename, int serial, void* param);
+    /* State */
+    char* current_path;
+} madshelf_disk_t;
 
-void tag_add(tags_t* db, const char* tag, const char* filename);
-void tag_remove(tags_t* db, const char* tag, const char* filename);
-bool has_tag(tags_t* db, const char* tag, const char* filename);
-void tag_list(tags_t* db, const char* tag, tags_sort_t sort, tags_list_t callback, void* param);
-void tag_clear(tags_t* db, const char* tag);
+typedef struct
+{
+    int n;
+    madshelf_disk_t* disk;
+} madshelf_disks_t;
+
+madshelf_disks_t* fill_disks(Efreet_Ini* config);
+madshelf_disks_t* fill_stub_disk();
+
+madshelf_disk_t* find_disk(madshelf_disks_t* disks, const char* filename);
+
+void free_disks(madshelf_disks_t*);
 
 #endif

@@ -1,32 +1,16 @@
 Source: madshelf
 Section: media
 Maintainer: Mikhail Gusarov <dottedmag@dottedmag.net>
-XCS-Cross-Host-Build-Depends: debhelper (>> 2.0.0), autoconf, automake, libtool, pkg-config
-XCS-Cross-Build-Depends: libeet-dev, libewl1-dev, libfontconfig-dev, libextractor-dummy-dev, libsqlite3-dev
+XCS-Cross-Host-Build-Depends: debhelper (>= 7), autoconf, automake, pkg-config
+XCS-Cross-Build-Depends: libextractor-dummy-dev, libsqlite3-dev, echoicebox-dev (>= 0.1-12), libeina-dev, libecore-dev, libefreet-dev, libedje-dev
+Build-Depends: debhelper (>= 7), autoconf, automake, pkg-config, libextractor-dummy-dev, libsqlite3-dev, echoicebox-dev (>= 0.1-12), libeina-dev, libecore-dev, libefreet-dev, libedje-dev
 Priority: optional
 Standards-Version: 3.6.2
 Format: 3.0 (native)
 
 Package: madshelf
 Architecture: any
-Depends: ${shlibs:Depends}, madshelf-settings
+Depends: ${shlibs:Depends}
+Conflicts: madshelf-settings-v3 (<< 0.2), madshelf-settings-n516 (<< 0.2)
 Description: Bookshelf application
  Bookshelf application.
-
-Package: madshelf-settings-v3
-Architecture: all
-Depends: madshelf (>= 0.1-25)
-Provides: madshelf-settings
-Conflicts: madshelf-settings
-Replaces: madshelf-settings
-Description: Settings for madshelf (V3)
- Settings for madshelf (V3)
-
-Package: madshelf-settings-n516
-Architecture: all
-Depends: madshelf (>= 0.1-25)
-Provides: madshelf-settings
-Conflicts: madshelf-settings
-Replaces: madshelf-settings
-Description: Settings for madshelf (n516)
- Settings for madshelf (n516)
