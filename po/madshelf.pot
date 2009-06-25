@@ -2,14 +2,13 @@
 # Copyright (C) 2008 Marc Lajoie <manorapide@hotmail.com>
 # Copyright (C) 2008,2009 Mikhail Gusarov <dottedmag@dottedmag.net>
 # This file is in public domain
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-07 19:23+0700\n"
+"Project-Id-Version: madshelf 0.1\n"
+"Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
+"POT-Creation-Date: 2009-06-25 21:28+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,86 +16,109 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: madshelf_main.c:266
-msgid "%m-%d-%y"
+#: src/favorites.c:91 src/favorites.c:262 src/overview.c:94
+#: src/favorites_menu.c:39
+msgid "Favorites"
 msgstr ""
 
-#: madshelf_main.c:698
-msgid "no books"
+#: src/favorites.c:92
+msgid "Favorite books"
 msgstr ""
 
-#: madshelf_main.c:731
-msgid "reverse-sorted by name"
+#: src/favorites.c:93
+msgid "Favorite pictures"
 msgstr ""
 
-#: madshelf_main.c:733
-msgid "sorted by name"
+#: src/favorites.c:94
+msgid "Favorite music"
 msgstr ""
 
-#: madshelf_main.c:738
-msgid "reverse-sorted by time"
+#: src/favorites.c:194 src/dir.c:363
+msgid "Remove from favorites"
 msgstr ""
 
-#: madshelf_main.c:740
-msgid "sorted by time"
+#: src/favorites.c:217 src/dir.c:411 src/recent.c:197
+msgid "Actions"
 msgstr ""
 
-#: madshelf_main.c:758
-msgid "Sort by Name"
+#: src/favorites.c:228 src/recent.c:208
+msgid "Sort by name"
 msgstr ""
 
-#: madshelf_main.c:758
-msgid "Sort by Time"
+#: src/favorites.c:229 src/recent.c:209
+msgid "Sort by name (reversed)"
 msgstr ""
 
-#: madshelf_main.c:758
-msgid "Reverse Sort Order"
+#: src/favorites.c:230 src/recent.c:210
+msgid "Sort by order"
 msgstr ""
 
-#: madshelf_main.c:758
-msgid "Language Settings"
+#: src/favorites.c:231
+msgid "Clear favorites"
 msgstr ""
 
-#: madshelf_main.c:758
-msgid "Go to"
+#: src/overview.c:97 src/recent.c:91 src/recent.c:243
+msgid "Recent files"
 msgstr ""
 
-#: madshelf_main.c:758
-msgid "Scripts"
+#: src/file_context_menu.c:177
+#, c-format
+msgid "Open (with %s)"
 msgstr ""
 
-#: madshelf_main.c:758
-msgid "Edit"
+#: src/file_context_menu.c:179
+#, c-format
+msgid "Open with %s"
 msgstr ""
 
-#: madshelf_main.c:765
-msgid "Menu"
-msgstr ""
-
-#: madshelf_main.c:779
-msgid "Paste"
-msgstr ""
-
-#: madshelf_main.c:794
-msgid "Cut"
-msgstr ""
-
-#: madshelf_main.c:794
-msgid "Copy"
-msgstr ""
-
-#: madshelf_main.c:794
+#: src/file_context_menu.c:206
 msgid "Delete"
 msgstr ""
 
-#: madshelf_main.c:970 madshelf_main.c:977
-msgid "No"
+#: src/disks.c:125
+msgid "Whole filesystem"
 msgstr ""
 
-#: madshelf_main.c:971 madshelf_main.c:978
-msgid "Yes"
+#: src/fileinfo_render.c:114
+msgid "Does not exist"
 msgstr ""
 
-#: madshelf_main.c:1787
-msgid "Delete file?"
+#: src/fileinfo_render.c:121
+msgid "Directory"
+msgstr ""
+
+#: src/dir.c:351
+msgid "Open"
+msgstr ""
+
+#: src/dir.c:356
+msgid "Unhide"
+msgstr ""
+
+#: src/dir.c:358
+msgid "Hide"
+msgstr ""
+
+#: src/dir.c:365
+msgid "Add to favorites"
+msgstr ""
+
+#: src/dir.c:435
+msgid "Do not show hidden files"
+msgstr ""
+
+#: src/dir.c:437
+msgid "Show hidden files"
+msgstr ""
+
+#: src/dir.c:471
+msgid "Menu"
+msgstr ""
+
+#: src/recent.c:172
+msgid "Remove from recent files"
+msgstr ""
+
+#: src/recent.c:211
+msgid "Clear recent files"
 msgstr ""

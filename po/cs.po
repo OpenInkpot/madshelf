@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-07 19:23+0700\n"
+"Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
+"POT-Creation-Date: 2009-06-25 21:28+0700\n"
 "PO-Revision-Date: 2009-02-12 12:35+0100\n"
 "Last-Translator: ben1981 <ben1981@centrum.cz>\n"
 "Language-Team: Czech <openinkpot-hackers@googlegroups.com>\n"
@@ -16,86 +16,162 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: madshelf_main.c:266
-msgid "%m-%d-%y"
-msgstr "%m-%d-%y"
+#: src/favorites.c:91 src/favorites.c:262 src/overview.c:94
+#: src/favorites_menu.c:39
+msgid "Favorites"
+msgstr ""
 
-#: madshelf_main.c:698
-msgid "no books"
+#: src/favorites.c:92
+#, fuzzy
+msgid "Favorite books"
 msgstr "žádné knihy"
 
-#: madshelf_main.c:731
-msgid "reverse-sorted by name"
-msgstr "seřazeno pozpátku podle jména"
+#: src/favorites.c:93
+msgid "Favorite pictures"
+msgstr ""
 
-#: madshelf_main.c:733
-msgid "sorted by name"
-msgstr "seřazeno podle jména"
+#: src/favorites.c:94
+msgid "Favorite music"
+msgstr ""
 
-#: madshelf_main.c:738
-msgid "reverse-sorted by time"
-msgstr "seřazeno pozpátku podle času"
+#: src/favorites.c:194 src/dir.c:363
+msgid "Remove from favorites"
+msgstr ""
 
-#: madshelf_main.c:740
-msgid "sorted by time"
-msgstr "seřazeno podle času"
+#: src/favorites.c:217 src/dir.c:411 src/recent.c:197
+msgid "Actions"
+msgstr ""
 
-#: madshelf_main.c:758
-msgid "Sort by Name"
+#: src/favorites.c:228 src/recent.c:208
+#, fuzzy
+msgid "Sort by name"
 msgstr "Seřadit podle Jména"
 
-#: madshelf_main.c:758
-msgid "Sort by Time"
-msgstr "Seřadit podle Času"
+#: src/favorites.c:229 src/recent.c:209
+#, fuzzy
+msgid "Sort by name (reversed)"
+msgstr "Seřadit podle Jména"
 
-#: madshelf_main.c:758
-msgid "Reverse Sort Order"
-msgstr "Seřadit obráceně"
+#: src/favorites.c:230 src/recent.c:210
+#, fuzzy
+msgid "Sort by order"
+msgstr "Seřadit podle Jména"
 
-#: madshelf_main.c:758
-msgid "Language Settings"
-msgstr "Jazyková Nastavení"
+#: src/favorites.c:231
+msgid "Clear favorites"
+msgstr ""
 
-#: madshelf_main.c:758
-msgid "Go to"
-msgstr "Jdi na"
+#: src/overview.c:97 src/recent.c:91 src/recent.c:243
+#, fuzzy
+msgid "Recent files"
+msgstr "Smazat soubor?"
 
-#: madshelf_main.c:758
-msgid "Scripts"
-msgstr "Skripty"
+#: src/file_context_menu.c:177
+#, c-format
+msgid "Open (with %s)"
+msgstr ""
 
-#: madshelf_main.c:758
-msgid "Edit"
-msgstr "Úpravy"
+#: src/file_context_menu.c:179
+#, c-format
+msgid "Open with %s"
+msgstr ""
 
-#: madshelf_main.c:765
-msgid "Menu"
-msgstr "Menu"
-
-#: madshelf_main.c:779
-msgid "Paste"
-msgstr "Vložit"
-
-#: madshelf_main.c:794
-msgid "Cut"
-msgstr "Vystřihnout"
-
-#: madshelf_main.c:794
-msgid "Copy"
-msgstr "Kopírovat"
-
-#: madshelf_main.c:794
+#: src/file_context_menu.c:206
 msgid "Delete"
 msgstr "Smazat"
 
-#: madshelf_main.c:970 madshelf_main.c:977
-msgid "No"
-msgstr "Ne"
+#: src/disks.c:125
+msgid "Whole filesystem"
+msgstr ""
 
-#: madshelf_main.c:971 madshelf_main.c:978
-msgid "Yes"
-msgstr "Ano"
+#: src/fileinfo_render.c:114
+msgid "Does not exist"
+msgstr ""
 
-#: madshelf_main.c:1787
-msgid "Delete file?"
-msgstr "Smazat soubor?"
+#: src/fileinfo_render.c:121
+msgid "Directory"
+msgstr ""
+
+#: src/dir.c:351
+msgid "Open"
+msgstr ""
+
+#: src/dir.c:356
+msgid "Unhide"
+msgstr ""
+
+#: src/dir.c:358
+msgid "Hide"
+msgstr ""
+
+#: src/dir.c:365
+msgid "Add to favorites"
+msgstr ""
+
+#: src/dir.c:435
+msgid "Do not show hidden files"
+msgstr ""
+
+#: src/dir.c:437
+msgid "Show hidden files"
+msgstr ""
+
+#: src/dir.c:471
+msgid "Menu"
+msgstr "Menu"
+
+#: src/recent.c:172
+msgid "Remove from recent files"
+msgstr ""
+
+#: src/recent.c:211
+msgid "Clear recent files"
+msgstr ""
+
+#~ msgid "%m-%d-%y"
+#~ msgstr "%m-%d-%y"
+
+#~ msgid "reverse-sorted by name"
+#~ msgstr "seřazeno pozpátku podle jména"
+
+#~ msgid "sorted by name"
+#~ msgstr "seřazeno podle jména"
+
+#~ msgid "reverse-sorted by time"
+#~ msgstr "seřazeno pozpátku podle času"
+
+#~ msgid "sorted by time"
+#~ msgstr "seřazeno podle času"
+
+#~ msgid "Sort by Time"
+#~ msgstr "Seřadit podle Času"
+
+#~ msgid "Reverse Sort Order"
+#~ msgstr "Seřadit obráceně"
+
+#~ msgid "Language Settings"
+#~ msgstr "Jazyková Nastavení"
+
+#~ msgid "Go to"
+#~ msgstr "Jdi na"
+
+#~ msgid "Scripts"
+#~ msgstr "Skripty"
+
+#~ msgid "Edit"
+#~ msgstr "Úpravy"
+
+#~ msgid "Paste"
+#~ msgstr "Vložit"
+
+#~ msgid "Cut"
+#~ msgstr "Vystřihnout"
+
+#~ msgid "Copy"
+#~ msgstr "Kopírovat"
+
+#~ msgid "No"
+#~ msgstr "Ne"
+
+#~ msgid "Yes"
+#~ msgstr "Ano"

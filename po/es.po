@@ -1,7 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: \n"
+"Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
+"POT-Creation-Date: 2009-06-25 21:28+0700\n"
 "PO-Revision-Date: 2008-10-02 12:42+0100\n"
 "Last-Translator: David García-Abad\n"
 "Language-Team: \n"
@@ -9,50 +10,141 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-# Copyright (C) 2008 THE madshelf'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the madshelf package.
+#: src/favorites.c:91 src/favorites.c:262 src/overview.c:94
+#: src/favorites_menu.c:39
+msgid "Favorites"
+msgstr ""
 
-#: madshelf_main.c:221
-msgid "reverse-sorted by name"
-msgstr "ordenado al revés por nombre"
+#: src/favorites.c:92
+msgid "Favorite books"
+msgstr ""
 
-#: madshelf_main.c:223
-msgid "sorted by name"
-msgstr "ordenado por nombre"
+#: src/favorites.c:93
+msgid "Favorite pictures"
+msgstr ""
 
-#: madshelf_main.c:228
-msgid "reverse-sorted by time"
-msgstr "ordenado al revés por hora"
+#: src/favorites.c:94
+msgid "Favorite music"
+msgstr ""
 
-#: madshelf_main.c:230
-msgid "sorted by time"
-msgstr "ordenado por hora"
+#: src/favorites.c:194 src/dir.c:363
+msgid "Remove from favorites"
+msgstr ""
 
-#: madshelf_main.c:244
+#: src/favorites.c:217 src/dir.c:411 src/recent.c:197
+msgid "Actions"
+msgstr ""
+
+#: src/favorites.c:228 src/recent.c:208
+#, fuzzy
+msgid "Sort by name"
+msgstr "Ordenar por nombre"
+
+#: src/favorites.c:229 src/recent.c:209
+#, fuzzy
+msgid "Sort by name (reversed)"
+msgstr "Ordenar por nombre"
+
+#: src/favorites.c:230 src/recent.c:210
+#, fuzzy
+msgid "Sort by order"
+msgstr "Ordenar por nombre"
+
+#: src/favorites.c:231
+msgid "Clear favorites"
+msgstr ""
+
+#: src/overview.c:97 src/recent.c:91 src/recent.c:243
+msgid "Recent files"
+msgstr ""
+
+#: src/file_context_menu.c:177
+#, c-format
+msgid "Open (with %s)"
+msgstr ""
+
+#: src/file_context_menu.c:179
+#, c-format
+msgid "Open with %s"
+msgstr ""
+
+#: src/file_context_menu.c:206
+msgid "Delete"
+msgstr ""
+
+#: src/disks.c:125
+msgid "Whole filesystem"
+msgstr ""
+
+#: src/fileinfo_render.c:114
+msgid "Does not exist"
+msgstr ""
+
+#: src/fileinfo_render.c:121
+msgid "Directory"
+msgstr ""
+
+#: src/dir.c:351
+msgid "Open"
+msgstr ""
+
+#: src/dir.c:356
+msgid "Unhide"
+msgstr ""
+
+#: src/dir.c:358
+msgid "Hide"
+msgstr ""
+
+#: src/dir.c:365
+msgid "Add to favorites"
+msgstr ""
+
+#: src/dir.c:435
+msgid "Do not show hidden files"
+msgstr ""
+
+#: src/dir.c:437
+msgid "Show hidden files"
+msgstr ""
+
+#: src/dir.c:471
 msgid "Menu"
 msgstr "Menú"
 
-#: madshelf_main.c:246
-msgid "Sort by Name"
-msgstr "Ordenar por nombre"
+#: src/recent.c:172
+msgid "Remove from recent files"
+msgstr ""
 
-#: madshelf_main.c:248
-msgid "Sort by Time"
-msgstr "Ordenar por Hora"
+#: src/recent.c:211
+msgid "Clear recent files"
+msgstr ""
 
-#: madshelf_main.c:250
-msgid "Reverse Sort Order"
-msgstr "Ordenar al Revés"
+# Copyright (C) 2008 THE madshelf'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the madshelf package.
+#~ msgid "reverse-sorted by name"
+#~ msgstr "ordenado al revés por nombre"
 
-#: madshelf_main.c:252
-msgid "Language Settings"
-msgstr "Configuración de Idioma"
+#~ msgid "sorted by name"
+#~ msgstr "ordenado por nombre"
 
-#: madshelf_main.c:254
-msgid "Go to"
-msgstr "Ir a"
+#~ msgid "reverse-sorted by time"
+#~ msgstr "ordenado al revés por hora"
 
-#: madshelf_main.c:256
-msgid "Scripts"
-msgstr "Scripts"
+#~ msgid "sorted by time"
+#~ msgstr "ordenado por hora"
 
+#~ msgid "Sort by Time"
+#~ msgstr "Ordenar por Hora"
+
+#~ msgid "Reverse Sort Order"
+#~ msgstr "Ordenar al Revés"
+
+#~ msgid "Language Settings"
+#~ msgstr "Configuración de Idioma"
+
+#~ msgid "Go to"
+#~ msgstr "Ir a"
+
+#~ msgid "Scripts"
+#~ msgstr "Scripts"

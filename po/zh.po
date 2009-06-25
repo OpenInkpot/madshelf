@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: madshelf 1.10.1\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-02 11:33-0400\n"
+"Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
+"POT-Creation-Date: 2009-06-25 21:28+0700\n"
 "PO-Revision-Date: 2008-07-05 00:39-0400\n"
 "Last-Translator: Marc Lajoie <manorapide@hotmail.com>\n"
 "Language-Team: Chinese\n"
@@ -15,90 +15,162 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: madshelf_main.c:266
-msgid "%m-%d-%y"
+#: src/favorites.c:91 src/favorites.c:262 src/overview.c:94
+#: src/favorites_menu.c:39
+msgid "Favorites"
 msgstr ""
 
-#: madshelf_main.c:642
-msgid "Unknown Author"
-msgstr "未知作者"
-
-#: madshelf_main.c:698
-msgid "no books"
+#: src/favorites.c:92
+#, fuzzy
+msgid "Favorite books"
 msgstr "没有书籍"
 
-#: madshelf_main.c:731
-msgid "reverse-sorted by name"
-msgstr "逆转名字排列"
+#: src/favorites.c:93
+msgid "Favorite pictures"
+msgstr ""
 
-#: madshelf_main.c:733
-msgid "sorted by name"
+#: src/favorites.c:94
+msgid "Favorite music"
+msgstr ""
+
+#: src/favorites.c:194 src/dir.c:363
+msgid "Remove from favorites"
+msgstr ""
+
+#: src/favorites.c:217 src/dir.c:411 src/recent.c:197
+msgid "Actions"
+msgstr ""
+
+#: src/favorites.c:228 src/recent.c:208
+#, fuzzy
+msgid "Sort by name"
 msgstr "按名字排列"
 
-#: madshelf_main.c:738
-msgid "reverse-sorted by time"
-msgstr "逆转时间排列"
-
-#: madshelf_main.c:740
-msgid "sorted by time"
-msgstr "按时间排列"
-
-#: madshelf_main.c:758
-msgid "Sort by Name"
+#: src/favorites.c:229 src/recent.c:209
+#, fuzzy
+msgid "Sort by name (reversed)"
 msgstr "按名字排列"
 
-#: madshelf_main.c:758
-msgid "Sort by Time"
-msgstr "按时间排列"
+#: src/favorites.c:230 src/recent.c:210
+#, fuzzy
+msgid "Sort by order"
+msgstr "按名字排列"
 
-#: madshelf_main.c:758
-msgid "Reverse Sort Order"
-msgstr "逆转排列顺序"
+#: src/favorites.c:231
+msgid "Clear favorites"
+msgstr ""
 
-#: madshelf_main.c:758
-msgid "Language Settings"
-msgstr "语言设置"
+#: src/overview.c:97 src/recent.c:91 src/recent.c:243
+#, fuzzy
+msgid "Recent files"
+msgstr "删除文件？"
 
-#: madshelf_main.c:758
-msgid "Go to"
-msgstr "跳转到"
+#: src/file_context_menu.c:177
+#, c-format
+msgid "Open (with %s)"
+msgstr ""
 
-#: madshelf_main.c:758
-msgid "Scripts"
-msgstr "脚本"
+#: src/file_context_menu.c:179
+#, c-format
+msgid "Open with %s"
+msgstr ""
 
-#: madshelf_main.c:758
-msgid "Edit"
-msgstr "编辑"
-
-#: madshelf_main.c:765
-msgid "Menu"
-msgstr "菜单"
-
-#: madshelf_main.c:779
-msgid "Paste"
-msgstr "粘贴"
-
-#: madshelf_main.c:794
-msgid "Cut"
-msgstr "剪切"
-
-#: madshelf_main.c:794
-msgid "Copy"
-msgstr "拷贝"
-
-#: madshelf_main.c:794
+#: src/file_context_menu.c:206
 msgid "Delete"
 msgstr "删除"
 
-#: madshelf_main.c:943 madshelf_main.c:950
-msgid "No"
-msgstr "否"
+#: src/disks.c:125
+msgid "Whole filesystem"
+msgstr ""
 
-#: madshelf_main.c:944 madshelf_main.c:951
-msgid "Yes"
-msgstr "是"
+#: src/fileinfo_render.c:114
+msgid "Does not exist"
+msgstr ""
 
-#: madshelf_main.c:1757
-msgid "Delete file?"
-msgstr "删除文件？"
+#: src/fileinfo_render.c:121
+msgid "Directory"
+msgstr ""
+
+#: src/dir.c:351
+msgid "Open"
+msgstr ""
+
+#: src/dir.c:356
+msgid "Unhide"
+msgstr ""
+
+#: src/dir.c:358
+msgid "Hide"
+msgstr ""
+
+#: src/dir.c:365
+msgid "Add to favorites"
+msgstr ""
+
+#: src/dir.c:435
+msgid "Do not show hidden files"
+msgstr ""
+
+#: src/dir.c:437
+msgid "Show hidden files"
+msgstr ""
+
+#: src/dir.c:471
+msgid "Menu"
+msgstr "菜单"
+
+#: src/recent.c:172
+msgid "Remove from recent files"
+msgstr ""
+
+#: src/recent.c:211
+msgid "Clear recent files"
+msgstr ""
+
+#~ msgid "Unknown Author"
+#~ msgstr "未知作者"
+
+#~ msgid "reverse-sorted by name"
+#~ msgstr "逆转名字排列"
+
+#~ msgid "sorted by name"
+#~ msgstr "按名字排列"
+
+#~ msgid "reverse-sorted by time"
+#~ msgstr "逆转时间排列"
+
+#~ msgid "sorted by time"
+#~ msgstr "按时间排列"
+
+#~ msgid "Sort by Time"
+#~ msgstr "按时间排列"
+
+#~ msgid "Reverse Sort Order"
+#~ msgstr "逆转排列顺序"
+
+#~ msgid "Language Settings"
+#~ msgstr "语言设置"
+
+#~ msgid "Go to"
+#~ msgstr "跳转到"
+
+#~ msgid "Scripts"
+#~ msgstr "脚本"
+
+#~ msgid "Edit"
+#~ msgstr "编辑"
+
+#~ msgid "Paste"
+#~ msgstr "粘贴"
+
+#~ msgid "Cut"
+#~ msgstr "剪切"
+
+#~ msgid "Copy"
+#~ msgstr "拷贝"
+
+#~ msgid "No"
+#~ msgstr "否"
+
+#~ msgid "Yes"
+#~ msgstr "是"

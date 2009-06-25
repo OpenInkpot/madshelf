@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: madshelf 0.1\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-02 11:33-0400\n"
+"Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
+"POT-Creation-Date: 2009-06-25 21:28+0700\n"
 "PO-Revision-Date: 2008-07-04 15:58-0400\n"
 "Last-Translator: Marc Lajoie <manorapide@hotmail.com>\n"
 "Language-Team: French\n"
@@ -16,90 +16,165 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: madshelf_main.c:266
-msgid "%m-%d-%y"
-msgstr "%d-%m-%y"
+#: src/favorites.c:91 src/favorites.c:262 src/overview.c:94
+#: src/favorites_menu.c:39
+msgid "Favorites"
+msgstr ""
 
-#: madshelf_main.c:642
-msgid "Unknown Author"
-msgstr "Auteur Inconnu"
-
-#: madshelf_main.c:698
-msgid "no books"
+#: src/favorites.c:92
+#, fuzzy
+msgid "Favorite books"
 msgstr "aucun livre"
 
-#: madshelf_main.c:731
-msgid "reverse-sorted by name"
-msgstr "triage-inverse par nom"
+#: src/favorites.c:93
+msgid "Favorite pictures"
+msgstr ""
 
-#: madshelf_main.c:733
-msgid "sorted by name"
-msgstr "triage par nom"
+#: src/favorites.c:94
+msgid "Favorite music"
+msgstr ""
 
-#: madshelf_main.c:738
-msgid "reverse-sorted by time"
-msgstr "triage-inverse par date"
+#: src/favorites.c:194 src/dir.c:363
+msgid "Remove from favorites"
+msgstr ""
 
-#: madshelf_main.c:740
-msgid "sorted by time"
-msgstr "triage par date"
+#: src/favorites.c:217 src/dir.c:411 src/recent.c:197
+msgid "Actions"
+msgstr ""
 
-#: madshelf_main.c:758
-msgid "Sort by Name"
+#: src/favorites.c:228 src/recent.c:208
+#, fuzzy
+msgid "Sort by name"
 msgstr "Trier par Nom"
 
-#: madshelf_main.c:758
-msgid "Sort by Time"
-msgstr "Trier par Date"
+#: src/favorites.c:229 src/recent.c:209
+#, fuzzy
+msgid "Sort by name (reversed)"
+msgstr "Trier par Nom"
 
-#: madshelf_main.c:758
-msgid "Reverse Sort Order"
-msgstr "Inverser l'Ordre de Triage"
+#: src/favorites.c:230 src/recent.c:210
+#, fuzzy
+msgid "Sort by order"
+msgstr "Trier par Nom"
 
-#: madshelf_main.c:758
-msgid "Language Settings"
-msgstr "Options de Langue"
+#: src/favorites.c:231
+msgid "Clear favorites"
+msgstr ""
 
-#: madshelf_main.c:758
-msgid "Go to"
-msgstr "Aller à"
+#: src/overview.c:97 src/recent.c:91 src/recent.c:243
+#, fuzzy
+msgid "Recent files"
+msgstr "Effacer ce fichier?"
 
-#: madshelf_main.c:758
-msgid "Scripts"
-msgstr "Scripts"
+#: src/file_context_menu.c:177
+#, c-format
+msgid "Open (with %s)"
+msgstr ""
 
-#: madshelf_main.c:758
-msgid "Edit"
-msgstr "Édition"
+#: src/file_context_menu.c:179
+#, c-format
+msgid "Open with %s"
+msgstr ""
 
-#: madshelf_main.c:765
-msgid "Menu"
-msgstr "Menu"
-
-#: madshelf_main.c:779
-msgid "Paste"
-msgstr "Coller"
-
-#: madshelf_main.c:794
-msgid "Cut"
-msgstr "Couper"
-
-#: madshelf_main.c:794
-msgid "Copy"
-msgstr "Copier"
-
-#: madshelf_main.c:794
+#: src/file_context_menu.c:206
 msgid "Delete"
 msgstr "Effacer"
 
-#: madshelf_main.c:943 madshelf_main.c:950
-msgid "No"
-msgstr "Non"
+#: src/disks.c:125
+msgid "Whole filesystem"
+msgstr ""
 
-#: madshelf_main.c:944 madshelf_main.c:951
-msgid "Yes"
-msgstr "Oui"
+#: src/fileinfo_render.c:114
+msgid "Does not exist"
+msgstr ""
 
-#: madshelf_main.c:1757
-msgid "Delete file?"
-msgstr "Effacer ce fichier?"
+#: src/fileinfo_render.c:121
+msgid "Directory"
+msgstr ""
+
+#: src/dir.c:351
+msgid "Open"
+msgstr ""
+
+#: src/dir.c:356
+msgid "Unhide"
+msgstr ""
+
+#: src/dir.c:358
+msgid "Hide"
+msgstr ""
+
+#: src/dir.c:365
+msgid "Add to favorites"
+msgstr ""
+
+#: src/dir.c:435
+msgid "Do not show hidden files"
+msgstr ""
+
+#: src/dir.c:437
+msgid "Show hidden files"
+msgstr ""
+
+#: src/dir.c:471
+msgid "Menu"
+msgstr "Menu"
+
+#: src/recent.c:172
+msgid "Remove from recent files"
+msgstr ""
+
+#: src/recent.c:211
+msgid "Clear recent files"
+msgstr ""
+
+#~ msgid "%m-%d-%y"
+#~ msgstr "%d-%m-%y"
+
+#~ msgid "Unknown Author"
+#~ msgstr "Auteur Inconnu"
+
+#~ msgid "reverse-sorted by name"
+#~ msgstr "triage-inverse par nom"
+
+#~ msgid "sorted by name"
+#~ msgstr "triage par nom"
+
+#~ msgid "reverse-sorted by time"
+#~ msgstr "triage-inverse par date"
+
+#~ msgid "sorted by time"
+#~ msgstr "triage par date"
+
+#~ msgid "Sort by Time"
+#~ msgstr "Trier par Date"
+
+#~ msgid "Reverse Sort Order"
+#~ msgstr "Inverser l'Ordre de Triage"
+
+#~ msgid "Language Settings"
+#~ msgstr "Options de Langue"
+
+#~ msgid "Go to"
+#~ msgstr "Aller à"
+
+#~ msgid "Scripts"
+#~ msgstr "Scripts"
+
+#~ msgid "Edit"
+#~ msgstr "Édition"
+
+#~ msgid "Paste"
+#~ msgstr "Coller"
+
+#~ msgid "Cut"
+#~ msgstr "Couper"
+
+#~ msgid "Copy"
+#~ msgstr "Copier"
+
+#~ msgid "No"
+#~ msgstr "Non"
+
+#~ msgid "Yes"
+#~ msgstr "Oui"

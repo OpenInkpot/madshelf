@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-02 11:33-0400\n"
+"Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
+"POT-Creation-Date: 2009-06-25 21:28+0700\n"
 "PO-Revision-Date: 2008-10-04 16:42+0300\n"
 "Last-Translator: Yauhen Kharuzhy <jekhor@gmail.com>\n"
 "Language-Team: Belarusian <openinkpot-hackers@googlegroups.com>\n"
@@ -16,90 +16,165 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: madshelf_main.c:266
-msgid "%m-%d-%y"
-msgstr "%m-%d-%y"
+#: src/favorites.c:91 src/favorites.c:262 src/overview.c:94
+#: src/favorites_menu.c:39
+msgid "Favorites"
+msgstr ""
 
-#: madshelf_main.c:642
-msgid "Unknown Author"
-msgstr "Невядомы аўтар"
-
-#: madshelf_main.c:698
-msgid "no books"
+#: src/favorites.c:92
+#, fuzzy
+msgid "Favorite books"
 msgstr "пуста"
 
-#: madshelf_main.c:731
-msgid "reverse-sorted by name"
-msgstr "адсартавана па імю ў адваротным накірунку"
+#: src/favorites.c:93
+msgid "Favorite pictures"
+msgstr ""
 
-#: madshelf_main.c:733
-msgid "sorted by name"
-msgstr "адсартавана па імю"
+#: src/favorites.c:94
+msgid "Favorite music"
+msgstr ""
 
-#: madshelf_main.c:738
-msgid "reverse-sorted by time"
-msgstr "адсартавана па часе ў адваротным накірунку"
+#: src/favorites.c:194 src/dir.c:363
+msgid "Remove from favorites"
+msgstr ""
 
-#: madshelf_main.c:740
-msgid "sorted by time"
-msgstr "адсартавана па часе"
+#: src/favorites.c:217 src/dir.c:411 src/recent.c:197
+msgid "Actions"
+msgstr ""
 
-#: madshelf_main.c:758
-msgid "Sort by Name"
+#: src/favorites.c:228 src/recent.c:208
+#, fuzzy
+msgid "Sort by name"
 msgstr "Сартаваць па імю"
 
-#: madshelf_main.c:758
-msgid "Sort by Time"
-msgstr "Сартаваць па часе"
+#: src/favorites.c:229 src/recent.c:209
+#, fuzzy
+msgid "Sort by name (reversed)"
+msgstr "Сартаваць па імю"
 
-#: madshelf_main.c:758
-msgid "Reverse Sort Order"
-msgstr "Сартаваць у адваротным накірунку"
+#: src/favorites.c:230 src/recent.c:210
+#, fuzzy
+msgid "Sort by order"
+msgstr "Сартаваць па імю"
 
-#: madshelf_main.c:758
-msgid "Language Settings"
-msgstr "Моўныя наладкі"
+#: src/favorites.c:231
+msgid "Clear favorites"
+msgstr ""
 
-#: madshelf_main.c:758
-msgid "Go to"
-msgstr "Ісці ў"
+#: src/overview.c:97 src/recent.c:91 src/recent.c:243
+#, fuzzy
+msgid "Recent files"
+msgstr "Выдаліць файл?"
 
-#: madshelf_main.c:758
-msgid "Scripts"
-msgstr "Скрыпты"
+#: src/file_context_menu.c:177
+#, c-format
+msgid "Open (with %s)"
+msgstr ""
 
-#: madshelf_main.c:758
-msgid "Edit"
-msgstr "Рэдагаваць"
+#: src/file_context_menu.c:179
+#, c-format
+msgid "Open with %s"
+msgstr ""
 
-#: madshelf_main.c:765
-msgid "Menu"
-msgstr "Мяню"
-
-#: madshelf_main.c:779
-msgid "Paste"
-msgstr "Уставіць"
-
-#: madshelf_main.c:794
-msgid "Cut"
-msgstr "Выразаць"
-
-#: madshelf_main.c:794
-msgid "Copy"
-msgstr "Капіяваць"
-
-#: madshelf_main.c:794
+#: src/file_context_menu.c:206
 msgid "Delete"
 msgstr "Выдаліць"
 
-#: madshelf_main.c:943 madshelf_main.c:950
-msgid "No"
-msgstr "Не"
+#: src/disks.c:125
+msgid "Whole filesystem"
+msgstr ""
 
-#: madshelf_main.c:944 madshelf_main.c:951
-msgid "Yes"
-msgstr "Так"
+#: src/fileinfo_render.c:114
+msgid "Does not exist"
+msgstr ""
 
-#: madshelf_main.c:1757
-msgid "Delete file?"
-msgstr "Выдаліць файл?"
+#: src/fileinfo_render.c:121
+msgid "Directory"
+msgstr ""
+
+#: src/dir.c:351
+msgid "Open"
+msgstr ""
+
+#: src/dir.c:356
+msgid "Unhide"
+msgstr ""
+
+#: src/dir.c:358
+msgid "Hide"
+msgstr ""
+
+#: src/dir.c:365
+msgid "Add to favorites"
+msgstr ""
+
+#: src/dir.c:435
+msgid "Do not show hidden files"
+msgstr ""
+
+#: src/dir.c:437
+msgid "Show hidden files"
+msgstr ""
+
+#: src/dir.c:471
+msgid "Menu"
+msgstr "Мяню"
+
+#: src/recent.c:172
+msgid "Remove from recent files"
+msgstr ""
+
+#: src/recent.c:211
+msgid "Clear recent files"
+msgstr ""
+
+#~ msgid "%m-%d-%y"
+#~ msgstr "%m-%d-%y"
+
+#~ msgid "Unknown Author"
+#~ msgstr "Невядомы аўтар"
+
+#~ msgid "reverse-sorted by name"
+#~ msgstr "адсартавана па імю ў адваротным накірунку"
+
+#~ msgid "sorted by name"
+#~ msgstr "адсартавана па імю"
+
+#~ msgid "reverse-sorted by time"
+#~ msgstr "адсартавана па часе ў адваротным накірунку"
+
+#~ msgid "sorted by time"
+#~ msgstr "адсартавана па часе"
+
+#~ msgid "Sort by Time"
+#~ msgstr "Сартаваць па часе"
+
+#~ msgid "Reverse Sort Order"
+#~ msgstr "Сартаваць у адваротным накірунку"
+
+#~ msgid "Language Settings"
+#~ msgstr "Моўныя наладкі"
+
+#~ msgid "Go to"
+#~ msgstr "Ісці ў"
+
+#~ msgid "Scripts"
+#~ msgstr "Скрыпты"
+
+#~ msgid "Edit"
+#~ msgstr "Рэдагаваць"
+
+#~ msgid "Paste"
+#~ msgstr "Уставіць"
+
+#~ msgid "Cut"
+#~ msgstr "Выразаць"
+
+#~ msgid "Copy"
+#~ msgstr "Капіяваць"
+
+#~ msgid "No"
+#~ msgstr "Не"
+
+#~ msgid "Yes"
+#~ msgstr "Так"
