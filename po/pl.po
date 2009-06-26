@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: 0.0\n"
 "Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
 "POT-Creation-Date: 2009-06-25 21:28+0700\n"
-"PO-Revision-Date: 2008-10-14 22:43+0100\n"
+"PO-Revision-Date: 2009-06-26 12:18+0100\n"
 "Last-Translator: Tomasz Długosz <tomek3d@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -13,62 +13,57 @@ msgstr ""
 #: src/favorites.c:91 src/favorites.c:262 src/overview.c:94
 #: src/favorites_menu.c:39
 msgid "Favorites"
-msgstr ""
+msgstr "Ulubione"
 
 #: src/favorites.c:92
-#, fuzzy
 msgid "Favorite books"
-msgstr "brak książek"
+msgstr "Ulubione książki"
 
 #: src/favorites.c:93
 msgid "Favorite pictures"
-msgstr ""
+msgstr "Ulubione obrazy"
 
 #: src/favorites.c:94
 msgid "Favorite music"
-msgstr ""
+msgstr "Ulubiona muzyka"
 
 #: src/favorites.c:194 src/dir.c:363
 msgid "Remove from favorites"
-msgstr ""
+msgstr "Usuń z ulubionych"
 
 #: src/favorites.c:217 src/dir.c:411 src/recent.c:197
 msgid "Actions"
-msgstr ""
+msgstr "Czynności"
 
 #: src/favorites.c:228 src/recent.c:208
-#, fuzzy
 msgid "Sort by name"
 msgstr "Ustaw w kolejności alfabetycznej"
 
 #: src/favorites.c:229 src/recent.c:209
-#, fuzzy
 msgid "Sort by name (reversed)"
-msgstr "Ustaw w kolejności alfabetycznej"
+msgstr "Ustaw w odwrotnej kolejności alfabetycznej"
 
 #: src/favorites.c:230 src/recent.c:210
-#, fuzzy
 msgid "Sort by order"
-msgstr "Ustaw w kolejności alfabetycznej"
+msgstr "Ustaw po kolei"
 
 #: src/favorites.c:231
 msgid "Clear favorites"
-msgstr ""
+msgstr "Wyczyść ulubione"
 
 #: src/overview.c:97 src/recent.c:91 src/recent.c:243
-#, fuzzy
 msgid "Recent files"
-msgstr "Usunąć plik?"
+msgstr "Ostatnio otwierane"
 
 #: src/file_context_menu.c:177
 #, c-format
 msgid "Open (with %s)"
-msgstr ""
+msgstr "Otwórz (w %s)"
 
 #: src/file_context_menu.c:179
 #, c-format
 msgid "Open with %s"
-msgstr ""
+msgstr "Otwórz w %s"
 
 #: src/file_context_menu.c:206
 msgid "Delete"
@@ -76,39 +71,39 @@ msgstr "Usuń"
 
 #: src/disks.c:125
 msgid "Whole filesystem"
-msgstr ""
+msgstr "Cały system plików"
 
 #: src/fileinfo_render.c:114
 msgid "Does not exist"
-msgstr ""
+msgstr "Nie istnieje"
 
 #: src/fileinfo_render.c:121
 msgid "Directory"
-msgstr ""
+msgstr "Katalog"
 
 #: src/dir.c:351
 msgid "Open"
-msgstr ""
+msgstr "Otwórz"
 
 #: src/dir.c:356
 msgid "Unhide"
-msgstr ""
+msgstr "Nie chowaj"
 
 #: src/dir.c:358
 msgid "Hide"
-msgstr ""
+msgstr "Chowaj"
 
 #: src/dir.c:365
 msgid "Add to favorites"
-msgstr ""
+msgstr "Dodaj do ulubionych"
 
 #: src/dir.c:435
 msgid "Do not show hidden files"
-msgstr ""
+msgstr "Nie pokazuj ukrytych plików"
 
 #: src/dir.c:437
 msgid "Show hidden files"
-msgstr ""
+msgstr "Pokazuj ukryte pliki"
 
 #: src/dir.c:471
 msgid "Menu"
@@ -116,56 +111,8 @@ msgstr "Menu"
 
 #: src/recent.c:172
 msgid "Remove from recent files"
-msgstr ""
+msgstr "Usuń z ostatnio otwieranych"
 
 #: src/recent.c:211
 msgid "Clear recent files"
-msgstr ""
-
-#~ msgid "Unknown Author"
-#~ msgstr "Autor nieznany"
-
-#~ msgid "reverse-sorted by name"
-#~ msgstr "odwrotna kolejność alfabetyczna"
-
-#~ msgid "sorted by name"
-#~ msgstr "kolejność alfabetyczna"
-
-#~ msgid "reverse-sorted by time"
-#~ msgstr "odwrotna kolejność chronologiczna"
-
-#~ msgid "sorted by time"
-#~ msgstr "kolejność chronologiczna"
-
-#~ msgid "Sort by Time"
-#~ msgstr "Ustaw w kolejności chronologicznej"
-
-#~ msgid "Reverse Sort Order"
-#~ msgstr "Odwróć kolejność"
-
-#~ msgid "Language Settings"
-#~ msgstr "Ustawienia języka (Language Settings)"
-
-#~ msgid "Go to"
-#~ msgstr "Idź do"
-
-#~ msgid "Scripts"
-#~ msgstr "Skrypty"
-
-#~ msgid "Edit"
-#~ msgstr "Edytuj"
-
-#~ msgid "Paste"
-#~ msgstr "Wklej"
-
-#~ msgid "Cut"
-#~ msgstr "Wytnij"
-
-#~ msgid "Copy"
-#~ msgstr "Kopiuj"
-
-#~ msgid "No"
-#~ msgstr "Nie"
-
-#~ msgid "Yes"
-#~ msgstr "Tak"
+msgstr "Wyczyść listę ostatnio otwieranych"
