@@ -105,6 +105,7 @@ handlers_t* handlers_init()
 
 #ifdef OLD_ECORE
         const char* mime_type;
+        ecore_list_index_goto(d->mime_types, 0);
         while(d->mime_types && (mime_type = ecore_list_next(d->mime_types)))
         {
 #else
