@@ -38,6 +38,7 @@
 #include "overview.h"
 #include "file_context_menu.h"
 #include "screen_context_menu.h"
+#include "run.h"
 
 static void _open_screen_context_menu(madshelf_state_t* state);
 static void _open_file_context_menu(madshelf_state_t* state, const char* filename);
@@ -280,7 +281,7 @@ static void _activate_file(madshelf_state_t* state, int item_num)
         return;
     }
 
-    /* FIXME */
+    run_default_handler(state->handlers, filename);
 }
 
 static void _activate_item(madshelf_state_t* state, Evas_Object* choicebox,
