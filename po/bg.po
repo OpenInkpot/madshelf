@@ -1,0 +1,123 @@
+# madshelf - OpenInkpot bookshelf application
+# Copyright (C) 2008 Marc Lajoie <manorapide@hotmail.com>
+# Copyright (C) 2008,2009 Mikhail Gusarov <dottedmag@dottedmag.net>
+# This file is in public domain
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: madshelf 0.1\n"
+"Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
+"POT-Creation-Date: 2009-06-25 21:28+0700\n"
+"PO-Revision-Date: 2009-06-26 16:08+0300\n"
+"Last-Translator: Васил Бадев <vbadev@gmail.com>\n"
+"Language-Team: Bulgarian <openinkpot-l10n@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/favorites.c:91 src/favorites.c:262 src/overview.c:94
+#: src/favorites_menu.c:39
+msgid "Favorites"
+msgstr "Любими"
+
+#: src/favorites.c:92
+msgid "Favorite books"
+msgstr "Любими книги"
+
+#: src/favorites.c:93
+msgid "Favorite pictures"
+msgstr "Любими изображения"
+
+#: src/favorites.c:94
+msgid "Favorite music"
+msgstr "Любима музика"
+
+#: src/favorites.c:194 src/dir.c:363
+msgid "Remove from favorites"
+msgstr "Премахване от любими"
+
+#: src/favorites.c:217 src/dir.c:411 src/recent.c:197
+msgid "Actions"
+msgstr "Действия"
+
+#: src/favorites.c:228 src/recent.c:208
+msgid "Sort by name"
+msgstr "Сортиране по име"
+
+#: src/favorites.c:229 src/recent.c:209
+msgid "Sort by name (reversed)"
+msgstr "Сортиране по име (обратен ред)"
+
+#: src/favorites.c:230 src/recent.c:210
+msgid "Sort by order"
+msgstr "Сортиране по ред"
+
+#: src/favorites.c:231
+msgid "Clear favorites"
+msgstr "Изчистване на любимите"
+
+#: src/overview.c:97 src/recent.c:91 src/recent.c:243
+msgid "Recent files"
+msgstr "Последни файлове"
+
+#: src/file_context_menu.c:177
+#, c-format
+msgid "Open (with %s)"
+msgstr "Отваряне (с %s)"
+
+#: src/file_context_menu.c:179
+#, c-format
+msgid "Open with %s"
+msgstr "Отваряне с %s"
+
+#: src/file_context_menu.c:206
+msgid "Delete"
+msgstr "Изтриване"
+
+#: src/disks.c:125
+msgid "Whole filesystem"
+msgstr "Цялата файлова система"
+
+#: src/fileinfo_render.c:114
+msgid "Does not exist"
+msgstr "Не съществува"
+
+#: src/fileinfo_render.c:121
+msgid "Directory"
+msgstr "Папка"
+
+#: src/dir.c:351
+msgid "Open"
+msgstr "Отваряне"
+
+#: src/dir.c:356
+msgid "Unhide"
+msgstr "Показване"
+
+#: src/dir.c:358
+msgid "Hide"
+msgstr "Скриване"
+
+#: src/dir.c:365
+msgid "Add to favorites"
+msgstr "Добавяне към любими"
+
+#: src/dir.c:435
+msgid "Do not show hidden files"
+msgstr "Скритите файлове да не се виждат"
+
+#: src/dir.c:437
+msgid "Show hidden files"
+msgstr "Скритите файлове да се виждат"
+
+#: src/dir.c:471
+msgid "Menu"
+msgstr "Меню"
+
+#: src/recent.c:172
+msgid "Remove from recent files"
+msgstr "Премахване от последните файлове"
+
+#: src/recent.c:211
+msgid "Clear recent files"
+msgstr "Изчистване на последните файлове"
