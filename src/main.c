@@ -492,8 +492,8 @@ int main(int argc, char** argv)
 #endif
     edje_shutdown();
     ecore_evas_shutdown();
-    ecore_shutdown();
     evas_shutdown();
+    ecore_shutdown();
     ecore_config_shutdown();
 
     return 0;
