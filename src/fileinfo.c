@@ -148,7 +148,6 @@ fileinfo_t* fileinfo_create(const char* filename)
         long long mtime = ecore_file_exists(filename) ? ecore_file_mod_time(filename) : -1;
         if(mtime != i->mtime)
         {
-            fileinfo_destroy(i);
             i = fileinfo_parse(filename);
             eina_hash_del(infos, filename, NULL);
             eina_hash_add(infos, filename, i);
