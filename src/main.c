@@ -51,9 +51,6 @@
 #define DISKS_CONFIG_NAME "disks.conf"
 #define TAGS_DB_NAME "tags.db"
 
-
-
-
 /* Uhm? */
 void item_clear(Evas_Object* item)
 {
