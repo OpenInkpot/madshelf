@@ -117,18 +117,7 @@ static fileinfo_t* fileinfo_parse(const char* filename)
         }
 
         if(!i->mime_type)
-        {
-            const char* m = efreet_mime_type_get(i->filename);
-            if(m)
-                i->mime_type = strdup(m);
-        }
-
-        if(!i->mime_type)
-        {
-            char* m;
-            asprintf(&m, "application/x-%s", file_ext(i->basename));
-            i->mime_type = m;
-        }
+            i->mime_type = strdup(efreet_mime_type_get(i->filename));
     }
 
     return i;
