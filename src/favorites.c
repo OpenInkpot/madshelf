@@ -35,6 +35,7 @@
 #include "tags.h"
 #include "overview.h"
 #include "run.h"
+#include "filters.h"
 
 static void _open_file_context_menu(madshelf_state_t* state, const char* filename);
 static void _open_screen_context_menu(madshelf_state_t* state, Evas_Object* choicebox);
@@ -68,11 +69,18 @@ static void _free(madshelf_state_t* state)
     free(fav_loc);
 }
 
+typedef struct
+{
+    Eina_Array* files;
+    madshelf_filter_t filter;
+} fill_file_args_t;
+
 static void _fill_file(const char* filename, int serial, void* param)
 {
-    /* FIXME: filter favorites. */
-    Eina_Array* files = (Eina_Array*)param;
-    eina_array_push(files, strdup(filename));
+    fill_file_args_t* args = (fill_file_args_t*)param;
+
+    if(is_visible(args->filter, filename))
+        eina_array_push(args->files, strdup(filename));
 }
 
 /*
@@ -83,9 +91,9 @@ static void _fill_file(const char* filename, int serial, void* param)
  */
 static Eina_Array* _fill_files(const madshelf_state_t* state)
 {
-    /* FIXME: filter */
     Eina_Array* files = eina_array_new(10);
-    tag_list(state->tags, "favorites", (tags_sort_t)state->favorites_sort, _fill_file, files);
+    fill_file_args_t args = { files, state->filter };
+    tag_list(state->tags, "favorites", (tags_sort_t)state->favorites_sort, _fill_file, &args);
     return files;
 }
 

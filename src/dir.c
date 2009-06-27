@@ -39,6 +39,7 @@
 #include "file_context_menu.h"
 #include "screen_context_menu.h"
 #include "run.h"
+#include "filters.h"
 
 static void _open_screen_context_menu(madshelf_state_t* state);
 static void _open_file_context_menu(madshelf_state_t* state, const char* filename);
@@ -106,12 +107,6 @@ static void go_to_directory(madshelf_state_t* state, const char* dirname)
     choicebox_set_selection(choicebox, 0);
 
     go(state, dir_make(state, dirname));
-}
-
-static bool _check_type(madshelf_filter_t filter, const char* filename)
-{
-    /* FIXME */
-    return true;
 }
 
 static int _name(const void* lhs, const void* rhs)
@@ -201,7 +196,7 @@ static Eina_Array* _fill_files(const madshelf_state_t* state, const char* dir)
             continue;
         }
 
-        if(!_check_type(state->filter, filename))
+        if(!is_visible(state->filter, filename))
         {
             free(filename);
             continue;
