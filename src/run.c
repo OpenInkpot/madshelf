@@ -24,16 +24,16 @@
 #include "handlers.h"
 #include "fileinfo.h"
 
-void run_default_handler(handlers_t* handlers, const char* filename)
+void run_default_handler(const char* filename)
 {
      fileinfo_t* fileinfo = fileinfo_create(filename);
-     Eina_List* handlers_list = handlers_get(handlers, fileinfo->mime_type);
+     openers_t* handlers_list = openers_get(fileinfo->mime_type);
      fileinfo_destroy(fileinfo);
 
      if(!handlers_list)
          return;
 
-     Efreet_Desktop* handler = eina_list_data_get(handlers_list);
+     Efreet_Desktop* handler = eina_list_data_get(handlers_list->apps);
 
 #ifdef OLD_ECORE
      Ecore_List* l = ecore_list_new();

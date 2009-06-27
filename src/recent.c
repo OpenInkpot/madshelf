@@ -137,7 +137,7 @@ static void _activate_item(madshelf_state_t* state, Evas_Object* choicebox,
     if(is_alt)
         _open_file_context_menu(state, filename);
     else
-        run_default_handler(state->handlers, filename);
+        run_default_handler(filename);
 }
 
 static void _draw_item(const madshelf_state_t* state,

@@ -41,8 +41,8 @@ typedef struct
     char* filename;
 
     fileinfo_t* fileinfo;
-    Eina_List* handlers;
-    int handlers_num;
+    openers_t* openers;
+    int openers_num;
     int fileop_targets_num;
     int add_actions_num;
     draw_file_context_action_t draw_action;
@@ -128,9 +128,9 @@ static void _item_handler(Evas_Object* choicebox, int item_num, bool is_alt, voi
     Evas_Object* menu = evas_object_name_find(canvas, "file-context-menu");
     file_context_menu_info_t* info = evas_object_data_get(menu, "info");
 
-    if(item_num < info->handlers_num)
+    if(item_num < info->openers_num)
     {
-        Eina_List* nth = eina_list_nth_list(info->handlers, item_num);
+        Eina_List* nth = eina_list_nth_list(info->openers->apps, item_num);
         Efreet_Desktop* handler = eina_list_data_get(nth);
 
         _run_file(info, handler);
@@ -139,7 +139,7 @@ static void _item_handler(Evas_Object* choicebox, int item_num, bool is_alt, voi
         return;
     }
     else
-        item_num -= info->handlers_num;
+        item_num -= info->openers_num;
 
     if(item_num < info->add_actions_num)
     {
@@ -169,7 +169,7 @@ static void _draw_item_handler(Evas_Object* choicebox, Evas_Object* item, int it
 
     item_clear(item);
 
-    if(item_num < info->handlers_num)
+    if(item_num < info->openers_num)
     {
         const char* open_text;
 
@@ -178,7 +178,7 @@ static void _draw_item_handler(Evas_Object* choicebox, Evas_Object* item, int it
         else
             open_text = gettext("Open with %s");
 
-        Eina_List* nth = eina_list_nth_list(info->handlers, item_num);
+        Eina_List* nth = eina_list_nth_list(info->openers->apps, item_num);
         Efreet_Desktop* handler = eina_list_data_get(nth);
 
         char* f;
@@ -189,7 +189,7 @@ static void _draw_item_handler(Evas_Object* choicebox, Evas_Object* item, int it
         return;
     }
     else
-        item_num -= info->handlers_num;
+        item_num -= info->openers_num;
 
     if(item_num < info->add_actions_num)
     {
@@ -276,13 +276,13 @@ void open_file_context_menu(madshelf_state_t* state,
     info->fileinfo = fileinfo_create(filename);
     if(ecore_file_is_dir(filename))
     {
-        info->handlers_num = 0;
-        info->handlers = NULL;
+        info->openers_num = 0;
+        info->openers = NULL;
     }
     else
     {
-        info->handlers = handlers_get(state->handlers, info->fileinfo->mime_type);
-        info->handlers_num = eina_list_size(info->handlers);
+        info->openers = openers_get(info->fileinfo->mime_type);
+        info->openers_num = eina_list_size(info->openers->apps);
     }
 
     Evas_Object* main_edje = evas_object_name_find(state->canvas, "main_edje");
@@ -310,7 +310,7 @@ void open_file_context_menu(madshelf_state_t* state,
     edje_object_part_swallow(main_edje, "right-context-menu", file_context_menu);
 
     int actions_num = add_actions_num
-        + info->handlers_num;
+        + info->openers_num;
 
     if(!ecore_file_is_dir(filename))
         actions_num +=

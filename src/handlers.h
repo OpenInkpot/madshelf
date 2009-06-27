@@ -25,17 +25,29 @@
 
 typedef struct handlers_t handlers_t;
 
-handlers_t* handlers_init();
+void openers_init();
+
+typedef enum
+{
+    OPENERS_TYPE_NONE  = 0x0,
+    OPENERS_TYPE_BOOKS = 0x1,
+    OPENERS_TYPE_IMAGE = 0x2,
+    OPENERS_TYPE_AUDIO = 0x4,
+} openers_app_type_t;
+
+typedef struct
+{
+    openers_app_type_t app_types;
+    Eina_List* apps; /* List of Efreet_Desktop* */
+} openers_t;
 
 /*
- * Returns list of Efreet_Desktop* handlers for given mime type, sorted by the
- * decreasing of priority. Returns empty list if no handler exists for given
- * mime type.
+ * Returns openers_t for given mime type.
  *
- * To be freed by eina_list_free().
+ * To be freed by eina_list_free() openers_free
  */
-Eina_List* handlers_get(handlers_t* handlers, const char* mime_type);
+openers_t* openers_get(const char* mime_type);
 
-void handlers_fini(handlers_t* handlers);
+void openers_fini();
 
 #endif

@@ -28,7 +28,6 @@
 
 #include "disks.h"
 #include "tags.h"
-#include "handlers.h"
 
 typedef enum
 {
@@ -98,7 +97,6 @@ struct madshelf_state_t
     /* Data */
     madshelf_disks_t* disks;
     tags_t* tags;
-    handlers_t* handlers;
 };
 
 /* FIXME */

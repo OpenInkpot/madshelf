@@ -291,7 +291,7 @@ static void _activate_file(madshelf_state_t* state, int item_num)
         return;
     }
 
-    run_default_handler(state->handlers, filename);
+    run_default_handler(filename);
 }
 
 static void _activate_item(madshelf_state_t* state, Evas_Object* choicebox,

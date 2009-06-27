@@ -21,9 +21,7 @@
 #ifndef RUN_H
 #define RUN_H
 
-#include "handlers.h"
-
-void run_default_handler(handlers_t* handlers, const char* filename);
+void run_default_handler(const char* filename);
 
 #endif
 

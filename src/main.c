@@ -422,7 +422,7 @@ int main(int argc, char** argv)
     madshelf_state_t state = {};
 
     state.filter = filter;
-    state.handlers = handlers_init();
+    openers_init();
     state.disks = load_disks();
 
     load_config(&state);
@@ -482,7 +482,7 @@ int main(int argc, char** argv)
 
     ecore_config_save();
 
-    handlers_fini(state.handlers);
+    openers_fini();
     free_state(&state);
 
     fileinfo_fini();

@@ -33,27 +33,32 @@
 
 #define NO_HANDLER ((Efreet_Desktop*)-1)
 
-struct handlers_t
+typedef struct
 {
     /* Programs may handle more than one MIME type, so keep them in separate
        list to free later instead of freeing when hash is destroyed */
     Eina_List* desktop_files;
 
     Eina_Hash* handlers;
-};
+    Eina_Hash* handlers_types;
+} appdb_t;
 
-static void free_handlers_list(void* data)
+appdb_t appdb;
+
+static void free_openers(void* data)
 {
-    eina_list_free((Eina_List*)data);
+    openers_t* openers = (openers_t*)data;
+    eina_list_free(openers->apps);
+    free(openers);
 }
 
 #ifdef DEBUG_HANDLERS
 static Eina_Bool handler_dump(const Eina_Hash* hash, const void* key, void* data, void* fdata)
 {
     const char* mime_type = (const char*)key;
-    Eina_List* i = (Eina_List*)data;
+    Eina_List* i = ((openers_t*)data)->apps;
 
-    fprintf(stderr, "%s:\n", mime_type);
+    fprintf(stderr, "%s (%d):\n", mime_type, ((openers_t*)data)->app_types);
 
     for(; i; i = eina_list_next(i))
     {
@@ -63,20 +68,44 @@ static Eina_Bool handler_dump(const Eina_Hash* hash, const void* key, void* data
     return 1;
 }
 
-static void handlers_dump(handlers_t* handlers)
+static void handlers_dump()
 {
-    eina_hash_foreach(handlers->handlers, &handler_dump, NULL);
+    eina_hash_foreach(appdb.handlers, &handler_dump, NULL);
 }
 #endif
 
-handlers_t* handlers_init()
+openers_app_type_t app_type(Efreet_Desktop* d)
+{
+    openers_app_type_t types = OPENERS_TYPE_NONE;
+
+#ifdef OLD_ECORE
+    const char* cat;
+    ecore_list_index_goto(d->categories, 0);
+    while((cat = ecore_list_next(d->categories)))
+    {
+#else
+    Eina_List* i = d->categories;
+    for(; i; i = eina_list_next(i))
+    {
+        const char* cat = eina_list_data_get(i);
+#endif
+        if(!strcmp(cat, "Literature"))
+            types |= OPENERS_TYPE_BOOKS;
+        if(!strcmp(cat, "Graphics"))
+            types |= OPENERS_TYPE_IMAGE;
+        if(!strcmp(cat, "Audio"))
+            types |= OPENERS_TYPE_AUDIO;
+    }
+
+    return types;
+}
+
+void openers_init()
 {
     if(!efreet_init())
-        return NULL;
+        exit(1);
 
-    handlers_t* handlers = malloc(sizeof(handlers_t));
-    handlers->desktop_files = NULL;
-    handlers->handlers = eina_hash_string_superfast_new(&free_handlers_list);
+    appdb.handlers = eina_hash_string_superfast_new(&free_openers);
 
 #ifdef OLD_ECORE
     Ecore_List* ls = ecore_file_ls(DESKTOP_DIR);
@@ -114,20 +143,25 @@ handlers_t* handlers_init()
         {
             const char* mime_type = (const char*)eina_list_data_get(j);
 #endif
-            Eina_List* h = eina_hash_find(handlers->handlers, mime_type);
-            if(h)
+            openers_t* op = eina_hash_find(appdb.handlers, mime_type);
+            if(op)
             {
-                h = eina_list_append(h, d);
-                eina_hash_modify(handlers->handlers, mime_type, h);
+                op->app_types |= app_type(d);
+                op->apps = eina_list_append(op->apps, d);
+
+                eina_hash_modify(appdb.handlers, mime_type, op);
             }
             else
             {
-                h = eina_list_append(h, d);
-                eina_hash_add(handlers->handlers, mime_type, h);
+                op = malloc(sizeof(openers_t));
+                op->app_types = app_type(d);
+                op->apps = eina_list_append(NULL, d);
+
+                eina_hash_add(appdb.handlers, mime_type, op);
             }
         }
 
-        handlers->desktop_files = eina_list_append(handlers->desktop_files, d);
+        appdb.desktop_files = eina_list_append(appdb.desktop_files, d);
     }
 
 #ifdef OLD_ECORE
@@ -137,29 +171,26 @@ handlers_t* handlers_init()
 #endif
 
 #ifdef DEBUG_HANDLERS
-    handlers_dump(handlers);
+    handlers_dump();
 #endif
-
-    return handlers;
 }
 
-Eina_List* handlers_get(handlers_t* handlers, const char* mime_type)
+openers_t* openers_get(const char* mime_type)
 {
-    return eina_hash_find(handlers->handlers, mime_type);
+    return eina_hash_find(appdb.handlers, mime_type);
 }
 
-void handlers_fini(handlers_t* handlers)
+void openers_fini()
 {
-    eina_hash_free(handlers->handlers);
+    eina_hash_free(appdb.handlers);
 
     Eina_List* i;
-    for(i = handlers->desktop_files; i; i = eina_list_next(i))
+    for(i = appdb.desktop_files; i; i = eina_list_next(i))
     {
         Efreet_Desktop* desktop = (Efreet_Desktop*)eina_list_data_get(i);
         efreet_desktop_free(desktop);
     }
-    eina_list_free(handlers->desktop_files);
+    eina_list_free(appdb.desktop_files);
 
-    free(handlers);
     efreet_shutdown();
 }
