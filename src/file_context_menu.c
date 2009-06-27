@@ -274,7 +274,7 @@ void open_file_context_menu(madshelf_state_t* state,
     info->closed = closed;
     info->fileop_targets_num = get_fileop_targets_num(info);
     info->fileinfo = fileinfo_create(filename);
-    if(ecore_file_is_dir(filename))
+    if(!ecore_file_exists(filename) || ecore_file_is_dir(filename))
     {
         info->openers_num = 0;
         info->openers = NULL;
