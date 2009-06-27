@@ -1,3 +1,9 @@
+madshelf (0.2.2) asimov; urgency=low
+
+  * Madshelf made singleton
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Sun, 28 Jun 2009 03:06:30 +0700
+
 madshelf (0.2.1) asimov; urgency=low
 
   * Bugfixes:
