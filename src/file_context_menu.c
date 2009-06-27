@@ -337,6 +337,9 @@ void close_file_context_menu(Evas* canvas, bool touched)
     Evas_Object* file_context_menu = evas_object_name_find(canvas, "file-context-menu");
     Evas_Object* file_context_choicebox = evas_object_name_find(canvas, "file-context-menu-choicebox");
 
+    if(!file_context_menu)
+        return;
+
     file_context_menu_info_t* info = evas_object_data_get(file_context_menu, "info");
 
     edje_object_part_unswallow(main_edje, file_context_menu);

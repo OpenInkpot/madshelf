@@ -63,6 +63,8 @@ static void _free(madshelf_state_t* state)
 {
     favorites_loc_t* fav_loc = (favorites_loc_t*)state->loc;
     _update_files(fav_loc, NULL);
+    close_file_context_menu(state->canvas, false);
+    close_screen_context_menu(state->canvas);
     free(fav_loc);
 }
 
@@ -94,6 +96,12 @@ static const char* titles[] = {
     _("Favorite music"),
 };
 
+static void _init_gui(const madshelf_state_t* state)
+{
+    Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
+    choicebox_set_selection(choicebox, -1);
+}
+
 static void _update_gui(const madshelf_state_t* state)
 {
     Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
@@ -101,10 +109,8 @@ static void _update_gui(const madshelf_state_t* state)
 
     favorites_loc_t* fav_loc = (favorites_loc_t*)state->loc;
 
-    choicebox_set_selection(choicebox, -1);
     choicebox_set_size(choicebox, eina_array_count_get(fav_loc->files));
     choicebox_invalidate_interval(choicebox, 0, eina_array_count_get(fav_loc->files));
-
 
     edje_object_part_text_set(header, "title",
                               gettext(titles[fav_loc->type]));
@@ -170,6 +176,7 @@ static void _draw_item(const madshelf_state_t* state,
 
 static madshelf_loc_t loc = {
     &_free,
+    &_init_gui,
     &_update_gui,
     &_key_down,
     &_activate_item,

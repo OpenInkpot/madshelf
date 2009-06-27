@@ -60,6 +60,8 @@ static void _free(madshelf_state_t* state)
     _loc_t* _loc = (_loc_t*)state->loc;
 
     _free_files(_loc->files);
+    close_file_context_menu(state->canvas, false);
+    close_screen_context_menu(state->canvas);
 
     free(_loc);
 }
@@ -77,18 +79,23 @@ static Eina_Array* _fill_files(const madshelf_state_t* state)
     return files;
 }
 
-static void _update_gui(const madshelf_state_t* state)
+static void _init_gui(const madshelf_state_t* state)
 {
     Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
     Evas_Object* header = evas_object_name_find(state->canvas, "main_edje");
 
+    choicebox_set_selection(choicebox, -1);
+    edje_object_part_text_set(header, "title", gettext("Recent files"));
+}
+
+static void _update_gui(const madshelf_state_t* state)
+{
+    Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
+
     _loc_t* _loc = (_loc_t*)state->loc;
 
-    choicebox_set_selection(choicebox, -1);
     choicebox_set_size(choicebox, eina_array_count_get(_loc->files));
     choicebox_invalidate_interval(choicebox, 0, eina_array_count_get(_loc->files));
-
-    edje_object_part_text_set(header, "title", gettext("Recent files"));
 
     set_sort_icon(state, state->recent_sort);
 }
@@ -148,6 +155,7 @@ static void _draw_item(const madshelf_state_t* state,
 
 static madshelf_loc_t loc = {
     &_free,
+    &_init_gui,
     &_update_gui,
     &_key_down,
     &_activate_item,

@@ -36,6 +36,14 @@ static const char* titles[] = {
     "Images (navigation)"
 };
 
+static void _init_gui(const madshelf_state_t* state)
+{
+    Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
+    choicebox_set_selection(choicebox, 0);
+    choicebox_set_selection(choicebox, -1);
+    set_sort_icon(state, ICON_SORT_NONE);
+}
+
 static void _update_gui(const madshelf_state_t* state)
 {
     Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
@@ -45,10 +53,7 @@ static void _update_gui(const madshelf_state_t* state)
     choicebox_set_size(choicebox, state->disks->n + 2);
     choicebox_invalidate_interval(choicebox, 0, state->disks->n + 2);
 
-
     edje_object_part_text_set(header, "title", gettext(titles[state->filter]));
-
-    set_sort_icon(state, ICON_SORT_NONE);
 }
 
 static bool _key_down(madshelf_state_t* state, Evas_Object* choicebox,
@@ -101,6 +106,7 @@ madshelf_loc_t* overview_make(madshelf_state_t* state)
 {
     static madshelf_loc_t loc = {
         NULL,
+        &_init_gui,
         &_update_gui,
         &_key_down,
         &_activate_item,

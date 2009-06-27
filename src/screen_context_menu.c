@@ -135,6 +135,9 @@ void close_screen_context_menu(Evas* canvas)
     Evas_Object* screen_context_menu = evas_object_name_find(canvas, "screen-context-menu");
     Evas_Object* screen_context_choicebox = evas_object_name_find(canvas, "screen-context-menu-choicebox");
 
+    if(!screen_context_menu)
+        return;
+
     screen_context_menu_info_t* info = evas_object_data_get(screen_context_menu, "info");
 
     edje_object_part_unswallow(main_edje, screen_context_menu);

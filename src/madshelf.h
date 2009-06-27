@@ -23,6 +23,7 @@
 #define MADSHELF_H
 
 #include <stdbool.h>
+#include <Ecore_Evas.h>
 #include <Evas.h>
 
 #include "disks.h"
@@ -73,6 +74,7 @@ typedef struct madshelf_state_t madshelf_state_t;
 typedef struct
 {
     void (*free)(madshelf_state_t* state);
+    void (*init_gui)(const madshelf_state_t* state);
     void (*update_gui)(const madshelf_state_t* state);
     bool (*key_down)(madshelf_state_t* state, Evas_Object* choicebox, Evas_Event_Key_Down* ev);
     void (*activate_item)(madshelf_state_t* state, Evas_Object* choicebox, int item_num, bool is_alt);

@@ -76,6 +76,7 @@ void go(madshelf_state_t* state, madshelf_loc_t* loc)
 
     state->loc = loc;
 
+    (*state->loc->init_gui)(state);
     update_gui(state);
 }
 
