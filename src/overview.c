@@ -33,7 +33,7 @@ static const char* titles[] = {
     "Bookshelf",
     "Bookshelf",
     "Pictures (navigation)",
-    "Images (navigation)"
+    "Audio (navigation)"
 };
 
 static void _init_gui(const madshelf_state_t* state)
