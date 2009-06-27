@@ -84,6 +84,7 @@ typedef struct
 struct madshelf_state_t
 {
     /* State */
+    Ecore_Evas* win;
     Evas* canvas;
     madshelf_loc_t* loc;
     madshelf_filter_t filter;

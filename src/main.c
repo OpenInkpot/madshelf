@@ -25,12 +25,14 @@
 #include <locale.h>
 #include <limits.h>
 #include <string.h>
+#include <getopt.h>
 
 #include <Evas.h>
 #include <Ecore.h>
 #include <Ecore_Evas.h>
 #include <Ecore_File.h>
 #include <Ecore_Config.h>
+#include <Ecore_Con.h>
 #include <Edje.h>
 #include <Efreet.h>
 #include <echoicebox.h>
@@ -258,14 +260,147 @@ static madshelf_disks_t* load_disks()
     return disks;
 }
 
-int main(int argc, char ** argv)
+typedef struct
 {
+    char* msg;
+    int size;
+} client_data_t;
+
+static int _client_add(void* param, int ev_type, void* ev)
+{
+    Ecore_Con_Event_Client_Add* e = ev;
+    client_data_t* msg = malloc(sizeof(client_data_t));
+    msg->msg = strdup("");
+    msg->size = 0;
+    ecore_con_client_data_set(e->client, msg);
+    return 0;
+}
+
+static int _client_del(void* param, int ev_type, void* ev)
+{
+    Ecore_Con_Event_Client_Del* e = ev;
+    client_data_t* msg = ecore_con_client_data_get(e->client);
+
+    /* Handle */
+
+    if(!msg->msg[0])
+    {
+        /* Skip it: ecore-con internal bug */
+    }
+    else if(msg->size != 1)
+    {
+        fprintf(stderr, "Unknown filter type: %*s\n", msg->size, msg->msg);
+    }
+    else
+    {
+        madshelf_state_t* state = (madshelf_state_t*)param;
+        Ecore_Evas* win = state->win;
+
+        madshelf_filter_t filter = msg->msg[0] - '0';
+        if(filter >= MADSHELF_FILTER_NO && filter <= MADSHELF_FILTER_AUDIO)
+        {
+            state->filter = filter;
+            go(state, overview_make(state));
+
+            ecore_evas_show(win);
+            ecore_evas_raise(win);
+        }
+        else
+            fprintf(stderr, "Unknown filter type: %*s\n", msg->size, msg->msg);
+    }
+
+    free(msg->msg);
+    free(msg);
+    return 0;
+}
+
+static int _client_data(void* param, int ev_type, void* ev)
+{
+    Ecore_Con_Event_Client_Data* e = ev;
+    client_data_t* msg = ecore_con_client_data_get(e->client);
+    msg->msg = realloc(msg->msg, msg->size + e->size);
+    memcpy(msg->msg + msg->size, e->data, e->size);
+    msg->size += e->size;
+    return 0;
+}
+
+static bool check_running_instance(madshelf_filter_t filter)
+{
+    Ecore_Con_Server* server
+        = ecore_con_server_add(ECORE_CON_LOCAL_USER, "madshelf-singleton", 0, NULL);
+
+    if(!server)
+    {
+        /* Somebody already listens there */
+        server = ecore_con_server_connect(ECORE_CON_LOCAL_USER,
+                                          "madshelf-singleton", 0, NULL);
+
+        if(!server)
+            return false;
+
+        char a[16];
+        snprintf(a, 16, "%d", (int)filter);
+        ecore_con_server_send(server, a, strlen(a));
+        ecore_con_server_flush(server);
+        ecore_con_server_del(server);
+
+        return true;
+    }
+
+    return false;
+}
+
+static struct option options[] = {
+    { "filter", true, NULL, 'f' },
+    { NULL, 0, 0, 0 }
+};
+
+int main(int argc, char** argv)
+{
+    madshelf_filter_t filter = MADSHELF_FILTER_NO;
+
+    for(;;)
+    {
+        int c = getopt_long(argc, argv, "f:", options, NULL);
+        if(c == -1) break;
+
+        if(c == 'f')
+        {
+            if(!strcmp(optarg, "books"))
+                filter = MADSHELF_FILTER_BOOKS;
+            else if(!strcmp(optarg, "image"))
+                filter = MADSHELF_FILTER_IMAGE;
+            else if(!strcmp(optarg, "audio"))
+                filter = MADSHELF_FILTER_AUDIO;
+            else
+            {
+                fprintf(stderr, "Unknown filter type: %s\n", optarg);
+                return 1;
+            }
+            break;
+        }
+
+        if(c == '?')
+            return 1;
+
+        fprintf(stderr, "Unexpected getopt return code: %d\n", c);
+        return 1;
+    }
+
     if(ecore_config_init("madshelf") != ECORE_CONFIG_ERR_SUCC)
         die("Unable to initialize Ecore_Config");
-    if(!evas_init())
-        die("Unable to initialize Evas");
     if(!ecore_init())
         die("Unable to initialize Ecore");
+
+    if(check_running_instance(filter))
+    {
+        ecore_con_shutdown();
+        ecore_shutdown();
+        return 0;
+    }
+
+    if(!evas_init())
+        die("Unable to initialize Evas");
     if(!ecore_evas_init())
         die("Unable to initialize Ecore_Evas");
     if(!edje_init())
@@ -289,6 +424,7 @@ int main(int argc, char ** argv)
 
     madshelf_state_t state = {};
 
+    state.filter = filter;
     state.handlers = handlers_init();
     state.disks = load_disks();
 
@@ -303,6 +439,7 @@ int main(int argc, char ** argv)
     /* End of state */
 
     Ecore_Evas* main_win = ecore_evas_software_x11_new(0, 0, 0, 0, 600, 800);
+    state.win = main_win;
     ecore_evas_title_set(main_win, "Madshelf");
     ecore_evas_name_class_set(main_win, "Madshelf", "Madshelf");
     ecore_evas_callback_delete_request_set(main_win, main_win_close_handler);
@@ -339,6 +476,10 @@ int main(int argc, char ** argv)
     ecore_timer_add(5*60, &update_batt_cb, main_edje);
 
     //ecore_event_handler_add(ECORE_EVENT_SIGNAL_HUP,sighup_signal_handler,NULL);
+
+    ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_ADD, _client_add, NULL);
+    ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_DATA, _client_data, NULL);
+    ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_DEL, _client_del, &state);
 
     ecore_main_loop_begin();
 
