@@ -282,7 +282,10 @@ void open_file_context_menu(madshelf_state_t* state,
     else
     {
         info->openers = openers_get(info->fileinfo->mime_type);
-        info->openers_num = eina_list_size(info->openers->apps);
+        if(info->openers)
+            info->openers_num = eina_list_size(info->openers->apps);
+        else
+            info->openers_num = 0;
     }
 
     Evas_Object* main_edje = evas_object_name_find(state->canvas, "main_edje");
