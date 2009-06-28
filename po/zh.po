@@ -1,15 +1,15 @@
-# Chinese translations for madshelf package.
-# Copyright (C) 2008 THE madshelf'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the madshelf package.
-# Marc Lajoie <manorapide@hotmail.com>, 2008.
+# madshelf - OpenInkpot bookshelf application
+# Copyright (C) 2008 Marc Lajoie <manorapide@hotmail.com>
+# Copyright (C) 2008,2009 Mikhail Gusarov <dottedmag@dottedmag.net>
+# This file is in public domain
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: madshelf 1.10.1\n"
+"Project-Id-Version: madshelf 0.1\n"
 "Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
 "POT-Creation-Date: 2009-06-25 21:28+0700\n"
-"PO-Revision-Date: 2008-07-05 00:39-0400\n"
-"Last-Translator: Marc Lajoie <manorapide@hotmail.com>\n"
+"PO-Revision-Date: 2009-06-28 22:51+0800\n"
+"Last-Translator: Zhang Cong <zhangc@ustc.edu>\n"
 "Language-Team: Chinese\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,62 +18,57 @@ msgstr ""
 #: src/favorites.c:91 src/favorites.c:262 src/overview.c:94
 #: src/favorites_menu.c:39
 msgid "Favorites"
-msgstr ""
+msgstr "收藏"
 
 #: src/favorites.c:92
-#, fuzzy
 msgid "Favorite books"
-msgstr "没有书籍"
+msgstr "书籍收藏"
 
 #: src/favorites.c:93
 msgid "Favorite pictures"
-msgstr ""
+msgstr "图片收藏"
 
 #: src/favorites.c:94
 msgid "Favorite music"
-msgstr ""
+msgstr "音乐收藏"
 
 #: src/favorites.c:194 src/dir.c:363
 msgid "Remove from favorites"
-msgstr ""
+msgstr "删除收藏"
 
 #: src/favorites.c:217 src/dir.c:411 src/recent.c:197
 msgid "Actions"
-msgstr ""
+msgstr "动作"
 
 #: src/favorites.c:228 src/recent.c:208
-#, fuzzy
 msgid "Sort by name"
-msgstr "按名字排列"
+msgstr "按名称排序"
 
 #: src/favorites.c:229 src/recent.c:209
-#, fuzzy
 msgid "Sort by name (reversed)"
-msgstr "按名字排列"
+msgstr "按名称排序 (逆序)"
 
 #: src/favorites.c:230 src/recent.c:210
-#, fuzzy
 msgid "Sort by order"
-msgstr "按名字排列"
+msgstr "按号码排序"
 
 #: src/favorites.c:231
 msgid "Clear favorites"
-msgstr ""
+msgstr "清除收藏"
 
 #: src/overview.c:97 src/recent.c:91 src/recent.c:243
-#, fuzzy
 msgid "Recent files"
-msgstr "删除文件？"
+msgstr "最近访问的文件"
 
 #: src/file_context_menu.c:177
 #, c-format
 msgid "Open (with %s)"
-msgstr ""
+msgstr "用%s打开"
 
 #: src/file_context_menu.c:179
 #, c-format
 msgid "Open with %s"
-msgstr ""
+msgstr "用%s打开"
 
 #: src/file_context_menu.c:206
 msgid "Delete"
@@ -81,39 +76,39 @@ msgstr "删除"
 
 #: src/disks.c:125
 msgid "Whole filesystem"
-msgstr ""
+msgstr "整个文件系统"
 
 #: src/fileinfo_render.c:114
 msgid "Does not exist"
-msgstr ""
+msgstr "不存在"
 
 #: src/fileinfo_render.c:121
 msgid "Directory"
-msgstr ""
+msgstr "目录"
 
 #: src/dir.c:351
 msgid "Open"
-msgstr ""
+msgstr "打开"
 
 #: src/dir.c:356
 msgid "Unhide"
-msgstr ""
+msgstr "显示"
 
 #: src/dir.c:358
 msgid "Hide"
-msgstr ""
+msgstr "隐藏"
 
 #: src/dir.c:365
 msgid "Add to favorites"
-msgstr ""
+msgstr "添加到收藏"
 
 #: src/dir.c:435
 msgid "Do not show hidden files"
-msgstr ""
+msgstr "不显示隐藏文件"
 
 #: src/dir.c:437
 msgid "Show hidden files"
-msgstr ""
+msgstr "显示隐藏文件"
 
 #: src/dir.c:471
 msgid "Menu"
@@ -121,56 +116,8 @@ msgstr "菜单"
 
 #: src/recent.c:172
 msgid "Remove from recent files"
-msgstr ""
+msgstr "从最近访问的文件中删除"
 
 #: src/recent.c:211
 msgid "Clear recent files"
-msgstr ""
-
-#~ msgid "Unknown Author"
-#~ msgstr "未知作者"
-
-#~ msgid "reverse-sorted by name"
-#~ msgstr "逆转名字排列"
-
-#~ msgid "sorted by name"
-#~ msgstr "按名字排列"
-
-#~ msgid "reverse-sorted by time"
-#~ msgstr "逆转时间排列"
-
-#~ msgid "sorted by time"
-#~ msgstr "按时间排列"
-
-#~ msgid "Sort by Time"
-#~ msgstr "按时间排列"
-
-#~ msgid "Reverse Sort Order"
-#~ msgstr "逆转排列顺序"
-
-#~ msgid "Language Settings"
-#~ msgstr "语言设置"
-
-#~ msgid "Go to"
-#~ msgstr "跳转到"
-
-#~ msgid "Scripts"
-#~ msgstr "脚本"
-
-#~ msgid "Edit"
-#~ msgstr "编辑"
-
-#~ msgid "Paste"
-#~ msgstr "粘贴"
-
-#~ msgid "Cut"
-#~ msgstr "剪切"
-
-#~ msgid "Copy"
-#~ msgstr "拷贝"
-
-#~ msgid "No"
-#~ msgstr "否"
-
-#~ msgid "Yes"
-#~ msgstr "是"
+msgstr "清除最近访问的文件"
