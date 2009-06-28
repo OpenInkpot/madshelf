@@ -1,3 +1,9 @@
+madshelf (0.2.3) asimov; urgency=low
+
+  * Added filtering files by filetype
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Sun, 28 Jun 2009 17:40:36 +0700
+
 madshelf (0.2.2) asimov; urgency=low
 
   * Madshelf made singleton
