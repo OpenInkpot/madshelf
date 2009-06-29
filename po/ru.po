@@ -13,47 +13,44 @@ msgstr ""
 #: src/favorites.c:91 src/favorites.c:262 src/overview.c:94
 #: src/favorites_menu.c:39
 msgid "Favorites"
-msgstr ""
+msgstr "Избранное"
 
 #: src/favorites.c:92
 #, fuzzy
 msgid "Favorite books"
-msgstr "Пусто"
+msgstr "Избранные книги"
 
 #: src/favorites.c:93
 msgid "Favorite pictures"
-msgstr ""
+msgstr "Избранные картинки"
 
 #: src/favorites.c:94
 msgid "Favorite music"
-msgstr ""
+msgstr "Избранная музыка"
 
 #: src/favorites.c:194 src/dir.c:363
 msgid "Remove from favorites"
-msgstr ""
+msgstr "Удалить из избранного"
 
 #: src/favorites.c:217 src/dir.c:411 src/recent.c:197
 msgid "Actions"
-msgstr ""
+msgstr "Операции"
 
 #: src/favorites.c:228 src/recent.c:208
-#, fuzzy
 msgid "Sort by name"
 msgstr "Отсортировать по имени"
 
 #: src/favorites.c:229 src/recent.c:209
-#, fuzzy
 msgid "Sort by name (reversed)"
-msgstr "Отсортировать по имени"
+msgstr "Отсортировать по имени (наоборот)"
 
 #: src/favorites.c:230 src/recent.c:210
-#, fuzzy
 msgid "Sort by order"
-msgstr "Отсортировать по имени"
+msgstr "Отсортировать по порядку"
 
 #: src/favorites.c:231
 msgid "Clear favorites"
-msgstr ""
+msgstr "Очистить избранное"
 
 #: src/overview.c:97 src/recent.c:91 src/recent.c:243
 #, fuzzy
