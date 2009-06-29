@@ -1,3 +1,9 @@
+madshelf (0.2.5) asimov; urgency=low
+
+  * Added handling of "disk changed" event.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Mon, 29 Jun 2009 18:18:51 +0700
+
 madshelf (0.2.4) asimov; urgency=low
 
   * Clock added
