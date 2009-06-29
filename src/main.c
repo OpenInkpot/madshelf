@@ -44,6 +44,7 @@
 #include "utils.h"
 #include "battery.h"
 #include "handlers.h"
+#include "clock.h"
 
 #define SYS_CONFIG_DIR SYSCONFDIR "/madshelf"
 #define USER_CONFIG_DIR "/.e/apps/madshelf"
@@ -471,6 +472,8 @@ int main(int argc, char** argv)
 
     update_batt_cb(main_edje);
     ecore_timer_add(5*60, &update_batt_cb, main_edje);
+
+    init_clock(main_edje);
 
     //ecore_event_handler_add(ECORE_EVENT_SIGNAL_HUP,sighup_signal_handler,NULL);
 

@@ -85,6 +85,22 @@ collections {
                }
             }
             part {
+               name, "clock";
+               type, TEXT;
+               description {
+                  state, "default" 0.0;
+                  color, 255 255 255 255;
+                  text {
+                     text, "";
+                     font, "serif";
+                     size, 28;
+                     align, 1.0 0.5;
+                  }
+                  rel1 { relative, 1.0 0.0; offset, -200 0; }
+                  rel2 { relative, 1.0 0.0; offset, -10 43; }
+               }
+            }
+            part {
                name, "footer";
                type, TEXT;
                description {
