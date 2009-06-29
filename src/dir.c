@@ -314,6 +314,25 @@ static void _draw_item(const madshelf_state_t* state, Evas_Object* item,
     fileinfo_destroy(fileinfo);
 }
 
+static void _update_filelist_gui(madshelf_state_t* state)
+{
+    _loc_t* _loc = (_loc_t*)state->loc;
+    _free_files(_loc->files);
+    _loc->files = _fill_files(state, _loc->dir);
+    _update_gui(state);
+}
+
+static void _fs_updated(madshelf_state_t* state)
+{
+    _loc_t* _loc = (_loc_t*)state->loc;
+    madshelf_disk_t* disk = find_disk(state->disks, _loc->dir);
+
+    if(!disk_mounted(disk))
+        go(state, overview_make(state));
+    else
+        _update_filelist_gui(state);
+}
+
 static madshelf_loc_t loc = {
     &_free,
     &_init_gui,
@@ -321,6 +340,7 @@ static madshelf_loc_t loc = {
     &_key_down,
     &_activate_item,
     &_draw_item,
+    &_fs_updated,
 };
 
 madshelf_loc_t* dir_make(madshelf_state_t* state, const char* dir)
@@ -334,15 +354,6 @@ madshelf_loc_t* dir_make(madshelf_state_t* state, const char* dir)
 
     return (madshelf_loc_t*)_loc;
 }
-
-static void _update_filelist_gui(madshelf_state_t* state)
-{
-    _loc_t* _loc = (_loc_t*)state->loc;
-    _free_files(_loc->files);
-    _loc->files = _fill_files(state, _loc->dir);
-    _update_gui(state);
-}
-
 /* File menu */
 
 static void draw_file_context_action(const madshelf_state_t* state, Evas_Object* item,

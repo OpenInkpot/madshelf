@@ -18,7 +18,10 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#define _GNU_SOURCE
+
 #include <libintl.h>
+#include <stdio.h>
 
 #include <Edje.h>
 #include <echoicebox.h>
@@ -82,7 +85,6 @@ static void _activate_item(madshelf_state_t* state, Evas_Object* choicebox,
         go(state, favorites_make(state, (madshelf_favorites_type_t)state->filter));
     }
 
-
     if(item_num - state->disks->n == 1)
         go(state, recent_make(state));
 }
@@ -93,13 +95,29 @@ static void _draw_item(const madshelf_state_t* state,
     item_clear(item);
 
     if(item_num < state->disks->n)
-        edje_object_part_text_set(item, "title", state->disks->disk[item_num].name);
+    {
+        if(disk_mounted(state->disks->disk + item_num))
+            edje_object_part_text_set(item, "title", state->disks->disk[item_num].name);
+        else
+        {
+            char* d;
+            asprintf(&d, "<inactive>%s</inactive>", state->disks->disk[item_num].name);
+            edje_object_part_text_set(item, "title", d);
+            free(d);
+        }
+    }
 
     if(item_num - state->disks->n == 0)
         edje_object_part_text_set(item, "title", gettext("Favorites"));
 
     if(item_num - state->disks->n == 1)
         edje_object_part_text_set(item, "title", gettext("Recent files"));
+}
+
+static void _fs_updated(madshelf_state_t* state)
+{
+    Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
+    choicebox_invalidate_interval(choicebox, 0, state->disks->n + 2);
 }
 
 madshelf_loc_t* overview_make(madshelf_state_t* state)
@@ -111,6 +129,7 @@ madshelf_loc_t* overview_make(madshelf_state_t* state)
         &_key_down,
         &_activate_item,
         &_draw_item,
+        &_fs_updated,
     };
     return &loc;
 }

@@ -23,6 +23,8 @@
 #include <stdbool.h>
 #include <string.h>
 #include <libintl.h>
+#include <sys/stat.h>
+#include <libgen.h>
 
 #include "utils.h"
 
@@ -79,6 +81,7 @@ static Eina_Bool _fill_cb(const Eina_Hash* hash, const void* key, void* data, vo
             die("No path found for disk entry %s\n", (char*)key);
 
         disk->copy_target = efreet_ini_boolean_get(config, "Copy-Target");
+        disk->is_removable = efreet_ini_boolean_get(config, "Removable");
 
         disk->path = strdup(efreet_ini_localestring_get(config, "Path"));
 
@@ -152,6 +155,34 @@ madshelf_disk_t* find_disk(madshelf_disks_t* disks, const char* filename)
         if(in_disk(disks->disk + i, filename))
             return disks->disk + i;
     return NULL;
+}
+
+static bool is_mountpoint(const char* path)
+{
+    struct stat dir_s;
+    struct stat par_s;
+
+    if(0 != stat(path, &dir_s))
+        return false;
+
+    char* p = strdup(path);
+    char* parent = dirname(p);
+    if(0 != stat(parent, &par_s))
+    {
+        free(p);
+        return false;
+    }
+    free(p);
+
+    return dir_s.st_dev != par_s.st_dev;
+}
+
+bool disk_mounted(madshelf_disk_t* disk)
+{
+    if(!disk->is_removable)
+        return 1;
+
+    return is_mountpoint(disk->path);
 }
 
 void free_disks(madshelf_disks_t* disks)

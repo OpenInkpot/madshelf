@@ -348,6 +348,16 @@ static bool check_running_instance(madshelf_filter_t filter)
     return false;
 }
 
+static int sighup_signal_handler(void* data, int type, void* event)
+{
+    madshelf_state_t* state = (madshelf_state_t*)data;
+
+    if(state->loc->fs_updated)
+        (*state->loc->fs_updated)(state);
+
+    return 1;
+}
+
 static struct option options[] = {
     { "filter", true, NULL, 'f' },
     { NULL, 0, 0, 0 }
@@ -475,7 +485,7 @@ int main(int argc, char** argv)
 
     init_clock(main_edje);
 
-    //ecore_event_handler_add(ECORE_EVENT_SIGNAL_HUP,sighup_signal_handler,NULL);
+    ecore_event_handler_add(ECORE_EVENT_SIGNAL_HUP, sighup_signal_handler, &state);
 
     ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_ADD, _client_add, NULL);
     ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_DATA, _client_data, NULL);

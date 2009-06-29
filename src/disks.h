@@ -30,6 +30,7 @@ typedef struct
     char* short_name;
     char* path;
     bool copy_target;
+    bool is_removable;
 
     /* State */
     char* current_path;
@@ -45,6 +46,8 @@ madshelf_disks_t* fill_disks(Efreet_Ini* config);
 madshelf_disks_t* fill_stub_disk();
 
 madshelf_disk_t* find_disk(madshelf_disks_t* disks, const char* filename);
+
+bool disk_mounted(madshelf_disk_t* disk);
 
 void free_disks(madshelf_disks_t*);
 
