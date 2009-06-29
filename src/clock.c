@@ -13,7 +13,7 @@ static int update_clock(void* param)
     struct tm* loctime;
     curtime = time(NULL);
     loctime = localtime(&curtime);
-    if(loctime->tm_year < 8) /* 2008 */
+    if(loctime->tm_year < 108) /* 2008 */
         edje_object_part_text_set(edje, "clock", "--:--");
     else
     {
