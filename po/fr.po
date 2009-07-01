@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: madshelf\n"
 "Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
-"POT-Creation-Date: 2009-06-25 21:28+0700\n"
+"POT-Creation-Date: 2009-07-02 05:18+0700\n"
 "PO-Revision-Date: 2009-06-26 11:46+0200\n"
 "Last-Translator: Louvre <diogenedebian@gmail.com>\n"
 "Language-Team: French <openinkpot-l10n@googlegroups.com>\n"
@@ -18,48 +18,60 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: src/favorites.c:91 src/favorites.c:262 src/overview.c:94
+#: src/favorites.c:101 src/favorites.c:285 src/overview.c:113
 #: src/favorites_menu.c:39
 msgid "Favorites"
 msgstr "Favoris"
 
-#: src/favorites.c:92
+#: src/favorites.c:102
 msgid "Favorite books"
 msgstr "Livres favoris"
 
-#: src/favorites.c:93
+#: src/favorites.c:103
 msgid "Favorite pictures"
 msgstr "Images favorites"
 
-#: src/favorites.c:94
+#: src/favorites.c:104
 msgid "Favorite music"
 msgstr "Musiques favorites"
 
-#: src/favorites.c:194 src/dir.c:363
+#: src/favorites.c:217 src/dir.c:381
 msgid "Remove from favorites"
 msgstr "Enlever des favoris"
 
-#: src/favorites.c:217 src/dir.c:411 src/recent.c:197
+#: src/favorites.c:240 src/dir.c:429 src/recent.c:225
 msgid "Actions"
 msgstr "Actions"
 
-#: src/favorites.c:228 src/recent.c:208
+#: src/favorites.c:251 src/recent.c:236
 msgid "Sort by name"
 msgstr "Classer par nom"
 
-#: src/favorites.c:229 src/recent.c:209
+#: src/favorites.c:252 src/recent.c:237
 msgid "Sort by name (reversed)"
 msgstr "Classer par nom (inversé)"
 
-#: src/favorites.c:230 src/recent.c:210
+#: src/favorites.c:253 src/recent.c:238
 msgid "Sort by order"
 msgstr "Classer par ordre"
 
-#: src/favorites.c:231
+#: src/favorites.c:254
 msgid "Clear favorites"
 msgstr "Effacer les favoris"
 
-#: src/overview.c:97 src/recent.c:91 src/recent.c:243
+#: src/overview.c:38 src/overview.c:39
+msgid "Bookshelf"
+msgstr ""
+
+#: src/overview.c:40
+msgid "Pictures (navigation)"
+msgstr ""
+
+#: src/overview.c:41
+msgid "Audio (navigation)"
+msgstr ""
+
+#: src/overview.c:116 src/recent.c:99 src/recent.c:271
 msgid "Recent files"
 msgstr "Fichiers récents"
 
@@ -77,7 +89,7 @@ msgstr "Ouvrir avec %s"
 msgid "Delete"
 msgstr "Effacer"
 
-#: src/disks.c:125
+#: src/disks.c:128
 msgid "Whole filesystem"
 msgstr "Tout le système de fichiers"
 
@@ -89,39 +101,38 @@ msgstr "N'existe pas"
 msgid "Directory"
 msgstr "Répertoire"
 
-#: src/dir.c:351
+#: src/dir.c:369
 msgid "Open"
 msgstr "Ouvrir"
 
-#: src/dir.c:356
+#: src/dir.c:374
 msgid "Unhide"
 msgstr "Ne plus cacher"
 
-#: src/dir.c:358
+#: src/dir.c:376
 msgid "Hide"
 msgstr "Cacher"
 
-#: src/dir.c:365
+#: src/dir.c:383
 msgid "Add to favorites"
 msgstr "Ajouter aux favoris"
 
-#: src/dir.c:435
+#: src/dir.c:453
 msgid "Do not show hidden files"
 msgstr "Ne pas montrer les fichiers cachés"
 
-#: src/dir.c:437
+#: src/dir.c:455
 msgid "Show hidden files"
 msgstr "Montrer les fichiers cachés"
 
-#: src/dir.c:471
+#: src/dir.c:489
 msgid "Menu"
 msgstr "Menu"
 
-#: src/recent.c:172
+#: src/recent.c:200
 msgid "Remove from recent files"
 msgstr "Enlever des fichiers récents"
 
-#: src/recent.c:211
+#: src/recent.c:239
 msgid "Clear recent files"
 msgstr "Effacer les fichiers récents"
-

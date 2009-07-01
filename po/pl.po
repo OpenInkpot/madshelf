@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0\n"
 "Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
-"POT-Creation-Date: 2009-06-25 21:28+0700\n"
+"POT-Creation-Date: 2009-07-02 05:18+0700\n"
 "PO-Revision-Date: 2009-06-26 12:18+0100\n"
 "Last-Translator: Tomasz Długosz <tomek3d@gmail.com>\n"
 "Language-Team: \n"
@@ -10,48 +10,60 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/favorites.c:91 src/favorites.c:262 src/overview.c:94
+#: src/favorites.c:101 src/favorites.c:285 src/overview.c:113
 #: src/favorites_menu.c:39
 msgid "Favorites"
 msgstr "Ulubione"
 
-#: src/favorites.c:92
+#: src/favorites.c:102
 msgid "Favorite books"
 msgstr "Ulubione książki"
 
-#: src/favorites.c:93
+#: src/favorites.c:103
 msgid "Favorite pictures"
 msgstr "Ulubione obrazy"
 
-#: src/favorites.c:94
+#: src/favorites.c:104
 msgid "Favorite music"
 msgstr "Ulubiona muzyka"
 
-#: src/favorites.c:194 src/dir.c:363
+#: src/favorites.c:217 src/dir.c:381
 msgid "Remove from favorites"
 msgstr "Usuń z ulubionych"
 
-#: src/favorites.c:217 src/dir.c:411 src/recent.c:197
+#: src/favorites.c:240 src/dir.c:429 src/recent.c:225
 msgid "Actions"
 msgstr "Czynności"
 
-#: src/favorites.c:228 src/recent.c:208
+#: src/favorites.c:251 src/recent.c:236
 msgid "Sort by name"
 msgstr "Ustaw w kolejności alfabetycznej"
 
-#: src/favorites.c:229 src/recent.c:209
+#: src/favorites.c:252 src/recent.c:237
 msgid "Sort by name (reversed)"
 msgstr "Ustaw w odwrotnej kolejności alfabetycznej"
 
-#: src/favorites.c:230 src/recent.c:210
+#: src/favorites.c:253 src/recent.c:238
 msgid "Sort by order"
 msgstr "Ustaw po kolei"
 
-#: src/favorites.c:231
+#: src/favorites.c:254
 msgid "Clear favorites"
 msgstr "Wyczyść ulubione"
 
-#: src/overview.c:97 src/recent.c:91 src/recent.c:243
+#: src/overview.c:38 src/overview.c:39
+msgid "Bookshelf"
+msgstr ""
+
+#: src/overview.c:40
+msgid "Pictures (navigation)"
+msgstr ""
+
+#: src/overview.c:41
+msgid "Audio (navigation)"
+msgstr ""
+
+#: src/overview.c:116 src/recent.c:99 src/recent.c:271
 msgid "Recent files"
 msgstr "Ostatnio otwierane"
 
@@ -69,7 +81,7 @@ msgstr "Otwórz w %s"
 msgid "Delete"
 msgstr "Usuń"
 
-#: src/disks.c:125
+#: src/disks.c:128
 msgid "Whole filesystem"
 msgstr "Cały system plików"
 
@@ -81,38 +93,38 @@ msgstr "Nie istnieje"
 msgid "Directory"
 msgstr "Katalog"
 
-#: src/dir.c:351
+#: src/dir.c:369
 msgid "Open"
 msgstr "Otwórz"
 
-#: src/dir.c:356
+#: src/dir.c:374
 msgid "Unhide"
 msgstr "Nie chowaj"
 
-#: src/dir.c:358
+#: src/dir.c:376
 msgid "Hide"
 msgstr "Chowaj"
 
-#: src/dir.c:365
+#: src/dir.c:383
 msgid "Add to favorites"
 msgstr "Dodaj do ulubionych"
 
-#: src/dir.c:435
+#: src/dir.c:453
 msgid "Do not show hidden files"
 msgstr "Nie pokazuj ukrytych plików"
 
-#: src/dir.c:437
+#: src/dir.c:455
 msgid "Show hidden files"
 msgstr "Pokazuj ukryte pliki"
 
-#: src/dir.c:471
+#: src/dir.c:489
 msgid "Menu"
 msgstr "Menu"
 
-#: src/recent.c:172
+#: src/recent.c:200
 msgid "Remove from recent files"
 msgstr "Usuń z ostatnio otwieranych"
 
-#: src/recent.c:211
+#: src/recent.c:239
 msgid "Clear recent files"
 msgstr "Wyczyść listę ostatnio otwieranych"
