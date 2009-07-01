@@ -1,3 +1,10 @@
+madshelf (0.2.7) asimov; urgency=low
+
+  * Fixed shutdown on X server disconnection.
+  * Theme reworked.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Thu, 02 Jul 2009 06:37:48 +0700
+
 madshelf (0.2.6) asimov; urgency=low
 
   * Fixed "valid date" limit for clocks.
