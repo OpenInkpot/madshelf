@@ -33,6 +33,7 @@
 #include <Ecore_File.h>
 #include <Ecore_Config.h>
 #include <Ecore_Con.h>
+#include <Ecore_X.h>
 #include <Edje.h>
 #include <Efreet.h>
 #include <echoicebox.h>
@@ -373,8 +374,6 @@ static int exit_handler(void *param, int ev_type, void *event)
    ecore_main_loop_quit();
    return 1;
 }
-
-ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_handler, NULL);
 
 int main(int argc, char** argv)
 {
