@@ -22,6 +22,8 @@
 
 #include <libintl.h>
 #include <stdio.h>
+/* This is to mark statically-allocated strings as translatable */
+#define _(x) (x)
 
 #include <Edje.h>
 #include <echoicebox.h>
@@ -33,10 +35,10 @@
 #include "recent.h"
 
 static const char* titles[] = {
-    "Bookshelf",
-    "Bookshelf",
-    "Pictures (navigation)",
-    "Audio (navigation)"
+    _("Bookshelf"),
+    _("Bookshelf"),
+    _("Pictures (navigation)"),
+    _("Audio (navigation)")
 };
 
 static void _init_gui(const madshelf_state_t* state)
