@@ -363,6 +363,19 @@ static struct option options[] = {
     { NULL, 0, 0, 0 }
 };
 
+static void exit_all(void *param)
+{
+    ecore_main_loop_quit();
+}
+
+static int exit_handler(void *param, int ev_type, void *event)
+{
+   ecore_main_loop_quit();
+   return 1;
+}
+
+ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_handler, NULL);
+
 int main(int argc, char** argv)
 {
     madshelf_filter_t filter = MADSHELF_FILTER_NO;
@@ -485,6 +498,8 @@ int main(int argc, char** argv)
 
     init_clock(main_edje);
 
+    ecore_x_io_error_handler_set(exit_all, NULL);
+    ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_handler, NULL);
     ecore_event_handler_add(ECORE_EVENT_SIGNAL_HUP, sighup_signal_handler, &state);
 
     ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_ADD, _client_add, NULL);
