@@ -24,14 +24,37 @@ images {
 }
 
 styles {
-   style {
-      name, "title";
-      base, "font=serif font_size=28 color=#000 align=left valign=bottom";
-      tag, "inactive" "+color=#888";
-      tag, "/inactive" "-";
-   }
+    style {
+        name, "titles";
+        base, "font=sans-serif font_size=20 color=#000 align=left valign=top";
+        tag, "inactive" "+color=#888";
+        tag, "/inactive" "-";
+    };
+    style {
+        name, "ext-fields";
+        base, "font=sans-serif font_size=20 color=#000 align=right valign=top";
+        tag, "inactive" "+color=#888";
+        tag, "/inactive" "-";
+    };
+    style {
+        name, "values";
+        base, "font=sans-serif font_size=20 color=#000 align=right valign=bottom";
+        tag, "inactive" "+color=#888";
+        tag, "/inactive" "-";
+    }
+    style {
+        name, "series-fields";
+        base, "font=sans-serif font_size=20 color=#000 align=left valign=bottom";
+        tag, "inactive" "+color=#888";
+        tag, "/inactive" "-";
+    };
+    style {
+        name, "item-texts";
+        base, "font=sans-serif font_size=28 color=#000 align=left valign=middle";
+        tag, "inactive" "+color=#888";
+        tag, "/inactive" "-";
+    }
 }
-
 
 collections {
     group {
@@ -76,7 +99,7 @@ collections {
                   color, 255 255 255 255;
                   text {
                      text, "path";
-                     font, "serif";
+                     font, sans-serif;
                      size, 28;
                      align, 0.0 0.5;
                   }
@@ -92,7 +115,7 @@ collections {
                   color, 255 255 255 255;
                   text {
                      text, "";
-                     font, "serif";
+                     font, sans-serif;
                      size, 28;
                      align, 1.0 0.5;
                   }
@@ -107,8 +130,7 @@ collections {
                   state, "default" 0.0;
                   color, 255 255 255 255;
                   text {
-                     text, "[footer]";
-                     font, "serif";
+                     font, sans-serif;
                      size, 28;
                   }
                   rel1 {
@@ -317,8 +339,7 @@ collections {
                   state, "default" 0.0;
                   color, 255 255 255 255;
                   text {
-                     text, "path";
-                     font, "serif";
+                     font, sans-serif;
                      size, 28;
                      align, 0.0 0.5;
                   }
@@ -333,8 +354,7 @@ collections {
                   state, "default" 0.0;
                   color, 255 255 255 255;
                   text {
-                     text, "[footer]";
-                     font, "serif";
+                     font, sans-serif;
                      size, 28;
                   }
                   rel1 {
@@ -358,27 +378,24 @@ collections {
             description {
                state, "default" 0.0;
                text {
-                  style, "title";
-                  text, "";
+                  style, "item-texts";
+                  max, 0 1;
                }
-               rel1 { relative, 0.0 0.0; offset, 17 21; }
-               rel2 { relative, 1.0 1.0; offset, -18 -22; }
+               align, 0 0.5;
+               rel1 { relative, 0.0 0.0; offset, 17 0; }
+               rel2 { relative, 1.0 1.0; offset, -18 -1; }
             }
          }
          part {
             name, "author";
-            type, TEXT;
+            type, TEXTBLOCK;
             mouse_events, 0;
             clip_to, "clipper";
             description {
                state, "default" 0.0;
                color, 0 0 0 255;
                text {
-                  align, 0.0 0.0;
-                  text, "";
-                  font, "serif";
-                  size, 20;
-                  text_class, "chrome";
+                  style, "titles";
                }
                rel1 { relative, 0.0 0.0; offset, 17 0; }
                rel2 { relative, 1.0 1.0; offset, -18 -1; }
@@ -386,37 +403,31 @@ collections {
          }
          part {
             name, "series";
-            type, TEXT;
+            type, TEXTBLOCK;
             mouse_events, 0;
             clip_to, "clipper";
             description {
                state, "default" 0.0;
                color, 0 0 0 255;
                text {
-                  align, 0.0 1.0;
-                  text, "";
-                  font, "serif";
-                  size, 20;
-                  text_class, "chrome";
+                  style, "series-fields";
+                  min, 0 1;
                }
-               rel1 { relative, 0.0 0.0; offset, 17 0; }
+               align, 0.5 1.0;
+               rel1 { relative, 0.0 1.0; offset, 17 -1; }
                rel2 { relative, 1.0 1.0; offset, -18 -1; }
             }
          }
          part {
             name, "type";
-            type, TEXT;
+            type, TEXTBLOCK;
             mouse_events, 0;
             clip_to, "clipper";
             description {
                state, "default" 0.0;
                color, 0 0 0 255;
                text {
-                  align, 1.0 0.0;
-                  text, "";
-                  font, "serif";
-                  size, 20;
-                  text_class, "chrome";
+                  style, "ext-fields";
                }
                rel1 { relative, 0.0 0.0; offset, 17 0; }
                rel2 { relative, 1.0 1.0; offset, -18 -1; }
@@ -424,20 +435,18 @@ collections {
          }
          part {
             name, "size";
-            type, TEXT;
+            type, TEXTBLOCK;
             mouse_events, 0;
             clip_to, "clipper";
             description {
                state, "default" 0.0;
                color, 0 0 0 255;
                text {
-                  align, 1.0 1.0;
-                  text, "";
-                  font, "serif";
-                  size, 20;
-                  text_class, "chrome";
+                  style, "values";
+                  min, 0 1;
                }
-               rel1 { relative, 0.0 0.0; offset, 17 0; }
+               align, 0.5 1.0;
+               rel1 { relative, 0.0 1.0; offset, 17 -1; }
                rel2 { relative, 1.0 1.0; offset, -18 -1; }
             }
          }
