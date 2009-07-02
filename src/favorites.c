@@ -24,6 +24,7 @@
 #define _(x) (x)
 
 #include <Edje.h>
+#include <Ecore_File.h>
 #include <echoicebox.h>
 
 #include "utils.h"
@@ -36,6 +37,7 @@
 #include "overview.h"
 #include "run.h"
 #include "filters.h"
+#include "dir.h"
 
 static void _open_file_context_menu(madshelf_state_t* state, const char* filename);
 static void _open_screen_context_menu(madshelf_state_t* state, Evas_Object* choicebox);
@@ -214,14 +216,33 @@ madshelf_loc_t* favorites_make(madshelf_state_t* state, madshelf_favorites_type_
 static void draw_file_context_action(const madshelf_state_t* state, Evas_Object* item,
                               const char* filename, int item_num)
 {
+    if(ecore_file_is_dir(filename) && item_num == 0)
+    {
+        edje_object_part_text_set(item, "text", gettext("Open"));
+        return;
+    }
+    else
+        item_num--;
+
     edje_object_part_text_set(item, "text", gettext("Remove from favorites"));
 }
 
 static void handle_file_context_action(madshelf_state_t* state, const char* filename,
                                 int item_num, bool is_alt)
 {
-    tag_remove(state->tags, "favorites", filename);
-    close_file_context_menu(state->canvas, true);
+    if(ecore_file_is_dir(filename) && item_num == 0)
+    {
+        go(state, dir_make(state, filename));
+        return;
+    }
+    else
+        item_num--;
+
+    if(item_num == 0)
+    {
+        tag_remove(state->tags, "favorites", filename);
+        close_file_context_menu(state->canvas, true);
+    }
 }
 
 static void file_context_menu_closed(madshelf_state_t* state, const char* filename, bool touched)
@@ -236,10 +257,12 @@ static void file_context_menu_closed(madshelf_state_t* state, const char* filena
 
 static void _open_file_context_menu(madshelf_state_t* state, const char* filename)
 {
+    int num_actions = ecore_file_is_dir(filename) ? 2 : 1;
+
     open_file_context_menu(state,
                            gettext("Actions"),
                            filename,
-                           1,
+                           num_actions,
                            draw_file_context_action,
                            handle_file_context_action,
                            file_context_menu_closed);

@@ -24,6 +24,7 @@
 #define _(x) (x)
 
 #include <Edje.h>
+#include <Ecore_File.h>
 #include <echoicebox.h>
 
 #include "recent.h"
@@ -35,6 +36,7 @@
 #include "tags.h"
 #include "run.h"
 #include "filters.h"
+#include "dir.h"
 
 static void _open_screen_context_menu(madshelf_state_t* state);
 static void _open_file_context_menu(madshelf_state_t* state, const char* filename);
@@ -197,12 +199,28 @@ madshelf_loc_t* recent_make(madshelf_state_t* state)
 static void draw_file_context_action(const madshelf_state_t* state, Evas_Object* item,
                               const char* filename, int item_num)
 {
+    if(ecore_file_is_dir(filename) && item_num == 0)
+    {
+        edje_object_part_text_set(item, "text", gettext("Open"));
+        return;
+    }
+    else
+        item_num--;
+
     edje_object_part_text_set(item, "text", gettext("Remove from recent files"));
 }
 
 static void handle_file_context_action(madshelf_state_t* state, const char* filename,
                                 int item_num, bool is_alt)
 {
+    if(ecore_file_is_dir(filename) && item_num == 0)
+    {
+        go(state, dir_make(state, filename));
+        return;
+    }
+    else
+        item_num--;
+
     tag_remove(state->tags, "recent", filename);
     close_file_context_menu(state->canvas, true);
 }
@@ -221,10 +239,12 @@ static void file_context_menu_closed(madshelf_state_t* state, const char* filena
 
 static void _open_file_context_menu(madshelf_state_t* state, const char* filename)
 {
+    int num_actions = ecore_file_is_dir(filename) ? 2 : 1;
+
     open_file_context_menu(state,
                            gettext("Actions"),
                            filename,
-                           1,
+                           num_actions,
                            draw_file_context_action,
                            handle_file_context_action,
                            file_context_menu_closed);
