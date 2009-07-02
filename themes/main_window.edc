@@ -44,7 +44,7 @@ styles {
     }
     style {
         name, "series-fields";
-        base, "font=sans-serif font_size=20 color=#000 align=left valign=bottom";
+        base, "font=sans-serif:italic font_size=20 color=#000 align=left valign=bottom";
         tag, "inactive" "+color=#888";
         tag, "/inactive" "-";
     };
