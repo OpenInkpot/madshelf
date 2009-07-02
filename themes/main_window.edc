@@ -92,6 +92,22 @@ collections {
                }
             }
             part {
+               name, "clock";
+               type, TEXT;
+               description {
+                  state, "default" 0.0;
+                  color, 255 255 255 255;
+                  text {
+                     text, "";
+                     font, sans-serif;
+                     size, 28;
+                     align, 1.0 0.5;
+                  }
+                  rel1 { relative, 1.0 0.0; offset, -100 0; }
+                  rel2 { relative, 1.0 0.0; offset, -10 49; }
+               }
+            }
+            part {
                name, "title";
                type, TEXT;
                description {
@@ -104,23 +120,7 @@ collections {
                      align, 0.0 0.5;
                   }
                   rel1 { relative, 0.0 0.0; offset, 5 0; }
-                  rel2 { relative, 1.0 0.0; offset, -1 49; }
-               }
-            }
-            part {
-               name, "clock";
-               type, TEXT;
-               description {
-                  state, "default" 0.0;
-                  color, 255 255 255 255;
-                  text {
-                     text, "";
-                     font, sans-serif;
-                     size, 28;
-                     align, 1.0 0.5;
-                  }
-                  rel1 { relative, 1.0 0.0; offset, -200 0; }
-                  rel2 { relative, 1.0 0.0; offset, -10 43; }
+                  rel2 { relative, 0.0 1.0; to, "clock"; offset, 0 0; }
                }
             }
             part {
