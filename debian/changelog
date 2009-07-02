@@ -1,3 +1,10 @@
+madshelf (0.2.8) asimov; urgency=low
+
+  * Russian translation updated
+  * Ukrainian translation added
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Thu, 02 Jul 2009 18:59:42 +0700
+
 madshelf (0.2.7) asimov; urgency=low
 
   * Fixed shutdown on X server disconnection.
