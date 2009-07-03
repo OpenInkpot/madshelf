@@ -76,8 +76,11 @@ static void _activate_item(madshelf_state_t* state, Evas_Object* choicebox,
     if(item_num < state->disks->n)
     {
         madshelf_disk_t* disk = state->disks->disk + item_num;
-        const char* path = disk->current_path ? disk->current_path : disk->path;
-        go(state, dir_make(state, path));
+        if(disk_mounted(disk))
+        {
+            const char* path = disk->current_path ? disk->current_path : disk->path;
+            go(state, dir_make(state, path));
+        }
     }
 
     if(item_num - state->disks->n == 0)
