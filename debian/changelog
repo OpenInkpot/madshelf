@@ -1,3 +1,10 @@
+madshelf (0.2.10) asimov; urgency=low
+
+  * Small fix: only enter the removable disk from overview screen if disk
+    is mounted.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Sat, 04 Jul 2009 05:20:17 +0700
+
 madshelf (0.2.9) asimov; urgency=low
 
   * Fixed the title to do not overlap the clock
