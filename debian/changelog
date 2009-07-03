@@ -1,3 +1,11 @@
+madshelf (0.2.9) asimov; urgency=low
+
+  * Fixed the title to do not overlap the clock
+  * Italic script for displaying series.
+  * Add "open" action to directories in Favorites
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Fri, 03 Jul 2009 15:47:34 +0700
+
 madshelf (0.2.8) asimov; urgency=low
 
   * Russian translation updated
