@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: 0.0\n"
 "Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
 "POT-Creation-Date: 2009-07-02 05:18+0700\n"
-"PO-Revision-Date: 2009-07-02 18:58+0700\n"
+"PO-Revision-Date: 2009-07-04 17:24+0700\n"
 "Last-Translator: Vladimir <v@v>\n"
 "Language-Team: Russian <openinkpot-hackers@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -53,7 +53,7 @@ msgstr "Сортировать (Z-A)"
 #: src/favorites.c:253
 #: src/recent.c:238
 msgid "Sort by order"
-msgstr "Отсортировать по порядку"
+msgstr "Сортировать по порядку"
 
 #: src/favorites.c:254
 msgid "Clear favorites"
