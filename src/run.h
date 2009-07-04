@@ -21,7 +21,9 @@
 #ifndef RUN_H
 #define RUN_H
 
-void run_default_handler(const char* filename);
+#include "madshelf.h"
+
+void run_default_handler(madshelf_state_t* state, const char* filename);
 
 #endif
 

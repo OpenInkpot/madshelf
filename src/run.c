@@ -24,7 +24,7 @@
 #include "handlers.h"
 #include "fileinfo.h"
 
-void run_default_handler(const char* filename)
+void run_default_handler(madshelf_state_t* state, const char* filename)
 {
      fileinfo_t* fileinfo = fileinfo_create(filename);
      openers_t* handlers_list = openers_get(fileinfo->mime_type);
@@ -33,7 +33,9 @@ void run_default_handler(const char* filename)
      if(!handlers_list)
          return;
 
-     Efreet_Desktop* handler = eina_list_data_get(handlers_list->apps);
+    tag_add(state->tags, "recent", filename);
+
+    Efreet_Desktop* handler = eina_list_data_get(handlers_list->apps);
 
 #ifdef OLD_ECORE
      Ecore_List* l = ecore_list_new();
