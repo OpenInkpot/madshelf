@@ -303,7 +303,7 @@ void open_file_context_menu(madshelf_state_t* state,
     Evas_Object* file_context_menu_choicebox
         = choicebox_new(state->canvas,
                         "/usr/share/echoicebox/echoicebox.edj",
-                        "settings-right",
+                        "settings-right-alt",
                         _item_handler,
                         _draw_item_handler,
                         _page_handler, info);
