@@ -1,3 +1,9 @@
+madshelf (0.2.12) asimov; urgency=low
+
+  * Use different style for right choicebox due to aesthetic reason.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Tue, 07 Jul 2009 06:35:49 +0700
+
 madshelf (0.2.11) asimov; urgency=low
 
   * Books are now added to recent list when opened using a digit
