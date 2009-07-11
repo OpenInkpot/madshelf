@@ -44,3 +44,32 @@ const char* file_ext(const char* f)
     else
         return f + strlen(f);
 }
+
+#ifdef DEBUG
+
+#include <Evas.h>
+
+void dump_evas_hier(Evas* canvas)
+{
+    fprintf(stderr, "dump_evas_hier\n");
+
+    Evas_Object* i = evas_object_bottom_get(canvas);
+    while(i)
+    {
+        const char* name = evas_object_name_get(i);
+        if(!name)
+            name = "NULL";
+
+        int x, y, w, h;
+        evas_object_geometry_get(i, &x, &y, &w, &h);
+
+        const char* type = evas_object_type_get(i);
+        if(!type)
+            type = "NULL";
+
+        fprintf(stderr, "0x%p %s \"%s\" %d-%d %d-%d\n", i, type, name, x, y, w, h);
+
+        i = evas_object_above_get(i);
+    }
+}
+#endif

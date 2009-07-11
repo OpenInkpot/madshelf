@@ -29,4 +29,9 @@ __attribute__((noreturn)) void die(const char* fmt, ...);
  */
 const char* file_ext(const char* filename);
 
+#ifdef DEBUG
+#include <Evas.h>
+void dump_evas_hier(Evas* canvas);
+#endif
+
 #endif

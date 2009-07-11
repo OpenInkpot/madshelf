@@ -232,31 +232,6 @@ static void _key_down(void* param, Evas* e, Evas_Object* o, void* event_info)
     choicebox_aux_key_down_handler(o, ev);
 }
 
-#ifdef DEBUG
-#include <stdio.h>
-static void dump_evas_hier(Evas* canvas)
-{
-    Evas_Object* i = evas_object_top_get(canvas);
-    while(i)
-    {
-        const char* name = evas_object_name_get(i);
-        if(!name)
-            name = "NULL";
-
-        int x, y, w, h;
-        evas_object_geometry_get(i, &x, &y, &w, &h);
-
-        const char* type = evas_object_type_get(i);
-        if(!type)
-            type = "NULL";
-
-        printf("0x%p %s \"%s\" %d-%d %d-%d\n", i, type, name, x, y, w, h);
-
-        i = evas_object_below_get(i);
-    }
-}
-#endif
-
 void open_file_context_menu(madshelf_state_t* state,
                             const char* title,
                             const char* filename,
@@ -332,16 +307,16 @@ void open_file_context_menu(madshelf_state_t* state,
 
 void close_file_context_menu(Evas* canvas, bool touched)
 {
-#ifdef DEBUG
-    dump_evas_hier(canvas);
-#endif
-
     Evas_Object* main_edje = evas_object_name_find(canvas, "main_edje");
     Evas_Object* file_context_menu = evas_object_name_find(canvas, "file-context-menu");
     Evas_Object* file_context_choicebox = evas_object_name_find(canvas, "file-context-menu-choicebox");
 
     if(!file_context_menu)
         return;
+
+#ifdef DEBUG
+    dump_evas_hier(canvas);
+#endif
 
     file_context_menu_info_t* info = evas_object_data_get(file_context_menu, "info");
 
