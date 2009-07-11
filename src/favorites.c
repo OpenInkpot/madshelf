@@ -159,6 +159,22 @@ static bool _key_down(madshelf_state_t* state, Evas_Object* choicebox,
     return false;
 }
 
+static void _activate_file(madshelf_state_t* state, const char* filename)
+{
+    if(!ecore_file_exists(filename))
+        return;
+
+    if(ecore_file_is_dir(filename))
+    {
+        Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
+        choicebox_set_selection(choicebox, 0);
+        go(state, dir_make(state, dirname));
+        return;
+    }
+
+    run_default_handler(state, filename);
+}
+
 static void _activate_item(madshelf_state_t* state, Evas_Object* choicebox,
                            int item_num, bool is_alt)
 {
@@ -168,7 +184,7 @@ static void _activate_item(madshelf_state_t* state, Evas_Object* choicebox,
     if(is_alt)
         _open_file_context_menu(state, filename);
     else
-        run_default_handler(state, filename);
+        _activate_file(state, filename);
 }
 
 static void _draw_item(const madshelf_state_t* state,
