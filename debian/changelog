@@ -1,3 +1,10 @@
+madshelf (0.2.14) asimov; urgency=low
+
+  * Fix battery and sort display broken since switch to eoi.
+  * Cleanup theme/* dir
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Sun, 12 Jul 2009 05:57:25 +0700
+
 madshelf (0.2.13) asimov; urgency=low
 
   * Use libeoi for main/settings windows
