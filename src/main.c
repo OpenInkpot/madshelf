@@ -376,6 +376,11 @@ static int exit_handler(void *param, int ev_type, void *event)
    return 1;
 }
 
+static void exit_app(void* param)
+{
+    exit(1);
+}
+
 int main(int argc, char** argv)
 {
     madshelf_filter_t filter = MADSHELF_FILTER_NO;
@@ -419,6 +424,8 @@ int main(int argc, char** argv)
         ecore_shutdown();
         return 0;
     }
+
+    ecore_x_io_error_handler_set(exit_app, NULL);
 
     if(!evas_init())
         die("Unable to initialize Evas");
