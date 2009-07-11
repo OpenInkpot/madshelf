@@ -30,6 +30,7 @@
 #include <Ecore_File.h>
 #include <Edje.h>
 #include <echoicebox.h>
+#include <eoi.h>
 
 #include "fileinfo.h"
 #include "utils.h"
@@ -265,13 +266,9 @@ void open_file_context_menu(madshelf_state_t* state,
 
     Evas_Object* main_edje = evas_object_name_find(state->canvas, "main_edje");
 
-    Evas_Object* file_context_menu = edje_object_add(state->canvas);
+    Evas_Object* file_context_menu = eoi_settings_right_create(state->canvas);
     evas_object_name_set(file_context_menu, "file-context-menu");
     evas_object_data_set(file_context_menu, "info", info);
-
-    edje_object_file_set(file_context_menu,
-                         "/usr/share/madshelf/main_window.edj",
-                         "settings");
 
     edje_object_part_text_set(file_context_menu, "title", title);
 
@@ -285,7 +282,7 @@ void open_file_context_menu(madshelf_state_t* state,
 
     evas_object_name_set(file_context_menu_choicebox, "file-context-menu-choicebox");
     edje_object_part_swallow(file_context_menu, "contents", file_context_menu_choicebox);
-    edje_object_part_swallow(main_edje, "right-context-menu", file_context_menu);
+    edje_object_part_swallow(main_edje, "right-overlay", file_context_menu);
 
     int actions_num = add_actions_num
         + info->openers_num;

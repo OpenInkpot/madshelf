@@ -37,6 +37,7 @@
 #include <Edje.h>
 #include <Efreet.h>
 #include <echoicebox.h>
+#include <eoi.h>
 
 #include "madshelf.h"
 
@@ -467,11 +468,9 @@ int main(int argc, char** argv)
 
     Evas* main_canvas = ecore_evas_get(main_win);
     state.canvas = main_canvas;
-    Evas_Object* main_edje = edje_object_add(main_canvas);
+    Evas_Object* main_edje = eoi_main_window_create(main_canvas);
+
     evas_object_name_set(main_edje, "main_edje");
-    /* FIXME */
-    edje_object_file_set(main_edje, "/usr/share/madshelf/main_window.edj",
-                         "main_window");
 
     evas_object_move(main_edje, 0, 0);
     evas_object_resize(main_edje, 600, 800);

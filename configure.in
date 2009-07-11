@@ -8,15 +8,10 @@ AC_PROG_CC
 
 PKG_PROG_PKG_CONFIG
 
-PKG_CHECK_MODULES(EINA, [eina-0])
-#PKG_CHECK_MODULES(EET, [eet >= 1.0.1])
+PKG_CHECK_MODULES(EFL, [eina-0 ecore-evas ecore-config efreet efreet-mime edje])
 PKG_CHECK_MODULES(EXTRACT, [libextractor])
 PKG_CHECK_MODULES(SQLITE, [sqlite3])
-PKG_CHECK_MODULES(ECORE_EVAS, [ecore-evas])
-PKG_CHECK_MODULES(ECORE_CONFIG, [ecore-config])
-PKG_CHECK_MODULES(EFREET, [efreet])
-PKG_CHECK_MODULES(EFREET_MIME, [efreet-mime])
-PKG_CHECK_MODULES(EDJE, [edje])
 PKG_CHECK_MODULES(ECHOICEBOX, [echoicebox])
+PKG_CHECK_MODULES(EOI, [eoi])
 
 AC_OUTPUT(Makefile src/Makefile themes/Makefile po/Makefile)

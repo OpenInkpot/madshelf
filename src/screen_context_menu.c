@@ -24,6 +24,9 @@
 
 #include <Edje.h>
 #include <echoicebox.h>
+#include <eoi.h>
+
+#include "utils.h"
 
 typedef struct
 {
@@ -97,14 +100,9 @@ void open_screen_context_menu(madshelf_state_t* state,
 
     Evas_Object* main_edje = evas_object_name_find(state->canvas, "main_edje");
 
-    Evas_Object* screen_context_menu = edje_object_add(state->canvas);
+    Evas_Object* screen_context_menu = eoi_settings_left_create(state->canvas);
     evas_object_name_set(screen_context_menu, "screen-context-menu");
     evas_object_data_set(screen_context_menu, "info", info);
-
-    /* FIXME */
-    edje_object_file_set(screen_context_menu,
-                         "/usr/share/madshelf/main_window.edj",
-                         "settings");
 
     edje_object_part_text_set(screen_context_menu, "title", title);
 
@@ -118,7 +116,8 @@ void open_screen_context_menu(madshelf_state_t* state,
 
     evas_object_name_set(screen_context_menu_choicebox, "screen-context-menu-choicebox");
     edje_object_part_swallow(screen_context_menu, "contents", screen_context_menu_choicebox);
-    edje_object_part_swallow(main_edje, "left-context-menu", screen_context_menu);
+    edje_object_part_swallow(main_edje, "left-overlay", screen_context_menu);
+
 
     choicebox_set_size(screen_context_menu_choicebox, actions_num);
 
@@ -127,6 +126,10 @@ void open_screen_context_menu(madshelf_state_t* state,
 
     evas_object_event_callback_add(screen_context_menu_choicebox, EVAS_CALLBACK_KEY_DOWN, &_key_down, info);
     evas_object_focus_set(screen_context_menu_choicebox, true);
+
+#ifdef DEBUG
+    dump_evas_hier(state->canvas);
+#endif
 }
 
 void close_screen_context_menu(Evas* canvas)
