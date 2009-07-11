@@ -48,7 +48,7 @@ typedef enum
 {
     MADSHELF_SORTEX_NAME,
     MADSHELF_SORTEX_NAMEREV,
-    MADSHELF_SORTEX_ORDER,
+    MADSHELF_SORTEX_DATE,
 } madshelf_sortex_t;
 
 typedef enum
@@ -127,7 +127,7 @@ typedef enum
     ICON_SORT_NONE = -1,
     ICON_SORT_NAME,
     ICON_SORT_NAMEREV,
-    ICON_SORT_ORDER,
+    ICON_SORT_DATE,
 } madshelf_icon_sort_t;
 
 /* FIXME */

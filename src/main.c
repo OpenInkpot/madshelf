@@ -213,8 +213,8 @@ static int update_batt_cb(void* param)
 static void load_config(madshelf_state_t* state)
 {
     ecore_config_int_default("sort", (int)MADSHELF_SORT_NAME);
-    ecore_config_int_default("favorites-sort", (int)MADSHELF_SORTEX_ORDER);
-    ecore_config_int_default("recent-sort", (int)MADSHELF_SORTEX_ORDER);
+    ecore_config_int_default("favorites-sort", (int)MADSHELF_SORTEX_DATE);
+    ecore_config_int_default("recent-sort", (int)MADSHELF_SORTEX_DATE);
     ecore_config_boolean_default("show-hidden", false);
 
     ecore_config_load();
@@ -533,10 +533,10 @@ int main(int argc, char** argv)
 }
 
 static const char* _signals[] = {
-    "set-sort-none",
-    "set-sort-name",
-    "set-sort-namerev",
-    "set-sort-order",
+    "sort-mode,none",
+    "sort-mode,name",
+    "sort-mode,namerev",
+    "sort-mode,date",
 };
 
 void set_sort_icon(const madshelf_state_t* state, madshelf_icon_sort_t icon)

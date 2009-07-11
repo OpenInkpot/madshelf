@@ -32,7 +32,7 @@ typedef enum
 {
     DB_SORT_NAME,
     DB_SORT_NAMEREV,
-    DB_SORT_ORDER,
+    DB_SORT_DATE,
 } tags_sort_t;
 
 typedef void (*tags_list_t)(const char* filename, int serial, void* param);

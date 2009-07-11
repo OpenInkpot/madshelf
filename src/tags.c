@@ -33,7 +33,7 @@ typedef enum
     TAG_ADD,
     TAG_REMOVE,
     HAS_TAG,
-    SELECT_TAG_BY_ORDER,
+    SELECT_TAG_BY_DATE,
     SELECT_TAG_BY_NAME,
     SELECT_TAG_BY_NAMEREV,
     TAG_CLEAR,
@@ -194,8 +194,8 @@ bool has_tag(tags_t* db, const char* tag, const char* filename)
 
 void tag_list(tags_t* db, const char* tag, tags_sort_t sort, tags_list_t callback, void* param)
 {
-    int sort_stmt = sort == DB_SORT_ORDER
-        ? SELECT_TAG_BY_ORDER
+    int sort_stmt = sort == DB_SORT_DATE
+        ? SELECT_TAG_BY_DATE
         : (sort == DB_SORT_NAME ? SELECT_TAG_BY_NAME
            : SELECT_TAG_BY_NAMEREV);
 
