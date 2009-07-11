@@ -1,3 +1,9 @@
+madshelf (0.2.15) asimov; urgency=low
+
+  * Fix opening directory in favorites using numeric key.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Sun, 12 Jul 2009 06:44:08 +0700
+
 madshelf (0.2.14) asimov; urgency=low
 
   * Fix battery and sort display broken since switch to eoi.
