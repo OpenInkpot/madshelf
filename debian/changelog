@@ -1,3 +1,9 @@
+madshelf (0.2.13) asimov; urgency=low
+
+  * Use libeoi for main/settings windows
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Sun, 12 Jul 2009 05:33:53 +0700
+
 madshelf (0.2.12) asimov; urgency=low
 
   * Use different style for right choicebox due to aesthetic reason.
