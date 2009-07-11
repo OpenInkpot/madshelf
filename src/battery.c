@@ -88,16 +88,8 @@ void update_battery(Evas_Object* top)
 {
     int charge = _get_state();
 
-    if(charge < 5)
-        edje_object_signal_emit(top, "set_batt_empty", "");
-    else if(charge < 25)
-        edje_object_signal_emit(top, "set_batt_1/4", "");
-    else if(charge < 50)
-        edje_object_signal_emit(top, "set_batt_2/4", "");
-    else if(charge < 75)
-        edje_object_signal_emit(top, "set_batt_3/4", "");
-    else if(charge < 100)
-        edje_object_signal_emit(top, "set_batt_4/4", "");
-    else
-        edje_object_signal_emit(top, "set_batt_full", "");
+    char signal[256];
+    snprintf(signal, 256, "battery-level,%d", charge);
+
+    edje_object_signal_emit(top, signal, "");
 }
