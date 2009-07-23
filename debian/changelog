@@ -1,3 +1,9 @@
+madshelf (0.2.16) asimov; urgency=low
+
+  * Added Belarussian translation.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Thu, 23 Jul 2009 22:06:14 +0700
+
 madshelf (0.2.15) asimov; urgency=low
 
   * Fix opening directory in favorites using numeric key.
