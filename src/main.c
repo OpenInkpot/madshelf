@@ -193,15 +193,15 @@ static void main_win_resize_handler(Ecore_Evas* main_win)
     }
 }
 
-static void contents_key_down(void* param, Evas* e, Evas_Object* o, void* event_info)
+static void contents_key_up(void* param, Evas* e, Evas_Object* o, void* event_info)
 {
     madshelf_state_t* state = (madshelf_state_t*)param;
-    Evas_Event_Key_Down* ev = (Evas_Event_Key_Down*)event_info;
+    Evas_Event_Key_Up* ev = (Evas_Event_Key_Up*)event_info;
 
-    if((*state->loc->key_down)(state, o, ev))
+    if((*state->loc->key_up)(state, o, ev))
         return;
 
-    choicebox_aux_key_down_handler(o, ev);
+    choicebox_aux_key_down_handler(o, (Evas_Event_Key_Down*)ev);
 }
 
 static int update_batt_cb(void* param)
@@ -490,7 +490,7 @@ int main(int argc, char** argv)
     evas_object_name_set(contents, "contents");
     edje_object_part_swallow(main_edje, "contents", contents);
     evas_object_focus_set(contents, true);
-    evas_object_event_callback_add(contents, EVAS_CALLBACK_KEY_DOWN, &contents_key_down, &state);
+    evas_object_event_callback_add(contents, EVAS_CALLBACK_KEY_UP, &contents_key_up, &state);
 
     go(&state, overview_make(&state));
 

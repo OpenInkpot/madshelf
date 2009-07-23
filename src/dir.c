@@ -245,8 +245,8 @@ static void _update_gui(const madshelf_state_t* state)
     set_sort_icon(state, state->sort);
 }
 
-static bool _key_down(madshelf_state_t* state, Evas_Object* choicebox,
-                      Evas_Event_Key_Down* ev)
+static bool _key_up(madshelf_state_t* state, Evas_Object* choicebox,
+                      Evas_Event_Key_Up* ev)
 {
     if(!strcmp(ev->keyname, "Escape"))
     {
@@ -337,7 +337,7 @@ static madshelf_loc_t loc = {
     &_free,
     &_init_gui,
     &_update_gui,
-    &_key_down,
+    &_key_up,
     &_activate_item,
     &_draw_item,
     &_fs_updated,

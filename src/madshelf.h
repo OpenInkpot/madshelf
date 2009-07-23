@@ -75,7 +75,7 @@ typedef struct
     void (*free)(madshelf_state_t* state);
     void (*init_gui)(const madshelf_state_t* state);
     void (*update_gui)(const madshelf_state_t* state);
-    bool (*key_down)(madshelf_state_t* state, Evas_Object* choicebox, Evas_Event_Key_Down* ev);
+    bool (*key_up)(madshelf_state_t* state, Evas_Object* choicebox, Evas_Event_Key_Up* ev);
     void (*activate_item)(madshelf_state_t* state, Evas_Object* choicebox, int item_num, bool is_alt);
     void (*draw_item)(const madshelf_state_t* state, Evas_Object* item, int item_num);
     void (*fs_updated)(madshelf_state_t* state);

@@ -220,9 +220,9 @@ static void _page_handler(Evas_Object* choicebox, int cur_page, int total_pages,
     choicebox_aux_edje_footer_handler(footer, "footer", cur_page, total_pages);
 }
 
-static void _key_down(void* param, Evas* e, Evas_Object* o, void* event_info)
+static void _key_up(void* param, Evas* e, Evas_Object* o, void* event_info)
 {
-    Evas_Event_Key_Down* ev = (Evas_Event_Key_Down*)event_info;
+    Evas_Event_Key_Up* ev = (Evas_Event_Key_Up*)event_info;
 
     if(!strcmp(ev->keyname, "Escape"))
     {
@@ -230,7 +230,7 @@ static void _key_down(void* param, Evas* e, Evas_Object* o, void* event_info)
         return;
     }
 
-    choicebox_aux_key_down_handler(o, ev);
+    choicebox_aux_key_down_handler(o, (Evas_Event_Key_Down*)ev);
 }
 
 void open_file_context_menu(madshelf_state_t* state,
@@ -298,7 +298,7 @@ void open_file_context_menu(madshelf_state_t* state,
     evas_object_show(file_context_menu_choicebox);
     evas_object_show(file_context_menu);
 
-    evas_object_event_callback_add(file_context_menu_choicebox, EVAS_CALLBACK_KEY_DOWN, &_key_down, info);
+    evas_object_event_callback_add(file_context_menu_choicebox, EVAS_CALLBACK_KEY_UP, &_key_up, info);
     evas_object_focus_set(file_context_menu_choicebox, true);
 }
 
