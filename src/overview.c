@@ -22,6 +22,7 @@
 
 #include <libintl.h>
 #include <stdio.h>
+#include <string.h>
 /* This is to mark statically-allocated strings as translatable */
 #define _(x) (x)
 
@@ -65,6 +66,12 @@ static bool _key_down(madshelf_state_t* state, Evas_Object* choicebox,
                        Evas_Event_Key_Down* ev)
 {
     const char* k = ev->keyname;
+
+    if(!strcmp(k, "Escape"))
+    {
+        ecore_evas_hide(state->win);
+        return true;
+    }
 
     return false;
 }
