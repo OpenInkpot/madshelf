@@ -2,93 +2,86 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0\n"
 "Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
-"POT-Creation-Date: 2009-07-02 05:18+0700\n"
-"PO-Revision-Date: 2009-07-02 13:03+0200\n"
+"POT-Creation-Date: 2009-07-24 16:56+0700\n"
+"PO-Revision-Date: 2009-07-24 17:15+0700\n"
 "Last-Translator: Vladimir <v@v>\n"
 "Language-Team: Russian <openinkpot-hackers@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/favorites.c:101
-#: src/favorites.c:285
-#: src/overview.c:113
+#: src/favorites.c:103 src/favorites.c:324 src/overview.c:123
 #: src/favorites_menu.c:39
 msgid "Favorites"
 msgstr "Вибране"
 
-#: src/favorites.c:102
+#: src/favorites.c:104
 msgid "Favorite books"
 msgstr "Вибрані книги"
 
-#: src/favorites.c:103
+#: src/favorites.c:105
 msgid "Favorite pictures"
 msgstr "Вибрані малюнки"
 
-#: src/favorites.c:104
+#: src/favorites.c:106
 msgid "Favorite music"
 msgstr "Вибрана музика"
 
-#: src/favorites.c:217
-#: src/dir.c:381
+#: src/favorites.c:237 src/dir.c:369 src/recent.c:204
+msgid "Open"
+msgstr "Відкрити"
+
+#: src/favorites.c:243 src/dir.c:381
 msgid "Remove from favorites"
 msgstr "Видалити з вибраного"
 
-#: src/favorites.c:240
-#: src/dir.c:429
-#: src/recent.c:225
+#: src/favorites.c:279 src/dir.c:429 src/recent.c:245
 msgid "Actions"
 msgstr "Операції"
 
-#: src/favorites.c:251
-#: src/recent.c:236
+#: src/favorites.c:290 src/recent.c:256
 msgid "Sort by name"
 msgstr "Сортувати (А-Z)"
 
-#: src/favorites.c:252
-#: src/recent.c:237
+#: src/favorites.c:291 src/recent.c:257
 msgid "Sort by name (reversed)"
 msgstr "Сортувати (Z-A)"
 
-#: src/favorites.c:253
-#: src/recent.c:238
-msgid "Sort by order"
-msgstr "Сортувати по порядку"
+#: src/favorites.c:292 src/recent.c:258
+msgid "Sort by date"
+msgstr "Сортувати за датою"
 
-#: src/favorites.c:254
+#: src/favorites.c:293
 msgid "Clear favorites"
 msgstr "Очистити все вибране"
 
-#: src/overview.c:38
-#: src/overview.c:39
+#: src/overview.c:39 src/overview.c:40
 msgid "Bookshelf"
 msgstr "Книжкова полиця"
 
-#: src/overview.c:40
+#: src/overview.c:41
 msgid "Pictures (navigation)"
 msgstr "Малюнки (навігація)"
 
-#: src/overview.c:41
+#: src/overview.c:42
 msgid "Audio (navigation)"
 msgstr "Музика (навигація)"
 
-#: src/overview.c:116
-#: src/recent.c:99
-#: src/recent.c:271
+#: src/overview.c:126 src/recent.c:101 src/recent.c:291
 msgid "Recent files"
 msgstr "Історія"
 
-#: src/file_context_menu.c:177
+#: src/file_context_menu.c:178
 #, c-format
 msgid "Open (with %s)"
 msgstr "Відкрити (з %s)"
 
-#: src/file_context_menu.c:179
+#: src/file_context_menu.c:180
 #, c-format
 msgid "Open with %s"
 msgstr "Відкрити в %s"
 
-#: src/file_context_menu.c:206
+#: src/file_context_menu.c:207
 msgid "Delete"
 msgstr "Видалити"
 
@@ -103,10 +96,6 @@ msgstr "Відсутній"
 #: src/fileinfo_render.c:121
 msgid "Directory"
 msgstr "Каталог"
-
-#: src/dir.c:369
-msgid "Open"
-msgstr "Відкрити"
 
 #: src/dir.c:374
 msgid "Unhide"
@@ -132,11 +121,10 @@ msgstr "Показати приховані файли"
 msgid "Menu"
 msgstr "Меню"
 
-#: src/recent.c:200
+#: src/recent.c:210
 msgid "Remove from recent files"
 msgstr "Видалити з історії"
 
-#: src/recent.c:239
+#: src/recent.c:259
 msgid "Clear recent files"
 msgstr "Очистити історію"
-
