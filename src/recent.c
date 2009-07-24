@@ -255,7 +255,7 @@ static void _open_file_context_menu(madshelf_state_t* state, const char* filenam
 static const char* _scm_titles[] = {
     _("Sort by name"), /* Sort items should match madshelf_sortex_t */
     _("Sort by name (reversed)"),
-    _("Sort by order"),
+    _("Sort by date"),
     _("Clear recent files"),
 };
 
