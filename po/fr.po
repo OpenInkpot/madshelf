@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: madshelf\n"
 "Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
-"POT-Creation-Date: 2009-07-02 05:18+0700\n"
+"POT-Creation-Date: 2009-07-24 16:56+0700\n"
 "PO-Revision-Date: 2009-06-26 11:46+0200\n"
 "Last-Translator: Louvre <diogenedebian@gmail.com>\n"
 "Language-Team: French <openinkpot-l10n@googlegroups.com>\n"
@@ -18,74 +18,79 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: src/favorites.c:101 src/favorites.c:285 src/overview.c:113
+#: src/favorites.c:103 src/favorites.c:324 src/overview.c:123
 #: src/favorites_menu.c:39
 msgid "Favorites"
 msgstr "Favoris"
 
-#: src/favorites.c:102
+#: src/favorites.c:104
 msgid "Favorite books"
 msgstr "Livres favoris"
 
-#: src/favorites.c:103
+#: src/favorites.c:105
 msgid "Favorite pictures"
 msgstr "Images favorites"
 
-#: src/favorites.c:104
+#: src/favorites.c:106
 msgid "Favorite music"
 msgstr "Musiques favorites"
 
-#: src/favorites.c:217 src/dir.c:381
+#: src/favorites.c:237 src/dir.c:369 src/recent.c:204
+msgid "Open"
+msgstr "Ouvrir"
+
+#: src/favorites.c:243 src/dir.c:381
 msgid "Remove from favorites"
 msgstr "Enlever des favoris"
 
-#: src/favorites.c:240 src/dir.c:429 src/recent.c:225
+#: src/favorites.c:279 src/dir.c:429 src/recent.c:245
 msgid "Actions"
 msgstr "Actions"
 
-#: src/favorites.c:251 src/recent.c:236
+#: src/favorites.c:290 src/recent.c:256
 msgid "Sort by name"
 msgstr "Classer par nom"
 
-#: src/favorites.c:252 src/recent.c:237
+#: src/favorites.c:291 src/recent.c:257
 msgid "Sort by name (reversed)"
 msgstr "Classer par nom (inversé)"
 
-#: src/favorites.c:253 src/recent.c:238
-msgid "Sort by order"
-msgstr "Classer par ordre"
+#: src/favorites.c:292 src/recent.c:258
+#, fuzzy
+msgid "Sort by date"
+msgstr "Classer par nom"
 
-#: src/favorites.c:254
+#: src/favorites.c:293
 msgid "Clear favorites"
 msgstr "Effacer les favoris"
 
-#: src/overview.c:38 src/overview.c:39
+#: src/overview.c:39 src/overview.c:40
 msgid "Bookshelf"
 msgstr ""
 
-#: src/overview.c:40
+#: src/overview.c:41
 msgid "Pictures (navigation)"
 msgstr ""
 
-#: src/overview.c:41
+#: src/overview.c:42
 msgid "Audio (navigation)"
 msgstr ""
 
-#: src/overview.c:116 src/recent.c:99 src/recent.c:271
+#: src/overview.c:126 src/recent.c:101 src/recent.c:291
 msgid "Recent files"
 msgstr "Fichiers récents"
 
-#: src/file_context_menu.c:177
+#: src/file_context_menu.c:178
 #, c-format
 msgid "Open (with %s)"
 msgstr "Ouvrir (avec %s)"
 
-#: src/file_context_menu.c:179
+#: src/file_context_menu.c:180
 #, c-format
 msgid "Open with %s"
 msgstr "Ouvrir avec %s"
 
-#: src/file_context_menu.c:206
+#: src/file_context_menu.c:207
 msgid "Delete"
 msgstr "Effacer"
 
@@ -100,10 +105,6 @@ msgstr "N'existe pas"
 #: src/fileinfo_render.c:121
 msgid "Directory"
 msgstr "Répertoire"
-
-#: src/dir.c:369
-msgid "Open"
-msgstr "Ouvrir"
 
 #: src/dir.c:374
 msgid "Unhide"
@@ -129,10 +130,13 @@ msgstr "Montrer les fichiers cachés"
 msgid "Menu"
 msgstr "Menu"
 
-#: src/recent.c:200
+#: src/recent.c:210
 msgid "Remove from recent files"
 msgstr "Enlever des fichiers récents"
 
-#: src/recent.c:239
+#: src/recent.c:259
 msgid "Clear recent files"
 msgstr "Effacer les fichiers récents"
+
+#~ msgid "Sort by order"
+#~ msgstr "Classer par ordre"

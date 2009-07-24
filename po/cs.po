@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: madshelf 0.1\n"
 "Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
-"POT-Creation-Date: 2009-07-02 05:18+0700\n"
+"POT-Creation-Date: 2009-07-24 16:56+0700\n"
 "PO-Revision-Date: 2009-06-29 13:55+0100\n"
 "Last-Translator: ben1981 <ben1981@centrum.cz>\n"
 "Language-Team: Czech <openinkpot-l10n@googlegroups.com>\n"
@@ -15,74 +15,79 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/favorites.c:101 src/favorites.c:285 src/overview.c:113
+#: src/favorites.c:103 src/favorites.c:324 src/overview.c:123
 #: src/favorites_menu.c:39
 msgid "Favorites"
 msgstr "Oblíbené"
 
-#: src/favorites.c:102
+#: src/favorites.c:104
 msgid "Favorite books"
 msgstr "Oblíbené knihy"
 
-#: src/favorites.c:103
+#: src/favorites.c:105
 msgid "Favorite pictures"
 msgstr "Oblíbené obrázky"
 
-#: src/favorites.c:104
+#: src/favorites.c:106
 msgid "Favorite music"
 msgstr "Oblíbená hudba"
 
-#: src/favorites.c:217 src/dir.c:381
+#: src/favorites.c:237 src/dir.c:369 src/recent.c:204
+msgid "Open"
+msgstr "Otevřít"
+
+#: src/favorites.c:243 src/dir.c:381
 msgid "Remove from favorites"
 msgstr "Odstranit z oblíbených"
 
-#: src/favorites.c:240 src/dir.c:429 src/recent.c:225
+#: src/favorites.c:279 src/dir.c:429 src/recent.c:245
 msgid "Actions"
 msgstr "Činnosti"
 
-#: src/favorites.c:251 src/recent.c:236
+#: src/favorites.c:290 src/recent.c:256
 msgid "Sort by name"
 msgstr "Seřadit podle jména"
 
-#: src/favorites.c:252 src/recent.c:237
+#: src/favorites.c:291 src/recent.c:257
 msgid "Sort by name (reversed)"
 msgstr "Seřadit podle jména (pozpátku)"
 
-#: src/favorites.c:253 src/recent.c:238
-msgid "Sort by order"
-msgstr "Seřadit podle pořadí přidání/otevření"
+#: src/favorites.c:292 src/recent.c:258
+#, fuzzy
+msgid "Sort by date"
+msgstr "Seřadit podle jména"
 
-#: src/favorites.c:254
+#: src/favorites.c:293
 msgid "Clear favorites"
 msgstr "Vyčistit oblíbené"
 
-#: src/overview.c:38 src/overview.c:39
+#: src/overview.c:39 src/overview.c:40
 msgid "Bookshelf"
 msgstr ""
 
-#: src/overview.c:40
+#: src/overview.c:41
 msgid "Pictures (navigation)"
 msgstr ""
 
-#: src/overview.c:41
+#: src/overview.c:42
 msgid "Audio (navigation)"
 msgstr ""
 
-#: src/overview.c:116 src/recent.c:99 src/recent.c:271
+#: src/overview.c:126 src/recent.c:101 src/recent.c:291
 msgid "Recent files"
 msgstr "Posledně otevřené"
 
-#: src/file_context_menu.c:177
+#: src/file_context_menu.c:178
 #, c-format
 msgid "Open (with %s)"
 msgstr "Otevřít (v %s)"
 
-#: src/file_context_menu.c:179
+#: src/file_context_menu.c:180
 #, c-format
 msgid "Open with %s"
 msgstr "Otevřít v %s"
 
-#: src/file_context_menu.c:206
+#: src/file_context_menu.c:207
 msgid "Delete"
 msgstr "Smazat"
 
@@ -97,10 +102,6 @@ msgstr "Neexistuje"
 #: src/fileinfo_render.c:121
 msgid "Directory"
 msgstr "Adresář"
-
-#: src/dir.c:369
-msgid "Open"
-msgstr "Otevřít"
 
 #: src/dir.c:374
 msgid "Unhide"
@@ -126,10 +127,13 @@ msgstr "Zobrazit skryté soubory"
 msgid "Menu"
 msgstr "Menu"
 
-#: src/recent.c:200
+#: src/recent.c:210
 msgid "Remove from recent files"
 msgstr "Odstranit z posledně otevřených"
 
-#: src/recent.c:239
+#: src/recent.c:259
 msgid "Clear recent files"
 msgstr "Vyčistit posledně otevřené"
+
+#~ msgid "Sort by order"
+#~ msgstr "Seřadit podle pořadí přidání/otevření"
