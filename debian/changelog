@@ -1,3 +1,10 @@
+madshelf (0.2.18) asimov; urgency=low
+
+  * Updated localization
+  * "Sort by order" renamed to "Sort by date"
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Fri, 24 Jul 2009 17:22:01 +0700
+
 madshelf (0.2.17) asimov; urgency=low
 
   * Overview screen now handles 'Escape' as 'hide' action.
