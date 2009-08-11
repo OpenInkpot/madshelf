@@ -1,3 +1,10 @@
+madshelf (0.2.19) unstable; urgency=low
+
+  * Added confirmation dialog for file deletion.
+  * Updated Ukrainian localization.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Wed, 12 Aug 2009 00:20:44 +0700
+
 madshelf (0.2.18) asimov; urgency=low
 
   * Updated localization
