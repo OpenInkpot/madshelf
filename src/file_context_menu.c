@@ -35,6 +35,7 @@
 #include "fileinfo.h"
 #include "utils.h"
 #include "handlers.h"
+#include "delete_file.h"
 
 typedef struct
 {
@@ -154,8 +155,10 @@ static void _item_handler(Evas_Object* choicebox, int item_num, bool is_alt, voi
 
     if(item_num == 0)
     {
-        unlink(info->filename);
+        madshelf_state_t* state = info->state;
+        char* filename = strdup(info->filename);
         close_file_context_menu(canvas, true);
+        delete_file(state, filename);
     }
     else
         item_num--;

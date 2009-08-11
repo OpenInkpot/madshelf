@@ -191,6 +191,12 @@ static void main_win_resize_handler(Ecore_Evas* main_win)
     {
         evas_object_resize(main_menu, w/2, h);
     }
+
+    Evas_Object* delete_confirm = evas_object_name_find(canvas, "delete-confirm-window");
+    if(delete_confirm)
+    {
+        evas_object_resize(delete_confirm, w, h);
+    }
 }
 
 static void contents_key_up(void* param, Evas* e, Evas_Object* o, void* event_info)

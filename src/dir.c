@@ -354,6 +354,13 @@ madshelf_loc_t* dir_make(madshelf_state_t* state, const char* dir)
 
     return (madshelf_loc_t*)_loc;
 }
+
+madshelf_loc_t* dir_refresh(madshelf_state_t* state)
+{
+    _loc_t* _loc = (_loc_t*)state->loc;
+    return dir_make(state, _loc->dir);
+}
+
 /* File menu */
 
 static void draw_file_context_action(const madshelf_state_t* state, Evas_Object* item,
