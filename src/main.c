@@ -489,7 +489,7 @@ int main(int argc, char** argv)
     evas_object_resize(main_edje, 600, 800);
 
     Evas_Object* contents = choicebox_new(main_canvas,
-                                          "/usr/share/madshelf/main_window.edj",
+                                          THEMEDIR "/main_window.edj",
                                           "fileitem", contents_item_handler,
                                           contents_draw_item_handler,
                                           contents_page_handler, &state);
