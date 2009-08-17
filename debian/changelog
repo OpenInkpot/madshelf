@@ -1,6 +1,7 @@
-madshelf (0.2.19+b1) asimov; urgency=low
+madshelf (0.2.20) asimov; urgency=low
 
   * Rebuild due to EFL update
+  * Remove -DOLD_ECORE, as Ecore is no longer old.
 
  -- Mikhail Gusarov <dottedmag@dottedmag.net>  Tue, 18 Aug 2009 03:05:19 +0700
 
