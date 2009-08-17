@@ -11,8 +11,6 @@ else
 	CFLAGS += -O2
 endif
 
-CFLAGS += -DOLD_ECORE
-
 flavours := v3 n516
 
 configure: configure-stamp
