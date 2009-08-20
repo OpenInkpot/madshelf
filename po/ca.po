@@ -1,0 +1,166 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
+"POT-Creation-Date: 2009-07-24 16:56+0700\n"
+"PO-Revision-Date: 2008-10-02 12:42+0100\n"
+"Last-Translator: Miguel Canteras\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/favorites.c:103 src/favorites.c:324 src/overview.c:123
+#: src/favorites_menu.c:39
+msgid "Favorites"
+msgstr "Preferits"
+
+#: src/favorites.c:104
+msgid "Favorite books"
+msgstr "Llibres preferits"
+
+#: src/favorites.c:105
+msgid "Favorite pictures"
+msgstr "Imatges preferides"
+
+#: src/favorites.c:106
+msgid "Favorite music"
+msgstr "Música preferida"
+
+#: src/favorites.c:237 src/dir.c:369 src/recent.c:204
+msgid "Open"
+msgstr "Obrir"
+
+#: src/favorites.c:243 src/dir.c:381
+msgid "Remove from favorites"
+msgstr "Eliminar de preferits"
+
+#: src/favorites.c:279 src/dir.c:429 src/recent.c:245
+msgid "Actions"
+msgstr "Accions"
+
+#: src/favorites.c:290 src/recent.c:256
+#, fuzzy
+msgid "Sort by name"
+msgstr "Ordenar per nom"
+
+#: src/favorites.c:291 src/recent.c:257
+#, fuzzy
+msgid "Sort by name (reversed)"
+msgstr "Ordenar per nom (invers)"
+
+#: src/favorites.c:292 src/recent.c:258
+#, fuzzy
+msgid "Sort by date"
+msgstr "Ordenar per data"
+
+#: src/favorites.c:293
+msgid "Clear favorites"
+msgstr "Netejar preferits"
+
+#: src/overview.c:39 src/overview.c:40
+msgid "Bookshelf"
+msgstr "Llibreria"
+
+#: src/overview.c:41
+msgid "Pictures (navigation)"
+msgstr "Imatges (navegació)"
+
+#: src/overview.c:42
+msgid "Audio (navigation)"
+msgstr "Àudio (navegació)"
+
+#: src/overview.c:126 src/recent.c:101 src/recent.c:291
+msgid "Recent files"
+msgstr "Fitxers recents"
+
+#: src/file_context_menu.c:178
+#, c-format
+msgid "Open (with %s)"
+msgstr "Obrir (amb %s)"
+
+#: src/file_context_menu.c:180
+#, c-format
+msgid "Open with %s"
+msgstr "Obrir amb %s"
+
+#: src/file_context_menu.c:207
+msgid "Delete"
+msgstr "Esborrar"
+
+#: src/disks.c:128
+msgid "Whole filesystem"
+msgstr "Sistema de fitxers senser"
+
+#: src/fileinfo_render.c:114
+msgid "Does not exist"
+msgstr "No existeix"
+
+#: src/fileinfo_render.c:121
+msgid "Directory"
+msgstr "Directori"
+
+#: src/dir.c:374
+msgid "Unhide"
+msgstr "Desocultar"
+
+#: src/dir.c:376
+msgid "Hide"
+msgstr "Ocultar"
+
+#: src/dir.c:383
+msgid "Add to favorites"
+msgstr "Afegir a preferits"
+
+#: src/dir.c:453
+msgid "Do not show hidden files"
+msgstr "No mostrar fitxers ocults"
+
+#: src/dir.c:455
+msgid "Show hidden files"
+msgstr "Mostrar fitxers ocults"
+
+#: src/dir.c:489
+msgid "Menu"
+msgstr "Menú"
+
+#: src/recent.c:210
+msgid "Remove from recent files"
+msgstr "Esborrar de fitxers recents"
+
+#: src/recent.c:259
+msgid "Clear recent files"
+msgstr "Netejar fitxers recents"
+
+#, fuzzy
+#~ msgid "Sort by order"
+#~ msgstr "Ordenar per nom"
+
+# Copyright (C) 2008 THE madshelf'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the madshelf package.
+#~ msgid "reverse-sorted by name"
+#~ msgstr "ordenat al revés per nom"
+
+#~ msgid "sorted by name"
+#~ msgstr "ordenat per nom"
+
+#~ msgid "reverse-sorted by time"
+#~ msgstr "ordenat al revés per hora"
+
+#~ msgid "sorted by time"
+#~ msgstr "ordenat per hora"
+
+#~ msgid "Sort by Time"
+#~ msgstr "Ordenar per hora"
+
+#~ msgid "Reverse Sort Order"
+#~ msgstr "Ordre al revés"
+
+#~ msgid "Language Settings"
+#~ msgstr "Configuració d'idioma"
+
+#~ msgid "Go to"
+#~ msgstr "Anar a"
+
+#~ msgid "Scripts"
+#~ msgstr "Scripts"
