@@ -1,3 +1,4 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
@@ -38,21 +39,6 @@ msgstr "Eliminar de preferits"
 #: src/favorites.c:279 src/dir.c:429 src/recent.c:245
 msgid "Actions"
 msgstr "Accions"
-
-#: src/favorites.c:290 src/recent.c:256
-#, fuzzy
-msgid "Sort by name"
-msgstr "Ordenar per nom"
-
-#: src/favorites.c:291 src/recent.c:257
-#, fuzzy
-msgid "Sort by name (reversed)"
-msgstr "Ordenar per nom (invers)"
-
-#: src/favorites.c:292 src/recent.c:258
-#, fuzzy
-msgid "Sort by date"
-msgstr "Ordenar per data"
 
 #: src/favorites.c:293
 msgid "Clear favorites"
@@ -132,12 +118,21 @@ msgstr "Esborrar de fitxers recents"
 msgid "Clear recent files"
 msgstr "Netejar fitxers recents"
 
-#, fuzzy
+#: src/favorites.c:291 src/recent.c:257
+msgid "Sort by name (reversed)"
+msgstr "Ordenar per nom (invertit)"
+
+#: src/favorites.c:290 src/recent.c:256
+msgid "Sort by name"
+msgstr "Ordenar per nom"
+
+#: src/favorites.c:292 src/recent.c:258
+msgid "Sort by date"
+msgstr "Ordenar per data"
+
 #~ msgid "Sort by order"
 #~ msgstr "Ordenar per nom"
 
-# Copyright (C) 2008 THE madshelf'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the madshelf package.
 #~ msgid "reverse-sorted by name"
 #~ msgstr "ordenat al revés per nom"
 
