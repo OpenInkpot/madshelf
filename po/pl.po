@@ -1,3 +1,4 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.0\n"
@@ -47,26 +48,9 @@ msgstr "Ustaw w kolejności alfabetycznej"
 msgid "Sort by name (reversed)"
 msgstr "Ustaw w odwrotnej kolejności alfabetycznej"
 
-#: src/favorites.c:292 src/recent.c:258
-#, fuzzy
-msgid "Sort by date"
-msgstr "Ustaw w kolejności alfabetycznej"
-
 #: src/favorites.c:293
 msgid "Clear favorites"
 msgstr "Wyczyść ulubione"
-
-#: src/overview.c:39 src/overview.c:40
-msgid "Bookshelf"
-msgstr ""
-
-#: src/overview.c:41
-msgid "Pictures (navigation)"
-msgstr ""
-
-#: src/overview.c:42
-msgid "Audio (navigation)"
-msgstr ""
 
 #: src/overview.c:126 src/recent.c:101 src/recent.c:291
 msgid "Recent files"
@@ -129,6 +113,22 @@ msgstr "Usuń z ostatnio otwieranych"
 #: src/recent.c:259
 msgid "Clear recent files"
 msgstr "Wyczyść listę ostatnio otwieranych"
+
+#: src/favorites.c:292 src/recent.c:258
+msgid "Sort by date"
+msgstr "Ustaw według daty"
+
+#: src/overview.c:41
+msgid "Pictures (navigation)"
+msgstr "Obrazy (nawigacja)"
+
+#: src/overview.c:39 src/overview.c:40
+msgid "Bookshelf"
+msgstr "Biblioteka"
+
+#: src/overview.c:42
+msgid "Audio (navigation)"
+msgstr "Dźwięki (nawigacja)"
 
 #~ msgid "Sort by order"
 #~ msgstr "Ustaw po kolei"
