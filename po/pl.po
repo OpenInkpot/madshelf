@@ -74,21 +74,9 @@ msgstr "Usuń"
 msgid "Whole filesystem"
 msgstr "Cały system plików"
 
-#: src/fileinfo_render.c:114
-msgid "Does not exist"
-msgstr "Nie istnieje"
-
 #: src/fileinfo_render.c:121
 msgid "Directory"
 msgstr "Katalog"
-
-#: src/dir.c:374
-msgid "Unhide"
-msgstr "Nie chowaj"
-
-#: src/dir.c:376
-msgid "Hide"
-msgstr "Chowaj"
 
 #: src/dir.c:383
 msgid "Add to favorites"
@@ -129,6 +117,18 @@ msgstr "Biblioteka"
 #: src/overview.c:42
 msgid "Audio (navigation)"
 msgstr "Dźwięki (nawigacja)"
+
+#: src/dir.c:376
+msgid "Hide"
+msgstr "Chowaj"
+
+#: src/dir.c:374
+msgid "Unhide"
+msgstr "Nie chowaj"
+
+#: src/fileinfo_render.c:114
+msgid "Does not exist"
+msgstr "Brak pliku"
 
 #~ msgid "Sort by order"
 #~ msgstr "Ustaw po kolei"
