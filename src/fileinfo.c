@@ -19,20 +19,21 @@
  */
 
 #define _GNU_SOURCE
+#include <stdio.h>
 #include <string.h>
 
 #include <Ecore_File.h>
 #include <Efreet_Mime.h>
 #include <Eina.h>
+#include <extractor-mini.h>
 
 #include "fileinfo.h"
 #include "utils.h"
-#include "madshelf_extractors.h"
 
 #define CACHE_LIMIT 32
 
 static int init_cnt;
-static extractors_t* extractors;
+static em_extractors_t* extractors;
 
 static int cache_size;
 static Eina_Hash* infos;
@@ -47,7 +48,7 @@ void fileinfo_init()
             die("fileinfo_init: Unable to initialize Eina_Hash subsystem");
         infos = eina_hash_string_superfast_new((Eina_Free_Cb)&fileinfo_destroy);
 
-        extractors = load_extractors();
+        extractors = em_load_extractors();
         cache_size = 0;
     }
 }
@@ -90,11 +91,11 @@ static fileinfo_t* fileinfo_parse(const char* filename)
 
     if(i->exists && !i->is_dir)
     {
-        EXTRACTOR_KeywordList* keywords = extractor_get_keywords(extractors, filename);
-        EXTRACTOR_KeywordList* j;
+        em_keyword_list_t* keywords = em_extractor_get_keywords(extractors, filename);
+        em_keyword_list_t* j;
         for(j = keywords; j; j = j->next)
         {
-            if(j->keywordType == EXTRACTOR_AUTHOR)
+            if(j->keyword_type == EXTRACTOR_AUTHOR)
             {
                 if(!i->author)
                     i->author = strdup(j->keyword);
@@ -106,13 +107,13 @@ static fileinfo_t* fileinfo_parse(const char* filename)
                     i->author = authors;
                 }
             }
-            if(j->keywordType == EXTRACTOR_MIMETYPE)
+            if(j->keyword_type == EXTRACTOR_MIMETYPE)
                 i->mime_type = strdup(j->keyword);
-            if(j->keywordType == EXTRACTOR_TITLE)
+            if(j->keyword_type == EXTRACTOR_TITLE)
                 i->title = strdup(j->keyword);
-            if(j->keywordType == EXTRACTOR_ALBUM)
+            if(j->keyword_type == EXTRACTOR_ALBUM)
                 i->series = strdup(j->keyword);
-            if(j->keywordType == EXTRACTOR_TRACK_NUMBER)
+            if(j->keyword_type == EXTRACTOR_TRACK_NUMBER)
                 i->series_num = atoi(j->keyword);
         }
 
@@ -171,7 +172,7 @@ void fileinfo_fini()
 {
     if(!--init_cnt)
     {
-        unload_extractors(extractors);
+        em_unload_extractors(extractors);
 
         eina_hash_free(infos);
         infos = NULL;
