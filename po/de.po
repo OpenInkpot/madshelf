@@ -108,10 +108,6 @@ msgstr "Bücherregal"
 msgid "Audio (navigation)"
 msgstr "Audio (Navigation)"
 
-#: src/favorites.c:106
-msgid "Favorite music"
-msgstr "Favoriten: Musik"
-
 #: src/favorites.c:104
 msgid "Favorite books"
 msgstr "Favoriten: Bücher"
@@ -136,6 +132,10 @@ msgstr "Letzte Dateien"
 #: src/favorites.c:105
 msgid "Favorite pictures"
 msgstr "Favoriten: Bilder"
+
+#: src/favorites.c:106
+msgid "Favorite music"
+msgstr "Favoriten: Audio"
 
 #~ msgid "Sort by order"
 #~ msgstr "Sortieren nach Ordnung"
