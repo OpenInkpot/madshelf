@@ -23,21 +23,9 @@ msgstr ""
 msgid "Favorites"
 msgstr "Favoriten"
 
-#: src/favorites.c:104
-msgid "Favorite books"
-msgstr "Lieblingsbücher"
-
-#: src/favorites.c:106
-msgid "Favorite music"
-msgstr "Lieblingsmusik"
-
 #: src/favorites.c:237 src/dir.c:369 src/recent.c:204
 msgid "Open"
 msgstr "Öffnen"
-
-#: src/favorites.c:243 src/dir.c:381
-msgid "Remove from favorites"
-msgstr "Von Favoriten entfernen"
 
 #: src/favorites.c:279 src/dir.c:429 src/recent.c:245
 msgid "Actions"
@@ -50,19 +38,6 @@ msgstr "Nach Namen sortieren"
 #: src/favorites.c:291 src/recent.c:257
 msgid "Sort by name (reversed)"
 msgstr "Nach Namen sortieren (umgekehrt)"
-
-#: src/favorites.c:293
-msgid "Clear favorites"
-msgstr "Favoriten löschen"
-
-#: src/overview.c:126 src/recent.c:101 src/recent.c:291
-msgid "Recent files"
-msgstr "Letzte Dateien"
-
-#: src/file_context_menu.c:178
-#, c-format
-msgid "Open (with %s)"
-msgstr "Öffnen (mit %s)"
 
 #: src/file_context_menu.c:180
 #, c-format
@@ -136,6 +111,31 @@ msgstr "Bücherregal"
 #: src/overview.c:42
 msgid "Audio (navigation)"
 msgstr "Audio (Navigation)"
+
+#: src/favorites.c:106
+msgid "Favorite music"
+msgstr "Favoriten: Musik"
+
+#: src/favorites.c:104
+msgid "Favorite books"
+msgstr "Favoriten: Bücher"
+
+#: src/favorites.c:243 src/dir.c:381
+msgid "Remove from favorites"
+msgstr "Aus Favoriten entfernen"
+
+#: src/favorites.c:293
+msgid "Clear favorites"
+msgstr "Favoritenliste leeren"
+
+#: src/file_context_menu.c:178
+#, c-format
+msgid "Open (with %s)"
+msgstr "Öffnen (mit %s)"
+
+#: src/overview.c:126 src/recent.c:101 src/recent.c:291
+msgid "Recent files"
+msgstr "Letzte Dateien"
 
 #~ msgid "Sort by order"
 #~ msgstr "Sortieren nach Ordnung"
