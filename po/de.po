@@ -3,7 +3,7 @@
 # Copyright (C) 2008 Marc Lajoie <manorapide@hotmail.com>
 # Copyright (C) 2008,2009 Mikhail Gusarov <dottedmag@dottedmag.net>
 # This file is in public domain
-#
+# 
 # Louvre <diogenedebian@gmail.com>, 2009.
 msgid ""
 msgstr ""
@@ -26,10 +26,6 @@ msgstr "Favoriten"
 #: src/favorites.c:104
 msgid "Favorite books"
 msgstr "Lieblingsbücher"
-
-#: src/favorites.c:105
-msgid "Favorite pictures"
-msgstr "Lieblingsfotos"
 
 #: src/favorites.c:106
 msgid "Favorite music"
@@ -55,26 +51,9 @@ msgstr "Nach Namen sortieren"
 msgid "Sort by name (reversed)"
 msgstr "Nach Namen sortieren (umgekehrt)"
 
-#: src/favorites.c:292 src/recent.c:258
-#, fuzzy
-msgid "Sort by date"
-msgstr "Nach Namen sortieren"
-
 #: src/favorites.c:293
 msgid "Clear favorites"
 msgstr "Favoriten löschen"
-
-#: src/overview.c:39 src/overview.c:40
-msgid "Bookshelf"
-msgstr ""
-
-#: src/overview.c:41
-msgid "Pictures (navigation)"
-msgstr ""
-
-#: src/overview.c:42
-msgid "Audio (navigation)"
-msgstr ""
 
 #: src/overview.c:126 src/recent.c:101 src/recent.c:291
 msgid "Recent files"
@@ -93,10 +72,6 @@ msgstr "Öffnen mit %s"
 #: src/file_context_menu.c:207
 msgid "Delete"
 msgstr "Löschen"
-
-#: src/disks.c:128
-msgid "Whole filesystem"
-msgstr "Gesamte Dateisystem"
 
 #: src/fileinfo_render.c:114
 msgid "Does not exist"
@@ -137,6 +112,30 @@ msgstr "Aus letzten Dateien entfernen"
 #: src/recent.c:259
 msgid "Clear recent files"
 msgstr "Letzte Dateien löschen"
+
+#: src/favorites.c:105
+msgid "Favorite pictures"
+msgstr "Lieblingsbilder"
+
+#: src/disks.c:128
+msgid "Whole filesystem"
+msgstr "Gesamtes Dateisystem"
+
+#: src/favorites.c:292 src/recent.c:258
+msgid "Sort by date"
+msgstr "Nach Datum sortieren"
+
+#: src/overview.c:41
+msgid "Pictures (navigation)"
+msgstr "Bilder (Navigation)"
+
+#: src/overview.c:39 src/overview.c:40
+msgid "Bookshelf"
+msgstr "Bücherregal"
+
+#: src/overview.c:42
+msgid "Audio (navigation)"
+msgstr "Audio (Navigation)"
 
 #~ msgid "Sort by order"
 #~ msgstr "Sortieren nach Ordnung"
