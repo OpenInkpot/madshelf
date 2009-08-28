@@ -88,10 +88,6 @@ msgstr "Aus letzten Dateien entfernen"
 msgid "Clear recent files"
 msgstr "Letzte Dateien löschen"
 
-#: src/favorites.c:105
-msgid "Favorite pictures"
-msgstr "Lieblingsbilder"
-
 #: src/disks.c:128
 msgid "Whole filesystem"
 msgstr "Gesamtes Dateisystem"
@@ -136,6 +132,10 @@ msgstr "Öffnen (mit %s)"
 #: src/overview.c:126 src/recent.c:101 src/recent.c:291
 msgid "Recent files"
 msgstr "Letzte Dateien"
+
+#: src/favorites.c:105
+msgid "Favorite pictures"
+msgstr "Favoriten: Bilder"
 
 #~ msgid "Sort by order"
 #~ msgstr "Sortieren nach Ordnung"
