@@ -1,5 +1,16 @@
-madshelf UNRELEASED; urgency=low
-  * Added polish names for disks
+madshelf (0.2.21) asimov; urgency=low
+
+  [ Alexander Nikolaev ]
+  * Use libextractor-mini instead of libextractor.
+
+  [ Mikhail Gusarov ]
+  * Updated to use newer libchoicebox.
+  * Translations updated: Ukrainian, German.
+
+  [ Tomasz Długosz ]
+  * Added polish names for disks.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Sun, 30 Aug 2009 05:30:44 +0700
 
 madshelf (0.2.20) asimov; urgency=low
 
