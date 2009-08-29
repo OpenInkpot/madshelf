@@ -25,7 +25,7 @@
 
 #include <Edje.h>
 #include <Ecore_File.h>
-#include <echoicebox.h>
+#include <libchoicebox.h>
 
 #include "recent.h"
 #include "fileinfo.h"
@@ -201,13 +201,13 @@ static void draw_file_context_action(const madshelf_state_t* state, Evas_Object*
 {
     if(ecore_file_is_dir(filename) && item_num == 0)
     {
-        edje_object_part_text_set(item, "text", gettext("Open"));
+        edje_object_part_text_set(item, "title", gettext("Open"));
         return;
     }
     else
         item_num--;
 
-    edje_object_part_text_set(item, "text", gettext("Remove from recent files"));
+    edje_object_part_text_set(item, "title", gettext("Remove from recent files"));
 }
 
 static void handle_file_context_action(madshelf_state_t* state, const char* filename,

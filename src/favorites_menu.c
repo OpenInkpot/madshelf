@@ -22,7 +22,7 @@
 #include <string.h>
 
 #include <Edje.h>
-#include <echoicebox.h>
+#include <libchoicebox.h>
 
 #include "favorites_menu.h"
 #include "overview.h"

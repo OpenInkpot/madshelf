@@ -30,7 +30,7 @@
 #include <Edje.h>
 #include <Eina.h>
 #include <Ecore_File.h>
-#include <echoicebox.h>
+#include <libchoicebox.h>
 
 #include "dir.h"
 #include "fileinfo.h"
@@ -373,21 +373,21 @@ static void draw_file_context_action(const madshelf_state_t* state, Evas_Object*
 
     if(item_num == -1) /* "open directory" */
     {
-        edje_object_part_text_set(item, "text", gettext("Open"));
+        edje_object_part_text_set(item, "title", gettext("Open"));
     }
     if(item_num == 0)
     {
         if(has_tag(state->tags, "hidden", filename))
-            edje_object_part_text_set(item, "text", gettext("Unhide"));
+            edje_object_part_text_set(item, "title", gettext("Unhide"));
         else
-            edje_object_part_text_set(item, "text", gettext("Hide"));
+            edje_object_part_text_set(item, "title", gettext("Hide"));
     }
     if(item_num == 1)
     {
         if(has_tag(state->tags, "favorites", filename))
-            edje_object_part_text_set(item, "text", gettext("Remove from favorites"));
+            edje_object_part_text_set(item, "title", gettext("Remove from favorites"));
         else
-            edje_object_part_text_set(item, "text", gettext("Add to favorites"));
+            edje_object_part_text_set(item, "title", gettext("Add to favorites"));
     }
 }
 
@@ -457,13 +457,13 @@ static void draw_screen_context_action(const madshelf_state_t* state,
     if(item_num == 2)
     {
         if(state->show_hidden)
-            edje_object_part_text_set(item, "text", gettext("Do not show hidden files"));
+            edje_object_part_text_set(item, "title", gettext("Do not show hidden files"));
         else
-            edje_object_part_text_set(item, "text", gettext("Show hidden files"));
+            edje_object_part_text_set(item, "title", gettext("Show hidden files"));
     }
     else
     {
-        edje_object_part_text_set(item, "text", gettext(_sc_titles[item_num]));
+        edje_object_part_text_set(item, "title", gettext(_sc_titles[item_num]));
     }
 }
 

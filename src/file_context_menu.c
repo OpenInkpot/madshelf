@@ -29,7 +29,7 @@
 
 #include <Ecore_File.h>
 #include <Edje.h>
-#include <echoicebox.h>
+#include <libchoicebox.h>
 #include <eoi.h>
 
 #include "fileinfo.h"
@@ -187,7 +187,7 @@ static void _draw_item_handler(Evas_Object* choicebox, Evas_Object* item, int it
 
         char* f;
         asprintf(&f, open_text, handler->name);
-        edje_object_part_text_set(item, "text", f);
+        edje_object_part_text_set(item, "title", f);
         free(f);
 
         return;
@@ -207,7 +207,7 @@ static void _draw_item_handler(Evas_Object* choicebox, Evas_Object* item, int it
 
     if(item_num == 0) /* Delete */
     {
-        edje_object_part_text_set(item, "text", gettext("Delete"));
+        edje_object_part_text_set(item, "title", gettext("Delete"));
         return;
     }
     else
@@ -223,17 +223,10 @@ static void _page_handler(Evas_Object* choicebox, int cur_page, int total_pages,
     choicebox_aux_edje_footer_handler(footer, "footer", cur_page, total_pages);
 }
 
-static void _key_up(void* param, Evas* e, Evas_Object* o, void* event_info)
+static void _close_handler(Evas_Object* choicebox, void* param)
 {
-    Evas_Event_Key_Up* ev = (Evas_Event_Key_Up*)event_info;
-
-    if(!strcmp(ev->keyname, "Escape"))
-    {
-        close_file_context_menu(e, false);
-        return;
-    }
-
-    choicebox_aux_key_down_handler(o, (Evas_Event_Key_Down*)ev);
+    Evas* canvas = evas_object_evas_get(choicebox);
+    close_file_context_menu(canvas, false);
 }
 
 void open_file_context_menu(madshelf_state_t* state,
@@ -275,13 +268,20 @@ void open_file_context_menu(madshelf_state_t* state,
 
     edje_object_part_text_set(file_context_menu, "title", title);
 
+    choicebox_info_t choicebox_info = {
+        NULL,
+        "/usr/share/choicebox/choicebox.edj",
+        "settings-right",
+        "/usr/share/choicebox/choicebox.edj",
+        "item-settings",
+        _item_handler,
+        _draw_item_handler,
+        _page_handler,
+        _close_handler
+    };
+
     Evas_Object* file_context_menu_choicebox
-        = choicebox_new(state->canvas,
-                        "/usr/share/echoicebox/echoicebox.edj",
-                        "settings-right-alt",
-                        _item_handler,
-                        _draw_item_handler,
-                        _page_handler, info);
+        = choicebox_new(state->canvas, &choicebox_info, info);
 
     evas_object_name_set(file_context_menu_choicebox, "file-context-menu-choicebox");
     edje_object_part_swallow(file_context_menu, "contents", file_context_menu_choicebox);
@@ -301,8 +301,8 @@ void open_file_context_menu(madshelf_state_t* state,
     evas_object_show(file_context_menu_choicebox);
     evas_object_show(file_context_menu);
 
-    evas_object_event_callback_add(file_context_menu_choicebox, EVAS_CALLBACK_KEY_UP, &_key_up, info);
     evas_object_focus_set(file_context_menu_choicebox, true);
+    choicebox_aux_subscribe_key_up(file_context_menu_choicebox);
 }
 
 void close_file_context_menu(Evas* canvas, bool touched)

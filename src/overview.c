@@ -27,7 +27,7 @@
 #define _(x) (x)
 
 #include <Edje.h>
-#include <echoicebox.h>
+#include <libchoicebox.h>
 
 #include "overview.h"
 #include "dir.h"

@@ -36,7 +36,7 @@
 #include <Ecore_X.h>
 #include <Edje.h>
 #include <Efreet.h>
-#include <echoicebox.h>
+#include <libchoicebox.h>
 #include <eoi.h>
 
 #include "madshelf.h"
@@ -207,7 +207,7 @@ static void contents_key_up(void* param, Evas* e, Evas_Object* o, void* event_in
     if((*state->loc->key_up)(state, o, ev))
         return;
 
-    choicebox_aux_key_down_handler(o, (Evas_Event_Key_Down*)ev);
+    choicebox_aux_key_up_handler(o, ev);
 }
 
 static int update_batt_cb(void* param)
@@ -488,11 +488,19 @@ int main(int argc, char** argv)
     evas_object_move(main_edje, 0, 0);
     evas_object_resize(main_edje, 600, 800);
 
-    Evas_Object* contents = choicebox_new(main_canvas,
-                                          THEMEDIR "/main_window.edj",
-                                          "fileitem", contents_item_handler,
-                                          contents_draw_item_handler,
-                                          contents_page_handler, &state);
+    choicebox_info_t info = {
+        NULL,
+        "/usr/share/choicebox/choicebox.edj",
+        "full",
+        THEMEDIR "/main_window.edj",
+        "fileitem",
+        contents_item_handler,
+        contents_draw_item_handler,
+        contents_page_handler,
+        NULL
+    };
+
+    Evas_Object* contents = choicebox_new(main_canvas, &info, &state);
     evas_object_name_set(contents, "contents");
     edje_object_part_swallow(main_edje, "contents", contents);
     evas_object_focus_set(contents, true);

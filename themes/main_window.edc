@@ -1,15 +1,3 @@
-#include <echoicebox.edci>
-
-images {
-   image, "grid1-side-right.png" COMP;
-   image, "grid1-body.png" COMP;
-   image, "grid1-side-left.png" COMP;
-   image, "grid2-side-right.png" COMP;
-   image, "grid2-body.png" COMP;
-   image, "grid2-side-left.png" COMP;
-   image, "sel-side.png" COMP;
-}
-
 styles {
     style {
         name, "titles";
@@ -44,12 +32,13 @@ styles {
 }
 
 collections {
-    START_FULL_SIZE_ITEM_GROUP("fileitem")
+   group {
+      name, "fileitem";
+      parts {
          part {
             name, "title";
             type, TEXTBLOCK;
             mouse_events, 0;
-            clip_to, "clipper";
             description {
                state, "default" 0.0;
                text {
@@ -65,7 +54,6 @@ collections {
             name, "author";
             type, TEXTBLOCK;
             mouse_events, 0;
-            clip_to, "clipper";
             description {
                state, "default" 0.0;
                color, 0 0 0 255;
@@ -80,7 +68,6 @@ collections {
             name, "series";
             type, TEXTBLOCK;
             mouse_events, 0;
-            clip_to, "clipper";
             description {
                state, "default" 0.0;
                color, 0 0 0 255;
@@ -97,7 +84,6 @@ collections {
             name, "type";
             type, TEXTBLOCK;
             mouse_events, 0;
-            clip_to, "clipper";
             description {
                state, "default" 0.0;
                color, 0 0 0 255;
@@ -112,7 +98,6 @@ collections {
             name, "size";
             type, TEXTBLOCK;
             mouse_events, 0;
-            clip_to, "clipper";
             description {
                state, "default" 0.0;
                color, 0 0 0 255;
@@ -125,5 +110,6 @@ collections {
                rel2 { relative, 1.0 1.0; offset, -18 -1; }
             }
          }
-    END_FULL_SIZE_ITEM_GROUP
+      }
+   }
 }

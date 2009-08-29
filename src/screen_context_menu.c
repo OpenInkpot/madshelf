@@ -23,7 +23,7 @@
 #include <string.h>
 
 #include <Edje.h>
-#include <echoicebox.h>
+#include <libchoicebox.h>
 #include <eoi.h>
 
 #include "utils.h"
@@ -71,17 +71,10 @@ static void _page_handler(Evas_Object* choicebox, int cur_page, int total_pages,
     choicebox_aux_edje_footer_handler(footer, "footer", cur_page, total_pages);
 }
 
-static void _key_up(void* param, Evas* e, Evas_Object* o, void* event_info)
+static void _close_handler(Evas_Object* choicebox, void* param)
 {
-    Evas_Event_Key_Up* ev = (Evas_Event_Key_Up*)event_info;
-
-    if(!strcmp(ev->keyname, "Escape"))
-    {
-        close_screen_context_menu(e);
-        return;
-    }
-
-    choicebox_aux_key_down_handler(o, (Evas_Event_Key_Down*)ev);
+    Evas* evas = evas_object_evas_get(choicebox);
+    close_screen_context_menu(evas);
 }
 
 void open_screen_context_menu(madshelf_state_t* state,
@@ -106,25 +99,31 @@ void open_screen_context_menu(madshelf_state_t* state,
 
     edje_object_part_text_set(screen_context_menu, "title", title);
 
+    choicebox_info_t choicebox_info = {
+        NULL,
+        "/usr/share/choicebox/choicebox.edj",
+        "settings-left",
+        "/usr/share/choicebox/choicebox.edj",
+        "item-settings",
+        _item_handler,
+        _draw_item_handler,
+        _page_handler,
+        _close_handler,
+    };
+
     Evas_Object* screen_context_menu_choicebox
-        = choicebox_new(state->canvas,
-                        "/usr/share/echoicebox/echoicebox.edj",
-                        "settings-left",
-                        _item_handler,
-                        _draw_item_handler,
-                        _page_handler, info);
+        = choicebox_new(state->canvas, &choicebox_info, info);
 
     evas_object_name_set(screen_context_menu_choicebox, "screen-context-menu-choicebox");
     edje_object_part_swallow(screen_context_menu, "contents", screen_context_menu_choicebox);
     edje_object_part_swallow(main_edje, "left-overlay", screen_context_menu);
-
 
     choicebox_set_size(screen_context_menu_choicebox, actions_num);
 
     evas_object_show(screen_context_menu_choicebox);
     evas_object_show(screen_context_menu);
 
-    evas_object_event_callback_add(screen_context_menu_choicebox, EVAS_CALLBACK_KEY_UP, &_key_up, info);
+    choicebox_aux_subscribe_key_up(screen_context_menu_choicebox);
     evas_object_focus_set(screen_context_menu_choicebox, true);
 
 #ifdef DEBUG
