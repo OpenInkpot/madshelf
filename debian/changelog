@@ -1,3 +1,6 @@
+madshelf UNRELEASED; urgency=low
+  * Added polish names for disks
+
 madshelf (0.2.20) asimov; urgency=low
 
   * Rebuild due to EFL update
