@@ -1,3 +1,4 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.0\n"
@@ -10,16 +11,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/favorites.c:103
-#: src/favorites.c:324
-#: src/overview.c:123
+#: src/favorites.c:103 src/favorites.c:324 src/overview.c:123
 #: src/favorites_menu.c:39
 msgid "Favorites"
 msgstr "Улюблене"
-
-#: src/favorites.c:104
-msgid "Favorite books"
-msgstr "Улюбленіі книжки"
 
 #: src/favorites.c:105
 msgid "Favorite pictures"
@@ -29,35 +24,27 @@ msgstr "Улюблені зображення"
 msgid "Favorite music"
 msgstr "Улюблена музика"
 
-#: src/favorites.c:237
-#: src/dir.c:369
-#: src/recent.c:204
+#: src/favorites.c:237 src/dir.c:369 src/recent.c:204
 msgid "Open"
 msgstr "Відкрити"
 
-#: src/favorites.c:243
-#: src/dir.c:381
+#: src/favorites.c:243 src/dir.c:381
 msgid "Remove from favorites"
 msgstr "Видалити з улюбленого"
 
-#: src/favorites.c:279
-#: src/dir.c:429
-#: src/recent.c:245
+#: src/favorites.c:279 src/dir.c:429 src/recent.c:245
 msgid "Actions"
 msgstr "Дії"
 
-#: src/favorites.c:290
-#: src/recent.c:256
+#: src/favorites.c:290 src/recent.c:256
 msgid "Sort by name"
 msgstr "Впорядкувати за назвою"
 
-#: src/favorites.c:291
-#: src/recent.c:257
+#: src/favorites.c:291 src/recent.c:257
 msgid "Sort by name (reversed)"
 msgstr "Впорядкувати за назвою (у зворотньому порядку)"
 
-#: src/favorites.c:292
-#: src/recent.c:258
+#: src/favorites.c:292 src/recent.c:258
 msgid "Sort by date"
 msgstr "Впорядкувати за часом створення"
 
@@ -65,8 +52,7 @@ msgstr "Впорядкувати за часом створення"
 msgid "Clear favorites"
 msgstr "Спорожнити перелік улюбленого"
 
-#: src/overview.c:39
-#: src/overview.c:40
+#: src/overview.c:39 src/overview.c:40
 msgid "Bookshelf"
 msgstr "Книжкова полиця"
 
@@ -78,9 +64,7 @@ msgstr "Зображення (навігація)"
 msgid "Audio (navigation)"
 msgstr "Музика (навигація)"
 
-#: src/overview.c:126
-#: src/recent.c:101
-#: src/recent.c:291
+#: src/overview.c:126 src/recent.c:101 src/recent.c:291
 msgid "Recent files"
 msgstr "Нещодавно відкриті документи"
 
@@ -142,3 +126,6 @@ msgstr "Видалити з переліку нещодавно відкрити
 msgid "Clear recent files"
 msgstr "Спорожнити перелік нещодавно відкритих документів"
 
+#: src/favorites.c:104
+msgid "Favorite books"
+msgstr "Улюблені книжки"
