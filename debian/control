@@ -10,7 +10,7 @@ Format: 3.0 (native)
 
 Package: madshelf
 Architecture: any
-Depends: ${shlibs:Depends}, echoicebox-data (>= 0.1-17)
+Depends: ${shlibs:Depends}
 Conflicts: madshelf-settings-v3 (<< 0.2), madshelf-settings-n516 (<< 0.2)
 Description: Bookshelf application
  Bookshelf application.
