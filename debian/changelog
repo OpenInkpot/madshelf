@@ -5,6 +5,7 @@ madshelf (0.2.21) asimov; urgency=low
 
   [ Mikhail Gusarov ]
   * Updated to use newer libchoicebox.
+  * libkeys is in use, keybindings can be changed as necessary
   * Translations updated: Ukrainian, German.
 
   [ Tomasz Długosz ]
