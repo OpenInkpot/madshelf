@@ -26,6 +26,8 @@
 #include <Ecore_Evas.h>
 #include <Evas.h>
 
+#include <libkeys.h>
+
 #include "disks.h"
 #include "tags.h"
 
@@ -76,6 +78,7 @@ typedef struct
     void (*init_gui)(const madshelf_state_t* state);
     void (*update_gui)(const madshelf_state_t* state);
     bool (*key_up)(madshelf_state_t* state, Evas_Object* choicebox, Evas_Event_Key_Up* ev);
+    void (*request_exit)(madshelf_state_t* state, Evas_Object* choicebox);
     void (*activate_item)(madshelf_state_t* state, Evas_Object* choicebox, int item_num, bool is_alt);
     void (*draw_item)(const madshelf_state_t* state, Evas_Object* item, int item_num);
     void (*fs_updated)(madshelf_state_t* state);
@@ -98,6 +101,7 @@ struct madshelf_state_t
     /* Data */
     madshelf_disks_t* disks;
     tags_t* tags;
+    keys_t* keys;
 };
 
 /* FIXME */

@@ -13,5 +13,6 @@ PKG_CHECK_MODULES(EXTRACT, [libextractor_mini])
 PKG_CHECK_MODULES(SQLITE, [sqlite3])
 PKG_CHECK_MODULES(LIBCHOICEBOX, [libchoicebox])
 PKG_CHECK_MODULES(EOI, [eoi])
+PKG_CHECK_MODULES(LIBKEYS, [libkeys])
 
-AC_OUTPUT(Makefile src/Makefile themes/Makefile po/Makefile)
+AC_OUTPUT(Makefile src/Makefile themes/Makefile po/Makefile data/Makefile)

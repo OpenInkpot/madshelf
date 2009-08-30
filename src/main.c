@@ -172,6 +172,13 @@ static void contents_item_handler(Evas_Object* choicebox, int item_num,
     (*state->loc->activate_item)(state, choicebox, item_num, is_alt);
 }
 
+static void contents_close_handler(Evas_Object* choicebox, void* param)
+{
+    madshelf_state_t* state = (madshelf_state_t*)param;
+    if(state->loc->request_exit)
+        (*state->loc->request_exit)(state, choicebox);
+}
+
 static void main_win_close_handler(Ecore_Evas* main_win)
 {
     ecore_main_loop_quit();
@@ -204,7 +211,7 @@ static void contents_key_up(void* param, Evas* e, Evas_Object* o, void* event_in
     madshelf_state_t* state = (madshelf_state_t*)param;
     Evas_Event_Key_Up* ev = (Evas_Event_Key_Up*)event_info;
 
-    if((*state->loc->key_up)(state, o, ev))
+    if(state->loc->key_up && (*state->loc->key_up)(state, o, ev))
         return;
 
     choicebox_aux_key_up_handler(o, ev);
@@ -461,6 +468,7 @@ int main(int argc, char** argv)
     state.filter = filter;
     openers_init();
     state.disks = load_disks();
+    state.keys = keys_alloc("madshelf");
 
     load_config(&state);
 
@@ -497,7 +505,7 @@ int main(int argc, char** argv)
         contents_item_handler,
         contents_draw_item_handler,
         contents_page_handler,
-        NULL
+        contents_close_handler,
     };
 
     Evas_Object* contents = choicebox_new(main_canvas, &info, &state);
@@ -530,6 +538,7 @@ int main(int argc, char** argv)
     ecore_config_save();
 
     openers_fini();
+    keys_free(state.keys);
     free_state(&state);
 
     fileinfo_fini();

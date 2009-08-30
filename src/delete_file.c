@@ -18,10 +18,11 @@ static void delete_key_up(void* param, Evas* e, Evas_Object* o, void* event_info
 {
     delete_key_up_params_t* params = (delete_key_up_params_t*)param;
     Evas_Event_Key_Up* ev = (Evas_Event_Key_Up*)event_info;
+    const char* action = keys_lookup(params->state->keys, "delete-confirm", ev->keyname);
 
-    if(!strcmp(ev->keyname, "Return"))
+    if(action && !strcmp(action, "Confirm"))
         unlink(params->filename);
-    else if(!strcmp(ev->keyname, "Escape"))
+    else if(action && !strcmp(action, "Cancel"))
         ; /* nothing */
     else
         return;

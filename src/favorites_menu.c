@@ -39,18 +39,9 @@ static void _update_gui(const madshelf_state_t* state)
     edje_object_part_text_set(header, "title", gettext("Favorites"));
 }
 
-static bool _key_up(madshelf_state_t* state, Evas_Object* choicebox,
-                    Evas_Event_Key_Up* ev)
+static void _request_exit(madshelf_state_t* state, Evas_Object* choicebox)
 {
-    const char* k = ev->keyname;
-
-    if(!strcmp(k, "Escape"))
-    {
-        go(state, overview_make(state));
-        return true;
-    }
-
-    return false;
+    go(state, overview_make(state));
 }
 
 static void _activate_item(madshelf_state_t* state, Evas_Object* choicebox,
@@ -77,7 +68,8 @@ madshelf_loc_t* favorites_menu_make(madshelf_state_t* state)
     static madshelf_loc_t loc = {
         NULL,
         &_update_gui,
-        &_key_up,
+        NULL,
+        &_request_exit,
         &_activate_item,
         &_draw_item,
     };

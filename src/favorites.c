@@ -131,32 +131,25 @@ static void _update_gui(const madshelf_state_t* state)
 static bool _key_up(madshelf_state_t* state, Evas_Object* choicebox,
                     Evas_Event_Key_Up* ev)
 {
-    const char* k = ev->keyname;
+    const char* action = keys_lookup(state->keys, "lists", ev->keyname);
 
-    if(!strcmp(k, "Escape"))
-    {
-        /* Skip favorites menu */
-        /* go(state, choicebox, favorites_menu_make(state)); */
-        go(state, overview_make(state));
-        return true;
-    }
-    if(!strcmp(k, "space"))
+    if(action && !strcmp(action, "ContextMenu"))
     {
         _open_screen_context_menu(state, choicebox);
         return true;
     }
-
-    /*
-     * Special case: file list opened with OK button should be treated as
-     * long-pressed.
-     */
-    if(!strcmp(k, "Return") || !strcmp(k, "KP_Return"))
+    if(action && !strcmp(action, "AltActivateCurrent"))
     {
         choicebox_activate_current(choicebox, true);
         return true;
     }
 
     return false;
+}
+
+static void _request_exit(madshelf_state_t* state, Evas_Object* choicebox)
+{
+    go(state, overview_make(state));
 }
 
 static void _activate_file(madshelf_state_t* state, const char* filename)
@@ -212,6 +205,7 @@ static madshelf_loc_t loc = {
     &_init_gui,
     &_update_gui,
     &_key_up,
+    &_request_exit,
     &_activate_item,
     &_draw_item,
     &_fs_updated,
