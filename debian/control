@@ -6,7 +6,6 @@ XCS-Cross-Build-Depends: libextractor-mini-dev, libsqlite3-dev, libchoicebox-dev
 Build-Depends: debhelper (>= 7), autoconf, automake, pkg-config, libextractor-mini-dev, libsqlite3-dev, libchoicebox-dev, libeina-dev, libecore-dev, libefreet-dev, libedje-dev, libkeys-dev, libeoi-dev
 Priority: optional
 Standards-Version: 3.8.3
-Format: 3.0 (native)
 
 Package: madshelf
 Architecture: any
