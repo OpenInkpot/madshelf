@@ -1,3 +1,21 @@
+madshelf (0.2.22) asimov; urgency=low
+
+  [ Mikhail Gusarov ]
+  * Adjust to new libeoi.
+  * Add avn to authors.
+  * Add --as-needed to drop unused dependencies.
+  * Remove useless config.h.in.
+  * autogen.sh cleanup.
+  * Packaging:
+    * debian/rules cleanup.
+    * debhelper compat version bump.
+    * Bump Standards-Version.
+  
+  [ Tomasz Długosz ]
+  * Added ukrainian names for disks.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Thu, 03 Sep 2009 06:56:11 +0700
+
 madshelf (0.2.21) asimov; urgency=low
 
   [ Alexander Nikolaev ]
