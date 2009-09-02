@@ -2,8 +2,8 @@ Source: madshelf
 Section: media
 Maintainer: Mikhail Gusarov <dottedmag@dottedmag.net>
 XCS-Cross-Host-Build-Depends: debhelper (>= 7), autoconf, automake, pkg-config
-XCS-Cross-Build-Depends: libextractor-mini-dev, libsqlite3-dev, libchoicebox-dev, libeina-dev, libecore-dev, libefreet-dev, libedje-dev, libkeys-dev, eoi-dev
-Build-Depends: debhelper (>= 7), autoconf, automake, pkg-config, libextractor-mini-dev, libsqlite3-dev, libchoicebox-dev, libeina-dev, libecore-dev, libefreet-dev, libedje-dev, libkeys-dev, eoi-dev
+XCS-Cross-Build-Depends: libextractor-mini-dev, libsqlite3-dev, libchoicebox-dev, libeina-dev, libecore-dev, libefreet-dev, libedje-dev, libkeys-dev, libeoi-dev
+Build-Depends: debhelper (>= 7), autoconf, automake, pkg-config, libextractor-mini-dev, libsqlite3-dev, libchoicebox-dev, libeina-dev, libecore-dev, libefreet-dev, libedje-dev, libkeys-dev, libeoi-dev
 Priority: optional
 Standards-Version: 3.6.2
 Format: 3.0 (native)

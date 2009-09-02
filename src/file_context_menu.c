@@ -30,7 +30,7 @@
 #include <Ecore_File.h>
 #include <Edje.h>
 #include <libchoicebox.h>
-#include <eoi.h>
+#include <libeoi.h>
 
 #include "fileinfo.h"
 #include "utils.h"

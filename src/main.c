@@ -37,7 +37,7 @@
 #include <Edje.h>
 #include <Efreet.h>
 #include <libchoicebox.h>
-#include <eoi.h>
+#include <libeoi.h>
 
 #include "madshelf.h"
 

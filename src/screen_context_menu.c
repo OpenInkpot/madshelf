@@ -24,7 +24,7 @@
 
 #include <Edje.h>
 #include <libchoicebox.h>
-#include <eoi.h>
+#include <libeoi.h>
 
 #include "utils.h"
 
