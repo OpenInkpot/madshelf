@@ -2,8 +2,6 @@ AC_PREREQ(2.57)
 AC_INIT(madshelf, 0.1, quickhand@openinkpot.org)
 AM_INIT_AUTOMAKE(foreign)
 
-AM_CONFIG_HEADER(src/config.h)
-
 AC_PROG_CC
 
 PKG_PROG_PKG_CONFIG
