@@ -1,3 +1,9 @@
+madshelf (0.2.23) asimov; urgency=low
+
+  * Fix keybinding for context menu on V3 (OI#471).
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Fri, 04 Sep 2009 23:17:15 +0700
+
 madshelf (0.2.22) asimov; urgency=low
 
   [ Mikhail Gusarov ]
