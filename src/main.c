@@ -47,10 +47,12 @@
 #include "battery.h"
 #include "handlers.h"
 #include "clock.h"
+#include "curdir.h"
 
 #define SYS_CONFIG_DIR SYSCONFDIR "/madshelf"
 #define USER_CONFIG_DIR "/.e/apps/madshelf"
 
+#define CURDIR_DB_NAME "dir-state.db"
 #define DISKS_CONFIG_NAME "disks.conf"
 #define TAGS_DB_NAME "tags.db"
 
@@ -464,6 +466,10 @@ int main(int argc, char** argv)
 
     char tags_db_filename[PATH_MAX];
     snprintf(tags_db_filename, PATH_MAX, "%s/" TAGS_DB_NAME, configdir);
+
+    char curdir_db_filename[PATH_MAX];
+    snprintf(curdir_db_filename, PATH_MAX, "%s/" CURDIR_DB_NAME, configdir);
+    curdir_init(curdir_db_filename);
 
     madshelf_state_t state = {};
 

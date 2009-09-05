@@ -32,6 +32,7 @@
 #include <Ecore_File.h>
 #include <libchoicebox.h>
 
+#include "curdir.h"
 #include "dir.h"
 #include "fileinfo.h"
 #include "fileinfo_render.h"
@@ -50,6 +51,7 @@ typedef struct
 
     Eina_Array* files;
     char* dir;
+    int old_pos;
 } _loc_t;
 
 static void _free_files(Eina_Array* files)
@@ -65,6 +67,37 @@ static void _free_files(Eina_Array* files)
 static void _free(madshelf_state_t* state)
 {
     _loc_t* _loc = (_loc_t*)state->loc;
+
+    if(_loc->dir)
+    {
+        Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
+        if(choicebox)
+        {
+            int sel = choicebox_get_scroll_pos(choicebox);
+            if(sel == -1)
+                curdir_set(_loc->dir, NULL);
+            else
+            {
+                char* filename = eina_array_data_get(_loc->files, sel);
+                if(filename)
+                {
+                    char* c = strdup(filename);
+                    if(c)
+                    {
+                        char* base = basename(c);
+                        curdir_set(_loc->dir, base);
+                        free(c);
+                    }
+                    else
+                        curdir_set(_loc->dir, NULL);
+                }
+                else
+                    curdir_set(_loc->dir, NULL);
+            }
+        }
+        else
+            curdir_set(_loc->dir, NULL);
+    }
 
     close_file_context_menu(state->canvas, false);
     close_screen_context_menu(state->canvas);
@@ -86,7 +119,6 @@ static void go_to_parent(madshelf_state_t* state)
     madshelf_disk_t* next_disk = find_disk(state->disks, next_dir);
 
     Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
-    choicebox_set_selection(choicebox, 0);
 
     if(cur_disk != next_disk || !strcmp(_loc->dir, "/"))
     {
@@ -104,7 +136,6 @@ static void go_to_parent(madshelf_state_t* state)
 static void go_to_directory(madshelf_state_t* state, const char* dirname)
 {
     Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
-    choicebox_set_selection(choicebox, 0);
 
     go(state, dir_make(state, dirname));
 }
@@ -137,8 +168,11 @@ static bool file_is_hidden(const madshelf_state_t* state, const char* filename)
  *  - state->filter
  *  - dir contents on FS
  */
-static Eina_Array* _fill_files(const madshelf_state_t* state, const char* dir)
+static Eina_Array* _fill_files(const madshelf_state_t* state, const char* dir, int* old_pos)
 {
+    const char* old_file = curdir_get(dir);
+    if(old_pos) *old_pos = -1;
+
     Eina_Array* files = eina_array_new(10);
 
 #ifdef OLD_ECORE
@@ -172,7 +206,12 @@ static Eina_Array* _fill_files(const madshelf_state_t* state, const char* dir)
         }
 
         if(ecore_file_is_dir(filename))
+        {
+            if(old_file && old_pos)
+                if(!strcmp(old_file, file))
+                    *old_pos = eina_array_count_get(files);
             eina_array_push(files, filename);
+        }
         else
             free(filename);
     }
@@ -203,7 +242,12 @@ static Eina_Array* _fill_files(const madshelf_state_t* state, const char* dir)
         }
 
         if(!ecore_file_is_dir(filename))
+        {
+            if(old_file && old_pos)
+                if(!strcmp(old_file, file))
+                    *old_pos = eina_array_count_get(files);
             eina_array_push(files, filename);
+        }
         else
             free(filename);
     }
@@ -220,8 +264,12 @@ static Eina_Array* _fill_files(const madshelf_state_t* state, const char* dir)
 static void _init_gui(const madshelf_state_t* state)
 {
     Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
-    choicebox_set_selection(choicebox, 0);
+
+    _loc_t* _loc = (_loc_t*)state->loc;
+    choicebox_set_size(choicebox, eina_array_count_get(_loc->files));
     choicebox_set_selection(choicebox, -1);
+
+    choicebox_scroll_to(choicebox, _loc->old_pos);
 }
 
 static void _update_gui(const madshelf_state_t* state)
@@ -316,7 +364,7 @@ static void _update_filelist_gui(madshelf_state_t* state)
 {
     _loc_t* _loc = (_loc_t*)state->loc;
     _free_files(_loc->files);
-    _loc->files = _fill_files(state, _loc->dir);
+    _loc->files = _fill_files(state, _loc->dir, NULL);
     _update_gui(state);
 }
 
@@ -349,7 +397,7 @@ madshelf_loc_t* dir_make(madshelf_state_t* state, const char* dir)
     _loc_t* _loc = malloc(sizeof(_loc_t));
     _loc->loc = loc;
     _loc->dir = strdup(dir);
-    _loc->files = _fill_files(state, dir);
+    _loc->files = _fill_files(state, dir, &_loc->old_pos);
 
     return (madshelf_loc_t*)_loc;
 }
