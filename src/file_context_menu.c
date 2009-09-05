@@ -282,6 +282,7 @@ void open_file_context_menu(madshelf_state_t* state,
 
     Evas_Object* file_context_menu_choicebox
         = choicebox_new(state->canvas, &choicebox_info, info);
+    eoi_register_fullscreen_choicebox(file_context_menu_choicebox);
 
     evas_object_name_set(file_context_menu_choicebox, "file-context-menu-choicebox");
     edje_object_part_swallow(file_context_menu, "contents", file_context_menu_choicebox);

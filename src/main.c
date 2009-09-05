@@ -204,6 +204,8 @@ static void main_win_resize_handler(Ecore_Evas* main_win)
     {
         evas_object_resize(delete_confirm, w, h);
     }
+
+    eoi_process_resize(main_win);
 }
 
 static void contents_key_up(void* param, Evas* e, Evas_Object* o, void* event_info)
@@ -513,6 +515,8 @@ int main(int argc, char** argv)
     edje_object_part_swallow(main_edje, "contents", contents);
     evas_object_focus_set(contents, true);
     evas_object_event_callback_add(contents, EVAS_CALLBACK_KEY_UP, &contents_key_up, &state);
+
+    eoi_register_fullscreen_choicebox(contents);
 
     go(&state, overview_make(&state));
 
