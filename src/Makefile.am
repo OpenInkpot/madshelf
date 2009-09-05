@@ -3,7 +3,7 @@ AM_CFLAGS=-std=gnu99 -Wall -Wno-unused -Werror -DSYSCONFDIR="\"$(sysconfdir)\"" 
 
 bin_PROGRAMS = madshelf madaudio
 
-madaudio_SOURCES = madaudio.c madaudio_cmd.c madaudio_play.c battery.c clock.c empd_io.c
+madaudio_SOURCES = madaudio.c madaudio_cmd.c madaudio_play.c madaudio_draw.c battery.c clock.c empd_io.c empd_callback.c
 madaudio_LDADD = @EFL_LIBS@ @EXTRACT_LIBS@ @SQLITE_LIBS@ @LIBCHOICEBOX_LIBS@ @EOI_LIBS@ @EXTRACT_LIBS@ @LIBKEYS_LIBS@ -lmpdclient
 
 
