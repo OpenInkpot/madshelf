@@ -11,8 +11,6 @@ else
 	CFLAGS += -O2
 endif
 
-flavours := v3 n516
-
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
@@ -29,12 +27,11 @@ clean:
 	dh_testdir
 	dh_clean
 	[ ! -f Makefile ] || $(MAKE) distclean
-	rm -f *-stamp
 
 install: build
 	dh_testdir
 	dh_testroot
-	dh_clean -k
+	dh_prep
 	dh_installdirs
 
 	$(MAKE) install DESTDIR=$(CURDIR)/debian/madshelf
@@ -50,7 +47,6 @@ binary-arch: build install
 	dh_testroot
 	dh_compress
 	dh_fixperms
-	dh_makeshlibs
 	dh_strip
 	dh_installdeb
 	dh_shlibdeps

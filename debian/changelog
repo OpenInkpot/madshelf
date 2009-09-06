@@ -1,3 +1,34 @@
+madshelf (0.2.24) asimov; urgency=low
+
+  * Add support for choicebox 'hinting' (OI#343).
+  * Add saving 'last position' in directories (OI#261).
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Sun, 06 Sep 2009 03:31:56 +0700
+
+madshelf (0.2.23) asimov; urgency=low
+
+  * Fix keybinding for context menu on V3 (OI#471).
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Fri, 04 Sep 2009 23:17:15 +0700
+
+madshelf (0.2.22) asimov; urgency=low
+
+  [ Mikhail Gusarov ]
+  * Adjust to new libeoi.
+  * Add avn to authors.
+  * Add --as-needed to drop unused dependencies.
+  * Remove useless config.h.in.
+  * autogen.sh cleanup.
+  * Packaging:
+    * debian/rules cleanup.
+    * debhelper compat version bump.
+    * Bump Standards-Version.
+  
+  [ Tomasz Długosz ]
+  * Added ukrainian names for disks.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Thu, 03 Sep 2009 06:56:11 +0700
+
 madshelf (0.2.21) asimov; urgency=low
 
   [ Alexander Nikolaev ]

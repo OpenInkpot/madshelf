@@ -37,7 +37,7 @@
 #include <Edje.h>
 #include <Efreet.h>
 #include <libchoicebox.h>
-#include <eoi.h>
+#include <libeoi.h>
 
 #include "madshelf.h"
 
@@ -47,10 +47,12 @@
 #include "battery.h"
 #include "handlers.h"
 #include "clock.h"
+#include "curdir.h"
 
 #define SYS_CONFIG_DIR SYSCONFDIR "/madshelf"
 #define USER_CONFIG_DIR "/.e/apps/madshelf"
 
+#define CURDIR_DB_NAME "dir-state.db"
 #define DISKS_CONFIG_NAME "disks.conf"
 #define TAGS_DB_NAME "tags.db"
 
@@ -204,6 +206,8 @@ static void main_win_resize_handler(Ecore_Evas* main_win)
     {
         evas_object_resize(delete_confirm, w, h);
     }
+
+    eoi_process_resize(main_win);
 }
 
 static void contents_key_up(void* param, Evas* e, Evas_Object* o, void* event_info)
@@ -463,6 +467,10 @@ int main(int argc, char** argv)
     char tags_db_filename[PATH_MAX];
     snprintf(tags_db_filename, PATH_MAX, "%s/" TAGS_DB_NAME, configdir);
 
+    char curdir_db_filename[PATH_MAX];
+    snprintf(curdir_db_filename, PATH_MAX, "%s/" CURDIR_DB_NAME, configdir);
+    curdir_init(curdir_db_filename);
+
     madshelf_state_t state = {};
 
     state.filter = filter;
@@ -513,6 +521,8 @@ int main(int argc, char** argv)
     edje_object_part_swallow(main_edje, "contents", contents);
     evas_object_focus_set(contents, true);
     evas_object_event_callback_add(contents, EVAS_CALLBACK_KEY_UP, &contents_key_up, &state);
+
+    eoi_register_fullscreen_choicebox(contents);
 
     go(&state, overview_make(&state));
 

@@ -24,7 +24,7 @@
 
 #include <Edje.h>
 #include <libchoicebox.h>
-#include <eoi.h>
+#include <libeoi.h>
 
 #include "utils.h"
 
@@ -113,6 +113,7 @@ void open_screen_context_menu(madshelf_state_t* state,
 
     Evas_Object* screen_context_menu_choicebox
         = choicebox_new(state->canvas, &choicebox_info, info);
+    eoi_register_fullscreen_choicebox(screen_context_menu_choicebox);
 
     evas_object_name_set(screen_context_menu_choicebox, "screen-context-menu-choicebox");
     edje_object_part_swallow(screen_context_menu, "contents", screen_context_menu_choicebox);
