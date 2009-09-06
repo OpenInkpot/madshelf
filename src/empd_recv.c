@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdio.h>
 #include <mpd/entity.h>
 #include "empd.h"
@@ -5,7 +6,8 @@
 void
 empd_send(empd_connection_t* conn, const char* cmd)
 {
-    mpd_async_send_command(conn->async, cmd);
+    assert(conn);
+    mpd_async_send_command(conn->async, cmd, NULL);
     printf("send: %s\n", cmd);
 }
 
@@ -76,9 +78,12 @@ _status_finish(void* data, void* cb_data)
     printf("status finish\n");
     empd_connection_t* conn = (empd_connection_t *) data;
     struct mpd_status* status = (struct mpd_status *) cb_data;
+    assert(conn);
+    assert(status);
     struct mpd_status* old = conn->status;
     conn->status = status;
-    mpd_status_free(old);
+    if(old)
+        mpd_status_free(old);
     empd_callback_run(conn->status_callback, status);
 }
 

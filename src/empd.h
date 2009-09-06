@@ -34,6 +34,7 @@ struct empd_connection_t  {
     /* fire when we sync empd_connection_t with mpd */
     empd_callback_t* synced;
     empd_callback_t* next_callback;
+    empd_callback_t* connected;
 
     /* internal callbacks */
     empd_callback_t* playlist_callback;
@@ -50,7 +51,7 @@ struct empd_connection_t  {
 };
 
 empd_connection_t*
-empd_connection_new(const char *);
+empd_connection_new(const char *, void (*callback)(void*,void*), void* );
 
 void
 empd_connection_del(empd_connection_t*);

@@ -17,7 +17,7 @@ void
 empd_callback_run(empd_callback_t* cb, void *value)
 {
     if(cb)
-        cb->func(cb->data, value);
+        cb->func(value, cb->data);
     else
         printf("Attempt to run NULL callback\n");
 }

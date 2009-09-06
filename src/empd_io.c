@@ -77,6 +77,7 @@ hello_line_callback(empd_connection_t * conn, char *line)
     }
     printf("Got hello line\n");
     conn->line_callback = &line_callback;
+    empd_callback_run(conn->connected, conn);
 }
 
 
@@ -99,6 +100,7 @@ io_callback(void *data, Ecore_Fd_Handler *fd_handler)
 
     char *line = mpd_async_recv_line(conn->async);
     if(line) {
+        printf("got: %s\n", line);
         conn->line_callback(conn, line);
     }
     return 1;
@@ -119,23 +121,27 @@ empd_socket(const char *sockpath)
     if (fcntl(fd, F_SETFD, FD_CLOEXEC) < 0) goto err_sock;
     if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &curstate, sizeof(curstate)) < 0) goto err_sock;
     socket_unix.sun_family = AF_UNIX;
-    strncpy(socket_unix.sun_path, buf, sizeof(socket_unix.sun_path));
+    strncpy(socket_unix.sun_path, sockpath, sizeof(socket_unix.sun_path));
     int socket_unix_len = LENGTH_OF_SOCKADDR_UN(&socket_unix);
     if (connect(fd, (struct sockaddr *)&socket_unix, socket_unix_len) < 0)
         goto err_sock;
     return fd;
 err_sock:
+    printf("Err sock\n");
     return -1;
 }
 
 empd_connection_t *
-empd_connection_new(const char *sockpath)
+empd_connection_new(const char *sockpath,
+    void (*callback)(void*, void*), void* data)
 {
     empd_connection_t *conn = calloc(1, sizeof(empd_connection_t));
+    empd_callback_set(&conn->connected, callback, data);
+
     int sock = -1;
     if(conn) {
         sock = empd_socket(sockpath);
-        if( 0 < sock) {
+        if( sock < 0 ) {
             printf("Can't get socket\n");
             goto sock_err;
         }
