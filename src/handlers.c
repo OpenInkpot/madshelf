@@ -43,7 +43,7 @@ typedef struct
     Eina_Hash* handlers_types;
 } appdb_t;
 
-appdb_t appdb;
+static appdb_t appdb;
 
 static void free_openers(void* data)
 {
