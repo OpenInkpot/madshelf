@@ -1,3 +1,10 @@
+madshelf (0.2.25) asimov; urgency=low
+
+  * Fix segfault due to buffer overrun (OI#480)
+  * Add -dbg package for easier debugging
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Mon, 07 Sep 2009 03:58:19 +0700
+
 madshelf (0.2.24) asimov; urgency=low
 
   * Add support for choicebox 'hinting' (OI#343).
