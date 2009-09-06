@@ -10,16 +10,45 @@
 #include <Ecore.h>
 
 #include <mpd/async.h>
+#include <mpd/pair.h>
 #include <mpd/parser.h>
 #include "empd.h"
 
+
+
 static void
-line_callback(empd_connection_t * conn, const char *line) {
+line_callback(empd_connection_t * conn,  char *line)
+{
+    struct mpd_pair pair;
+    enum mpd_parser_result result;
+    result = mpd_parser_feed(conn->parser, line);
+    switch (result)
+    {
+        case MPD_PARSER_MALFORMED:
+            printf("Fail to parse response\n");
+            break;
+        case MPD_PARSER_SUCCESS:
+            if(conn->finish_callback)
+                empd_callback_once(&conn->finish_callback, conn);
+            empd_callback_run(conn->next_callback, conn);
+            break;
+        case MPD_PARSER_ERROR:
+            printf("Got MPD_PARSER_ERROR\n");
+            break;
+        case MPD_PARSER_PAIR:
+            pair.name = mpd_parser_get_name(conn->parser);
+            pair.value = mpd_parser_get_value(conn->parser);
+            empd_callback_run(conn->pair_callback, &pair);
+            break;
+        default:
+            printf("Must never reach\n");
+    }
 }
 
 
 static void
-idle_line_callback(empd_connection_t * conn, const char *line) {
+idle_line_callback(empd_connection_t * conn, char *line)
+{
     printf("idle signal\n");
     conn->line_callback = &line_callback;
     if(conn->idle_mode) {
@@ -29,7 +58,8 @@ idle_line_callback(empd_connection_t * conn, const char *line) {
 }
 
 void
-empd_enter_idle_mode(empd_connection_t * conn) {
+empd_enter_idle_mode(empd_connection_t * conn)
+{
     conn->line_callback = &idle_line_callback;
     conn->idle_mode = true;
 }
@@ -37,8 +67,10 @@ empd_enter_idle_mode(empd_connection_t * conn) {
 #define MPD_WELCOME_MESSAGE   "OK MPD "
 
 static void
-hello_line_callback(empd_connection_t * conn, const char *line) {
-    if (strncmp(line, MPD_WELCOME_MESSAGE, strlen(MPD_WELCOME_MESSAGE))) {
+hello_line_callback(empd_connection_t * conn, char *line)
+{
+    if (strncmp(line, MPD_WELCOME_MESSAGE, strlen(MPD_WELCOME_MESSAGE)))
+    {
 //        empd_error_code(&conn->error, MPD_ERROR_NOTMPD);
 //        empd_error_printf(&conn->error, "mpd not running");
         printf("mpd not running\n");
@@ -49,7 +81,8 @@ hello_line_callback(empd_connection_t * conn, const char *line) {
 
 
 static int
-io_callback(void *data, Ecore_Fd_Handler *fd_handler) {
+io_callback(void *data, Ecore_Fd_Handler *fd_handler)
+{
     empd_connection_t * conn = (empd_connection_t *) data;
     int events=0;
 
@@ -75,7 +108,8 @@ io_callback(void *data, Ecore_Fd_Handler *fd_handler) {
     (strlen((s)->sun_path) + (size_t)(((struct sockaddr_un *)NULL)->sun_path))
 
 static int
-empd_socket(const char *sockpath) {
+empd_socket(const char *sockpath)
+{
     struct sockaddr_un  socket_unix;
     char                buf[4096];
     int fd = socket(AF_UNIX, SOCK_STREAM, 0);
@@ -95,7 +129,8 @@ err_sock:
 }
 
 empd_connection_t *
-empd_connection_new(const char *sockpath) {
+empd_connection_new(const char *sockpath)
+{
     empd_connection_t *conn = calloc(1, sizeof(empd_connection_t));
     int sock = -1;
     if(conn) {

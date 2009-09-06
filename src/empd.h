@@ -3,6 +3,7 @@
 
 #include <mpd/async.h>
 #include <mpd/parser.h>
+#include <mpd/song.h>
 #include <Eina.h>
 #include <Ecore.h>
 
@@ -28,10 +29,21 @@ struct empd_connection_t  {
 
     Eina_List* playlist;
     struct mpd_status* status;
+    struct mpd_entity* entity;
+
+    /* fire when we sync empd_connection_t with mpd */
+    empd_callback_t* synced;
+    empd_callback_t* next_callback;
+
+    /* internal callbacks */
+    empd_callback_t* playlist_callback;
+    empd_callback_t* status_callback;
+    empd_callback_t* pair_callback;
+    empd_callback_t* finish_callback;
 
     bool idle_mode;
 
-    void (*line_callback)(empd_connection_t*, const char *);
+    void (*line_callback)(empd_connection_t*, char *);
 
     void (*idle_callback)(empd_connection_t*);
 
@@ -45,5 +57,14 @@ empd_connection_del(empd_connection_t*);
 
 void
 empd_enter_idle_mode(empd_connection_t*);
+
+void
+empd_playlist_clear(empd_connection_t* conn);
+
+void
+empd_playlist_append(empd_connection_t* conn, const struct mpd_song* song);
+
+/* internal */
+void empd_finish_entity(empd_connection_t* conn);
 
 #endif
