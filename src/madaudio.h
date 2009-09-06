@@ -22,4 +22,6 @@ bool madaudio_command(madaudio_player_t*, const char*);
 void madaudio_draw_captions(madaudio_player_t*);
 void madaudio_draw_song(madaudio_player_t*);
 
+void madaudio_connect(madaudio_player_t*);
+
 #endif

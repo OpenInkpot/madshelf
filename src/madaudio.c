@@ -291,6 +291,7 @@ int main(int argc, char** argv)
     ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_DATA, _client_data, NULL);
     ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_DEL, _client_del, &player);
 
+    madaudio_connect(&player);
     ecore_main_loop_begin();
 
     madaudio_free_state(&player);
