@@ -20,3 +20,12 @@ Description: Bookshelf application -- N516-specific configuration
  Bookshelf application.
  .
  This package contains key bindings for N516.
+
+Package: madshelf-dbg
+Architecture: any
+Priority: extra
+Depends: madshelf (= ${binary:Version})
+Description: Bookshelf application -- debugging symbols
+ Bookshelf application.
+ .
+ This package contains debugging symbols.
