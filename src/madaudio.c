@@ -35,7 +35,7 @@
 #include <Ecore_Con.h>
 #include <Ecore_X.h>
 #include <Edje.h>
-#include <eoi.h>
+#include <libeoi.h>
 #include <libkeys.h>
 
 #include "madaudio.h"
