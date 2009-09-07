@@ -272,7 +272,7 @@ int main(int argc, char** argv)
     evas_object_event_callback_add(contents, EVAS_CALLBACK_KEY_UP,
                                     &contents_key_up, &player);
 
-
+    madaudio_draw_captions(&player);
     evas_object_show(contents);
     evas_object_show(main_edje);
     ecore_evas_show(main_win);
