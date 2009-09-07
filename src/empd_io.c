@@ -33,8 +33,9 @@ line_callback(void *data,  void *cb_data)
         case MPD_PARSER_SUCCESS:
             if(conn->finish_callback)
             {
-                empd_callback_run(conn->finish_callback, conn);
-                conn->finish_callback = NULL;
+                empd_callback_once(&conn->finish_callback, conn);
+//                conn->finish_callback = NULL;
+                printf("returned from finish callback\n");
             }
 //            if(conn->next_callback)
 //                empd_callback_run(conn->next_callback, conn);
@@ -76,8 +77,10 @@ empd_enter_idle_mode(empd_connection_t * conn)
 #define MPD_WELCOME_MESSAGE   "OK MPD "
 
 static void
-hello_line_callback(empd_connection_t * conn, char *line)
+hello_line_callback(void* data, void* cb_data)
 {
+    empd_connection_t* conn = (empd_connection_t *) cb_data;
+    char* line = (char *) data;
     if (strncmp(line, MPD_WELCOME_MESSAGE, strlen(MPD_WELCOME_MESSAGE)))
     {
 //        empd_error_code(&conn->error, MPD_ERROR_NOTMPD);
@@ -157,7 +160,7 @@ empd_connection_new(const char *sockpath,
             goto sock_err;
         }
         conn->async = mpd_async_new(sock);
-        empd_callback_set(&conn->line_callback, line_callback, conn);
+        empd_callback_set(&conn->line_callback, hello_line_callback, conn);
         conn->sock = sock;
 
         if(!conn->async) {

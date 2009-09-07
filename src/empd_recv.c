@@ -30,7 +30,7 @@ static void
 _entity_finish(void* data, void* cb_data)
 {
     printf("entity finish\n");
-    empd_connection_t* conn = (empd_connection_t *) data;
+    empd_connection_t* conn = (empd_connection_t *) cb_data;
     empd_callback_run(conn->playlist_callback, conn->playlist);
 }
 
@@ -42,6 +42,7 @@ _entity_pairs(void *data, void *cb_data)
     bool result = mpd_entity_feed(conn->entity, pair);
     if(!result)
     {
+        printf("finish pairs\n");
         empd_finish_entity(conn);
         conn->entity = mpd_entity_begin(pair);
     }
@@ -60,7 +61,7 @@ _entity_pairs_first(void *data, void *cb_data)
     }
     conn->entity = entity;
     empd_callback_set(&conn->pair_callback, _entity_pairs, conn);
-    empd_callback_set(&conn->pair_callback, _entity_finish, NULL);
+    empd_callback_set(&conn->finish_callback, _entity_finish, conn);
 }
 
 void
@@ -109,6 +110,7 @@ empd_status(empd_connection_t* conn,
 static void
 _playlistinfo_callback(void* data, void* cb_data)
 {
+    printf("_playlistinfo_callback()\n");
     empd_connection_t* conn = (empd_connection_t*) cb_data;
     empd_callback_run(conn->synced, conn);
 }
