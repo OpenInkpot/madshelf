@@ -1,4 +1,5 @@
 #define _GNU_SOURCE 1
+#include <assert.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -17,8 +18,10 @@
 
 
 static void
-line_callback(empd_connection_t * conn,  char *line)
+line_callback(void *data,  void *cb_data)
 {
+    empd_connection_t* conn = (empd_connection_t *) cb_data;
+    char* line = (char *) data;
     struct mpd_pair pair;
     enum mpd_parser_result result;
     result = mpd_parser_feed(conn->parser, line);
@@ -29,8 +32,12 @@ line_callback(empd_connection_t * conn,  char *line)
             break;
         case MPD_PARSER_SUCCESS:
             if(conn->finish_callback)
-                empd_callback_once(&conn->finish_callback, conn);
-            empd_callback_run(conn->next_callback, conn);
+            {
+                empd_callback_run(conn->finish_callback, conn);
+                conn->finish_callback = NULL;
+            }
+//            if(conn->next_callback)
+//                empd_callback_run(conn->next_callback, conn);
             break;
         case MPD_PARSER_ERROR:
             printf("Got MPD_PARSER_ERROR\n");
@@ -47,20 +54,22 @@ line_callback(empd_connection_t * conn,  char *line)
 
 
 static void
-idle_line_callback(empd_connection_t * conn, char *line)
+idle_line_callback(void* data, void* cb_data)
 {
+    empd_connection_t* conn = (empd_connection_t *) cb_data;
+    char* line = (char *) data;
     printf("idle signal\n");
-    conn->line_callback = &line_callback;
+    empd_callback_set(&conn->line_callback, line_callback, conn);
     if(conn->idle_mode) {
         conn->idle_mode = false;
-        conn->idle_callback(conn);
+        empd_callback_run(conn->idle_callback, conn);
     }
 }
 
 void
 empd_enter_idle_mode(empd_connection_t * conn)
 {
-    conn->line_callback = &idle_line_callback;
+    empd_callback_set(&conn->line_callback, &idle_line_callback, conn);
     conn->idle_mode = true;
 }
 
@@ -76,7 +85,7 @@ hello_line_callback(empd_connection_t * conn, char *line)
         printf("mpd not running\n");
     }
     printf("Got hello line\n");
-    conn->line_callback = &line_callback;
+    empd_callback_set(&conn->line_callback, line_callback, conn);
     empd_callback_run(conn->connected, conn);
 }
 
@@ -101,7 +110,9 @@ io_callback(void *data, Ecore_Fd_Handler *fd_handler)
     char *line = mpd_async_recv_line(conn->async);
     if(line) {
         printf("got: %s\n", line);
-        conn->line_callback(conn, line);
+        assert(conn);
+        assert(conn->line_callback);
+        empd_callback_run(conn->line_callback, line);
     }
     return 1;
 }
@@ -146,7 +157,7 @@ empd_connection_new(const char *sockpath,
             goto sock_err;
         }
         conn->async = mpd_async_new(sock);
-        conn->line_callback = &hello_line_callback;
+        empd_callback_set(&conn->line_callback, line_callback, conn);
         conn->sock = sock;
 
         if(!conn->async) {

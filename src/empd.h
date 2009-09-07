@@ -44,9 +44,8 @@ struct empd_connection_t  {
 
     bool idle_mode;
 
-    void (*line_callback)(empd_connection_t*, char *);
-
-    void (*idle_callback)(empd_connection_t*);
+    empd_callback_t* line_callback;
+    empd_callback_t* idle_callback;
 
 };
 
