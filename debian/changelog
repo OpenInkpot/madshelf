@@ -1,3 +1,10 @@
+madshelf (0.2.26) asimov; urgency=low
+
+  * Fix crash on empty directories introduced in 0.2.24 (OI#483).
+  * Fixed theme to make disabled text readable on top of numbers (OI#482).
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Mon, 07 Sep 2009 08:03:35 +0700
+
 madshelf (0.2.25) asimov; urgency=low
 
   * Fix segfault due to buffer overrun (OI#480)
