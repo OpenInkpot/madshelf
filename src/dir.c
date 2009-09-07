@@ -74,7 +74,7 @@ static void _free(madshelf_state_t* state)
         if(choicebox)
         {
             int sel = choicebox_get_scroll_pos(choicebox);
-            if(sel == -1)
+            if(sel == -1 || sel >= eina_array_count_get(_loc->files))
                 curdir_set(_loc->dir, NULL);
             else
             {
