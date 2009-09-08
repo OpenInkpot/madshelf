@@ -1,5 +1,5 @@
 /*
- * MadShelf - bookshelf application.
+ * MadShelf - audioplayer application.
  *
  * Copyright (C) 2009 by Alexander v. Nikolaev <avn@daemon.hole.ru>
  * Copyright (C) 2008,2009 Mikhail Gusarov <dottedmag@dottedmag.net>
@@ -49,6 +49,7 @@
 static void madaudio_free_state(madaudio_player_t* player)
 {
     keys_free(player->keys);
+    free(player);
 }
 
 
@@ -90,6 +91,11 @@ static void contents_key_up(void* param, Evas* e, Evas_Object* o, void* event_in
 {
     madaudio_player_t* player = (madaudio_player_t*)param;
     Evas_Event_Key_Up* ev = (Evas_Event_Key_Up*)event_info;
+    const char* action = keys_lookup_by_event(player->keys, "player", ev);
+    if(!strcmp(action, "PlayPause"))
+        madaudio_play_pause(player);
+    if(!strcmp(action, "Quit"))
+        ecore_main_loop_quit();
 }
 
 static int update_batt_cb(void* param)
@@ -206,7 +212,7 @@ static void exit_app(void* param)
 
 int main(int argc, char** argv)
 {
-    madaudio_player_t player = {};
+    madaudio_player_t* player = calloc(1, sizeof(madaudio_player_t));
 
     if(!ecore_init())
         err(1, "Unable to initialize Ecore");
@@ -240,14 +246,14 @@ int main(int argc, char** argv)
     /* End of state */
 
     Ecore_Evas* main_win = ecore_evas_software_x11_new(0, 0, 0, 0, 600, 800);
-    player.win = main_win;
+    player->win = main_win;
     ecore_evas_title_set(main_win, "Madaudio");
     ecore_evas_name_class_set(main_win, "Madaudio", "Madaudio");
     ecore_evas_callback_delete_request_set(main_win, main_win_close_handler);
     ecore_evas_callback_resize_set(main_win, main_win_resize_handler);
 
     Evas* main_canvas = ecore_evas_get(main_win);
-    player.canvas = main_canvas;
+    player->canvas = main_canvas;
     Evas_Object* main_edje = eoi_main_window_create(main_canvas);
 
     evas_object_name_set(main_edje, "main_edje");
@@ -269,10 +275,12 @@ int main(int argc, char** argv)
 
     edje_object_part_swallow(main_edje, "contents", contents);
     evas_object_focus_set(contents, true);
-    evas_object_event_callback_add(contents, EVAS_CALLBACK_KEY_UP,
-                                    &contents_key_up, &player);
 
-    madaudio_draw_captions(&player);
+    player->keys = keys_alloc("madaudio");
+    evas_object_event_callback_add(contents, EVAS_CALLBACK_KEY_UP,
+                                    &contents_key_up, player);
+
+    player->gui = contents;
     evas_object_show(contents);
     evas_object_show(main_edje);
     ecore_evas_show(main_win);
@@ -285,22 +293,22 @@ int main(int argc, char** argv)
     ecore_x_io_error_handler_set(exit_all, NULL);
     ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_handler, NULL);
     ecore_event_handler_add(ECORE_EVENT_SIGNAL_HUP, sighup_signal_handler,
-        &player);
+        player);
 
     ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_ADD, _client_add, NULL);
     ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_DATA, _client_data, NULL);
     ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_DEL, _client_del, &player);
 
-    madaudio_connect(&player);
+    madaudio_draw_captions(player);
+    madaudio_connect(player);
     ecore_main_loop_begin();
 
-    madaudio_free_state(&player);
+    madaudio_free_state(player);
 
     edje_shutdown();
     ecore_evas_shutdown();
     evas_shutdown();
     ecore_shutdown();
-    ecore_config_shutdown();
 
     return 0;
 }

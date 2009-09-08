@@ -34,11 +34,10 @@ line_callback(void *data,  void *cb_data)
             if(conn->finish_callback)
             {
                 empd_callback_once(&conn->finish_callback, conn);
-//                conn->finish_callback = NULL;
                 printf("returned from finish callback\n");
             }
-//            if(conn->next_callback)
-//                empd_callback_run(conn->next_callback, conn);
+            if(conn->next_callback)
+                empd_callback_once(&conn->next_callback, conn);
             break;
         case MPD_PARSER_ERROR:
             printf("Got MPD_PARSER_ERROR\n");

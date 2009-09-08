@@ -66,7 +66,11 @@ empd_playlist_append(empd_connection_t* conn, const struct mpd_song* song);
 
 void
 empd_status_sync(empd_connection_t* conn,
-                void (*callback)(void* , void *), void *data);
+                void (*callback)(void* , void *), void* data);
+
+void
+empd_send_wait(empd_connection_t* conn,
+                void (*callback)(void*, void*), void* data, const char *, ...);
 
 /* internal */
 void empd_finish_entity(empd_connection_t* conn);

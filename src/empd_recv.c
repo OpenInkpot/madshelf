@@ -12,11 +12,30 @@ empd_send(empd_connection_t* conn, const char* cmd)
 }
 
 void
+empd_send_wait(empd_connection_t* conn,
+                void (*callback)(void*, void*),
+                void* data, const char *cmd, ...)
+{
+    va_list args;
+    bool success;
+    empd_callback_set(&conn->next_callback, callback, data);
+    assert(conn->async);
+    assert(cmd);
+    printf("send: %s\n", cmd);
+    va_start(args, cmd);
+    success = mpd_async_send_command_v(conn->async, cmd, args);
+    va_end(args);
+    if(!success)
+        printf("we all die\n");
+}
+
+void
 empd_finish_entity(empd_connection_t* conn)
 {
     switch(mpd_entity_get_type(conn->entity))
     {
         case MPD_ENTITY_TYPE_SONG:
+            printf("append song\n");
             empd_playlist_append(conn, mpd_entity_get_song(conn->entity));
             break;
         default:
@@ -31,6 +50,7 @@ _entity_finish(void* data, void* cb_data)
 {
     printf("entity finish\n");
     empd_connection_t* conn = (empd_connection_t *) cb_data;
+    empd_finish_entity(conn);
     empd_callback_run(conn->playlist_callback, conn->playlist);
 }
 
@@ -52,6 +72,9 @@ static void
 _entity_pairs_first(void *data, void *cb_data)
 {
     empd_connection_t* conn = (empd_connection_t*) cb_data;
+
+    empd_playlist_clear(conn);
+
     struct mpd_pair* pair = (struct mpd_pair*) data;
     struct mpd_entity* entity = mpd_entity_begin(pair);
     if(!entity)

@@ -14,4 +14,5 @@ empd_playlist_clear(empd_connection_t* conn)
     struct mpd_song* song;
     EINA_LIST_FREE(conn->playlist, song)
         mpd_song_free(song);
+    conn->playlist = NULL;
 }
