@@ -20,6 +20,12 @@ void empd_callback_run(empd_callback_t* cb, void *value);
 void empd_callback_once(empd_callback_t** cb, void *value);
 void empd_callback_free(empd_callback_t* cb);
 
+typedef struct empd_file_queue_t empd_file_queue_t;
+struct empd_file_queue_t {
+    empd_file_queue_t* next;
+    char* file;
+};
+
 typedef struct empd_connection_t empd_connection_t;
 struct empd_connection_t  {
     struct mpd_async* async;
@@ -30,6 +36,11 @@ struct empd_connection_t  {
     Eina_List* playlist;
     struct mpd_status* status;
     struct mpd_entity* entity;
+
+    empd_file_queue_t* queue;
+
+    /* protocol busy by sending or receiving something */
+    bool busy;
 
     /* fire when we sync empd_connection_t with mpd */
     empd_callback_t* synced;
@@ -71,6 +82,14 @@ empd_status_sync(empd_connection_t* conn,
 void
 empd_send_wait(empd_connection_t* conn,
                 void (*callback)(void*, void*), void* data, const char *, ...);
+
+
+bool
+empd_pending_events(empd_connection_t* conn);
+
+/* Destructive, list of files consumed and freed by empd_enqueue_files */
+void
+empd_enqueue_files(empd_connection_t* conn, Eina_List* list);
 
 /* internal */
 void empd_finish_entity(empd_connection_t* conn);

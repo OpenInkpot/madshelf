@@ -36,6 +36,12 @@ line_callback(void *data,  void *cb_data)
                 empd_callback_once(&conn->finish_callback, conn);
                 printf("returned from finish callback\n");
             }
+            if(empd_pending_events(conn))
+            {
+                printf("we still busy\n");
+                break;
+            }
+            conn->busy = false;
             if(conn->next_callback)
                 empd_callback_once(&conn->next_callback, conn);
             break;
@@ -88,6 +94,7 @@ hello_line_callback(void* data, void* cb_data)
     }
     printf("Got hello line\n");
     empd_callback_set(&conn->line_callback, line_callback, conn);
+    conn->busy = false;
     empd_callback_run(conn->connected, conn);
 }
 
@@ -177,6 +184,7 @@ empd_connection_new(const char *sockpath,
             io_callback, (void *)conn, NULL, NULL);
         printf("Connection initialized\n");
     }
+    conn->busy = true;
     return conn;
 sock_err:
     if(conn->async)
