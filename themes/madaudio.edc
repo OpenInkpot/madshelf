@@ -17,6 +17,10 @@ styles {
         base, "font=sans font_size=24 color=#000 align=left"; 
     }
     style {
+        name, "times";
+        base, "font=sans font_size=24 color=#000 align=right"; 
+    }
+    style {
         name, "shaded";
         base, "font=sans font_size=24 color=#555 align=left"; 
     }
@@ -26,18 +30,18 @@ styles {
 #define CAPTION_X1 14
 #define CAPTION_X2 200
 #define VALUES_X1 214
-#define VALUES_X2 380
+#define VALUES_X2 480
 
-#define COMPOSER_Y1 14
-#define COMPOSER_Y2 30
-#define ARTIST_Y1   40
-#define ARTIST_Y2   50
-#define ALBUM_Y1    60
-#define ALBUM_Y2    70
-#define GENRE_Y1    80
-#define GENRE_Y2    90
-#define YEAR_Y1    100
-#define YEAR_Y2    110
+#define COMPOSER_Y1 15
+#define COMPOSER_Y2 35
+#define ARTIST_Y1   37
+#define ARTIST_Y2   60
+#define ALBUM_Y1    63
+#define ALBUM_Y2    90
+#define GENRE_Y1    92
+#define GENRE_Y2    120
+#define YEAR_Y1     122
+#define YEAR_Y2     150
 
 
 #define SONG(x1, y1, x2, y2) \
@@ -64,7 +68,7 @@ styles {
       type, RECT;                                         \
       description {                                       \
          state, "default" 0.0;                            \
-         color, 255 255 255 0;                            \
+         color, 255 255 255 255;                            \
          rel1 { relative, 0.0 0.0; offset, x1 y1; }         \
          rel2 { relative, 0.0 0.0; offset, x2 y2; }       \
       } \
@@ -84,8 +88,27 @@ styles {
                 max, 0 1; \
             } \
             align, 0.5 0.5; \
-            rel1 { relative, 0.0 0.0; offset, x1 y1; } \
-            rel2 { relative, 0.0 0.0; offset, x2 y2; } \
+            rel1 { relative, 0.0 0.0; to, c; offset, x1 y1; } \
+            rel2 { relative, 0.0 0.0; to, c; offset, x2 y2; } \
+        } \
+    }
+
+#define TIME(n, s, c, x1, y1, x2, y2) \
+    part { \
+        name, n; \
+        type, TEXTBLOCK; \
+        mouse_events, 0; \
+        clip_to, c; \
+        description { \
+            state, "default" 0.0; \
+            color, 0 0 0 255; \
+            text { \
+                style, s; \
+                max, 0 1; \
+            } \
+            align, 0.5 0.5; \
+            rel1 { relative, 0.0 0.0; to, c; offset, x1 y1; } \
+            rel2 { relative, 0.0 0.0; to, c; offset, x2 y2; } \
         } \
     }
 
@@ -96,14 +119,14 @@ styles {
     STYLED(n, "values", "clipper", VALUES_X1, y1, VALUES_X2, y2)
 
 #define PREVNEXT(x1, y1, x2, y2) \
-    CLIPPER("prev-next-clipper", x1, y1, x2, y2) \
+    CLIPPER("prev-next-clipper", x1, y1, x2, y2)  \
     STYLED("prev-song", "shaded", "prev-next-clipper", 10, 10, 150, 30) \
     STYLED("this-song", "values", "prev-next-clipper", 10, 40, 150, 50) \
     STYLED("next-song", "shaded", "prev-next-clipper", 10, 60, 150, 70)
 
 
-#define BLOCK(x1, x2, y1, y2) \
-    CLIPPER("clipper", x1, y1, x2, y2) \
+#define BLOCK(x1, y1, x2, y2) \
+    CLIPPER("clipper", x1, y1, x2, y2)  \
     CAPTION("caption-composer", COMPOSER_Y1, COMPOSER_Y2) \
     CAPTION("caption-artist", ARTIST_Y1, ARTIST_Y2) \
     CAPTION("caption-album", ALBUM_Y1, ALBUM_Y2) \
@@ -113,7 +136,8 @@ styles {
     VALUE("artist", ARTIST_Y1, ARTIST_Y2) \
     VALUE("album", ALBUM_Y1, ALBUM_Y2) \
     VALUE("genre", GENRE_Y1, GENRE_Y2) \
-    VALUE("year", YEAR_Y1, YEAR_Y2) 
+    VALUE("year", YEAR_Y1, YEAR_Y2) \
+    STYLED("total_time", "times", "clipper", 200, 200, 400, 250)
 
 collections {
     group {
@@ -129,13 +153,13 @@ collections {
                     image { normal, "madaudio-vertical.png"; }
                 }
             }
-            SONG(150, 100, 400, 180)
-            BLOCK(150, 150, 400, 400)
-            PREVNEXT(150, 450, 500, 500)
+            SONG(105, 25, 595, 55) 
+            BLOCK(105, 65, 595, 265)
+            PREVNEXT(140, 267, 585, 360) 
             
         }
     }
-
+/*
     group {
         name, "horisontal";
         parts {
@@ -153,5 +177,5 @@ collections {
             BLOCK(150, 150, 400, 400)
             PREVNEXT(150, 450, 500, 500)
         }
-    }
+    } */
 }

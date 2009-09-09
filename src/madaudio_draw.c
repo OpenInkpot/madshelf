@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <Evas.h>
 #include <Edje.h>
 
@@ -10,6 +11,7 @@
 static void
 blank_gui(Evas_Object* gui)
 {
+    edje_object_part_text_set(gui, "title", "");
     edje_object_part_text_set(gui, "composer", "");
     edje_object_part_text_set(gui, "album", "");
     edje_object_part_text_set(gui, "artist", "");
@@ -33,6 +35,7 @@ draw_song_tag(Evas_Object* gui, const char *field, const struct mpd_song* song,
 static void
 draw_song(Evas_Object* gui, const struct mpd_song* song)
 {
+    draw_song_tag(gui, "title", song, MPD_TAG_TITLE);
     draw_song_tag(gui, "composer", song, MPD_TAG_COMPOSER);
     draw_song_tag(gui, "artist", song, MPD_TAG_ARTIST);
     draw_song_tag(gui, "album", song, MPD_TAG_ALBUM);
@@ -40,9 +43,35 @@ draw_song(Evas_Object* gui, const struct mpd_song* song)
     draw_song_tag(gui, "year", song, MPD_TAG_DATE);
 }
 
+static const char *
+format_time(int inttime)
+{
+    static char buf[1024];
+    time_t time = inttime;
+    const struct tm *tm = gmtime(&time);
+    strftime(buf, 1024, "%M:%S", tm);
+    return buf;
+}
+
 static void
 draw_status(Evas_Object* gui, const struct mpd_status* status)
 {
+    char *a;
+    int time = mpd_status_get_total_time(status);
+    if(mpd_status_get_state(status) == MPD_STATE_PLAY) {
+        int elapsed_time = mpd_status_get_elapsed_time(status);
+        char* total = strdup(format_time(time));
+        char* elapsed = strdup(format_time(elapsed_time));
+        char timestr[1024];
+        snprintf(timestr, 1024, "%s / %s", elapsed, total);
+        edje_object_part_text_set(gui, "total_time", timestr);
+        free(total);
+        free(elapsed);
+    }
+    else
+    {
+        edje_object_part_text_set(gui, "total_time", format_time(time));
+    }
 }
 
 void
@@ -64,7 +93,8 @@ madaudio_draw_song(madaudio_player_t* player)
     madaudio_draw_captions(player);
     blank_gui(player->gui);
     draw_status(player->gui, player->conn->status);
-    if(mpd_status_get_state(player->conn->status) == MPD_STATE_PLAY) {
+    if(player->conn->playlist)
+    {
         int song_id = mpd_status_get_song(player->conn->status);
         struct mpd_song* song = eina_list_nth(player->conn->playlist, song_id);
         if(song)
