@@ -146,10 +146,13 @@ bool empd_busy(empd_connection_t* conn, empd_callback_func_t callback,
                 void* data, empd_action_func_t action, char *arg)
 {
     if(!conn->busy)
+    {
+        printf("Not busy, proceeding\n");
+        conn->busy = true;
         return false;
+    }
 
     printf("queueing delayed\n");
-    conn->busy = true;
     empd_delayed_command_t* cmd = calloc(1, sizeof(empd_delayed_command_t));
     cmd->next = conn->delayed;
     conn->delayed = cmd;
