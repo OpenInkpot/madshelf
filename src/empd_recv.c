@@ -32,6 +32,8 @@ empd_send_wait(empd_connection_t* conn,
 void
 empd_finish_entity(empd_connection_t* conn)
 {
+    if(!conn->entity)
+        return; /* we can accidently get here whe parsing status reply */
     switch(mpd_entity_get_type(conn->entity))
     {
         case MPD_ENTITY_TYPE_SONG:
@@ -39,7 +41,8 @@ empd_finish_entity(empd_connection_t* conn)
             empd_playlist_append(conn, mpd_entity_get_song(conn->entity));
             break;
         default:
-            printf("Unsupported entity\n");
+            printf("Unsupported entity: %d\n",
+                mpd_entity_get_type(conn->entity));
     }
     conn->entity = NULL;
 }
@@ -91,6 +94,7 @@ void
 empd_playlistinfo(empd_connection_t* conn,
             void (*callback)(void*, void *), void* data)
 {
+    EMPD_BUSY(conn, callback, data, empd_playlistinfo);
     empd_callback_set(&conn->pair_callback, _entity_pairs_first, conn);
     empd_callback_set(&conn->playlist_callback, callback, data);
     empd_send(conn, "playlistinfo");
@@ -123,6 +127,7 @@ void
 empd_status(empd_connection_t* conn,
             void (*callback)(void*, void *), void *data)
 {
+    EMPD_BUSY(conn, callback, data, empd_status);
     struct mpd_status* status = mpd_status_new();
     empd_callback_set(&conn->pair_callback, _status_pairs, status);
     empd_callback_set(&conn->finish_callback, _status_finish, status);

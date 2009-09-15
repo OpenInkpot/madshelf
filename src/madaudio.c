@@ -238,7 +238,7 @@ int main(int argc, char** argv)
         err(1, "Unable to initialize Ecore_Evas");
     if(!edje_init())
         err(1, "Unable to initialize Edje");
-
+    madaudio_opener_init();
 
     setlocale(LC_ALL, "");
     textdomain("madaudio");
@@ -300,11 +300,14 @@ int main(int argc, char** argv)
     ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_DEL, _client_del, &player);
 
     madaudio_draw_captions(player);
+    if(argc == 2)
+        player->filename = strdup(argv[1]);
     madaudio_connect(player);
     ecore_main_loop_begin();
 
     madaudio_free_state(player);
 
+    madaudio_opener_shutdown();
     edje_shutdown();
     ecore_evas_shutdown();
     evas_shutdown();

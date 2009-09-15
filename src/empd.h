@@ -10,9 +10,13 @@
 typedef void (*empd_callback_func_t)(void *data, void* value);
 
 typedef struct empd_callback_t empd_callback_t;
+typedef struct empd_file_queue_t empd_file_queue_t;
+typedef struct empd_connection_t empd_connection_t;
+
+
 struct empd_callback_t {
     empd_callback_func_t   func;
-    void *data;
+    void* data;
 };
 
 void empd_callback_set(empd_callback_t** cb, empd_callback_func_t, void*);
@@ -20,13 +24,28 @@ void empd_callback_run(empd_callback_t* cb, void *value);
 void empd_callback_once(empd_callback_t** cb, void *value);
 void empd_callback_free(empd_callback_t* cb);
 
-typedef struct empd_file_queue_t empd_file_queue_t;
+
+typedef void (*empd_action_func_t)(empd_connection_t*, empd_callback_func_t, void*);
+typedef struct empd_delayed_command_t empd_delayed_command_t;
+struct empd_delayed_command_t {
+    empd_callback_func_t callback;
+    void* data;
+    empd_action_func_t action;
+    empd_delayed_command_t* next;
+};
+
+#define EMPD_BUSY(conn, callback, data, action) \
+    if(empd_busy(conn, callback, data, action)) return
+
+bool empd_busy(empd_connection_t* , empd_callback_func_t,
+                void*,  empd_action_func_t);
+
+
 struct empd_file_queue_t {
     empd_file_queue_t* next;
     char* file;
 };
 
-typedef struct empd_connection_t empd_connection_t;
 struct empd_connection_t  {
     struct mpd_async* async;
     struct mpd_parser* parser;
@@ -58,6 +77,7 @@ struct empd_connection_t  {
     empd_callback_t* line_callback;
     empd_callback_t* idle_callback;
 
+    empd_delayed_command_t* delayed;
 };
 
 empd_connection_t*
@@ -86,6 +106,10 @@ empd_send_wait(empd_connection_t* conn,
 
 bool
 empd_pending_events(empd_connection_t* conn);
+
+void
+empd_playlistinfo(empd_connection_t* conn,
+            void (*callback)(void*, void *), void* data);
 
 /* Destructive, list of files consumed and freed by empd_enqueue_files */
 void

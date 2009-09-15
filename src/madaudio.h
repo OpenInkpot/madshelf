@@ -14,6 +14,9 @@ struct madaudio_player_t {
     Evas_Object* main_edje;
     Evas_Object* gui;
     empd_connection_t* conn;
+    Ecore_Timer* poll_timer;
+    bool poll_mode;
+    char* filename;
 };
 
 void madaudio_play_file(madaudio_player_t*, const char*);
@@ -24,6 +27,14 @@ void madaudio_play_pause(madaudio_player_t*);
 void madaudio_draw_captions(madaudio_player_t*);
 void madaudio_draw_song(madaudio_player_t*);
 
+void
+madaudio_polling_start(madaudio_player_t* player);
+void
+madaudio_polling_stop(madaudio_player_t* player);
+
 void madaudio_connect(madaudio_player_t*);
+void madaudio_opener_init();
+void madaudio_opener_shutdown();
+
 
 #endif
