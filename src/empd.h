@@ -31,14 +31,15 @@ struct empd_delayed_command_t {
     empd_callback_func_t callback;
     void* data;
     empd_action_func_t action;
+    char* arg;
     empd_delayed_command_t* next;
 };
 
 #define EMPD_BUSY(conn, callback, data, action) \
-    if(empd_busy(conn, callback, data, action)) return
+    if(empd_busy(conn, callback, data, action, NULL)) return
 
 bool empd_busy(empd_connection_t* , empd_callback_func_t,
-                void*,  empd_action_func_t);
+                void*,  empd_action_func_t, char*);
 
 
 struct empd_file_queue_t {
@@ -103,9 +104,20 @@ void
 empd_send_wait(empd_connection_t* conn,
                 void (*callback)(void*, void*), void* data, const char *, ...);
 
+void
+empd_send_int_wait(empd_connection_t* conn,
+                void (*callback)(void*, void*),
+                void* data, const char* cmd, int arg);
 
 bool
 empd_pending_events(empd_connection_t* conn);
+
+void
+empd_play(empd_connection_t* conn, void (*callback)(void*, void *),
+        void* data, int pos);
+
+void
+empd_clear(empd_connection_t* conn, void (*callback)(void*, void *), void* data);
 
 void
 empd_playlistinfo(empd_connection_t* conn,
@@ -118,4 +130,6 @@ empd_enqueue_files(empd_connection_t* conn, Eina_List* list);
 /* internal */
 void empd_finish_entity(empd_connection_t* conn);
 
+void
+empd_send(empd_connection_t* conn, const char* cmd);
 #endif

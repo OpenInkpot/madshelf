@@ -4,32 +4,6 @@
 #include "empd.h"
 
 void
-empd_send(empd_connection_t* conn, const char* cmd)
-{
-    assert(conn);
-    mpd_async_send_command(conn->async, cmd, NULL);
-    printf("send: %s\n", cmd);
-}
-
-void
-empd_send_wait(empd_connection_t* conn,
-                void (*callback)(void*, void*),
-                void* data, const char *cmd, ...)
-{
-    va_list args;
-    bool success;
-    empd_callback_set(&conn->next_callback, callback, data);
-    assert(conn->async);
-    assert(cmd);
-    printf("send: %s\n", cmd);
-    va_start(args, cmd);
-    success = mpd_async_send_command_v(conn->async, cmd, args);
-    va_end(args);
-    if(!success)
-        printf("we all die\n");
-}
-
-void
 empd_finish_entity(empd_connection_t* conn)
 {
     if(!conn->entity)

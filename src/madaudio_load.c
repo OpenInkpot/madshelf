@@ -86,7 +86,6 @@ madaudio_got_playlist_callback(void* data, void* cb_data)
     printf("playlist synced\n");
     madaudio_player_t* player = (madaudio_player_t*) cb_data;
 
-    char track_str[20];
     int track_no = 0;
     Eina_List* next;
 
@@ -98,9 +97,7 @@ madaudio_got_playlist_callback(void* data, void* cb_data)
             track_no = mpd_song_get_pos(song);
     }
 
-    snprintf(track_str, 20, "%d", track_no);
-    empd_send_wait(player->conn, madaudio_play_callback, player,
-        "play", track_str, NULL);
+    empd_play(player->conn, madaudio_play_callback, player, track_no);
 }
 
 static void
@@ -128,7 +125,6 @@ madaudio_play_file(madaudio_player_t* player, const char* filename)
     if(player->filename)
         free(player->filename);
     player->filename = strdup(filename);
-    empd_send_wait(player->conn, madaudio_clear_callback, player,
-        "clear", NULL);
+    empd_clear(player->conn, madaudio_clear_callback, player);
 }
 
