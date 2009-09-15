@@ -168,6 +168,7 @@ void
 empd_play(empd_connection_t* conn, void (*callback)(void*, void *),
         void* data, int pos)
 {
+    /* empd_send_int_wait has locking  built in */
     empd_send_int_wait(conn, callback, data, "play", pos);
 }
 
