@@ -75,7 +75,7 @@ empd_enqueue_file(empd_connection_t* conn, const char *file)
 
     if(ptr)
     {
-        while(ptr)
+        while(ptr->next)
             ptr = ptr->next;
         ptr->next = newitem;
     }
