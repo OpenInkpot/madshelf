@@ -394,7 +394,7 @@ madshelf_loc_t* dir_make(madshelf_state_t* state, const char* dir)
 {
     /* FIXME: Validate dir */
 
-    _loc_t* _loc = malloc(sizeof(_loc_t));
+    _loc_t* _loc = calloc(1, sizeof(_loc_t));
     _loc->loc = loc;
     _loc->dir = strdup(dir);
     _loc->files = _fill_files(state, dir, &_loc->old_pos);
