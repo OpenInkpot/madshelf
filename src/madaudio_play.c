@@ -134,14 +134,62 @@ madaudio_play_pause(madaudio_player_t* player)
         madaudio_play(player);
 }
 
+static void
+madaudio_prevnext(madaudio_player_t* player, int step)
+{
+    int current = mpd_status_get_song(player->conn->status);
+    int total = mpd_status_get_playlist_length(player->conn->status);
+    current += step;
+    if(current >= 0 && current <= total)
+        empd_send_int_wait(player->conn, ready_callback, player,
+        "play", current);
+}
+
+
+static void
+madaudio_seek(madaudio_player_t* player, int offset)
+{
+    int current = mpd_status_get_elapsed_time(player->conn->status);
+    int total = mpd_status_get_total_time(player->conn->status);
+    current += offset;
+    if(current >= 0 && current <= total)
+        empd_seek(player->conn, ready_callback, player, current);
+}
+
+static void
+madaudio_volume(madaudio_player_t* player, int offset)
+{
+    int volume = mpd_status_get_volume(player->conn->status);
+    volume += offset;
+    if(volume >= 0 && volume <= 100)
+        empd_send_int_wait(player->conn, ready_callback, player,
+            "setvol", volume);
+}
+
 void
 madaudio_key_handler(void* param, Evas* e, Evas_Object* o, void* event_info)
 {
     madaudio_player_t* player = (madaudio_player_t*)param;
     Evas_Event_Key_Up* ev = (Evas_Event_Key_Up*)event_info;
     const char* action = keys_lookup_by_event(player->keys, "player", ev);
-    if(!strcmp(action, "PlayPause"))
-        madaudio_play_pause(player);
     if(!strcmp(action, "Quit"))
         ecore_main_loop_quit();
+
+    /* all commands except Quit require conn and conn->status */
+    if(!player->conn || !player->conn->status)
+        return;
+    if(!strcmp(action, "PlayPause"))
+        madaudio_play_pause(player);
+    if(!strcmp(action, "Previous"))
+        madaudio_prevnext(player, -1);
+    if(!strcmp(action, "Next"))
+        madaudio_prevnext(player, 1);
+    if(!strcmp(action, "VolumeUp"))
+        madaudio_volume(player, 10);
+    if(!strcmp(action, "VolumeDown"))
+        madaudio_volume(player, -10);
+    if(!strcmp(action, "Forward"))
+        madaudio_seek(player, 10);
+    if(!strcmp(action, "Backward"))
+        madaudio_seek(player, -10);
 }

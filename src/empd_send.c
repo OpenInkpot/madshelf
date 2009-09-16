@@ -4,6 +4,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <mpd/async.h>
+#include <mpd/status.h>
 #include "empd.h"
 
 void
@@ -170,6 +171,19 @@ empd_play(empd_connection_t* conn, void (*callback)(void*, void *),
 {
     /* empd_send_int_wait has locking  built in */
     empd_send_int_wait(conn, callback, data, "play", pos);
+}
+
+void
+empd_seek(empd_connection_t* conn, void (*callback)(void*, void *),
+         void* data, int pos)
+{
+    char *line;
+    int song_pos = mpd_status_get_song(conn->status);
+    asprintf(&line, "seek \"%d\" \"%d\"", song_pos, pos);
+
+    if(empd_busy(conn, callback, data, NULL, line))
+        return;
+    empd_send_wait_unlocked(conn, callback, data, line);
 }
 
 void

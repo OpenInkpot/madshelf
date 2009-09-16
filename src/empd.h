@@ -127,6 +127,10 @@ void
 empd_clear(empd_connection_t* conn, void (*callback)(void*, void *), void* data);
 
 void
+empd_seek(empd_connection_t* conn, void (*callback)(void*, void *),
+         void* data, int pos);
+
+void
 empd_playlistinfo(empd_connection_t* conn,
             void (*callback)(void*, void *), void* data);
 
