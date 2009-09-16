@@ -2,7 +2,7 @@
 #include <string.h>
 #include <Evas.h>
 #include <Edje.h>
-
+#include <Ecore_File.h>
 #include <mpd/tag.h>
 #include <mpd/song.h>
 #include <mpd/status.h>
@@ -17,6 +17,9 @@ blank_gui(Evas_Object* gui)
     edje_object_part_text_set(gui, "artist", "");
     edje_object_part_text_set(gui, "genre", "");
     edje_object_part_text_set(gui, "year", "");
+    edje_object_part_text_set(gui, "prev-song", "");
+    edje_object_part_text_set(gui, "next-song", "");
+    edje_object_part_text_set(gui, "this-song", "");
 }
 
 static void
@@ -32,10 +35,42 @@ draw_song_tag(Evas_Object* gui, const char *field, const struct mpd_song* song,
     }
 }
 
+static const char *
+get_song_title(const struct mpd_song* song)
+{
+    const char* title = mpd_song_get_tag(song, MPD_TAG_TITLE, 0);
+    if(!title || !strlen(title))
+    {
+        title = mpd_song_get_tag(song, MPD_TAG_FILENAME, 0);
+        if(title)
+            return ecore_file_file_get(title);
+    }
+    return title;
+}
+
+static void
+draw_song_title(Evas_Object* gui, const struct mpd_song* song)
+{
+    const char* title = get_song_title(song);
+    if(title)
+        edje_object_part_text_set(gui, "title", title);
+}
+
+static const char*
+get_title_by_num(madaudio_player_t* player, int offset)
+{
+    int pos = mpd_status_get_song(player->conn->status);
+    pos += offset;
+    if(pos < 0 || pos > mpd_status_get_playlist_length(player->conn->status))
+        return "";
+    struct mpd_song* song = eina_list_nth(player->conn->playlist, pos);
+    return get_song_title(song);
+}
+
 static void
 draw_song(Evas_Object* gui, const struct mpd_song* song)
 {
-    draw_song_tag(gui, "title", song, MPD_TAG_TITLE);
+    draw_song_title(gui, song);
     draw_song_tag(gui, "composer", song, MPD_TAG_COMPOSER);
     draw_song_tag(gui, "artist", song, MPD_TAG_ARTIST);
     draw_song_tag(gui, "album", song, MPD_TAG_ALBUM);
@@ -54,11 +89,22 @@ format_time(int inttime)
 }
 
 static void
+draw_prev_next(madaudio_player_t* player)
+{
+
+    Evas_Object* gui = player->gui;
+    edje_object_part_text_set(gui, "prev-song", get_title_by_num(player, -1));
+    edje_object_part_text_set(gui, "this-song", get_title_by_num(player, 0));
+    edje_object_part_text_set(gui, "next-song", get_title_by_num(player, 1));
+}
+
+static void
 draw_status(Evas_Object* gui, const struct mpd_status* status)
 {
     char *a;
     int time = mpd_status_get_total_time(status);
-    if(mpd_status_get_state(status) == MPD_STATE_PLAY) {
+    enum mpd_state state = mpd_status_get_state(status);
+    if(state == MPD_STATE_PLAY || state == MPD_STATE_PAUSE) {
         int elapsed_time = mpd_status_get_elapsed_time(status);
         char* total = strdup(format_time(time));
         char* elapsed = strdup(format_time(elapsed_time));
@@ -93,6 +139,7 @@ madaudio_draw_song(madaudio_player_t* player)
     madaudio_draw_captions(player);
     blank_gui(player->gui);
     draw_status(player->gui, player->conn->status);
+    draw_prev_next(player);
     if(player->conn->playlist)
     {
         int song_id = mpd_status_get_song(player->conn->status);

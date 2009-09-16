@@ -120,9 +120,9 @@ styles {
 
 #define PREVNEXT(x1, y1, x2, y2) \
     CLIPPER("prev-next-clipper", x1, y1, x2, y2)  \
-    STYLED("prev-song", "shaded", "prev-next-clipper", 10, 10, 150, 30) \
-    STYLED("this-song", "values", "prev-next-clipper", 10, 40, 150, 50) \
-    STYLED("next-song", "shaded", "prev-next-clipper", 10, 60, 150, 70)
+    STYLED("prev-song", "shaded", "prev-next-clipper", 10, 13, 350, 40) \
+    STYLED("this-song", "values", "prev-next-clipper", 10, 45, 350, 75) \
+    STYLED("next-song", "shaded", "prev-next-clipper", 10, 80, 350, 115)
 
 
 #define BLOCK(x1, y1, x2, y2) \
