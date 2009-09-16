@@ -39,5 +39,7 @@ void madaudio_connect(madaudio_player_t*);
 void madaudio_opener_init();
 void madaudio_opener_shutdown();
 
+void
+madaudio_key_handler(void* param, Evas* e, Evas_Object* o, void* event_info);
 
 #endif

@@ -87,17 +87,6 @@ static void main_win_resize_handler(Ecore_Evas* main_win)
 
 }
 
-static void contents_key_up(void* param, Evas* e, Evas_Object* o, void* event_info)
-{
-    madaudio_player_t* player = (madaudio_player_t*)param;
-    Evas_Event_Key_Up* ev = (Evas_Event_Key_Up*)event_info;
-    const char* action = keys_lookup_by_event(player->keys, "player", ev);
-    if(!strcmp(action, "PlayPause"))
-        madaudio_play_pause(player);
-    if(!strcmp(action, "Quit"))
-        ecore_main_loop_quit();
-}
-
 static int update_batt_cb(void* param)
 {
     update_battery((Evas_Object*)param);
@@ -280,7 +269,7 @@ int main(int argc, char** argv)
 
     player->keys = keys_alloc("madaudio");
     evas_object_event_callback_add(contents, EVAS_CALLBACK_KEY_UP,
-                                    &contents_key_up, player);
+                                    &madaudio_key_handler, player);
 
     player->gui = contents;
     evas_object_show(contents);
