@@ -74,7 +74,7 @@ static void _free(madshelf_state_t* state)
         if(choicebox)
         {
             int sel = choicebox_get_scroll_pos(choicebox);
-            if(sel == -1)
+            if(sel == -1 || sel >= eina_array_count_get(_loc->files))
                 curdir_set(_loc->dir, NULL);
             else
             {
@@ -394,7 +394,7 @@ madshelf_loc_t* dir_make(madshelf_state_t* state, const char* dir)
 {
     /* FIXME: Validate dir */
 
-    _loc_t* _loc = malloc(sizeof(_loc_t));
+    _loc_t* _loc = calloc(1, sizeof(_loc_t));
     _loc->loc = loc;
     _loc->dir = strdup(dir);
     _loc->files = _fill_files(state, dir, &_loc->old_pos);

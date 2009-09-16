@@ -47,7 +47,7 @@ binary-arch: build install
 	dh_testroot
 	dh_compress
 	dh_fixperms
-	dh_strip
+	dh_strip --dbg-package=madshelf-dbg
 	dh_installdeb
 	dh_shlibdeps
 	dh_gencontrol

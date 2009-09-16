@@ -28,7 +28,7 @@
 
 /* Ugly */
 static sqlite3* sqlite_db;
-static sqlite3_stmt* stmt[2];
+static sqlite3_stmt* stmt[3];
 
 static bool _create_tables()
 {

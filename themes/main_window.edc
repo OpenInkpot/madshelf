@@ -2,31 +2,31 @@ styles {
     style {
         name, "titles";
         base, "font=sans-serif font_size=20 color=#000 align=left valign=top";
-        tag, "inactive" "+color=#888";
+        tag, "inactive" "+color=#555";
         tag, "/inactive" "-";
     };
     style {
         name, "ext-fields";
         base, "font=sans-serif font_size=20 color=#000 align=right valign=top";
-        tag, "inactive" "+color=#888";
+        tag, "inactive" "+color=#555";
         tag, "/inactive" "-";
     };
     style {
         name, "values";
         base, "font=sans-serif font_size=20 color=#000 align=right valign=bottom";
-        tag, "inactive" "+color=#888";
+        tag, "inactive" "+color=#555";
         tag, "/inactive" "-";
     }
     style {
         name, "series-fields";
         base, "font=sans-serif:italic font_size=20 color=#000 align=left valign=bottom";
-        tag, "inactive" "+color=#888";
+        tag, "inactive" "+color=#555";
         tag, "/inactive" "-";
     };
     style {
         name, "item-texts";
         base, "font=sans-serif font_size=28 color=#000 align=left valign=middle";
-        tag, "inactive" "+color=#888";
+        tag, "inactive" "+color=#555";
         tag, "/inactive" "-";
     }
 }
