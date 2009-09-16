@@ -16,15 +16,47 @@ status_callback(void *data, void *cb_data)
     madaudio_draw_song(player);
 }
 
+static int
+reconnect_callback(void* data)
+{
+    madaudio_player_t* player = (madaudio_player_t *) data;
+    madaudio_connect(player);
+    return 0;
+}
 
 static void
-connected_callback(void *data, void* cb_data)
+connect_errback(const char* sockpath, void* data)
+{
+    madaudio_player_t* player = (madaudio_player_t *) data;
+    if(--player->retry)
+    {
+        if(!player->mpd_run)
+        {
+            player->mpd_run=true;
+            printf("spawing mpd\n");
+            Ecore_Exe* exe;
+            exe = ecore_exe_run("/usr/bin/mpd /etc/madshelf/mpd.conf",
+                NULL);
+            if(exe)
+                ecore_exe_free(exe);
+        }
+        ecore_timer_add(1.0, reconnect_callback, data);
+    }
+    else
+    {
+        printf("Can't wake up mpd, exitting\n");
+        ecore_main_loop_quit();
+    }
+}
+
+static void
+connect_callback(void *data, void* cb_data)
 {
     printf("connected\n");
-    madaudio_player_t* player = (madaudio_player_t *) cb_data;
+    madaudio_player_t* player = (madaudio_player_t*) cb_data;
+    empd_connection_t* conn = (empd_connection_t*) data;
     assert(player);
-    assert(player->conn);
-    assert(player->conn == data);
+    player->conn = conn;
     if(player->filename)
     {
         /* hack: madaudio_play_file try to free madaudio->player */
@@ -69,21 +101,27 @@ madaudio_polling_start(madaudio_player_t* player)
 void
 madaudio_connect(madaudio_player_t* player)
 {
-    player->conn = empd_connection_new("/var/run/mpd/socket",
-       connected_callback, player);
+    empd_connection_new("/var/run/mpd/socket",
+       connect_callback, connect_errback, player);
+}
+
+static void
+ready_callback(void *data, void* cb_data)
+{
+    printf("ready callback\n");
 }
 
 void
 madaudio_pause(madaudio_player_t* player)
 {
 
-    empd_send_wait(player->conn, connected_callback, player, "pause", NULL);
+    empd_send_wait(player->conn, ready_callback, player, "pause", NULL);
 }
 
 void
 madaudio_play(madaudio_player_t* player)
 {
-    empd_send_wait(player->conn, connected_callback, player, "play", NULL);
+    empd_send_wait(player->conn, ready_callback, player, "play", NULL);
 }
 
 void

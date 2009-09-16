@@ -2,6 +2,7 @@
 #define _MADAUDIO_H 1
 
 #include <Evas.h>
+#include <Ecore.h>
 #include <Ecore_Evas.h>
 #include <libkeys.h>
 #include "empd.h"
@@ -17,6 +18,8 @@ struct madaudio_player_t {
     Ecore_Timer* poll_timer;
     bool poll_mode;
     char* filename;
+    int retry;
+    bool mpd_run;
 };
 
 void madaudio_play_file(madaudio_player_t*, const char*);

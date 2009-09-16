@@ -213,6 +213,7 @@ static void exit_app(void* param)
 int main(int argc, char** argv)
 {
     madaudio_player_t* player = calloc(1, sizeof(madaudio_player_t));
+    player->retry = 10;
 
     if(!ecore_init())
         err(1, "Unable to initialize Ecore");
