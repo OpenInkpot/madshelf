@@ -90,7 +90,10 @@ hello_line_callback(void* data, void* cb_data)
     {
 //        empd_error_code(&conn->error, MPD_ERROR_NOTMPD);
 //        empd_error_printf(&conn->error, "mpd not running");
-        printf("mpd not running\n");
+        printf("mpd not running or has bad hello line\n");
+        conn->errback(conn->sockpath, conn->connected->data);
+        empd_connection_del(conn);
+        return;
     }
     printf("Got hello line\n");
     empd_callback_set(&conn->line_callback, line_callback, conn);
@@ -151,12 +154,16 @@ err_sock:
     return -1;
 }
 
-empd_connection_t *
+void
 empd_connection_new(const char *sockpath,
-    void (*callback)(void*, void*), void* data)
+    void (*callback)(void*, void*),
+    void (*errback)(const char*, void*),
+    void* data)
 {
     empd_connection_t *conn = calloc(1, sizeof(empd_connection_t));
     empd_callback_set(&conn->connected, callback, data);
+    conn->errback = errback;
+    conn->sockpath = strdup(sockpath);
 
     int sock = -1;
     if(conn) {
@@ -185,7 +192,7 @@ empd_connection_new(const char *sockpath,
         printf("Connection initialized\n");
     }
     conn->busy = true;
-    return conn;
+    return;
 sock_err:
     if(conn->async)
         mpd_async_free(conn->async);
@@ -194,7 +201,7 @@ sock_err:
     if(sock >= 0)
         close(sock);
     free(conn);
-    return NULL;
+    errback(sockpath, data);
 }
 
 
@@ -207,6 +214,7 @@ empd_connection_del(empd_connection_t * conn) {
             mpd_async_free(conn->async);
         if(conn->fdh)
             ecore_main_fd_handler_del(conn->fdh);
+        free(conn->sockpath);
         close(conn->sock);
     }
 }

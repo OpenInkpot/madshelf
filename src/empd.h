@@ -79,10 +79,17 @@ struct empd_connection_t  {
     empd_callback_t* idle_callback;
 
     empd_delayed_command_t* delayed;
+
+    /* error signalling/reconnect support */
+    char* sockpath;
+    void (*errback)(const char*, void*);
 };
 
-empd_connection_t*
-empd_connection_new(const char *, void (*callback)(void*,void*), void* );
+void
+empd_connection_new(const char *,
+                    void (*callback)(void*, void*),
+                    void (*errback)(const char*, void*),
+                    void* );
 
 void
 empd_connection_del(empd_connection_t*);
