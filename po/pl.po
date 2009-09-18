@@ -118,10 +118,6 @@ msgstr "Biblioteka"
 msgid "Audio (navigation)"
 msgstr "Dźwięki (nawigacja)"
 
-#: src/dir.c:374
-msgid "Unhide"
-msgstr "Nie chowaj"
-
 #: src/fileinfo_render.c:114
 msgid "Does not exist"
 msgstr "Brak pliku"
@@ -129,6 +125,10 @@ msgstr "Brak pliku"
 #: src/dir.c:376
 msgid "Hide"
 msgstr "Ukryj"
+
+#: src/dir.c:374
+msgid "Unhide"
+msgstr "Nie ukrywaj"
 
 #~ msgid "Sort by order"
 #~ msgstr "Ustaw po kolei"
