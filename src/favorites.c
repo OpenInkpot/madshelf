@@ -160,7 +160,7 @@ static void _activate_file(madshelf_state_t* state, const char* filename)
     if(ecore_file_is_dir(filename))
     {
         Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
-        choicebox_set_selection(choicebox, 0);
+        choicebox_scroll_to(choicebox, 0);
         go(state, dir_make(state, filename));
         return;
     }

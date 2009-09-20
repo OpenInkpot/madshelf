@@ -45,7 +45,7 @@ static const char* titles[] = {
 static void _init_gui(const madshelf_state_t* state)
 {
     Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
-    choicebox_set_selection(choicebox, 0);
+    choicebox_scroll_to(choicebox, 0);
     choicebox_set_selection(choicebox, -1);
     set_sort_icon(state, ICON_SORT_NONE);
 }

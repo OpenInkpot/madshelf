@@ -528,7 +528,7 @@ static void handle_screen_context_action(madshelf_state_t* state,
     }
 
     Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
-    choicebox_set_selection(choicebox, 0);
+    choicebox_scroll_to(choicebox, 0);
     _update_filelist_gui(state);
     close_screen_context_menu(state->canvas);
 }
