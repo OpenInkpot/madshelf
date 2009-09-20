@@ -1,3 +1,11 @@
+madshelf (0.2.28) asimov; urgency=low
+
+  * Fixed bug with cursor which appears on screen after switching sorting
+    order in directory (OI#481).
+  * Translations updated: Polish.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Mon, 21 Sep 2009 06:16:15 +0700
+
 madshelf (0.2.27) asimov; urgency=low
 
   * Fix scrolling to random position first time upon entering the
