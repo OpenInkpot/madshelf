@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: madshelf 0.1\n"
 "Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
-"POT-Creation-Date: 2009-07-24 16:56+0700\n"
+"POT-Creation-Date: 2009-09-30 15:25+0700\n"
 "PO-Revision-Date: 2009-07-23 17:20+0300\n"
 "Last-Translator: Yauhen Kharuzhy <jekhor@gmail.com>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Generator: Lokalize 0.3\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: src/favorites.c:103 src/favorites.c:324 src/overview.c:123
+#: src/favorites.c:103 src/favorites.c:318 src/overview.c:114
 #: src/favorites_menu.c:39
 msgid "Favorites"
 msgstr "Абранае"
@@ -35,32 +35,32 @@ msgstr "Улюбёныя малюнкі"
 msgid "Favorite music"
 msgstr "Улюбёная музыка"
 
-#: src/favorites.c:237 src/dir.c:369 src/recent.c:204
+#: src/favorites.c:231 src/dir.c:423 src/recent.c:202
 msgid "Open"
 msgstr "Адкрыць"
 
-#: src/favorites.c:243 src/dir.c:381
+#: src/favorites.c:237 src/dir.c:435
 msgid "Remove from favorites"
 msgstr "Выдаліць з абранага"
 
-#: src/favorites.c:279 src/dir.c:429 src/recent.c:245
+#: src/favorites.c:273 src/dir.c:483 src/recent.c:243
 msgid "Actions"
 msgstr "Дзеянні"
 
-#: src/favorites.c:290 src/recent.c:256
+#: src/favorites.c:284 src/recent.c:254
 msgid "Sort by name"
 msgstr "Упарадкаваць па назве"
 
-#: src/favorites.c:291 src/recent.c:257
+#: src/favorites.c:285 src/recent.c:255
 msgid "Sort by name (reversed)"
 msgstr "Упарадкаваць па назве у адваротным парадку"
 
-#: src/favorites.c:292 src/recent.c:258
+#: src/favorites.c:286 src/recent.c:256
 #, fuzzy
 msgid "Sort by date"
 msgstr "Упарадкаваць па назве"
 
-#: src/favorites.c:293
+#: src/favorites.c:287
 msgid "Clear favorites"
 msgstr "Ачысціць абранае"
 
@@ -76,21 +76,21 @@ msgstr "Малюнкі (навігацыя)"
 msgid "Audio (navigation)"
 msgstr "Аўдыё (навігацыя)"
 
-#: src/overview.c:126 src/recent.c:101 src/recent.c:291
+#: src/overview.c:117 src/recent.c:101 src/recent.c:289
 msgid "Recent files"
 msgstr "Нядаўнія файлы"
 
-#: src/file_context_menu.c:178
+#: src/file_context_menu.c:181
 #, c-format
 msgid "Open (with %s)"
 msgstr "Адкрыць (у %s)"
 
-#: src/file_context_menu.c:180
+#: src/file_context_menu.c:183
 #, c-format
 msgid "Open with %s"
 msgstr "Адкрыць у %s"
 
-#: src/file_context_menu.c:207
+#: src/file_context_menu.c:210
 msgid "Delete"
 msgstr "Выдаліць"
 
@@ -106,37 +106,46 @@ msgstr "Не існуе"
 msgid "Directory"
 msgstr "Тэчка"
 
-#: src/dir.c:374
+#: src/dir.c:428
 msgid "Unhide"
 msgstr "Паказаць"
 
-#: src/dir.c:376
+#: src/dir.c:430
 msgid "Hide"
 msgstr "Схаваць"
 
-#: src/dir.c:383
+#: src/dir.c:437
 msgid "Add to favorites"
 msgstr "Дадаць у абранае"
 
-#: src/dir.c:453
+#: src/dir.c:507
 msgid "Do not show hidden files"
 msgstr "Не паказваць схаваныя файлы"
 
-#: src/dir.c:455
+#: src/dir.c:509
 msgid "Show hidden files"
 msgstr "Паказваць схаваныя файлы"
 
-#: src/dir.c:489
+#: src/dir.c:543
 msgid "Menu"
 msgstr "Меню"
 
-#: src/recent.c:210
+#: src/recent.c:208
 msgid "Remove from recent files"
 msgstr "Выдаліць з нядаўніх файлаў"
 
-#: src/recent.c:259
+#: src/recent.c:257
 msgid "Clear recent files"
 msgstr "Ачысціць нядаўнія файлы"
+
+#: src/delete_file.c:55
+#, fuzzy
+msgid "Delete file?"
+msgstr "Нядаўнія файлы"
+
+#: src/delete_file.c:57
+msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
+msgstr ""
 
 #~ msgid "Sort by order"
 #~ msgstr "Сартаваць па парадку"

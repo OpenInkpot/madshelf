@@ -9,12 +9,13 @@
 ./src/battery.c
 ./src/clock.c
 ./src/fileinfo_render.c
-./src/madshelf_extractors.c
 ./src/run.c
 ./src/screen_context_menu.c
 ./src/filters.c
 ./src/fileinfo.c
 ./src/utils.c
 ./src/dir.c
+./src/curdir.c
 ./src/tags.c
 ./src/recent.c
+./src/delete_file.c

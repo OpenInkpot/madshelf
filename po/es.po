@@ -1,9 +1,9 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
-"POT-Creation-Date: 2009-07-24 16:56+0700\n"
+"POT-Creation-Date: 2009-09-30 15:25+0700\n"
 "PO-Revision-Date: 2008-10-02 12:42+0100\n"
 "Last-Translator: Miguel <ink@canteras.org>\n"
 "Language-Team: \n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/favorites.c:103 src/favorites.c:324 src/overview.c:123
+#: src/favorites.c:103 src/favorites.c:318 src/overview.c:114
 #: src/favorites_menu.c:39
 msgid "Favorites"
 msgstr "Favoritos"
@@ -28,19 +28,31 @@ msgstr "Imágenes favoritas"
 msgid "Favorite music"
 msgstr "Música favorita"
 
-#: src/favorites.c:237 src/dir.c:369 src/recent.c:204
+#: src/favorites.c:231 src/dir.c:423 src/recent.c:202
 msgid "Open"
 msgstr "Abrir"
 
-#: src/favorites.c:243 src/dir.c:381
+#: src/favorites.c:237 src/dir.c:435
 msgid "Remove from favorites"
 msgstr "Eliminar de favoritos"
 
-#: src/favorites.c:279 src/dir.c:429 src/recent.c:245
+#: src/favorites.c:273 src/dir.c:483 src/recent.c:243
 msgid "Actions"
 msgstr "Acciones"
 
-#: src/favorites.c:293
+#: src/favorites.c:284 src/recent.c:254
+msgid "Sort by name"
+msgstr "Ordenar por nombre"
+
+#: src/favorites.c:285 src/recent.c:255
+msgid "Sort by name (reversed)"
+msgstr "Ordenar por nombre (invertido)"
+
+#: src/favorites.c:286 src/recent.c:256
+msgid "Sort by date"
+msgstr "Ordenar por fecha"
+
+#: src/favorites.c:287
 msgid "Clear favorites"
 msgstr "Limpiar favoritos"
 
@@ -56,21 +68,21 @@ msgstr "Imágenes (navegación)"
 msgid "Audio (navigation)"
 msgstr "Audio (navegación)"
 
-#: src/overview.c:126 src/recent.c:101 src/recent.c:291
+#: src/overview.c:117 src/recent.c:101 src/recent.c:289
 msgid "Recent files"
 msgstr "Ficheros recientes"
 
-#: src/file_context_menu.c:178
+#: src/file_context_menu.c:181
 #, c-format
 msgid "Open (with %s)"
 msgstr "Abrir (con %s)"
 
-#: src/file_context_menu.c:180
+#: src/file_context_menu.c:183
 #, c-format
 msgid "Open with %s"
 msgstr "Abrir con %s"
 
-#: src/file_context_menu.c:207
+#: src/file_context_menu.c:210
 msgid "Delete"
 msgstr "Borrar"
 
@@ -86,49 +98,46 @@ msgstr "No existe"
 msgid "Directory"
 msgstr "Directorio"
 
-#: src/dir.c:374
+#: src/dir.c:428
 msgid "Unhide"
 msgstr "Desocultar"
 
-#: src/dir.c:376
+#: src/dir.c:430
 msgid "Hide"
 msgstr "Ocultar"
 
-#: src/dir.c:383
+#: src/dir.c:437
 msgid "Add to favorites"
 msgstr "Añadir a favoritos"
 
-#: src/dir.c:453
+#: src/dir.c:507
 msgid "Do not show hidden files"
 msgstr "No mostrar ficheros ocultos"
 
-#: src/dir.c:455
+#: src/dir.c:509
 msgid "Show hidden files"
 msgstr "Mostrar ficheros ocultos"
 
-#: src/dir.c:489
+#: src/dir.c:543
 msgid "Menu"
 msgstr "Menú"
 
-#: src/recent.c:210
+#: src/recent.c:208
 msgid "Remove from recent files"
 msgstr "Borrar de ficheros recientes"
 
-#: src/recent.c:259
+#: src/recent.c:257
 msgid "Clear recent files"
 msgstr "Limpiar ficheros recientes"
 
-#: src/favorites.c:291 src/recent.c:257
-msgid "Sort by name (reversed)"
-msgstr "Ordenar por nombre (invertido)"
+#: src/delete_file.c:55
+#, fuzzy
+msgid "Delete file?"
+msgstr "Ficheros recientes"
 
-#: src/favorites.c:290 src/recent.c:256
-msgid "Sort by name"
-msgstr "Ordenar por nombre"
-
-#: src/favorites.c:292 src/recent.c:258
-msgid "Sort by date"
-msgstr "Ordenar por fecha"
+#: src/delete_file.c:57
+msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
+msgstr ""
 
 #~ msgid "Sort by order"
 #~ msgstr "Ordenar por nombre"
