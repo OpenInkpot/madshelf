@@ -1,4 +1,4 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.0\n"
@@ -130,11 +130,10 @@ msgstr "Видалити з переліку нещодавно відкрити
 msgid "Clear recent files"
 msgstr "Спорожнити перелік нещодавно відкритих документів"
 
-#: src/delete_file.c:55
-#, fuzzy
-msgid "Delete file?"
-msgstr "Нещодавно відкриті документи"
-
 #: src/delete_file.c:57
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr ""
+msgstr "Натисніть «OK» щоб видалити.<br><br> Натисніть «C» щоб скасувати видалення."
+
+#: src/delete_file.c:55
+msgid "Delete file?"
+msgstr "Видалити файл?"
