@@ -1,3 +1,4 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.0\n"
@@ -129,11 +130,12 @@ msgstr "Удалить из истории"
 msgid "Clear recent files"
 msgstr "Очистить историю"
 
-#: src/delete_file.c:55
-#, fuzzy
-msgid "Delete file?"
-msgstr "История"
-
 #: src/delete_file.c:57
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
 msgstr ""
+"Нажмите \"OK\" чтобы удалить файл<br><br>\r\n"
+"Нажимте \"C\" для отмены"
+
+#: src/delete_file.c:55
+msgid "Delete file?"
+msgstr "Удалить файл?"
