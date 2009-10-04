@@ -1,3 +1,14 @@
+madshelf (0.2.29) asimov; urgency=low
+
+  * "Hail l10n" release.
+
+  * madshelf.pot regenerated.
+  * disks.conf translations added: German, Bulgarian, Chinese, Hungarian.
+  * Translations updated: Russian, German, Ukrainian, Polish, Hungarian,
+    Czech, Bulgarian, French.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Fri, 25 Sep 2009 00:47:35 +0700
+
 madshelf (0.2.28) asimov; urgency=low
 
   * Fixed bug with cursor which appears on screen after switching sorting
