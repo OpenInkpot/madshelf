@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: madshelf 0.1\n"
 "Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
 "POT-Creation-Date: 2009-09-30 15:25+0700\n"
-"PO-Revision-Date: 2009-08-19 11:19+0100\n"
+"PO-Revision-Date: 2009-09-30 17:35+0100\n"
 "Last-Translator: ben1981 <ben1981@centrum.cz>\n"
 "Language-Team: Czech <openinkpot-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -135,13 +135,12 @@ msgid "Clear recent files"
 msgstr "Vyčistit posledně otevřené"
 
 #: src/delete_file.c:55
-#, fuzzy
 msgid "Delete file?"
-msgstr "Posledně otevřené"
+msgstr "Odstranit soubor?"
 
 #: src/delete_file.c:57
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr ""
+msgstr "Zmáčkni \"OK\" pro smazání souboru<br><br>Zmáčkni \"C\" pro návrat zpět"
 
 #~ msgid "Sort by order"
 #~ msgstr "Seřadit podle pořadí přidání/otevření"

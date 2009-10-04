@@ -1,4 +1,4 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.0\n"
@@ -130,14 +130,13 @@ msgstr "Usuń z ostatnio otwieranych"
 msgid "Clear recent files"
 msgstr "Wyczyść listę ostatnio otwieranych"
 
-#: src/delete_file.c:55
-#, fuzzy
-msgid "Delete file?"
-msgstr "Ostatnio otwierane"
-
 #: src/delete_file.c:57
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr ""
+msgstr "Wciśnij \"OK\" aby usunąć<br><br>Wciśnij \"C\" aby anulować"
+
+#: src/delete_file.c:55
+msgid "Delete file?"
+msgstr "Usunąć plik?"
 
 #~ msgid "Sort by order"
 #~ msgstr "Ustaw po kolei"

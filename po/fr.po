@@ -3,7 +3,7 @@
 # Copyright (C) 2008 Marc Lajoie <manorapide@hotmail.com>
 # Copyright (C) 2008,2009 Mikhail Gusarov <dottedmag@dottedmag.net>
 # This file is in public domain
-#
+# 
 # Louvre <diogenedebian@gmail.com>, 2009.
 msgid ""
 msgstr ""
@@ -55,26 +55,9 @@ msgstr "Classer par nom"
 msgid "Sort by name (reversed)"
 msgstr "Classer par nom (inversé)"
 
-#: src/favorites.c:286 src/recent.c:256
-#, fuzzy
-msgid "Sort by date"
-msgstr "Classer par nom"
-
 #: src/favorites.c:287
 msgid "Clear favorites"
 msgstr "Effacer les favoris"
-
-#: src/overview.c:39 src/overview.c:40
-msgid "Bookshelf"
-msgstr ""
-
-#: src/overview.c:41
-msgid "Pictures (navigation)"
-msgstr ""
-
-#: src/overview.c:42
-msgid "Audio (navigation)"
-msgstr ""
 
 #: src/overview.c:117 src/recent.c:101 src/recent.c:289
 msgid "Recent files"
@@ -138,14 +121,29 @@ msgstr "Enlever des fichiers récents"
 msgid "Clear recent files"
 msgstr "Effacer les fichiers récents"
 
-#: src/delete_file.c:55
-#, fuzzy
-msgid "Delete file?"
-msgstr "Fichiers récents"
+#: src/favorites.c:286 src/recent.c:256
+msgid "Sort by date"
+msgstr "Classer par date"
+
+#: src/overview.c:41
+msgid "Pictures (navigation)"
+msgstr "Images (navigation)"
+
+#: src/overview.c:39 src/overview.c:40
+msgid "Bookshelf"
+msgstr "Étagère"
+
+#: src/overview.c:42
+msgid "Audio (navigation)"
+msgstr "Audio (navigation)"
 
 #: src/delete_file.c:57
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr ""
+msgstr "Appuyez sur « OK » pour effacer le fichier<br><br>Appuyez sur « C » pour annuler"
+
+#: src/delete_file.c:55
+msgid "Delete file?"
+msgstr "Effacer le fichier ?"
 
 #~ msgid "Sort by order"
 #~ msgstr "Classer par ordre"
