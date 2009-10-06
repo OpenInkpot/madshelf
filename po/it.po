@@ -50,25 +50,9 @@ msgstr "Ordina per nome"
 msgid "Sort by name (reversed)"
 msgstr "Ordina per nome (invertito)"
 
-#: src/favorites.c:286 src/recent.c:256
-msgid "Sort by date"
-msgstr "Ordine per data"
-
 #: src/favorites.c:287
 msgid "Clear favorites"
 msgstr "Svuota preferiti"
-
-#: src/overview.c:39 src/overview.c:40
-msgid "Bookshelf"
-msgstr "Libreria"
-
-#: src/overview.c:41
-msgid "Pictures (navigation)"
-msgstr "Immagini (navigazione)"
-
-#: src/overview.c:42
-msgid "Audio (navigation)"
-msgstr "Audio (navigazione)"
 
 #: src/overview.c:117 src/recent.c:101 src/recent.c:289
 msgid "Recent files"
@@ -132,41 +116,29 @@ msgstr "Rimuovi dai file recenti"
 msgid "Clear recent files"
 msgstr "Svuota i file recenti"
 
+#: src/favorites.c:286 src/recent.c:256
+msgid "Sort by date"
+msgstr "Ordina per data"
+
+#: src/overview.c:41
+msgid "Pictures (navigation)"
+msgstr "Immagini (navigazione)"
+
+#: src/overview.c:39 src/overview.c:40
+msgid "Bookshelf"
+msgstr "Libreria"
+
+#: src/overview.c:42
+msgid "Audio (navigation)"
+msgstr "Audio (navigazione)"
+
 #: src/delete_file.c:55
-#, fuzzy
 msgid "Delete file?"
-msgstr "File recenti"
+msgstr "Elimina file?"
 
 #: src/delete_file.c:57
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr ""
+msgstr "Premi \"OK\" per eliminare il file<br><br>Premi \"C\" per annullare"
 
 #~ msgid "Sort by order"
 #~ msgstr "Ordinamento"
-
-#~ msgid "reverse-sorted by name"
-#~ msgstr "ordinato inversamente per nome"
-
-#~ msgid "sorted by name"
-#~ msgstr "ordinato per nome"
-
-#~ msgid "reverse-sorted by time"
-#~ msgstr "ordinato inversamente per data"
-
-#~ msgid "sorted by time"
-#~ msgstr "ordinato per data"
-
-#~ msgid "Sort by Time"
-#~ msgstr "Ordina per data"
-
-#~ msgid "Reverse Sort Order"
-#~ msgstr "Inverti l'ordinamento"
-
-#~ msgid "Language Settings"
-#~ msgstr "Configurazione lingua"
-
-#~ msgid "Go to"
-#~ msgstr "Vai a"
-
-#~ msgid "Scripts"
-#~ msgstr "Script"
