@@ -1,3 +1,10 @@
+madshelf (0.2.30) asimov; urgency=low
+
+  * Translations updated: Italian.
+  * disks.conf translations added: Czech.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Wed, 07 Oct 2009 16:00:22 +0700
+
 madshelf (0.2.29) asimov; urgency=low
 
   * "Hail l10n" release.
