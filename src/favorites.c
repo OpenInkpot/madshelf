@@ -240,13 +240,16 @@ static void draw_file_context_action(const madshelf_state_t* state, Evas_Object*
 static void handle_file_context_action(madshelf_state_t* state, const char* filename,
                                 int item_num, bool is_alt)
 {
-    if(ecore_file_is_dir(filename) && item_num == 0)
+    if(ecore_file_is_dir(filename))
     {
-        go(state, dir_make(state, filename));
-        return;
+        if(item_num == 0)
+        {
+            go(state, dir_make(state, filename));
+            return;
+        }
+        else
+            item_num--;
     }
-    else
-        item_num--;
 
     if(item_num == 0)
     {
