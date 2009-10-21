@@ -1,3 +1,10 @@
+madshelf (0.2.31) asimov; urgency=low
+
+  * Translations updated: Spanish, Catalan, Ukrainian, Chinese, Russian.
+  * Unbreak removing files from "Favorites" list
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Wed, 21 Oct 2009 20:09:16 +0700
+
 madshelf (0.2.30) asimov; urgency=low
 
   * Translations updated: Italian.
