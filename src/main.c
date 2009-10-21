@@ -374,6 +374,12 @@ static int sighup_signal_handler(void* data, int type, void* event)
     if(state->loc->fs_updated)
         (*state->loc->fs_updated)(state);
 
+    /* Purge "current position in directory" cache when SD card is inserted, as
+     * it might have been out-of-date */
+
+    curdir_fini();
+    curdir_init(":memory:");
+
     return 1;
 }
 
@@ -467,9 +473,14 @@ int main(int argc, char** argv)
     char tags_db_filename[PATH_MAX];
     snprintf(tags_db_filename, PATH_MAX, "%s/" TAGS_DB_NAME, configdir);
 
-    char curdir_db_filename[PATH_MAX];
-    snprintf(curdir_db_filename, PATH_MAX, "%s/" CURDIR_DB_NAME, configdir);
-    curdir_init(curdir_db_filename);
+    /* Use in-memory database instead of file-backed as our filesystem is
+     * volatile, and caches go out of date quite often. Clean up cache on disk
+     * mount/unmount too. */
+
+    /* char curdir_db_filename[PATH_MAX]; */
+    /* snprintf(curdir_db_filename, PATH_MAX, "%s/" CURDIR_DB_NAME, configdir); */
+    /* curdir_init(curdir_db_filename); */
+    curdir_init(":memory:");
 
     madshelf_state_t state = {};
 

@@ -92,6 +92,11 @@ void curdir_init(const char* filename)
     sqlite3_prepare_v2(sqlite_db, ST2, strlen(ST2), &stmt[2], NULL);
 }
 
+void curdir_fini()
+{
+    sqlite3_close(sqlite_db);
+}
+
 void curdir_set(const char* dir, const char* file)
 {
     if(file)
