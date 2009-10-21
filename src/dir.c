@@ -247,7 +247,7 @@ static void _init_gui(const madshelf_state_t* state)
     choicebox_set_size(choicebox, eina_array_count_get(_loc->files));
     choicebox_set_selection(choicebox, -1);
 
-    choicebox_scroll_to(choicebox, _loc->old_pos);
+    choicebox_scroll_to(choicebox, _loc->old_pos == -1 ? 0 : _loc->old_pos);
 }
 
 static void _update_gui(const madshelf_state_t* state)
