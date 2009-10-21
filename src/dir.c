@@ -175,27 +175,15 @@ static Eina_Array* _fill_files(const madshelf_state_t* state, const char* dir, i
 
     Eina_Array* files = eina_array_new(10);
 
-#ifdef OLD_ECORE
-    Ecore_List* ls = ecore_file_ls(dir);
-    ecore_list_sort(ls, state->sort == MADSHELF_SORT_NAME ? &_name : &_namerev,
-                    ECORE_SORT_MIN);
-#else
     Eina_List* ls = ecore_file_ls(dir);
     ls = eina_list_sort(ls, eina_list_count(ls),
                         state->sort == MADSHELF_SORT_NAME ? &_name : &_namerev);
-#endif
 
     /* First select directories */
-#ifdef OLD_ECORE
-    const char* file;
-    while((file = ecore_list_next(ls)))
-    {
-#else
     Eina_List* i;
     for(i = ls; i; i = eina_list_next(i))
     {
         const char* file = eina_list_data_get(i);
-#endif
         char* filename;
         asprintf(&filename, "%s/%s", !strcmp(dir, "/") ? "" : dir, file);
 
@@ -217,15 +205,9 @@ static Eina_Array* _fill_files(const madshelf_state_t* state, const char* dir, i
     }
 
     /* Then files */
-#ifdef OLD_ECORE
-    ecore_list_index_goto(ls, 0);
-    while((file = ecore_list_next(ls)))
-    {
-#else
     for(i = ls; i; i = eina_list_next(i))
     {
         const char* file = eina_list_data_get(i);
-#endif
         char* filename;
         asprintf(&filename, "%s/%s", !strcmp(dir, "/") ? "" : dir, file);
 
@@ -252,11 +234,7 @@ static Eina_Array* _fill_files(const madshelf_state_t* state, const char* dir, i
             free(filename);
     }
 
-#ifdef OLD_ECORE
-    ecore_list_destroy(ls);
-#else
     eina_list_free(ls);
-#endif
 
     return files;
 }
