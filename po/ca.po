@@ -1,4 +1,4 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
@@ -130,14 +130,13 @@ msgstr "Esborrar de fitxers recents"
 msgid "Clear recent files"
 msgstr "Netejar fitxers recents"
 
-#: src/delete_file.c:55
-#, fuzzy
-msgid "Delete file?"
-msgstr "Fitxers recents"
-
 #: src/delete_file.c:57
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr ""
+msgstr "Pressioni \"OK\" per a esborrar el fitxer<br><br>Pressioni \"C\" per a cancel·lar"
+
+#: src/delete_file.c:55
+msgid "Delete file?"
+msgstr "Esborrar fitxer?"
 
 #~ msgid "Sort by order"
 #~ msgstr "Ordenar per nom"

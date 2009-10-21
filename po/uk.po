@@ -44,10 +44,6 @@ msgstr "Дії"
 msgid "Sort by name"
 msgstr "Впорядкувати за назвою"
 
-#: src/favorites.c:285 src/recent.c:255
-msgid "Sort by name (reversed)"
-msgstr "Впорядкувати за назвою (у зворотньому порядку)"
-
 #: src/favorites.c:286 src/recent.c:256
 msgid "Sort by date"
 msgstr "Впорядкувати за часом створення"
@@ -126,14 +122,18 @@ msgstr "Меню"
 msgid "Remove from recent files"
 msgstr "Видалити з переліку нещодавно відкритих документів"
 
-#: src/recent.c:257
-msgid "Clear recent files"
-msgstr "Спорожнити перелік нещодавно відкритих документів"
-
-#: src/delete_file.c:57
-msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr "Натисніть «OK» щоб видалити.<br><br> Натисніть «C» щоб скасувати видалення."
-
 #: src/delete_file.c:55
 msgid "Delete file?"
 msgstr "Видалити файл?"
+
+#: src/favorites.c:285 src/recent.c:255
+msgid "Sort by name (reversed)"
+msgstr "Впорядкувати за назвою (навпвки)"
+
+#: src/recent.c:257
+msgid "Clear recent files"
+msgstr "Спорожнити перелік нещодавніх документів"
+
+#: src/delete_file.c:57
+msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
+msgstr "Натисніть «OK» щоб видалити.<br><br>Натисніть «C» щоб скасувати видалення."
