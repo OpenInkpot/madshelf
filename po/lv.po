@@ -1,0 +1,155 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.0\n"
+"Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
+"POT-Creation-Date: 2009-09-30 15:25+0700\n"
+"PO-Revision-Date: 2009-10-22 17:13+0200\n"
+"Last-Translator: Dainis <druumais@inbox.lv>\n"
+"Language-Team: Russian <openinkpot-hackers@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/favorites.c:103
+#: src/favorites.c:318
+#: src/overview.c:114
+#: src/favorites_menu.c:39
+msgid "Favorites"
+msgstr "Izlase"
+
+#: src/favorites.c:104
+msgid "Favorite books"
+msgstr "Mīļākās grāmatas"
+
+#: src/favorites.c:105
+msgid "Favorite pictures"
+msgstr "Mīļākās bildes"
+
+#: src/favorites.c:106
+msgid "Favorite music"
+msgstr "Mīļākā mūzika"
+
+#: src/favorites.c:231
+#: src/dir.c:423
+#: src/recent.c:202
+msgid "Open"
+msgstr "Atvērt"
+
+#: src/favorites.c:237
+#: src/dir.c:435
+msgid "Remove from favorites"
+msgstr "Dzēst no izlases"
+
+#: src/favorites.c:273
+#: src/dir.c:483
+#: src/recent.c:243
+msgid "Actions"
+msgstr "Darbības"
+
+#: src/favorites.c:284
+#: src/recent.c:254
+msgid "Sort by name"
+msgstr "Šķirot (A-Z)"
+
+#: src/favorites.c:285
+#: src/recent.c:255
+msgid "Sort by name (reversed)"
+msgstr "Šķirot (Z-A)"
+
+#: src/favorites.c:286
+#: src/recent.c:256
+msgid "Sort by date"
+msgstr "Šķirot pēc datuma"
+
+#: src/favorites.c:287
+msgid "Clear favorites"
+msgstr "Dzēst izlases failus"
+
+#: src/overview.c:39
+#: src/overview.c:40
+msgid "Bookshelf"
+msgstr "Grāmatu plaukts"
+
+#: src/overview.c:41
+msgid "Pictures (navigation)"
+msgstr "Bildes (navigācija)"
+
+#: src/overview.c:42
+msgid "Audio (navigation)"
+msgstr "Mūzika (navigācija)"
+
+#: src/overview.c:117
+#: src/recent.c:101
+#: src/recent.c:289
+msgid "Recent files"
+msgstr "Jaunākie faili"
+
+#: src/file_context_menu.c:181
+#, c-format
+msgid "Open (with %s)"
+msgstr "Atvērt (%s)"
+
+#: src/file_context_menu.c:183
+#, c-format
+msgid "Open with %s"
+msgstr "Atvērt ar %s"
+
+#: src/file_context_menu.c:210
+msgid "Delete"
+msgstr "Dzēst"
+
+#: src/disks.c:128
+msgid "Whole filesystem"
+msgstr "Visa failu sistēma"
+
+#: src/fileinfo_render.c:114
+msgid "Does not exist"
+msgstr "Neeksistē"
+
+#: src/fileinfo_render.c:121
+msgid "Directory"
+msgstr "Katalogs"
+
+#: src/dir.c:428
+msgid "Unhide"
+msgstr "Neslēpt"
+
+#: src/dir.c:430
+msgid "Hide"
+msgstr "Slēpt"
+
+#: src/dir.c:437
+msgid "Add to favorites"
+msgstr "Pievienot izlasei"
+
+#: src/dir.c:507
+msgid "Do not show hidden files"
+msgstr "Nerādīt slēptos failus"
+
+#: src/dir.c:509
+msgid "Show hidden files"
+msgstr "Rādīt slēptos failus"
+
+#: src/dir.c:543
+msgid "Menu"
+msgstr "Izvēlne"
+
+#: src/recent.c:208
+msgid "Remove from recent files"
+msgstr "Dzēst no jaunākajiem failiem"
+
+#: src/recent.c:257
+msgid "Clear recent files"
+msgstr "Dzēst jaunākos failus"
+
+#: src/delete_file.c:57
+msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
+msgstr ""
+"Spied \"OK\", lai dzēstu failu<br><br>\r\n"
+"Spied \"C\", lai atceltu"
+
+#: src/delete_file.c:55
+msgid "Delete file?"
+msgstr "Dzēst failu?"
+
