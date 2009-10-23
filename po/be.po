@@ -2,7 +2,7 @@
 # Copyright (C) 2008 Marc Lajoie <manorapide@hotmail.com>
 # Copyright (C) 2008,2009 Mikhail Gusarov <dottedmag@dottedmag.net>
 # This file is in public domain
-#
+# 
 # Darafei Praliaskouski <komzpa@gmail.com>, 2009.
 msgid ""
 msgstr ""
@@ -15,8 +15,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 0.3\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 0.3\n"
 
 #: src/favorites.c:103 src/favorites.c:318 src/overview.c:114
 #: src/favorites_menu.c:39
@@ -54,11 +54,6 @@ msgstr "Упарадкаваць па назве"
 #: src/favorites.c:285 src/recent.c:255
 msgid "Sort by name (reversed)"
 msgstr "Упарадкаваць па назве у адваротным парадку"
-
-#: src/favorites.c:286 src/recent.c:256
-#, fuzzy
-msgid "Sort by date"
-msgstr "Упарадкаваць па назве"
 
 #: src/favorites.c:287
 msgid "Clear favorites"
@@ -138,14 +133,17 @@ msgstr "Выдаліць з нядаўніх файлаў"
 msgid "Clear recent files"
 msgstr "Ачысціць нядаўнія файлы"
 
-#: src/delete_file.c:55
-#, fuzzy
-msgid "Delete file?"
-msgstr "Нядаўнія файлы"
+#: src/favorites.c:286 src/recent.c:256
+msgid "Sort by date"
+msgstr "Упарадкаваць па даце"
 
 #: src/delete_file.c:57
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr ""
+msgstr "Націсніце \"OK\" для выдалення файла <br><br>Націсніце \"C\" для адмены"
+
+#: src/delete_file.c:55
+msgid "Delete file?"
+msgstr "Выдаліць файл?"
 
 #~ msgid "Sort by order"
 #~ msgstr "Сартаваць па парадку"
