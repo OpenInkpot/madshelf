@@ -97,13 +97,13 @@ static Eina_Bool _fill_cb(const Eina_Hash* hash, const void* key, void* data, vo
 
 madshelf_disks_t* fill_disks(Efreet_Ini* config)
 {
-    madshelf_disks_t* disks = malloc(sizeof(madshelf_disks_t));
+    madshelf_disks_t* disks = calloc(1, sizeof(madshelf_disks_t));
     if(!disks)
         return NULL;
 
     int n = count_disks(config);
     disks->n = 0;
-    disks->disk = malloc(n * sizeof(madshelf_disk_t));
+    disks->disk = calloc(1, n * sizeof(madshelf_disk_t));
     if(!disks->disk)
     {
         free(disks);
@@ -119,12 +119,12 @@ madshelf_disks_t* fill_disks(Efreet_Ini* config)
 
 madshelf_disks_t* fill_stub_disk()
 {
-    madshelf_disks_t* disks = malloc(sizeof(madshelf_disks_t*));
+    madshelf_disks_t* disks = calloc(1, sizeof(madshelf_disks_t*));
     if(!disks)
         return NULL;
 
     disks->n = 1;
-    disks->disk = malloc(sizeof(madshelf_disk_t));
+    disks->disk = calloc(1, sizeof(madshelf_disk_t));
     disks->disk[0].name = strdup(gettext("Whole filesystem"));
     disks->disk[0].short_name = strdup("");
     disks->disk[0].path = strdup("/");
