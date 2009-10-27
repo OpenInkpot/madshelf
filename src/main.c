@@ -125,6 +125,7 @@ static void free_state(madshelf_state_t* state)
     if(state->loc->free)
         (*state->loc->free)(state);
 
+    keys_free(state->keys);
     tags_fini(state->tags);
     free_disks(state->disks);
 }
