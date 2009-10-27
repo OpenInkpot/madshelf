@@ -559,10 +559,10 @@ int main(int argc, char** argv)
 
     ecore_config_save();
 
-    openers_fini();
-    keys_free(state.keys);
     free_state(&state);
 
+    openers_fini();
+    curdir_fini();
     fileinfo_fini();
 
 #ifdef OLD_ECORE
