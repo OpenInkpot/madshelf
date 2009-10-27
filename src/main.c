@@ -571,8 +571,8 @@ int main(int argc, char** argv)
     edje_shutdown();
     ecore_evas_shutdown();
     evas_shutdown();
-    ecore_shutdown();
     ecore_config_shutdown();
+    ecore_shutdown();
 
     return 0;
 }
