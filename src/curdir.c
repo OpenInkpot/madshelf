@@ -94,6 +94,8 @@ void curdir_init(const char* filename)
 
 void curdir_fini()
 {
+    for(int i = 0; i < 3; ++i)
+        sqlite3_finalize(stmt[i]);
     sqlite3_close(sqlite_db);
 }
 
