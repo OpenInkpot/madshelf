@@ -190,7 +190,9 @@ void free_disks(madshelf_disks_t* disks)
     for(i = 0; i < disks->n; ++i)
     {
         free(disks->disk[i].path);
+        free(disks->disk[i].short_name);
         free(disks->disk[i].name);
+        free(disks->disk[i].current_path);
     }
     free(disks->disk);
     free(disks);
