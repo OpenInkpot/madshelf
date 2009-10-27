@@ -170,7 +170,7 @@ static bool file_is_hidden(const madshelf_state_t* state, const char* filename)
  */
 static Eina_Array* _fill_files(const madshelf_state_t* state, const char* dir, int* old_pos)
 {
-    const char* old_file = curdir_get(dir);
+    char* old_file = curdir_get(dir);
     if(old_pos) *old_pos = -1;
 
     Eina_Array* files = eina_array_new(10);
@@ -234,7 +234,11 @@ static Eina_Array* _fill_files(const madshelf_state_t* state, const char* dir, i
             free(filename);
     }
 
-    eina_list_free(ls);
+    char* s;
+    EINA_LIST_FREE(ls, s)
+        free(s);
+
+    free(old_file);
 
     return files;
 }
