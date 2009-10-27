@@ -128,7 +128,6 @@ madshelf_disks_t* fill_stub_disk()
     disks->disk[0].name = strdup(gettext("Whole filesystem"));
     disks->disk[0].short_name = strdup("");
     disks->disk[0].path = strdup("/");
-    disks->disk[0].copy_target = false;
 
     return disks;
 }
