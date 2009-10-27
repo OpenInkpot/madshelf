@@ -1,3 +1,10 @@
+madshelf (0.2.33) asimov; urgency=low
+
+  * Plugged memory leaks in disks, directory handling and SQLite
+    statements using.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Wed, 28 Oct 2009 05:14:07 +0600
+
 madshelf (0.2.32) asimov; urgency=low
 
   * Fix accidental scrolling to end of directories upon entering (OI#557)
