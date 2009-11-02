@@ -95,6 +95,8 @@ struct madshelf_state_t
     /* Preferences */
     madshelf_sort_t sort;
     bool show_hidden; /* FIXME: be more flexible */
+    bool show_nonexistent_recent; /* FIXME */
+    bool show_nonexistent_favorites; /* FIXME */
     madshelf_sortex_t favorites_sort;
     madshelf_sortex_t recent_sort;
 
@@ -125,6 +127,12 @@ void set_show_hidden(madshelf_state_t* state, bool show_hidden);
 
 /* FIXME */
 void set_sort(madshelf_state_t* state, madshelf_sort_t sort);
+
+/* FIXME */
+void set_show_nonexistent_recent(madshelf_state_t* state, bool show_nonexistent);
+
+/* FIXME */
+void set_show_nonexistent_favorites(madshelf_state_t* state, bool show_nonexistent);
 
 typedef enum
 {

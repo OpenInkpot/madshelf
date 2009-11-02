@@ -43,4 +43,7 @@ bool has_tag(tags_t* db, const char* tag, const char* filename);
 void tag_list(tags_t* db, const char* tag, tags_sort_t sort, tags_list_t callback, void* param);
 void tag_clear(tags_t* db, const char* tag);
 
+/* Utility */
+void tag_remove_absent(tags_t* db, const char* tag);
+
 #endif

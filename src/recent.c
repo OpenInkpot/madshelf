@@ -45,7 +45,6 @@ static void _open_file_context_menu(madshelf_state_t* state, const char* filenam
 typedef struct
 {
     madshelf_loc_t loc;
-
     Eina_Array* files;
 } _loc_t;
 
@@ -74,20 +73,22 @@ typedef struct
 {
     Eina_Array* files;
     madshelf_filter_t filter;
+    bool show_nonexistent;
 } fill_file_args_t;
 
 static void _fill_file(const char* filename, int serial, void* param)
 {
     fill_file_args_t* args = (fill_file_args_t*)param;
 
-    if(is_visible(args->filter, filename))
+    if((args->show_nonexistent || (!args->show_nonexistent && ecore_file_exists(filename)))
+       && is_visible(args->filter, filename))
         eina_array_push(args->files, strdup(filename));
 }
 
 static Eina_Array* _fill_files(const madshelf_state_t* state)
 {
     Eina_Array* files = eina_array_new(10);
-    fill_file_args_t args = { files, state->filter };
+    fill_file_args_t args = { files, state->filter, state->show_nonexistent_recent };
 
     tag_list(state->tags, "recent", (tags_sort_t)state->recent_sort, _fill_file, &args);
     return files;
@@ -160,7 +161,7 @@ static void _draw_item(const madshelf_state_t* state,
     char* filename = eina_array_data_get(_loc->files, item_num);
 
     fileinfo_t* fileinfo = fileinfo_create(filename);
-    fileinfo_render(item, fileinfo, false);
+    fileinfo_render(item, fileinfo, !ecore_file_exists(filename));
     fileinfo_destroy(fileinfo);
 }
 
@@ -267,13 +268,23 @@ static const char* _scm_titles[] = {
     _("Sort by name (reversed)"),
     _("Sort by date"),
     _("Clear recent files"),
+    NULL,
+    _("Remove absent files"),
 };
 
 static void _scm_draw(const madshelf_state_t* state,
                        Evas_Object* item, int item_num)
 {
     item_clear(item);
-    edje_object_part_text_set(item, "title", gettext(_scm_titles[item_num]));
+    if(item_num == 4)
+    {
+        edje_object_part_text_set(item, "title",
+                                  state->show_nonexistent_recent
+                                  ? gettext("Hide absent files")
+                                  : gettext("Show absent files"));
+    }
+    else
+        edje_object_part_text_set(item, "title", gettext(_scm_titles[item_num]));
 }
 
 static void _scm_handle(madshelf_state_t* state, int item_num, bool is_alt)
@@ -282,8 +293,12 @@ static void _scm_handle(madshelf_state_t* state, int item_num, bool is_alt)
 
     if(item_num < 3)
         set_recent_sort(state, (madshelf_sortex_t)item_num);
-    else
+    else if(item_num == 3)
         tag_clear(state->tags, "recent");
+    else if(item_num == 4)
+        set_show_nonexistent_recent(state, !state->show_nonexistent_recent);
+    else
+        tag_remove_absent(state->tags, "recent");
 
     _free_files(_loc->files);
     _loc->files = _fill_files(state);

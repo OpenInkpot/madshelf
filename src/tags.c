@@ -25,6 +25,7 @@
 #include <string.h>
 #include <errno.h>
 #include <stdbool.h>
+#include <sys/stat.h>
 
 #include "tags.h"
 
@@ -218,4 +219,58 @@ void tag_clear(tags_t* db, const char* tag)
     sqlite3_bind_text(s, 1, tag, strlen(tag), SQLITE_TRANSIENT);
     sqlite3_step(s);
     sqlite3_reset(s);
+}
+
+typedef struct _tag_to_remove_t
+{
+    char* filename;
+    struct _tag_to_remove_t* next;
+} tag_to_remove_t;
+
+typedef struct
+{
+    tag_to_remove_t* head;
+} tag_remove_absent_state_t;
+
+void check_absent(const char* filename, int serial, void* param)
+{
+    struct stat st;
+    if(-1 == stat(filename, &st) && errno == ENOENT)
+    {
+        tag_remove_absent_state_t* state = param;
+        tag_to_remove_t* next = calloc(1, sizeof(*next));
+        next->filename = strdup(filename);
+        next->next = state->head;
+        state->head = next;
+    }
+}
+
+void tag_remove_absent(tags_t* db, const char* tag)
+{
+    tag_remove_absent_state_t* state = calloc(1, sizeof(*state));
+
+    sqlite3_stmt* s = db->stmts[SELECT_TAG_BY_NAME];
+    sqlite3_bind_text(s, 1, tag, strlen(tag), SQLITE_TRANSIENT);
+
+    int res = sqlite3_step(s);
+    while(res == SQLITE_ROW)
+    {
+        (*check_absent)((const char*)sqlite3_column_text(s, 0), sqlite3_column_int(s, 1), state);
+        res = sqlite3_step(s);
+    }
+    sqlite3_reset(s);
+
+    if(state->head)
+    {
+        sqlite3_exec(db->sqlite_db, "BEGIN TRANSACTION", NULL, NULL, NULL);
+        while(state->head)
+        {
+            tag_to_remove_t* h = state->head;
+            tag_remove(db, tag, h->filename);
+            state->head = h->next;
+            free(h);
+        }
+        sqlite3_exec(db->sqlite_db, "COMMIT TRANSACTION", NULL, NULL, NULL);
+    }
+    free(state);
 }
