@@ -49,6 +49,7 @@ typedef struct
     int add_actions_num;
     draw_file_context_action_t draw_action;
     handle_file_context_action_t handle_action;
+    delete_file_context_action_t delete_action;
     file_context_menu_closed_t closed;
 } file_context_menu_info_t;
 
@@ -124,6 +125,20 @@ static void _run_file(file_context_menu_info_t* info, Efreet_Desktop* handler)
 #endif
 }
 
+typedef struct
+{
+    madshelf_state_t* state;
+    delete_file_context_action_t action;
+} delete_handler_params_t;
+
+
+static void _delete_handler(void* param, const char* filename)
+{
+    delete_handler_params_t* params = param;
+    (*params->action)(params->state, filename);
+    free(params);
+}
+
 static void _item_handler(Evas_Object* choicebox, int item_num, bool is_alt, void* param)
 {
     Evas* canvas = evas_object_evas_get(choicebox);
@@ -155,10 +170,14 @@ static void _item_handler(Evas_Object* choicebox, int item_num, bool is_alt, voi
 
     if(item_num == 0)
     {
+        delete_handler_params_t* params = malloc(sizeof(delete_handler_params_t));
+        params->state = info->state;
+        params->action = info->delete_action;
+
         madshelf_state_t* state = info->state;
         char* filename = strdup(info->filename);
         close_file_context_menu(canvas, true);
-        delete_file(state, filename);
+        delete_file_dialog(state, filename, _delete_handler, params);
     }
     else
         item_num--;
@@ -235,6 +254,7 @@ void open_file_context_menu(madshelf_state_t* state,
                             int add_actions_num,
                             draw_file_context_action_t draw_action,
                             handle_file_context_action_t handle_action,
+                            delete_file_context_action_t delete_action,
                             file_context_menu_closed_t closed)
 {
     file_context_menu_info_t* info = malloc(sizeof(file_context_menu_info_t));
@@ -243,6 +263,7 @@ void open_file_context_menu(madshelf_state_t* state,
     info->add_actions_num = add_actions_num;
     info->draw_action = draw_action;
     info->handle_action = handle_action;
+    info->delete_action = delete_action;
     info->closed = closed;
     info->fileop_targets_num = get_fileop_targets_num(info);
     info->fileinfo = fileinfo_create(filename);

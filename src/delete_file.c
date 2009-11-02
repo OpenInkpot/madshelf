@@ -1,5 +1,4 @@
 #include <string.h>
-#include <unistd.h>
 #include <libintl.h>
 
 #include <Evas.h>
@@ -10,8 +9,10 @@
 
 typedef struct
 {
-   char* filename;
-   madshelf_state_t* state;
+    char* filename;
+    void* param;
+    delete_file_handler_t delete_handler;
+    madshelf_state_t* state;
 } delete_key_up_params_t;
 
 static void delete_key_up(void* param, Evas* e, Evas_Object* o, void* event_info)
@@ -21,7 +22,7 @@ static void delete_key_up(void* param, Evas* e, Evas_Object* o, void* event_info
     const char* action = keys_lookup(params->state->keys, "delete-confirm", ev->keyname);
 
     if(action && !strcmp(action, "Confirm"))
-        unlink(params->filename);
+        (*params->delete_handler)(params->param, params->filename);
     else if(action && !strcmp(action, "Cancel"))
         ; /* nothing */
     else
@@ -29,17 +30,19 @@ static void delete_key_up(void* param, Evas* e, Evas_Object* o, void* event_info
 
     evas_object_focus_set(evas_object_name_find(e, "contents"), true);
     evas_object_del(o);
-    go(params->state, dir_refresh(params->state));
 
     free(params->filename);
     free(params);
 }
 
 /* malloc-ed filename should be passed */
-void delete_file(madshelf_state_t* state, char* filename)
+void delete_file_dialog(madshelf_state_t* state, char* filename,
+                        delete_file_handler_t delete_handler, void* param)
 {
     delete_key_up_params_t* params = malloc(sizeof(*params));
     params->filename = filename;
+    params->param = param;
+    params->delete_handler = delete_handler;
     params->state = state;
 
     Evas* canvas = state->canvas;

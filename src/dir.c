@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include <libgen.h>
 #include <libintl.h>
+#include <unistd.h>
 /* This is to mark statically-allocated strings as translatable */
 #define _(x) (x)
 
@@ -384,12 +385,6 @@ madshelf_loc_t* dir_make(madshelf_state_t* state, const char* dir)
     return (madshelf_loc_t*)_loc;
 }
 
-madshelf_loc_t* dir_refresh(madshelf_state_t* state)
-{
-    _loc_t* _loc = (_loc_t*)state->loc;
-    return dir_make(state, _loc->dir);
-}
-
 /* File menu */
 
 static void draw_file_context_action(const madshelf_state_t* state, Evas_Object* item,
@@ -451,6 +446,13 @@ static void handle_file_context_action(madshelf_state_t* state, const char* file
     }
 }
 
+static void delete_file_context_action(madshelf_state_t* state, const char* filename)
+{
+    unlink(filename);
+    (*state->loc->fs_updated)(state);
+}
+
+
 static void file_context_menu_closed(madshelf_state_t* state, const char* filename, bool touched)
 {
     if(touched)
@@ -467,6 +469,7 @@ static void _open_file_context_menu(madshelf_state_t* state, const char* filenam
                            actions_num,
                            draw_file_context_action,
                            handle_file_context_action,
+                           delete_file_context_action,
                            file_context_menu_closed);
 }
 

@@ -25,6 +25,4 @@
 
 madshelf_loc_t* dir_make(madshelf_state_t* state, const char* dir);
 
-madshelf_loc_t* dir_refresh(madshelf_state_t* state);
-
 #endif

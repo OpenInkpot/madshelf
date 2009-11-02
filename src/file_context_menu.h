@@ -36,6 +36,9 @@ typedef void (*handle_file_context_action_t)(madshelf_state_t* state,
                                              int item_num,
                                              bool is_alt);
 
+typedef void (*delete_file_context_action_t)(madshelf_state_t* state,
+                                             const char* filename);
+
 typedef void (*file_context_menu_closed_t)(madshelf_state_t* state,
                                            const char* filename,
                                            bool touched);
@@ -46,6 +49,7 @@ void open_file_context_menu(madshelf_state_t* state,
                             int add_actions_num,
                             draw_file_context_action_t draw_action,
                             handle_file_context_action_t handle_action,
+                            delete_file_context_action_t delete_action,
                             file_context_menu_closed_t closed);
 
 void close_file_context_menu(Evas* canvas, bool touched);

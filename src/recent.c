@@ -20,6 +20,7 @@
 
 #include <libintl.h>
 #include <string.h>
+#include <unistd.h>
 /* This is to mark statically-allocated strings as translatable */
 #define _(x) (x)
 
@@ -226,6 +227,13 @@ static void handle_file_context_action(madshelf_state_t* state, const char* file
     close_file_context_menu(state->canvas, true);
 }
 
+static void delete_file_context_action(madshelf_state_t* state, const char* filename)
+{
+    tag_remove(state->tags, "recent", filename);
+    unlink(filename);
+    (*state->loc->fs_updated)(state);
+}
+
 static void file_context_menu_closed(madshelf_state_t* state, const char* filename, bool touched)
 {
     if(touched)
@@ -248,6 +256,7 @@ static void _open_file_context_menu(madshelf_state_t* state, const char* filenam
                            num_actions,
                            draw_file_context_action,
                            handle_file_context_action,
+                           delete_file_context_action,
                            file_context_menu_closed);
 }
 
