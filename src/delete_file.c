@@ -38,7 +38,7 @@ static void delete_key_up(void* param, Evas* e, Evas_Object* o, void* event_info
 /* malloc-ed filename should be passed */
 void delete_file(madshelf_state_t* state, char* filename)
 {
-    delete_key_up_params_t* params = malloc(sizeof(params));
+    delete_key_up_params_t* params = malloc(sizeof(*params));
     params->filename = filename;
     params->state = state;
 
