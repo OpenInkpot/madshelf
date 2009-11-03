@@ -1,8 +1,9 @@
-madshelf (0.2.35) unstable; urgency=low
+madshelf (0.2.35) asimov; urgency=low
 
   * Fix skin to avoid overlapping between text strings in file info (OI#485).
   * Add "hide/show absent files" and "remove absent files" to recent files
     and favorites views (OI#593)
+  * Move file in "recent files" up when it is opened (OI#567).
 
  -- Mikhail Gusarov <dottedmag@dottedmag.net>  Tue, 03 Nov 2009 04:05:09 +0600
 
