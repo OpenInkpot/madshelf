@@ -78,17 +78,10 @@ openers_app_type_t app_type(Efreet_Desktop* d)
 {
     openers_app_type_t types = OPENERS_TYPE_NONE;
 
-#ifdef OLD_ECORE
-    const char* cat;
-    ecore_list_index_goto(d->categories, 0);
-    while((cat = ecore_list_next(d->categories)))
-    {
-#else
     Eina_List* i = d->categories;
     for(; i; i = eina_list_next(i))
     {
         const char* cat = eina_list_data_get(i);
-#endif
         if(!strcmp(cat, "Literature"))
             types |= OPENERS_TYPE_BOOKS;
         if(!strcmp(cat, "Graphics"))
@@ -107,21 +100,11 @@ void openers_init()
 
     appdb.handlers = eina_hash_string_superfast_new(&free_openers);
 
-#ifdef OLD_ECORE
-    Ecore_List* ls = ecore_file_ls(DESKTOP_DIR);
-#else
     Eina_List* ls = ecore_file_ls(DESKTOP_DIR);
-#endif
 
-#ifdef OLD_ECORE
-    const char* f;
-    while((f = ecore_list_next(ls)))
-    {
-#else
     for(; ls; ls = eina_list_next(ls))
     {
         const char* f = eina_list_data_get(ls);
-#endif
         char filename[1024];
         snprintf(filename, 1024, "%s/%s", DESKTOP_DIR, f);
 
@@ -132,17 +115,10 @@ void openers_init()
         if(!d)
             continue;
 
-#ifdef OLD_ECORE
-        const char* mime_type;
-        ecore_list_index_goto(d->mime_types, 0);
-        while(d->mime_types && (mime_type = ecore_list_next(d->mime_types)))
-        {
-#else
         Eina_List* j;
         for(j = d->mime_types; j; j = eina_list_next(j))
         {
             const char* mime_type = (const char*)eina_list_data_get(j);
-#endif
             openers_t* op = eina_hash_find(appdb.handlers, mime_type);
             if(op)
             {
@@ -164,11 +140,7 @@ void openers_init()
         appdb.desktop_files = eina_list_append(appdb.desktop_files, d);
     }
 
-#ifdef OLD_ECORE
-    ecore_list_destroy(ls);
-#else
     eina_list_free(ls);
-#endif
 
 #ifdef DEBUG_HANDLERS
     handlers_dump();
