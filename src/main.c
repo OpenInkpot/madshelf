@@ -38,6 +38,7 @@
 #include <Efreet.h>
 #include <libchoicebox.h>
 #include <libeoi.h>
+#include <libeoi_help.h>
 
 #include "madshelf.h"
 
@@ -155,8 +156,40 @@ static void free_state(madshelf_state_t* state)
 
 
 
+static void page_updated(Evas_Object* help, int cur_page, int total_pages,
+                         const char* header, void* param)
+{
+    Evas* canvas = evas_object_evas_get(help);
+    Evas_Object* main_edje = evas_object_name_find(canvas, "main_edje");
+    choicebox_aux_edje_footer_handler(main_edje, "footer", cur_page, total_pages);
+}
+
+static void help_close_handler(Evas_Object* help)
+{
+    Evas_Object* prev_focus = evas_object_data_get(help, "prev-focus");
+    evas_object_hide(help);
+    evas_object_del(help);
+
+    if(prev_focus)
+        evas_object_focus_set(prev_focus, 1);
+}
 
 
+static void help(madshelf_state_t* state)
+{
+    Evas_Object* help = eoi_help_new(state->canvas, "madshelf",
+                                     page_updated, help_close_handler);
+    evas_object_name_set(help, "help");
+    int w, h;
+    evas_output_size_get(state->canvas, &w, &h);
+    evas_object_move(help, 0, 49); /* FIXME */
+    evas_object_resize(help, w, h - 49*2); /* FIXME */
+
+    Evas_Object* prev_focus = evas_focus_get(state->canvas);
+    evas_object_data_set(help, "prev-focus", prev_focus);
+    evas_object_focus_set(help, 1);
+    evas_object_show(help);
+}
 
 /* static bool is_dir_allowed(madshelf_state_t* state, const char* new_dir) */
 /* { */
@@ -223,6 +256,10 @@ static void main_win_resize_handler(Ecore_Evas* main_win)
         evas_object_resize(delete_confirm, w, h);
     }
 
+    Evas_Object* help = evas_object_name_find(canvas, "help");
+    if(help)
+        evas_object_resize(help, w, h - 98); /* FIXME: hardcoded 49*2 */
+
     eoi_process_resize(main_win);
 }
 
@@ -230,6 +267,10 @@ static void contents_key_up(void* param, Evas* e, Evas_Object* o, void* event_in
 {
     madshelf_state_t* state = (madshelf_state_t*)param;
     Evas_Event_Key_Up* ev = (Evas_Event_Key_Up*)event_info;
+
+    const char* action = keys_lookup(state->keys, "main", ev->keyname);
+    if(action && !strcmp(action, "Help"))
+        help(state);
 
     if(state->loc->key_up && (*state->loc->key_up)(state, o, ev))
         return;
