@@ -1,3 +1,10 @@
+madshelf (0.2.36) UNRELEASED; urgency=low
+
+  * Fix incorrect cutting out names of files / metadata by '&' or '<'
+    characters (OI#501).
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Tue, 03 Nov 2009 17:23:33 +0600
+
 madshelf (0.2.35) asimov; urgency=low
 
   * Fix skin to avoid overlapping between text strings in file info (OI#485).
