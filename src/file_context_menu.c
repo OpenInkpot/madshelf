@@ -36,6 +36,7 @@
 #include "utils.h"
 #include "handlers.h"
 #include "delete_file.h"
+#include "text_escape.h"
 
 typedef struct
 {
@@ -204,8 +205,11 @@ static void _draw_item_handler(Evas_Object* choicebox, Evas_Object* item, int it
         Eina_List* nth = eina_list_nth_list(info->openers->apps, item_num);
         Efreet_Desktop* handler = eina_list_data_get(nth);
 
+        char* name = textblock_escape_string(handler->name);
         char* f;
-        asprintf(&f, open_text, handler->name);
+        asprintf(&f, open_text, name);
+        free(name);
+
         edje_object_part_text_set(item, "title", f);
         free(f);
 

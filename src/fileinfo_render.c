@@ -31,6 +31,7 @@
 #include "madshelf.h"
 #include "utils.h"
 #include "fileinfo_render.h"
+#include "text_escape.h"
 
 #define KILOBYTE (1024)
 #define MEGABYTE (1024*1024)
@@ -93,15 +94,17 @@ void count_files(const char* directory, int* files, int* directories)
 
 static void _draw_title(Evas_Object* item, const char* text, bool is_dim)
 {
+    char* escaped_text = textblock_escape_string(text);
     if(is_dim)
     {
         char* f;
-        asprintf(&f, "<inactive>%s</inactive>", text);
+        asprintf(&f, "<inactive>%s</inactive>", escaped_text);
         edje_object_part_text_set(item, "title", f);
         free(f);
     }
     else
-        edje_object_part_text_set(item, "title", text);
+        edje_object_part_text_set(item, "title", escaped_text);
+    free(escaped_text);
 }
 
 void fileinfo_render(Evas_Object* item, fileinfo_t* fileinfo, bool is_dim)
@@ -128,17 +131,26 @@ void fileinfo_render(Evas_Object* item, fileinfo_t* fileinfo, bool is_dim)
         _draw_title(item, fileinfo->basename, is_dim);
 
     if(fileinfo->author)
-        edje_object_part_text_set(item, "author", fileinfo->author);
-
-    if(fileinfo->series && fileinfo->series_num != -1)
     {
-        char* s;
-        asprintf(&s, "%s #%d", fileinfo->series, fileinfo->series_num);
-        edje_object_part_text_set(item, "series", s);
-        free(s);
+        char* escaped_author = textblock_escape_string(fileinfo->author);
+        edje_object_part_text_set(item, "author", fileinfo->author);
+        free(escaped_author);
     }
-    else if(fileinfo->series)
-        edje_object_part_text_set(item, "series", fileinfo->series);
+
+    if(fileinfo->series)
+    {
+        char* escaped_series = textblock_escape_string(fileinfo->series);
+        if(fileinfo->series_num != -1)
+        {
+            char* s;
+            asprintf(&s, "%s #%d", escaped_series, fileinfo->series_num);
+            edje_object_part_text_set(item, "series", s);
+            free(s);
+        }
+        else
+            edje_object_part_text_set(item, "series", fileinfo->series);
+        free(escaped_series);
+    }
 
     if(fileinfo->size != -1)
     {
