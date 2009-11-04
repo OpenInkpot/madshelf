@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: 0.0\n"
 "Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
 "POT-Creation-Date: 2009-11-05 02:43+0600\n"
-"PO-Revision-Date: 2009-10-20 22:23+0700\n"
+"PO-Revision-Date: 2009-11-05 02:45+0600\n"
 "Last-Translator: Vladimir <v@v>\n"
 "Language-Team: Russian <openinkpot-hackers@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -57,19 +57,16 @@ msgid "Clear favorites"
 msgstr "Очистить избранное"
 
 #: src/favorites.c:303 src/recent.c:275
-#, fuzzy
 msgid "Remove absent files"
-msgstr "Удалить из истории"
+msgstr "Удалить отсутствующие"
 
 #: src/favorites.c:315 src/recent.c:286
-#, fuzzy
 msgid "Hide absent files"
-msgstr "История"
+msgstr "Скрыть отсутствующие файлы"
 
 #: src/favorites.c:316 src/recent.c:287
-#, fuzzy
 msgid "Show absent files"
-msgstr "Показать скрытые файлы"
+msgstr "Показать отсутствующие файлы"
 
 #: src/overview.c:39 src/overview.c:40
 msgid "Bookshelf"
@@ -89,7 +86,7 @@ msgstr "История"
 
 #: src/file_context_menu.c:217 src/file_context_menu.c:318
 msgid "Always open with..."
-msgstr ""
+msgstr "Всегда открывать в..."
 
 #: src/file_context_menu.c:308
 #, c-format
