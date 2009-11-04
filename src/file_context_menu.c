@@ -109,21 +109,12 @@ static void _run_file(file_context_menu_info_t* info, Efreet_Desktop* handler)
 {
     tag_add(info->state->tags, "recent", info->filename);
 
-#ifdef OLD_ECORE
-    Ecore_List* l = ecore_list_new();
-    ecore_list_append(l, info->filename);
-#else
     Eina_List* l = NULL;
     l = eina_list_append(l, info->filename);
-#endif
 
     efreet_desktop_exec(handler, l, NULL);
 
-#ifdef OLD_ECORE
-    ecore_list_destroy(l);
-#else
     eina_list_free(l);
-#endif
 }
 
 static void draw_handler_item(Evas_Object* choicebox, Evas_Object* item,

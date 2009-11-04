@@ -62,18 +62,11 @@ void count_files(const char* directory, int* files, int* directories)
     *files = 0;
     *directories = 0;
 
-#ifdef OLD_ECORE
-    Ecore_List* ls = ecore_file_ls(directory);
-    const char* file;
-    while((file = ecore_list_next(ls)))
-    {
-#else
     Eina_List* ls = ecore_file_ls(directory);
     Eina_List* i;
     for(i = ls; i; i = eina_list_next(i))
     {
         const char* file = eina_list_data_get(i);
-#endif
         char* filename;
         asprintf(&filename, "%s/%s", directory, file);
 
@@ -85,11 +78,7 @@ void count_files(const char* directory, int* files, int* directories)
         free(filename);
     }
 
-#ifdef OLD_ECORE
-    ecore_list_destroy(ls);
-#else
     eina_list_free(ls);
-#endif
 }
 
 static void _draw_title(Evas_Object* item, const char* text, bool is_dim)

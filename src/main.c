@@ -515,10 +515,6 @@ int main(int argc, char** argv)
         die("Unable to initialize Ecore_Evas");
     if(!edje_init())
         die("Unable to initialize Edje");
-#ifdef OLD_ECORE
-    if(!ecore_file_init())
-        die("Unable to initalize Ecore_File");
-#endif
 
     fileinfo_init();
 
@@ -623,9 +619,6 @@ int main(int argc, char** argv)
     curdir_fini();
     fileinfo_fini();
 
-#ifdef OLD_ECORE
-    ecore_file_shutdown();
-#endif
     edje_shutdown();
     ecore_evas_shutdown();
     evas_shutdown();
