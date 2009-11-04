@@ -56,21 +56,6 @@ msgstr "Впорядкувати за часом створення"
 msgid "Clear favorites"
 msgstr "Спорожнити перелік улюбленого"
 
-#: src/favorites.c:303 src/recent.c:275
-#, fuzzy
-msgid "Remove absent files"
-msgstr "Видалити з переліку нещодавно відкритих документів"
-
-#: src/favorites.c:315 src/recent.c:286
-#, fuzzy
-msgid "Hide absent files"
-msgstr "Нещодавно відкриті документи"
-
-#: src/favorites.c:316 src/recent.c:287
-#, fuzzy
-msgid "Show absent files"
-msgstr "Показувати приховане"
-
 #: src/overview.c:39 src/overview.c:40
 msgid "Bookshelf"
 msgstr "Книжкова полиця"
@@ -156,3 +141,15 @@ msgstr "Натисніть «OK» щоб видалити.<br><br>Натисні
 #: src/file_context_menu.c:217 src/file_context_menu.c:318
 msgid "Always open with..."
 msgstr "Завжди відкривати у..."
+
+#: src/favorites.c:315 src/recent.c:286
+msgid "Hide absent files"
+msgstr "Сховати відсутні файли"
+
+#: src/favorites.c:303 src/recent.c:275
+msgid "Remove absent files"
+msgstr "Видалити відсутні файли"
+
+#: src/favorites.c:316 src/recent.c:287
+msgid "Show absent files"
+msgstr "Показати відсутні файли"
