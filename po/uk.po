@@ -44,10 +44,6 @@ msgstr "Дії"
 msgid "Sort by name"
 msgstr "Впорядкувати за назвою"
 
-#: src/favorites.c:299 src/recent.c:271
-msgid "Sort by name (reversed)"
-msgstr "Впорядкувати за назвою (навпвки)"
-
 #: src/favorites.c:300 src/recent.c:272
 msgid "Sort by date"
 msgstr "Впорядкувати за часом створення"
@@ -153,3 +149,7 @@ msgstr "Видалити відсутні файли"
 #: src/favorites.c:316 src/recent.c:287
 msgid "Show absent files"
 msgstr "Показати відсутні файли"
+
+#: src/favorites.c:299 src/recent.c:271
+msgid "Sort by name (reversed)"
+msgstr "Впорядкувати за назвою (навпаки)"
