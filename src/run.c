@@ -37,19 +37,10 @@ void run_default_handler(madshelf_state_t* state, const char* filename)
 
     Efreet_Desktop* handler = eina_list_data_get(handlers_list->apps);
 
-#ifdef OLD_ECORE
-    Ecore_List* l = ecore_list_new();
-    ecore_list_append(l, (void*)filename);
-#else
     Eina_List* l = NULL;
     l = eina_list_append(l, filename);
-#endif
 
     efreet_desktop_exec(handler, l, NULL);
 
-#ifdef OLD_ECORE
-    ecore_list_destroy(l);
-#else
     eina_list_free(l);
-#endif
 }
