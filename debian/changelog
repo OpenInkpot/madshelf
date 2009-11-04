@@ -1,7 +1,10 @@
-madshelf (0.2.36) UNRELEASED; urgency=low
+madshelf (0.2.36) asimov; urgency=low
 
   * Fix incorrect cutting out names of files / metadata by '&' or '<'
     characters (OI#501).
+  * Add support for "default" applications for filetypes (OI#454).
+  * Regenerate translations.
+  * Updated translations: Russian.
 
  -- Mikhail Gusarov <dottedmag@dottedmag.net>  Tue, 03 Nov 2009 17:23:33 +0600
 
