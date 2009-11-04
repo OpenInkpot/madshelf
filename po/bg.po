@@ -2,12 +2,12 @@
 # Copyright (C) 2008 Marc Lajoie <manorapide@hotmail.com>
 # Copyright (C) 2008,2009 Mikhail Gusarov <dottedmag@dottedmag.net>
 # This file is in public domain
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: madshelf 0.1\n"
 "Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
-"POT-Creation-Date: 2009-09-30 15:25+0700\n"
+"POT-Creation-Date: 2009-11-05 02:43+0600\n"
 "PO-Revision-Date: 2009-06-26 16:08+0300\n"
 "Last-Translator: Васил Бадев <vbadev@gmail.com>\n"
 "Language-Team: Bulgarian <openinkpot-l10n@googlegroups.com>\n"
@@ -15,50 +15,65 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/favorites.c:103 src/favorites.c:318 src/overview.c:114
+#: src/favorites.c:106 src/favorites.c:348 src/overview.c:114
 #: src/favorites_menu.c:39
 msgid "Favorites"
 msgstr "Любими"
 
-#: src/favorites.c:104
+#: src/favorites.c:107
 msgid "Favorite books"
 msgstr "Любими книги"
 
-#: src/favorites.c:105
+#: src/favorites.c:108
 msgid "Favorite pictures"
 msgstr "Любими изображения"
 
-#: src/favorites.c:106
+#: src/favorites.c:109
 msgid "Favorite music"
 msgstr "Любима музика"
 
-#: src/favorites.c:231 src/dir.c:423 src/recent.c:202
+#: src/favorites.c:234 src/dir.c:400 src/recent.c:207
 msgid "Open"
 msgstr "Отваряне"
 
-#: src/favorites.c:237 src/dir.c:435
+#: src/favorites.c:240 src/dir.c:412
 msgid "Remove from favorites"
 msgstr "Премахване от любими"
 
-#: src/favorites.c:273 src/dir.c:483 src/recent.c:243
+#: src/favorites.c:286 src/dir.c:467 src/recent.c:258
 msgid "Actions"
 msgstr "Действия"
 
-#: src/favorites.c:284 src/recent.c:254
+#: src/favorites.c:298 src/recent.c:270
 msgid "Sort by name"
 msgstr "Сортиране по име"
 
-#: src/favorites.c:285 src/recent.c:255
+#: src/favorites.c:299 src/recent.c:271
 msgid "Sort by name (reversed)"
 msgstr "Сортиране по име (обратен ред)"
 
-#: src/favorites.c:286 src/recent.c:256
+#: src/favorites.c:300 src/recent.c:272
 msgid "Sort by date"
 msgstr "Сортиране по дата"
 
-#: src/favorites.c:287
+#: src/favorites.c:301
 msgid "Clear favorites"
 msgstr "Изчистване на любимите"
+
+#: src/favorites.c:303 src/recent.c:275
+#, fuzzy
+msgid "Remove absent files"
+msgstr "Премахване от последните файлове"
+
+#: src/favorites.c:315 src/recent.c:286
+#, fuzzy
+msgid "Hide absent files"
+msgstr "Последни файлове"
+
+#: src/favorites.c:316 src/recent.c:287
+#, fuzzy
+msgid "Show absent files"
+msgstr "Скритите файлове да се виждат"
 
 #: src/overview.c:39 src/overview.c:40
 msgid "Bookshelf"
@@ -72,21 +87,25 @@ msgstr "Изображения (навигация)"
 msgid "Audio (navigation)"
 msgstr "Аудио (навигация)"
 
-#: src/overview.c:117 src/recent.c:101 src/recent.c:289
+#: src/overview.c:117 src/recent.c:103 src/recent.c:319
 msgid "Recent files"
 msgstr "Последни файлове"
 
-#: src/file_context_menu.c:181
-#, c-format
-msgid "Open (with %s)"
-msgstr "Отваряне (с %s)"
+#: src/file_context_menu.c:217 src/file_context_menu.c:318
+msgid "Always open with..."
+msgstr ""
 
-#: src/file_context_menu.c:183
+#: src/file_context_menu.c:308
 #, c-format
 msgid "Open with %s"
 msgstr "Отваряне с %s"
 
-#: src/file_context_menu.c:210
+#: src/file_context_menu.c:308
+#, c-format
+msgid "Open (with %s)"
+msgstr "Отваряне (с %s)"
+
+#: src/file_context_menu.c:337
 msgid "Delete"
 msgstr "Изтриване"
 
@@ -94,53 +113,53 @@ msgstr "Изтриване"
 msgid "Whole filesystem"
 msgstr "Цялата файлова система"
 
-#: src/fileinfo_render.c:114
+#: src/fileinfo_render.c:117
 msgid "Does not exist"
 msgstr "Не съществува"
 
-#: src/fileinfo_render.c:121
+#: src/fileinfo_render.c:124
 msgid "Directory"
 msgstr "Папка"
 
-#: src/dir.c:428
+#: src/dir.c:405
 msgid "Unhide"
 msgstr "Показване"
 
-#: src/dir.c:430
+#: src/dir.c:407
 msgid "Hide"
 msgstr "Скриване"
 
-#: src/dir.c:437
+#: src/dir.c:414
 msgid "Add to favorites"
 msgstr "Добавяне към любими"
 
-#: src/dir.c:507
+#: src/dir.c:492
 msgid "Do not show hidden files"
 msgstr "Скритите файлове да не се виждат"
 
-#: src/dir.c:509
+#: src/dir.c:494
 msgid "Show hidden files"
 msgstr "Скритите файлове да се виждат"
 
-#: src/dir.c:543
+#: src/dir.c:528
 msgid "Menu"
 msgstr "Меню"
 
-#: src/recent.c:208
+#: src/recent.c:213
 msgid "Remove from recent files"
 msgstr "Премахване от последните файлове"
 
-#: src/recent.c:257
+#: src/recent.c:273
 msgid "Clear recent files"
 msgstr "Изчистване на последните файлове"
 
-#: src/delete_file.c:57
-msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr "Натиснете „OK“ за да изтриете файла<br><br>Натиснете „C“ за отказ"
-
-#: src/delete_file.c:55
+#: src/delete_file.c:58
 msgid "Delete file?"
 msgstr "Изтриване на файл?"
+
+#: src/delete_file.c:60
+msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
+msgstr "Натиснете „OK“ за да изтриете файла<br><br>Натиснете „C“ за отказ"
 
 #~ msgid "Sort by order"
 #~ msgstr "Сортиране по ред"

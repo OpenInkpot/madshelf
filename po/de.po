@@ -3,13 +3,13 @@
 # Copyright (C) 2008 Marc Lajoie <manorapide@hotmail.com>
 # Copyright (C) 2008,2009 Mikhail Gusarov <dottedmag@dottedmag.net>
 # This file is in public domain
-# 
+#
 # Louvre <diogenedebian@gmail.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: madshelf_de\n"
 "Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
-"POT-Creation-Date: 2009-09-30 15:25+0700\n"
+"POT-Creation-Date: 2009-11-05 02:43+0600\n"
 "PO-Revision-Date: 2009-06-30 14:25+0200\n"
 "Last-Translator: Louvre <diogenedebian@gmail.com>\n"
 "Language-Team: German <openinkpot-l10n@googlegroups.com>\n"
@@ -18,50 +18,65 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: src/favorites.c:103 src/favorites.c:318 src/overview.c:114
+#: src/favorites.c:106 src/favorites.c:348 src/overview.c:114
 #: src/favorites_menu.c:39
 msgid "Favorites"
 msgstr "Favoriten"
 
-#: src/favorites.c:104
+#: src/favorites.c:107
 msgid "Favorite books"
 msgstr "Favoriten: Bücher"
 
-#: src/favorites.c:105
+#: src/favorites.c:108
 msgid "Favorite pictures"
 msgstr "Favoriten: Bilder"
 
-#: src/favorites.c:106
+#: src/favorites.c:109
 msgid "Favorite music"
 msgstr "Favoriten: Audio"
 
-#: src/favorites.c:231 src/dir.c:423 src/recent.c:202
+#: src/favorites.c:234 src/dir.c:400 src/recent.c:207
 msgid "Open"
 msgstr "Öffnen"
 
-#: src/favorites.c:237 src/dir.c:435
+#: src/favorites.c:240 src/dir.c:412
 msgid "Remove from favorites"
 msgstr "Aus Favoriten entfernen"
 
-#: src/favorites.c:273 src/dir.c:483 src/recent.c:243
+#: src/favorites.c:286 src/dir.c:467 src/recent.c:258
 msgid "Actions"
 msgstr "Aktionen"
 
-#: src/favorites.c:284 src/recent.c:254
+#: src/favorites.c:298 src/recent.c:270
 msgid "Sort by name"
 msgstr "Nach Namen sortieren"
 
-#: src/favorites.c:285 src/recent.c:255
+#: src/favorites.c:299 src/recent.c:271
 msgid "Sort by name (reversed)"
 msgstr "Nach Namen sortieren (umgekehrt)"
 
-#: src/favorites.c:286 src/recent.c:256
+#: src/favorites.c:300 src/recent.c:272
 msgid "Sort by date"
 msgstr "Nach Datum sortieren"
 
-#: src/favorites.c:287
+#: src/favorites.c:301
 msgid "Clear favorites"
 msgstr "Favoritenliste leeren"
+
+#: src/favorites.c:303 src/recent.c:275
+#, fuzzy
+msgid "Remove absent files"
+msgstr "Aus letzten Dateien entfernen"
+
+#: src/favorites.c:315 src/recent.c:286
+#, fuzzy
+msgid "Hide absent files"
+msgstr "Letzte Dateien"
+
+#: src/favorites.c:316 src/recent.c:287
+#, fuzzy
+msgid "Show absent files"
+msgstr "Versteckte Dateien anzeigen"
 
 #: src/overview.c:39 src/overview.c:40
 msgid "Bookshelf"
@@ -75,21 +90,25 @@ msgstr "Bilder (Navigation)"
 msgid "Audio (navigation)"
 msgstr "Audio (Navigation)"
 
-#: src/overview.c:117 src/recent.c:101 src/recent.c:289
+#: src/overview.c:117 src/recent.c:103 src/recent.c:319
 msgid "Recent files"
 msgstr "Letzte Dateien"
 
-#: src/file_context_menu.c:181
-#, c-format
-msgid "Open (with %s)"
-msgstr "Öffnen (mit %s)"
+#: src/file_context_menu.c:217 src/file_context_menu.c:318
+msgid "Always open with..."
+msgstr ""
 
-#: src/file_context_menu.c:183
+#: src/file_context_menu.c:308
 #, c-format
 msgid "Open with %s"
 msgstr "Öffnen mit %s"
 
-#: src/file_context_menu.c:210
+#: src/file_context_menu.c:308
+#, c-format
+msgid "Open (with %s)"
+msgstr "Öffnen (mit %s)"
+
+#: src/file_context_menu.c:337
 msgid "Delete"
 msgstr "Löschen"
 
@@ -97,53 +116,53 @@ msgstr "Löschen"
 msgid "Whole filesystem"
 msgstr "Gesamtes Dateisystem"
 
-#: src/fileinfo_render.c:114
+#: src/fileinfo_render.c:117
 msgid "Does not exist"
 msgstr "Existiert nicht"
 
-#: src/fileinfo_render.c:121
+#: src/fileinfo_render.c:124
 msgid "Directory"
 msgstr "Verzeichnis"
 
-#: src/dir.c:428
+#: src/dir.c:405
 msgid "Unhide"
 msgstr "Sichtbar machen"
 
-#: src/dir.c:430
+#: src/dir.c:407
 msgid "Hide"
 msgstr "Verstecken"
 
-#: src/dir.c:437
+#: src/dir.c:414
 msgid "Add to favorites"
 msgstr "Zu Favoriten hinzufügen"
 
-#: src/dir.c:507
+#: src/dir.c:492
 msgid "Do not show hidden files"
 msgstr "Versteckte Dateien nicht anzeigen"
 
-#: src/dir.c:509
+#: src/dir.c:494
 msgid "Show hidden files"
 msgstr "Versteckte Dateien anzeigen"
 
-#: src/dir.c:543
+#: src/dir.c:528
 msgid "Menu"
 msgstr "Menü"
 
-#: src/recent.c:208
+#: src/recent.c:213
 msgid "Remove from recent files"
 msgstr "Aus letzten Dateien entfernen"
 
-#: src/recent.c:257
+#: src/recent.c:273
 msgid "Clear recent files"
 msgstr "Liste leeren"
 
-#: src/delete_file.c:57
-msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr "\"OK\" - Datei löschen<br><br>\"C\" - Vorgang abbrechen"
-
-#: src/delete_file.c:55
+#: src/delete_file.c:58
 msgid "Delete file?"
 msgstr "Datei löschen?"
+
+#: src/delete_file.c:60
+msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
+msgstr "\"OK\" - Datei löschen<br><br>\"C\" - Vorgang abbrechen"
 
 #~ msgid "Sort by order"
 #~ msgstr "Sortieren nach Ordnung"

@@ -1,6 +1,7 @@
 ./src/favorites.c
 ./src/overview.c
 ./src/favorites_menu.c
+./src/app_defaults.c
 ./src/file_context_menu.c
 ./src/handlers.c
 ./src/main.c
@@ -8,6 +9,7 @@
 ./src/disks.c
 ./src/battery.c
 ./src/clock.c
+./src/text_escape.c
 ./src/fileinfo_render.c
 ./src/run.c
 ./src/screen_context_menu.c
@@ -18,4 +20,5 @@
 ./src/curdir.c
 ./src/tags.c
 ./src/recent.c
+./src/test_mime.c
 ./src/delete_file.c
