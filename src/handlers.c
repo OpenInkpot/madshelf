@@ -129,7 +129,12 @@ static Eina_Bool sort_handler(const Eina_Hash* hash, const void* key, void* data
     const char* mime_type = key;
     openers_t* op = data;
 
-    op->apps = openers_resort(op->apps, mime_type);
+    Eina_List* newop = openers_resort(op->apps, mime_type);
+    if(newop)
+    {
+        op->has_default = true;
+        op->apps = newop;
+    }
 
     return 1;
 }
