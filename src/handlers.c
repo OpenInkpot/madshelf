@@ -17,17 +17,21 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
+#define _GNU_SOURCE
+
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+#include <libgen.h>
 
 #include <Efreet_Mime.h>
 #include <Efreet.h>
 #include <Ecore_File.h>
 #include <Eina.h>
 
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
 
 #include "handlers.h"
+#include "app_defaults.h"
 
 #define DESKTOP_DIR "/usr/share/applications"
 
@@ -74,7 +78,7 @@ static void handlers_dump()
 }
 #endif
 
-openers_app_type_t app_type(Efreet_Desktop* d)
+static openers_app_type_t app_type(Efreet_Desktop* d)
 {
     openers_app_type_t types = OPENERS_TYPE_NONE;
 
@@ -91,6 +95,43 @@ openers_app_type_t app_type(Efreet_Desktop* d)
     }
 
     return types;
+}
+
+static int search_list_str(Efreet_Desktop* lhs, char* rhs)
+{
+    return strcmp(basename(lhs->orig_path), rhs);
+}
+
+static Eina_List* openers_resort(Eina_List* apps, const char* mime_type)
+{
+    Eina_List* appdef = appdef_get_list(mime_type);
+    if(!appdef)
+        return NULL;
+
+    Eina_List* l, *l_next;
+    char* desktop;
+    EINA_LIST_FOREACH_SAFE(appdef, l, l_next, desktop)
+    {
+        Eina_List* p = eina_list_search_unsorted_list(apps, EINA_COMPARE_CB(search_list_str), desktop);
+        if(p)
+        {
+            Efreet_Desktop* d = p->data;
+            apps = eina_list_remove_list(apps, p);
+            apps = eina_list_prepend(apps, d);
+            return apps;
+        }
+    }
+    return NULL;
+}
+
+static Eina_Bool sort_handler(const Eina_Hash* hash, const void* key, void* data, void* fdata)
+{
+    const char* mime_type = key;
+    openers_t* op = data;
+
+    op->apps = openers_resort(op->apps, mime_type);
+
+    return 1;
 }
 
 void openers_init()
@@ -131,6 +172,7 @@ void openers_init()
             {
                 op = malloc(sizeof(openers_t));
                 op->app_types = app_type(d);
+                op->has_default = false;
                 op->apps = eina_list_append(NULL, d);
 
                 eina_hash_add(appdb.handlers, mime_type, op);
@@ -142,6 +184,8 @@ void openers_init()
 
     eina_list_free(ls);
 
+    eina_hash_foreach(appdb.handlers, &sort_handler, NULL);
+
 #ifdef DEBUG_HANDLERS
     handlers_dump();
 #endif
@@ -150,6 +194,22 @@ void openers_init()
 openers_t* openers_get(const char* mime_type)
 {
     return eina_hash_find(appdb.handlers, mime_type);
+}
+
+void openers_set_default(const char* mime_type, Efreet_Desktop* desktop)
+{
+    appdef_set_default(mime_type, basename(desktop->orig_path));
+
+    openers_t* openers = openers_get(mime_type);
+    if(openers)
+    {
+        Eina_List* newapps = openers_resort(openers->apps, mime_type);
+        if(newapps)
+        {
+            openers->has_default = true;
+            openers->apps = newapps;
+        }
+    }
 }
 
 void openers_fini()

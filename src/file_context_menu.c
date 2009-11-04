@@ -126,12 +126,110 @@ static void _run_file(file_context_menu_info_t* info, Efreet_Desktop* handler)
 #endif
 }
 
+static void draw_handler_item(Evas_Object* choicebox, Evas_Object* item,
+                              int item_num, const char* fmt)
+{
+    Evas* canvas = evas_object_evas_get(choicebox);
+    Evas_Object* menu = evas_object_name_find(canvas, "file-context-menu");
+    file_context_menu_info_t* info = evas_object_data_get(menu, "info");
+
+    Eina_List* nth = eina_list_nth_list(info->openers->apps, item_num);
+    Efreet_Desktop* handler = eina_list_data_get(nth);
+
+    char* name = textblock_escape_string(handler->name);
+    char* f;
+    asprintf(&f, fmt, name);
+    free(name);
+
+    edje_object_part_text_set(item, "title", f);
+    free(f);
+}
+
+static void _page_handler(Evas_Object* choicebox, int cur_page, int total_pages, void* param)
+{
+    Evas* canvas = evas_object_evas_get(choicebox);
+    Evas_Object* footer = evas_object_name_find(canvas, "file-context-menu");
+    choicebox_aux_edje_footer_handler(footer, "footer", cur_page, total_pages);
+}
+
+static void _close_handler(Evas_Object* choicebox, void* param)
+{
+    Evas* canvas = evas_object_evas_get(choicebox);
+    close_file_context_menu(canvas, false);
+}
+
+/* "Always open with..." */
+
+static void _set_default_handler_item_handler(Evas_Object* choicebox, int item_num, bool is_alt, void* param)
+{
+    Evas* canvas = evas_object_evas_get(choicebox);
+    Evas_Object* menu = evas_object_name_find(canvas, "file-context-menu");
+    file_context_menu_info_t* info = evas_object_data_get(menu, "info");
+
+    fileinfo_t* fileinfo = fileinfo_create(info->filename);
+
+    Eina_List* nth = eina_list_nth_list(info->openers->apps, item_num);
+    Efreet_Desktop* handler = eina_list_data_get(nth);
+
+    openers_set_default(fileinfo->mime_type, handler);
+
+    close_file_context_menu(canvas, false);
+}
+
+static void _set_default_handler_draw_item_handler(Evas_Object* choicebox, Evas_Object* item,
+                                                   int item_num, int page_position, void* param)
+{
+    item_clear(item);
+    draw_handler_item(choicebox, item, item_num, "%s");
+}
+
+static void _set_default_handler(file_context_menu_info_t* info)
+{
+   Evas_Object* main_edje = evas_object_name_find(info->state->canvas, "main_edje");
+
+    /* Replace context menu choicebox with new one */
+    choicebox_info_t choicebox_info = {
+        NULL,
+        "/usr/share/choicebox/choicebox.edj",
+        "settings-right",
+        "/usr/share/choicebox/choicebox.edj",
+        "item-settings",
+        _set_default_handler_item_handler,
+        _set_default_handler_draw_item_handler,
+        _page_handler,
+        _close_handler
+    };
+
+    Evas_Object* file_context_menu = evas_object_name_find(info->state->canvas, "file-context-menu");
+
+    Evas_Object* file_context_choicebox = evas_object_name_find(info->state->canvas, "file-context-menu-choicebox");
+    edje_object_part_unswallow(file_context_menu, file_context_choicebox);
+    evas_object_del(file_context_choicebox);
+
+
+    Evas_Object* set_default_handler_choicebox = choicebox_new(info->state->canvas,
+                                                               &choicebox_info, info);
+    evas_object_name_set(set_default_handler_choicebox, "file-context-menu-choicebox");
+    eoi_register_fullscreen_choicebox(set_default_handler_choicebox);
+
+    edje_object_part_swallow(file_context_menu, "contents", set_default_handler_choicebox);
+
+    edje_object_part_text_set(file_context_menu, "title", gettext("Always open with..."));
+
+    choicebox_set_size(set_default_handler_choicebox, info->openers_num);
+
+    evas_object_show(set_default_handler_choicebox);
+    evas_object_focus_set(set_default_handler_choicebox, true);
+    choicebox_aux_subscribe_key_up(set_default_handler_choicebox);
+}
+
+/* End of "Always open with..." */
+
 typedef struct
 {
     madshelf_state_t* state;
     delete_file_context_action_t action;
 } delete_handler_params_t;
-
 
 static void _delete_handler(void* param, const char* filename)
 {
@@ -158,6 +256,17 @@ static void _item_handler(Evas_Object* choicebox, int item_num, bool is_alt, voi
     }
     else
         item_num -= info->openers_num;
+
+    if(info->openers_num > 0)
+    {
+        if(item_num == 0)
+        {
+            _set_default_handler(info);
+            return;
+        }
+        else
+            item_num--;
+    }
 
     if(item_num < info->add_actions_num)
     {
@@ -195,28 +304,23 @@ static void _draw_item_handler(Evas_Object* choicebox, Evas_Object* item, int it
 
     if(item_num < info->openers_num)
     {
-        const char* open_text;
-
-        if(item_num == 0) /* Special-case first (preferred) handler */
-            open_text = gettext("Open (with %s)");
-        else
-            open_text = gettext("Open with %s");
-
-        Eina_List* nth = eina_list_nth_list(info->openers->apps, item_num);
-        Efreet_Desktop* handler = eina_list_data_get(nth);
-
-        char* name = textblock_escape_string(handler->name);
-        char* f;
-        asprintf(&f, open_text, name);
-        free(name);
-
-        edje_object_part_text_set(item, "title", f);
-        free(f);
-
+        draw_handler_item(choicebox, item, item_num,
+                          item_num ? gettext("Open with %s") : gettext("Open (with %s)"));
         return;
     }
     else
         item_num -= info->openers_num;
+
+    if(info->openers_num > 0)
+    {
+        if(item_num == 0)
+        {
+            edje_object_part_text_set(item, "title", gettext("Always open with..."));
+            return;
+        }
+        else
+            item_num --;
+    }
 
     if(item_num < info->add_actions_num)
     {
@@ -237,19 +341,6 @@ static void _draw_item_handler(Evas_Object* choicebox, Evas_Object* item, int it
         item_num -= 1;
 
     die("_draw_item_handler: Unknown item: %d\n", item_num);
-}
-
-static void _page_handler(Evas_Object* choicebox, int cur_page, int total_pages, void* param)
-{
-    Evas* canvas = evas_object_evas_get(choicebox);
-    Evas_Object* footer = evas_object_name_find(canvas, "file-context-menu");
-    choicebox_aux_edje_footer_handler(footer, "footer", cur_page, total_pages);
-}
-
-static void _close_handler(Evas_Object* choicebox, void* param)
-{
-    Evas* canvas = evas_object_evas_get(choicebox);
-    close_file_context_menu(canvas, false);
 }
 
 void open_file_context_menu(madshelf_state_t* state,
@@ -319,8 +410,9 @@ void open_file_context_menu(madshelf_state_t* state,
     if(!ecore_file_is_dir(filename))
         actions_num +=
 //        + 2*info->fileop_targets /* Copy, move */
-        + 1 /* Delete */
-        ;
+            + (info->openers_num > 0 ? 1 : 0) /* Always open with */
+            + 1 /* Delete */
+            ;
 
     choicebox_set_size(file_context_menu_choicebox, actions_num);
 

@@ -21,11 +21,8 @@
 #ifndef HANDLERS_H
 #define HANDLERS_H
 
+#include <stdbool.h>
 #include <Eina.h>
-
-typedef struct handlers_t handlers_t;
-
-void openers_init();
 
 typedef enum
 {
@@ -38,15 +35,20 @@ typedef enum
 typedef struct
 {
     openers_app_type_t app_types;
+    bool has_default;
     Eina_List* apps; /* List of Efreet_Desktop* */
 } openers_t;
+
+void openers_init();
 
 /*
  * Returns openers_t for given mime type.
  *
- * To be freed by eina_list_free() openers_free
+ * To be freed by eina_list_free()
  */
 openers_t* openers_get(const char* mime_type);
+
+void openers_set_default(const char* mime_type, Efreet_Desktop* app);
 
 void openers_fini();
 
