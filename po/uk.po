@@ -1,4 +1,4 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.0\n"
@@ -87,10 +87,6 @@ msgstr "Музика (навигація)"
 msgid "Recent files"
 msgstr "Нещодавно відкриті документи"
 
-#: src/file_context_menu.c:217 src/file_context_menu.c:318
-msgid "Always open with..."
-msgstr ""
-
 #: src/file_context_menu.c:308
 #, c-format
 msgid "Open with %s"
@@ -155,5 +151,8 @@ msgstr "Видалити файл?"
 
 #: src/delete_file.c:60
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr ""
-"Натисніть «OK» щоб видалити.<br><br>Натисніть «C» щоб скасувати видалення."
+msgstr "Натисніть «OK» щоб видалити.<br><br>Натисніть «C» щоб скасувати видалення."
+
+#: src/file_context_menu.c:217 src/file_context_menu.c:318
+msgid "Always open with..."
+msgstr "Завжди відкривати у..."
