@@ -1,6 +1,6 @@
 # translation of madshelf.po to italian
 # This file is put in the public domain.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
@@ -58,21 +58,6 @@ msgstr "Ordina per data"
 msgid "Clear favorites"
 msgstr "Svuota preferiti"
 
-#: src/favorites.c:303 src/recent.c:275
-#, fuzzy
-msgid "Remove absent files"
-msgstr "Rimuovi dai file recenti"
-
-#: src/favorites.c:315 src/recent.c:286
-#, fuzzy
-msgid "Hide absent files"
-msgstr "File recenti"
-
-#: src/favorites.c:316 src/recent.c:287
-#, fuzzy
-msgid "Show absent files"
-msgstr "Mostra i file nascosti"
-
 #: src/overview.c:39 src/overview.c:40
 msgid "Bookshelf"
 msgstr "Libreria"
@@ -88,10 +73,6 @@ msgstr "Audio (navigazione)"
 #: src/overview.c:117 src/recent.c:103 src/recent.c:319
 msgid "Recent files"
 msgstr "File recenti"
-
-#: src/file_context_menu.c:217 src/file_context_menu.c:318
-msgid "Always open with..."
-msgstr ""
 
 #: src/file_context_menu.c:308
 #, c-format
@@ -158,6 +139,22 @@ msgstr "Elimina file?"
 #: src/delete_file.c:60
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
 msgstr "Premi \"OK\" per eliminare il file<br><br>Premi \"C\" per annullare"
+
+#: src/file_context_menu.c:217 src/file_context_menu.c:318
+msgid "Always open with..."
+msgstr "Apri sempre con..."
+
+#: src/favorites.c:315 src/recent.c:286
+msgid "Hide absent files"
+msgstr "Nascondi file mancanti"
+
+#: src/favorites.c:303 src/recent.c:275
+msgid "Remove absent files"
+msgstr "Rimuovi file mancanti"
+
+#: src/favorites.c:316 src/recent.c:287
+msgid "Show absent files"
+msgstr "Mostra file mancanti"
 
 #~ msgid "Sort by order"
 #~ msgstr "Ordinamento"
