@@ -269,8 +269,8 @@ static void contents_key_up(void* param, Evas* e, Evas_Object* o, void* event_in
     Evas_Event_Key_Up* ev = (Evas_Event_Key_Up*)event_info;
 
     const char* action = keys_lookup(state->keys, "main", ev->keyname);
-    if(action && !strcmp(action, "Help"))
-        help(state);
+//    if(action && !strcmp(action, "Help"))
+//        help(state);
 
     if(state->loc->key_up && (*state->loc->key_up)(state, o, ev))
         return;
