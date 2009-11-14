@@ -147,6 +147,7 @@ void openers_init()
     appdb.handlers = eina_hash_string_superfast_new(&free_openers);
 
     Eina_List* ls = ecore_file_ls(DESKTOP_DIR);
+    Eina_List* orig_ls = ls;
 
     for(; ls; ls = eina_list_next(ls))
     {
@@ -187,7 +188,9 @@ void openers_init()
         appdb.desktop_files = eina_list_append(appdb.desktop_files, d);
     }
 
-    eina_list_free(ls);
+    char* c;
+    EINA_LIST_FREE(orig_ls, c)
+        free(c);
 
     eina_hash_foreach(appdb.handlers, &sort_handler, NULL);
 

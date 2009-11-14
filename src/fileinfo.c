@@ -119,6 +119,8 @@ static fileinfo_t* fileinfo_parse(const char* filename)
 
         if(!i->mime_type)
             i->mime_type = strdup(efreet_mime_type_get(i->filename));
+
+        em_keywords_free(keywords);
     }
 
     return i;
