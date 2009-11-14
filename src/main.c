@@ -619,6 +619,10 @@ int main(int argc, char** argv)
     curdir_fini();
     fileinfo_fini();
 
+    /* Keep valgrind happy */
+    edje_file_cache_set(0);
+    edje_collection_cache_set(0);
+
     edje_shutdown();
     ecore_evas_shutdown();
     evas_shutdown();
