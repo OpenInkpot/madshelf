@@ -21,6 +21,7 @@
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <string.h>
+#include <err.h>
 
 #include <Ecore_File.h>
 #include <Efreet_Mime.h>
@@ -95,6 +96,8 @@ static fileinfo_t* fileinfo_parse(const char* filename)
         em_keyword_list_t* j;
         for(j = keywords; j; j = j->next)
         {
+            if(j->keyword[0] == '\0')
+                continue;
             if(j->keyword_type == EXTRACTOR_AUTHOR)
             {
                 if(!i->author)
@@ -102,7 +105,9 @@ static fileinfo_t* fileinfo_parse(const char* filename)
                 else
                 {
                     char* authors;
-                    asprintf(&authors, "%s, %s", i->author, j->keyword);
+                    if(!asprintf(&authors, "%s, %s", i->author, j->keyword))
+                        err(1, "Whoops, out of memory");
+
                     free(i->author);
                     i->author = authors;
                 }

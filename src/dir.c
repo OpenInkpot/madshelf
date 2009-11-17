@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include <libgen.h>
 #include <libintl.h>
+#include <err.h>
 #include <unistd.h>
 /* This is to mark statically-allocated strings as translatable */
 #define _(x) (x)
@@ -186,7 +187,8 @@ static Eina_Array* _fill_files(const madshelf_state_t* state, const char* dir, i
     {
         const char* file = eina_list_data_get(i);
         char* filename;
-        asprintf(&filename, "%s/%s", !strcmp(dir, "/") ? "" : dir, file);
+        if(!asprintf(&filename, "%s/%s", !strcmp(dir, "/") ? "" : dir, file))
+            err(1, "Whoops, out of memory");
 
         if(!state->show_hidden && file_is_hidden(state, filename))
         {
@@ -210,7 +212,8 @@ static Eina_Array* _fill_files(const madshelf_state_t* state, const char* dir, i
     {
         const char* file = eina_list_data_get(i);
         char* filename;
-        asprintf(&filename, "%s/%s", !strcmp(dir, "/") ? "" : dir, file);
+        if(!asprintf(&filename, "%s/%s", !strcmp(dir, "/") ? "" : dir, file))
+            err(1, "Whoops, out of memory");
 
         if(!state->show_hidden && file_is_hidden(state, filename))
         {
@@ -268,7 +271,8 @@ static void _update_gui(const madshelf_state_t* state)
     madshelf_disk_t* d = find_disk(state->disks, _loc->dir);
 
     char* header_txt;
-    asprintf(&header_txt, "%s:%s", d->short_name, _loc->dir + strlen(d->path));
+    if(!asprintf(&header_txt, "%s:%s", d->short_name, _loc->dir + strlen(d->path)))
+        err(1, "Whoops, out of memory");
 
     edje_object_part_text_set(header, "title", header_txt);
     free(header_txt);

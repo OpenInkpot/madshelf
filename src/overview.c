@@ -23,6 +23,7 @@
 #include <libintl.h>
 #include <stdio.h>
 #include <string.h>
+#include <err.h>
 /* This is to mark statically-allocated strings as translatable */
 #define _(x) (x)
 
@@ -104,7 +105,9 @@ static void _draw_item(const madshelf_state_t* state,
         else
         {
             char* d;
-            asprintf(&d, "<inactive>%s</inactive>", state->disks->disk[item_num].name);
+            if(!asprintf(&d, "<inactive>%s</inactive>", state->disks->disk[item_num].name))
+                err(1, "Whoops, out of memory");
+
             edje_object_part_text_set(item, "title", d);
             free(d);
         }
