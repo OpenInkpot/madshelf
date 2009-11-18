@@ -138,10 +138,6 @@ msgstr "Usunąć plik?"
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
 msgstr "Wciśnij \"OK\" aby usunąć<br><br>Wciśnij \"C\" aby anulować"
 
-#: src/file_context_menu.c:217 src/file_context_menu.c:318
-msgid "Always open with..."
-msgstr "Zawsze otwieraj w %s"
-
 #: src/favorites.c:315 src/recent.c:286
 msgid "Hide absent files"
 msgstr "Ukrywaj niedostępne pliki"
@@ -153,6 +149,10 @@ msgstr "Usuń niedostępne pliki"
 #: src/favorites.c:316 src/recent.c:287
 msgid "Show absent files"
 msgstr "Pokazuj niedostępne pliki"
+
+#: src/file_context_menu.c:217 src/file_context_menu.c:318
+msgid "Always open with..."
+msgstr "Zawsze otwieraj w..."
 
 #~ msgid "Sort by order"
 #~ msgstr "Ustaw po kolei"
