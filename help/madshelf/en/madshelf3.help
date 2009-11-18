@@ -1,0 +1,20 @@
+<h2>Favorites:</h2>
+
+<p>Favorite user files are displayed here.
+ To open required file/folder  press proper 
+programmable button (1-9). For additional actions
+ with file/folder select required file/folder
+ by using joystick buttons <b>Up/Down</b> and press <b>OK</b>
+ to open Actions menu. For files available actions are:
+ Open, Always open with…, Remove from favorites and Delete.
+ For folders available actions are: Open and Remove from favorites.</p> 
+<p>To open menu “Favorites” press <b>M</b> button. There are
+ available to: Sort by name, Sort by name (reversed), Sort by date,
+ Clear favorites, Hide absent files and Remove absent files.
+ If you select Clear favorites all files in favorites books
+ will be deleted from this list.</p> 
+<p>To change page orientation (portrait/landscape) press <b>ROTATE</b> button.</p>
+<p>To escape to previous menu press <b>C</b> button.</p>
+<p>To escape to Main menu press <b>MENU</b> button.</p>
+<p>To display bookshelf help press <b>0</b> button.</p>
+<p>To open audio player press <b>Play/Stop</b> button.</p>

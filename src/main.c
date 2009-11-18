@@ -212,6 +212,11 @@ static void contents_page_handler(Evas_Object* choicebox, int cur_page,
                                    int total_pages, void* param)
 {
     Evas* canvas = evas_object_evas_get(choicebox);
+    /* FIXME: Ewww */
+    Evas_Object* help = evas_object_name_find(canvas, "help");
+    if(help)
+        return;
+
     Evas_Object* footer = evas_object_name_find(canvas, "main_edje");
     choicebox_aux_edje_footer_handler(footer, "footer", cur_page, total_pages);
 }
