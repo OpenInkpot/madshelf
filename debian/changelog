@@ -1,3 +1,10 @@
+madshelf (0.2.40) asimov; urgency=low
+
+  * Add help (OI#582)
+  * Adjust background (OI#531)
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Wed, 18 Nov 2009 06:59:45 +0600
+
 madshelf (0.2.39) asimov; urgency=low
 
   * Fix memory leaks during directories navigation.
