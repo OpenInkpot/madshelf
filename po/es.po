@@ -1,4 +1,4 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
@@ -56,21 +56,6 @@ msgstr "Ordenar por fecha"
 msgid "Clear favorites"
 msgstr "Limpiar favoritos"
 
-#: src/favorites.c:303 src/recent.c:275
-#, fuzzy
-msgid "Remove absent files"
-msgstr "Borrar de ficheros recientes"
-
-#: src/favorites.c:315 src/recent.c:286
-#, fuzzy
-msgid "Hide absent files"
-msgstr "Ficheros recientes"
-
-#: src/favorites.c:316 src/recent.c:287
-#, fuzzy
-msgid "Show absent files"
-msgstr "Mostrar ficheros ocultos"
-
 #: src/overview.c:39 src/overview.c:40
 msgid "Bookshelf"
 msgstr "Librería"
@@ -86,10 +71,6 @@ msgstr "Audio (navegación)"
 #: src/overview.c:117 src/recent.c:103 src/recent.c:319
 msgid "Recent files"
 msgstr "Ficheros recientes"
-
-#: src/file_context_menu.c:217 src/file_context_menu.c:318
-msgid "Always open with..."
-msgstr ""
 
 #: src/file_context_menu.c:308
 #, c-format
@@ -155,8 +136,23 @@ msgstr "¿Borrar fichero?"
 
 #: src/delete_file.c:60
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr ""
-"Presiona \"OK\" para borrar el fichero<br><br>Presiona \"C\" para cancelar"
+msgstr "Presiona \"OK\" para borrar el fichero<br><br>Presiona \"C\" para cancelar"
+
+#: src/file_context_menu.c:217 src/file_context_menu.c:318
+msgid "Always open with..."
+msgstr "Abrir siempre con..."
+
+#: src/favorites.c:315 src/recent.c:286
+msgid "Hide absent files"
+msgstr "Ocultar ficheros inexistentes"
+
+#: src/favorites.c:303 src/recent.c:275
+msgid "Remove absent files"
+msgstr "Eliminar ficheros inexistentes"
+
+#: src/favorites.c:316 src/recent.c:287
+msgid "Show absent files"
+msgstr "Mostrar ficheros inexistentes"
 
 #~ msgid "Sort by order"
 #~ msgstr "Ordenar por nombre"
