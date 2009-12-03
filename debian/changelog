@@ -1,3 +1,9 @@
+madshelf (0.2.41) asimov; urgency=low
+
+  * Translations updated: French, Spanish.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Thu, 03 Dec 2009 13:26:32 +0600
+
 madshelf (0.2.40) asimov; urgency=low
 
   * Add help (OI#582)
