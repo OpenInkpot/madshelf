@@ -18,70 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: src/overview.c:117 src/recent.c:103 src/recent.c:319
-msgid "Recent files"
-msgstr "Fichiers récents"
-
-#: src/fileinfo_render.c:124
-msgid "Directory"
-msgstr "Répertoire"
-
-#: src/dir.c:405
-msgid "Unhide"
-msgstr "Ne plus cacher"
-
-#: src/dir.c:407
-msgid "Hide"
-msgstr "Cacher"
-
-#: src/dir.c:414
-msgid "Add to favorites"
-msgstr "Ajouter aux favoris"
-
-#: src/dir.c:492
-msgid "Do not show hidden files"
-msgstr "Ne pas montrer les fichiers cachés"
-
-#: src/dir.c:494
-msgid "Show hidden files"
-msgstr "Montrer les fichiers cachés"
-
-#: src/dir.c:528
-msgid "Menu"
-msgstr "Menu"
-
-#: src/recent.c:213
-msgid "Remove from recent files"
-msgstr "Enlever des fichiers récents"
-
-#: src/recent.c:273
-msgid "Clear recent files"
-msgstr "Effacer les fichiers récents"
-
-#: src/delete_file.c:58
-msgid "Delete file?"
-msgstr "Effacer le fichier ?"
-
-#: src/delete_file.c:60
-msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr "Appuyez sur « OK » pour effacer le fichier<br><br>Appuyez sur « C » pour annuler"
-
-#: src/file_context_menu.c:217 src/file_context_menu.c:318
-msgid "Always open with..."
-msgstr "Ouvrir toujours avec..."
-
-#: src/favorites.c:315 src/recent.c:286
-msgid "Hide absent files"
-msgstr "Cacher les fichiers absents"
-
-#: src/favorites.c:303 src/recent.c:275
-msgid "Remove absent files"
-msgstr "Supprimer les fichiers absents"
-
-#: src/favorites.c:316 src/recent.c:287
-msgid "Show absent files"
-msgstr "Montrer les fichiers absents"
-
 #: src/favorites.c:106 src/favorites.c:348 src/overview.c:114
 #: src/favorites_menu.c:39
 msgid "Favorites"
@@ -160,6 +96,72 @@ msgstr "Open met  %s"
 #: src/fileinfo_render.c:117
 msgid "Does not exist"
 msgstr "Bestaat niet"
+
+#: src/overview.c:117 src/recent.c:103 src/recent.c:319
+msgid "Recent files"
+msgstr "Recente bestanden"
+
+#: src/dir.c:405
+msgid "Unhide"
+msgstr "Niet verbergen"
+
+#: src/fileinfo_render.c:124
+msgid "Directory"
+msgstr "Directory"
+
+#: src/dir.c:414
+msgid "Add to favorites"
+msgstr "Aan Favorieten toevoegen"
+
+#: src/dir.c:407
+msgid "Hide"
+msgstr "Verbergen"
+
+#: src/dir.c:494
+msgid "Show hidden files"
+msgstr "Toon verborgen bestanden"
+
+#: src/dir.c:492
+msgid "Do not show hidden files"
+msgstr "Verborgen bestanden niet tonen"
+
+#: src/recent.c:213
+msgid "Remove from recent files"
+msgstr "Verwijder uit recente bestanden"
+
+#: src/dir.c:528
+msgid "Menu"
+msgstr "Menu"
+
+#: src/delete_file.c:58
+msgid "Delete file?"
+msgstr ""
+"\r\n"
+"Verwijder bestand"
+
+#: src/recent.c:273
+msgid "Clear recent files"
+msgstr "Recente bestanden leegmaken"
+
+#: src/file_context_menu.c:217 src/file_context_menu.c:318
+msgid "Always open with..."
+msgstr "Altijd openen met ...."
+
+#: src/delete_file.c:60
+msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
+msgstr "Druk op « OK » om bestand te verwijderen<br><br>Druk op  « C » om te annuleren"
+
+#: src/favorites.c:303 src/recent.c:275
+msgid "Remove absent files"
+msgstr "Verwijder niet aanwezige bestanden"
+
+#: src/favorites.c:315 src/recent.c:286
+msgid "Hide absent files"
+msgstr "Verberg afwezige bestanden"
+
+#: src/favorites.c:316 src/recent.c:287
+msgid "Show absent files"
+msgstr "Toon afwezige bestanden"
 
 #~ msgid "Sort by order"
 #~ msgstr "Classer par ordre"
