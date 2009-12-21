@@ -18,88 +18,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: src/favorites.c:106 src/favorites.c:348 src/overview.c:114
-#: src/favorites_menu.c:39
-msgid "Favorites"
-msgstr "Favoris"
-
-#: src/favorites.c:107
-msgid "Favorite books"
-msgstr "Livres favoris"
-
-#: src/favorites.c:108
-msgid "Favorite pictures"
-msgstr "Images favorites"
-
-#: src/favorites.c:109
-msgid "Favorite music"
-msgstr "Musiques favorites"
-
-#: src/favorites.c:234 src/dir.c:400 src/recent.c:207
-msgid "Open"
-msgstr "Ouvrir"
-
-#: src/favorites.c:240 src/dir.c:412
-msgid "Remove from favorites"
-msgstr "Enlever des favoris"
-
-#: src/favorites.c:286 src/dir.c:467 src/recent.c:258
-msgid "Actions"
-msgstr "Actions"
-
-#: src/favorites.c:298 src/recent.c:270
-msgid "Sort by name"
-msgstr "Classer par nom"
-
-#: src/favorites.c:299 src/recent.c:271
-msgid "Sort by name (reversed)"
-msgstr "Classer par nom (inversé)"
-
-#: src/favorites.c:300 src/recent.c:272
-msgid "Sort by date"
-msgstr "Classer par date"
-
-#: src/favorites.c:301
-msgid "Clear favorites"
-msgstr "Effacer les favoris"
-
-#: src/overview.c:39 src/overview.c:40
-msgid "Bookshelf"
-msgstr "Étagère"
-
-#: src/overview.c:41
-msgid "Pictures (navigation)"
-msgstr "Images (navigation)"
-
-#: src/overview.c:42
-msgid "Audio (navigation)"
-msgstr "Audio (navigation)"
-
 #: src/overview.c:117 src/recent.c:103 src/recent.c:319
 msgid "Recent files"
 msgstr "Fichiers récents"
-
-#: src/file_context_menu.c:308
-#, c-format
-msgid "Open with %s"
-msgstr "Ouvrir avec %s"
-
-#: src/file_context_menu.c:308
-#, c-format
-msgid "Open (with %s)"
-msgstr "Ouvrir (avec %s)"
-
-#: src/file_context_menu.c:337
-msgid "Delete"
-msgstr "Effacer"
-
-#: src/disks.c:128
-msgid "Whole filesystem"
-msgstr "Tout le système de fichiers"
-
-#: src/fileinfo_render.c:117
-msgid "Does not exist"
-msgstr "N'existe pas"
 
 #: src/fileinfo_render.c:124
 msgid "Directory"
@@ -160,6 +81,85 @@ msgstr "Supprimer les fichiers absents"
 #: src/favorites.c:316 src/recent.c:287
 msgid "Show absent files"
 msgstr "Montrer les fichiers absents"
+
+#: src/favorites.c:106 src/favorites.c:348 src/overview.c:114
+#: src/favorites_menu.c:39
+msgid "Favorites"
+msgstr "Favorieten"
+
+#: src/favorites.c:108
+msgid "Favorite pictures"
+msgstr "Favoriete Afbeeldingen"
+
+#: src/favorites.c:107
+msgid "Favorite books"
+msgstr "Favoriete Boeken"
+
+#: src/favorites.c:234 src/dir.c:400 src/recent.c:207
+msgid "Open"
+msgstr "Openen"
+
+#: src/favorites.c:109
+msgid "Favorite music"
+msgstr "Favoriete Muziek"
+
+#: src/favorites.c:286 src/dir.c:467 src/recent.c:258
+msgid "Actions"
+msgstr "Uitvoeren"
+
+#: src/favorites.c:240 src/dir.c:412
+msgid "Remove from favorites"
+msgstr "Verwijder uit Favorieten"
+
+#: src/favorites.c:299 src/recent.c:271
+msgid "Sort by name (reversed)"
+msgstr "Op Naam Sorteren (Z-A)"
+
+#: src/favorites.c:298 src/recent.c:270
+msgid "Sort by name"
+msgstr "Op Naam Sorteren (A-Z)"
+
+#: src/disks.c:128
+msgid "Whole filesystem"
+msgstr "Geheel bestandsysteem"
+
+#: src/file_context_menu.c:337
+msgid "Delete"
+msgstr "Verwijderen"
+
+#: src/favorites.c:301
+msgid "Clear favorites"
+msgstr "Favorieten Leegmaken"
+
+#: src/favorites.c:300 src/recent.c:272
+msgid "Sort by date"
+msgstr "Op Datum Sorteren"
+
+#: src/overview.c:41
+msgid "Pictures (navigation)"
+msgstr "Afbeeldingen (Navigatie)"
+
+#: src/overview.c:39 src/overview.c:40
+msgid "Bookshelf"
+msgstr "Boekenplank"
+
+#: src/overview.c:42
+msgid "Audio (navigation)"
+msgstr "Audio (Navigatie"
+
+#: src/file_context_menu.c:308
+#, c-format
+msgid "Open (with %s)"
+msgstr "Open (met %s)"
+
+#: src/file_context_menu.c:308
+#, c-format
+msgid "Open with %s"
+msgstr "Open met  %s"
+
+#: src/fileinfo_render.c:117
+msgid "Does not exist"
+msgstr "Bestaat niet"
 
 #~ msgid "Sort by order"
 #~ msgstr "Classer par ordre"
