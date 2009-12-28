@@ -63,21 +63,6 @@ msgstr "Упарадкаваць па даце"
 msgid "Clear favorites"
 msgstr "Ачысціць абранае"
 
-#: src/favorites.c:303 src/recent.c:275
-#, fuzzy
-msgid "Remove absent files"
-msgstr "Выдаліць з нядаўніх файлаў"
-
-#: src/favorites.c:315 src/recent.c:286
-#, fuzzy
-msgid "Hide absent files"
-msgstr "Нядаўнія файлы"
-
-#: src/favorites.c:316 src/recent.c:287
-#, fuzzy
-msgid "Show absent files"
-msgstr "Паказваць схаваныя файлы"
-
 #: src/overview.c:39 src/overview.c:40
 msgid "Bookshelf"
 msgstr "Кніжная паліца"
@@ -93,10 +78,6 @@ msgstr "Аўдыё (навігацыя)"
 #: src/overview.c:117 src/recent.c:103 src/recent.c:319
 msgid "Recent files"
 msgstr "Нядаўнія файлы"
-
-#: src/file_context_menu.c:217 src/file_context_menu.c:318
-msgid "Always open with..."
-msgstr ""
 
 #: src/file_context_menu.c:308
 #, c-format
@@ -163,6 +144,22 @@ msgstr "Выдаліць файл?"
 #: src/delete_file.c:60
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
 msgstr "Націсніце \"OK\" для выдалення файла <br><br>Націсніце \"C\" для адмены"
+
+#: src/file_context_menu.c:217 src/file_context_menu.c:318
+msgid "Always open with..."
+msgstr "Заўжды адкрываць у..."
+
+#: src/favorites.c:315 src/recent.c:286
+msgid "Hide absent files"
+msgstr "Схаваць адсутныя файлы"
+
+#: src/favorites.c:303 src/recent.c:275
+msgid "Remove absent files"
+msgstr "Выдаліць адсутныя файлы"
+
+#: src/favorites.c:316 src/recent.c:287
+msgid "Show absent files"
+msgstr "Паказваць адсутныя файлы"
 
 #~ msgid "Sort by order"
 #~ msgstr "Сартаваць па парадку"
