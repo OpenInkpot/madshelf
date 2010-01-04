@@ -1,0 +1,162 @@
+# madshelf - OpenInkpot bookshelf application
+# Copyright (C) 2008 Marc Lajoie <manorapide@hotmail.com>
+# Copyright (C) 2008,2009 Mikhail Gusarov <dottedmag@dottedmag.net>
+# This file is in public domain
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: madshelf 0.1\n"
+"Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
+"POT-Creation-Date: 2009-11-05 02:43+0600\n"
+"PO-Revision-Date: 2009-06-28 22:51+0800\n"
+"Last-Translator: Zhang Cong <zhangc@ustc.edu>\n"
+"Language-Team: Chinese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/favorites.c:106 src/favorites.c:348 src/overview.c:114
+#: src/favorites_menu.c:39
+msgid "Favorites"
+msgstr "お気に入り"
+
+#: src/favorites.c:107
+msgid "Favorite books"
+msgstr "お気に入りの本"
+
+#: src/favorites.c:108
+msgid "Favorite pictures"
+msgstr "お気に入りの画像"
+
+#: src/favorites.c:109
+msgid "Favorite music"
+msgstr "お気に入りの音楽"
+
+#: src/favorites.c:234 src/dir.c:400 src/recent.c:207
+msgid "Open"
+msgstr "開く"
+
+#: src/favorites.c:240 src/dir.c:412
+msgid "Remove from favorites"
+msgstr "お気に入りから削除"
+
+#: src/favorites.c:286 src/dir.c:467 src/recent.c:258
+msgid "Actions"
+msgstr "アクション"
+
+#: src/favorites.c:298 src/recent.c:270
+msgid "Sort by name"
+msgstr "名前で整列"
+
+#: src/favorites.c:299 src/recent.c:271
+msgid "Sort by name (reversed)"
+msgstr "名前で整列 (逆順)"
+
+#: src/favorites.c:300 src/recent.c:272
+msgid "Sort by date"
+msgstr "日付で整列"
+
+#: src/favorites.c:301
+msgid "Clear favorites"
+msgstr "お気に入りを空にする"
+
+#: src/favorites.c:303 src/recent.c:275
+#, fuzzy
+msgid "Remove absent files"
+msgstr "存在しないファイルを削除"
+
+#: src/favorites.c:315 src/recent.c:286
+#, fuzzy
+msgid "Hide absent files"
+msgstr "存在しないファイルは表示しない"
+
+#: src/favorites.c:316 src/recent.c:287
+#, fuzzy
+msgid "Show absent files"
+msgstr "存在しないファイルも表示する"
+
+#: src/overview.c:39 src/overview.c:40
+msgid "Bookshelf"
+msgstr "本棚"
+
+#: src/overview.c:41
+msgid "Pictures (navigation)"
+msgstr "画像 (ナビゲーション)"
+
+#: src/overview.c:42
+msgid "Audio (navigation)"
+msgstr "音楽 (ナビゲーション)"
+
+#: src/overview.c:117 src/recent.c:103 src/recent.c:319
+msgid "Recent files"
+msgstr "最近表示したファイル"
+
+#: src/file_context_menu.c:217 src/file_context_menu.c:318
+msgid "Always open with..."
+msgstr "毎回...で開く"
+
+#: src/file_context_menu.c:308
+#, c-format
+msgid "Open with %s"
+msgstr "%sで開く"
+
+#: src/file_context_menu.c:308
+#, c-format
+msgid "Open (with %s)"
+msgstr "%sで開く"
+
+#: src/file_context_menu.c:337
+msgid "Delete"
+msgstr "削除"
+
+#: src/disks.c:128
+msgid "Whole filesystem"
+msgstr "ファイルシステム全体"
+
+#: src/fileinfo_render.c:117
+msgid "Does not exist"
+msgstr "存在しません"
+
+#: src/fileinfo_render.c:124
+msgid "Directory"
+msgstr "ディレクトリ"
+
+#: src/dir.c:405
+msgid "Unhide"
+msgstr "表示する"
+
+#: src/dir.c:407
+msgid "Hide"
+msgstr "表示しない"
+
+#: src/dir.c:414
+msgid "Add to favorites"
+msgstr "お気に入りに追加"
+
+#: src/dir.c:492
+msgid "Do not show hidden files"
+msgstr "隠しファイルは表示しない"
+
+#: src/dir.c:494
+msgid "Show hidden files"
+msgstr "隠しファイルも表示する"
+
+#: src/dir.c:528
+msgid "Menu"
+msgstr "メニュー"
+
+#: src/recent.c:213
+msgid "Remove from recent files"
+msgstr "最近表示したファイルから削除"
+
+#: src/recent.c:273
+msgid "Clear recent files"
+msgstr "最近表示したファイルを空にする"
+
+#: src/delete_file.c:58
+msgid "Delete file?"
+msgstr "ファイルを削除しますか?"
+
+#: src/delete_file.c:60
+msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
+msgstr "\"OK\" - ファイル削除<br><br>\"C\" - キャンセル"
