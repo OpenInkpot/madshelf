@@ -1,4 +1,4 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.0\n"
@@ -154,4 +154,4 @@ msgstr "Удалить файл?"
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
 msgstr ""
 "Нажмите \"OK\" чтобы удалить файл<br><br>\n"
-"Нажимте \"C\" для отмены"
+"Нажмите \"C\" для отмены"
