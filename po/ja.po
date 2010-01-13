@@ -2,7 +2,7 @@
 # Copyright (C) 2008 Marc Lajoie <manorapide@hotmail.com>
 # Copyright (C) 2008,2009 Mikhail Gusarov <dottedmag@dottedmag.net>
 # This file is in public domain
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: madshelf 0.1\n"
@@ -59,18 +59,6 @@ msgstr "日付で整列"
 #: src/favorites.c:301
 msgid "Clear favorites"
 msgstr "お気に入りを空にする"
-
-#: src/favorites.c:303 src/recent.c:275
-msgid "Remove absent files"
-msgstr "存在しないファイルを削除"
-
-#: src/favorites.c:315 src/recent.c:286
-msgid "Hide absent files"
-msgstr "存在しないファイルは表示しない"
-
-#: src/favorites.c:316 src/recent.c:287
-msgid "Show absent files"
-msgstr "存在しないファイルも表示する"
 
 #: src/overview.c:39 src/overview.c:40
 msgid "Bookshelf"
@@ -142,14 +130,6 @@ msgstr "隠しファイルも表示する"
 msgid "Menu"
 msgstr "メニュー"
 
-#: src/recent.c:213
-msgid "Remove from recent files"
-msgstr "最近表示したファイルから削除"
-
-#: src/recent.c:273
-msgid "Clear recent files"
-msgstr "最近表示したファイルを空にする"
-
 #: src/delete_file.c:58
 msgid "Delete file?"
 msgstr "ファイルを削除しますか?"
@@ -157,3 +137,33 @@ msgstr "ファイルを削除しますか?"
 #: src/delete_file.c:60
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
 msgstr "\"OK\" - ファイル削除<br><br>\"C\" - キャンセル"
+
+#: src/favorites.c:315 src/recent.c:286
+msgid "Hide absent files"
+msgstr ""
+"存在しないファイルは\n"
+"表示しない"
+
+#: src/favorites.c:303 src/recent.c:275
+msgid "Remove absent files"
+msgstr ""
+"存在しないファイルを\n"
+"削除"
+
+#: src/favorites.c:316 src/recent.c:287
+msgid "Show absent files"
+msgstr ""
+"存在しないファイルも\n"
+"表示する"
+
+#: src/recent.c:273
+msgid "Clear recent files"
+msgstr ""
+"最近表示したファイル\n"
+"を空にする"
+
+#: src/recent.c:213
+msgid "Remove from recent files"
+msgstr ""
+"最近表示したファイル\n"
+"から削除"
