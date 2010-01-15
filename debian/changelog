@@ -1,7 +1,9 @@
-madshelf (0.2.42) UNRELEASED; urgency=low
+madshelf (0.2.42) zelazny; urgency=low
 
   * Use eoi_battery instead of copy-pasted code.
     - bump eoi-dev dependency
+  * Translations added: Dutch, Japanese.
+  * Translations updated: Belarusian, German, Russian, Spanish.
 
  -- Mikhail Gusarov <dottedmag@dottedmag.net>  Mon, 11 Jan 2010 06:48:48 +0600
 
