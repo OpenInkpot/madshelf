@@ -45,8 +45,6 @@ void fileinfo_init()
     {
         if(!efreet_mime_init())
             die("fileinfo_init: Unable to initialize Efreet_Mime subsystem");
-        if(!eina_hash_init())
-            die("fileinfo_init: Unable to initialize Eina_Hash subsystem");
         infos = eina_hash_string_superfast_new((Eina_Free_Cb)&fileinfo_destroy);
 
         extractors = em_load_extractors();
@@ -183,7 +181,6 @@ void fileinfo_fini()
 
         eina_hash_free(infos);
         infos = NULL;
-        eina_hash_shutdown();
         efreet_mime_shutdown();
     }
 }
