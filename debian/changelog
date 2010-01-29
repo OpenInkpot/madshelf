@@ -1,3 +1,9 @@
+madshelf (0.2.43) zelazny; urgency=low
+
+  * use more eoi for battery and clocks
+
+ -- Alexander V. Nikolaev <avn@daemon.hole.ru>  Wed, 27 Jan 2010 01:13:42 +0200
+
 madshelf (0.2.42) zelazny; urgency=low
 
   * Use eoi_battery instead of copy-pasted code.
