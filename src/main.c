@@ -519,10 +519,10 @@ int main(int argc, char** argv)
 
     if(!evas_init())
         die("Unable to initialize Evas");
-    if(!ecore_evas_init())
-        die("Unable to initialize Ecore_Evas");
     if(!edje_init())
         die("Unable to initialize Edje");
+    if(!ecore_evas_init())
+        die("Unable to initialize Ecore_Evas");
 
     fileinfo_init();
 
@@ -627,15 +627,17 @@ int main(int argc, char** argv)
     curdir_fini();
     fileinfo_fini();
 
+    appdef_fini();
+
     /* Keep valgrind happy */
     edje_file_cache_set(0);
     edje_collection_cache_set(0);
 
-    edje_shutdown();
     ecore_evas_shutdown();
+    edje_shutdown();
     evas_shutdown();
-    ecore_config_shutdown();
     ecore_shutdown();
+    ecore_config_shutdown();
 
     return 0;
 }
