@@ -119,7 +119,7 @@ madshelf_disks_t* fill_disks(Efreet_Ini* config)
 
 madshelf_disks_t* fill_stub_disk()
 {
-    madshelf_disks_t* disks = calloc(1, sizeof(madshelf_disks_t*));
+    madshelf_disks_t* disks = calloc(1, sizeof(madshelf_disks_t));
     if(!disks)
         return NULL;
 
