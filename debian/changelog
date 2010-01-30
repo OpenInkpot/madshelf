@@ -3,6 +3,7 @@ madshelf (0.2.44) zelazny; urgency=low
   * Fixed section (OI#399)
   * Fixed memory overrun in fill_stub_disk()
   * Added appdef_fini and sorted shutdown functions to avoid crash on exit
+  * Translations updated: Ukrainian.
 
  -- Mikhail Gusarov <dottedmag@dottedmag.net>  Sat, 30 Jan 2010 17:10:50 +0600
 
