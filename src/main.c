@@ -39,15 +39,15 @@
 #include <libchoicebox.h>
 #include <libeoi.h>
 #include <libeoi_help.h>
+#include <libeoi_clock.h>
+#include <libeoi_battery.h>
 
 #include "madshelf.h"
 
 #include "overview.h"
 #include "fileinfo.h"
 #include "utils.h"
-#include "battery.h"
 #include "handlers.h"
-#include "clock.h"
 #include "curdir.h"
 
 #define SYS_CONFIG_DIR SYSCONFDIR "/madshelf"
@@ -286,11 +286,6 @@ static void contents_key_up(void* param, Evas* e, Evas_Object* o, void* event_in
     choicebox_aux_key_up_handler(o, ev);
 }
 
-static int update_batt_cb(void* param)
-{
-    update_battery((Evas_Object*)param);
-    return 1;
-}
 
 static void load_config(madshelf_state_t* state)
 {
@@ -604,10 +599,8 @@ int main(int argc, char** argv)
     evas_object_show(main_edje);
     ecore_evas_show(main_win);
 
-    update_batt_cb(main_edje);
-    ecore_timer_add(5*60, &update_batt_cb, main_edje);
-
-    init_clock(main_edje);
+    eoi_run_clock(main_edje);
+    eoi_run_battery(main_edje);
 
     ecore_x_io_error_handler_set(exit_all, NULL);
     ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_handler, NULL);
