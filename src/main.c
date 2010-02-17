@@ -2,7 +2,7 @@
  * MadShelf - bookshelf application.
  *
  * Copyright (C) 2008 by Marc Lajoie
- * Copyright (C) 2008,2009 Mikhail Gusarov <dottedmag@dottedmag.net>
+ * Copyright © 2008,2009,2010 Mikhail Gusarov <dottedmag@dottedmag.net>
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -49,6 +49,7 @@
 #include "utils.h"
 #include "handlers.h"
 #include "curdir.h"
+#include "app_defaults.h"
 
 #define SYS_CONFIG_DIR SYSCONFDIR "/madshelf"
 #define USER_CONFIG_DIR "/.e/apps/madshelf"
@@ -147,59 +148,12 @@ static void free_state(madshelf_state_t* state)
 }
 
 
-
-
-
-
-
-
-
-
-
-static void page_updated(Evas_Object* help, int cur_page, int total_pages,
-                         const char* header, void* param)
+static void
+help(madshelf_state_t *state)
 {
-    Evas* canvas = evas_object_evas_get(help);
-    Evas_Object* main_edje = evas_object_name_find(canvas, "main_edje");
-    choicebox_aux_edje_footer_handler(main_edje, "footer", cur_page, total_pages);
+    eoi_help_show(state->canvas, "madshelf", NULL,
+                  gettext("Bookshelf"), NULL, NULL);
 }
-
-static void help_close_handler(Evas_Object* help)
-{
-    Evas_Object* prev_focus = evas_object_data_get(help, "prev-focus");
-    evas_object_hide(help);
-    evas_object_del(help);
-
-    if(prev_focus)
-        evas_object_focus_set(prev_focus, 1);
-}
-
-
-static void help(madshelf_state_t* state)
-{
-    Evas_Object* help = eoi_help_new(state->canvas, "madshelf",
-                                     page_updated, help_close_handler);
-    evas_object_name_set(help, "help");
-    int w, h;
-    evas_output_size_get(state->canvas, &w, &h);
-    evas_object_move(help, 0, 49); /* FIXME */
-    evas_object_resize(help, w, h - 49*2); /* FIXME */
-
-    Evas_Object* prev_focus = evas_focus_get(state->canvas);
-    evas_object_data_set(help, "prev-focus", prev_focus);
-    evas_object_focus_set(help, 1);
-    evas_object_show(help);
-}
-
-/* static bool is_dir_allowed(madshelf_state_t* state, const char* new_dir) */
-/* { */
-/*     madshelf_disk_t* disk = find_disk(&state->disks, state->loc.dir); */
-/*     if(!disk) */
-/*         die("is_dir_allowed: Current dir is not on any disk"); */
-/*     return is_prefix(disk->path, new_dir); */
-/* } */
-
-
 
 static void contents_draw_item_handler(Evas_Object* choicebox, Evas_Object* item,
                     int item_num, int page_position, void* param)
@@ -212,10 +166,6 @@ static void contents_page_handler(Evas_Object* choicebox, int cur_page,
                                    int total_pages, void* param)
 {
     Evas* canvas = evas_object_evas_get(choicebox);
-    /* FIXME: Ewww */
-    Evas_Object* help = evas_object_name_find(canvas, "help");
-    if(help)
-        return;
 
     Evas_Object* footer = evas_object_name_find(canvas, "main_edje");
     choicebox_aux_edje_footer_handler(footer, "footer", cur_page, total_pages);
@@ -238,34 +188,6 @@ static void contents_close_handler(Evas_Object* choicebox, void* param)
 static void main_win_close_handler(Ecore_Evas* main_win)
 {
     ecore_main_loop_quit();
-}
-
-static void main_win_resize_handler(Ecore_Evas* main_win)
-{
-    Evas* canvas = ecore_evas_get(main_win);
-    int w, h;
-    evas_output_size_get(canvas, &w, &h);
-
-    Evas_Object* main_edje = evas_object_name_find(canvas, "main_edje");
-    evas_object_resize(main_edje, w, h);
-
-    Evas_Object* main_menu = evas_object_name_find(canvas, "main_menu");
-    if(main_menu)
-    {
-        evas_object_resize(main_menu, w/2, h);
-    }
-
-    Evas_Object* delete_confirm = evas_object_name_find(canvas, "delete-confirm-window");
-    if(delete_confirm)
-    {
-        evas_object_resize(delete_confirm, w, h);
-    }
-
-    Evas_Object* help = evas_object_name_find(canvas, "help");
-    if(help)
-        evas_object_resize(help, w, h - 98); /* FIXME: hardcoded 49*2 */
-
-    eoi_process_resize(main_win);
 }
 
 static void contents_key_up(void* param, Evas* e, Evas_Object* o, void* event_info)
@@ -562,7 +484,6 @@ int main(int argc, char** argv)
     ecore_evas_title_set(main_win, "Madshelf");
     ecore_evas_name_class_set(main_win, "Madshelf", "Madshelf");
     ecore_evas_callback_delete_request_set(main_win, main_win_close_handler);
-    ecore_evas_callback_resize_set(main_win, main_win_resize_handler);
 
     Evas* main_canvas = ecore_evas_get(main_win);
     state.canvas = main_canvas;
@@ -573,11 +494,13 @@ int main(int argc, char** argv)
     evas_object_move(main_edje, 0, 0);
     evas_object_resize(main_edje, 600, 800);
 
+    eoi_fullwindow_object_register(main_win, main_edje);
+
     choicebox_info_t info = {
         NULL,
-        "/usr/share/choicebox/choicebox.edj",
+        "choicebox",
         "full",
-        THEMEDIR "/main_window.edj",
+        "madshelf",
         "fileitem",
         contents_item_handler,
         contents_draw_item_handler,

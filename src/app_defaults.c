@@ -22,7 +22,7 @@ static void appdef_init()
 {
     efreet_init();
 
-    system_defs = efreet_ini_new("/usr/share/applications/defaults.list");
+    system_defs = efreet_ini_new(DATADIR "/applications/defaults.list");
     asprintf(&userfile, "%s/.local/share/applications/defaults.list",
              getenv("HOME"));
     user_defs = efreet_ini_new(userfile);

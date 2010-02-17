@@ -1,10 +1,10 @@
 THEMES=$(wildcard *.edc)
 COMPILED_THEMES=$(patsubst %.edc,%.edj,$(THEMES))
 
-theme_dir=$(datadir)/madshelf
+theme_dir=$(datadir)/eoi/themes/default
 
-#%.edj: %.edc
-#	edje_cc $< $@
+%.edj: %.edc
+	edje_cc $< $@
 
 install-data-hook: $(COMPILED_THEMES)
 	for theme in $(COMPILED_THEMES); do \

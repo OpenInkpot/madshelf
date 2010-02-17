@@ -1,5 +1,5 @@
 INCLUDES = @EFL_CFLAGS@ @EXTRACT_CFLAGS@ @SQLITE_CFLAGS@ @LIBCHOICEBOX_CFLAGS@ @LIBEOI_CFLAGS@ @LIBKEYS_CFLAGS@
-AM_CFLAGS=-std=gnu99 -Wall -Wno-unused  -DSYSCONFDIR="\"$(sysconfdir)\"" -DTHEMEDIR='"$(datadir)/madshelf"'
+AM_CFLAGS=-std=gnu99 -Wall -Wno-unused  -DSYSCONFDIR="\"$(sysconfdir)\"" -DDATADIR='"$(datadir)"'
 
 bin_PROGRAMS = madshelf
 noinst_PROGRAMS = test_mime

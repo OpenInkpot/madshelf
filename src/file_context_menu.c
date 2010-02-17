@@ -176,14 +176,12 @@ static void _set_default_handler_draw_item_handler(Evas_Object* choicebox, Evas_
 
 static void _set_default_handler(file_context_menu_info_t* info)
 {
-   Evas_Object* main_edje = evas_object_name_find(info->state->canvas, "main_edje");
-
     /* Replace context menu choicebox with new one */
     choicebox_info_t choicebox_info = {
         NULL,
-        "/usr/share/choicebox/choicebox.edj",
+        "choicebox",
         "settings-right",
-        "/usr/share/choicebox/choicebox.edj",
+        "choicebox",
         "item-settings",
         _set_default_handler_item_handler,
         _set_default_handler_draw_item_handler,
@@ -377,9 +375,9 @@ void open_file_context_menu(madshelf_state_t* state,
 
     choicebox_info_t choicebox_info = {
         NULL,
-        "/usr/share/choicebox/choicebox.edj",
+        "choicebox",
         "settings-right",
-        "/usr/share/choicebox/choicebox.edj",
+        "choicebox",
         "item-settings",
         _item_handler,
         _draw_item_handler,

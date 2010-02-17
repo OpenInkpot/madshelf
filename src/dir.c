@@ -120,8 +120,6 @@ static void go_to_parent(madshelf_state_t* state)
     madshelf_disk_t* cur_disk = find_disk(state->disks, _loc->dir);
     madshelf_disk_t* next_disk = find_disk(state->disks, next_dir);
 
-    Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
-
     if(cur_disk != next_disk || !strcmp(_loc->dir, "/"))
     {
         /* Top directory reached - move to "overview" screen */
@@ -137,8 +135,6 @@ static void go_to_parent(madshelf_state_t* state)
 
 static void go_to_directory(madshelf_state_t* state, const char* dirname)
 {
-    Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
-
     go(state, dir_make(state, dirname));
 }
 

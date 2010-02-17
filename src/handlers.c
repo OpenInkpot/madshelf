@@ -33,7 +33,7 @@
 #include "handlers.h"
 #include "app_defaults.h"
 
-#define DESKTOP_DIR "/usr/share/applications"
+#define DESKTOP_DIR DATADIR "/applications"
 
 #define NO_HANDLER ((Efreet_Desktop*)-1)
 

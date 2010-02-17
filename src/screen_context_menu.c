@@ -101,9 +101,9 @@ void open_screen_context_menu(madshelf_state_t* state,
 
     choicebox_info_t choicebox_info = {
         NULL,
-        "/usr/share/choicebox/choicebox.edj",
+        "choicebox",
         "settings-left",
-        "/usr/share/choicebox/choicebox.edj",
+        "choicebox",
         "item-settings",
         _item_handler,
         _draw_item_handler,

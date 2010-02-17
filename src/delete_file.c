@@ -1,11 +1,14 @@
 #include <string.h>
 #include <libintl.h>
+#include <err.h>
 
 #include <Evas.h>
 #include <Edje.h>
 
 #include "delete_file.h"
 #include "dir.h"
+#include <libeoi.h>
+#include <libeoi_themes.h>
 
 typedef struct
 {
@@ -47,8 +50,9 @@ void delete_file_dialog(madshelf_state_t* state, char* filename,
 
     Evas* canvas = state->canvas;
 
-    Evas_Object* wnd = edje_object_add(canvas);
-    edje_object_file_set(wnd, THEMEDIR "/delete-confirm.edj", "delete-confirm-window");
+    Evas_Object* wnd = eoi_create_themed_edje(canvas, "madshelf", "delete-confirm-window");
+    if (!wnd)
+        errx(1, "Unable to open theme madshelf(delete-confirm-window)");
 
     evas_object_name_set(wnd, "delete-confirm-window");
     evas_object_focus_set(wnd, true);
@@ -58,6 +62,9 @@ void delete_file_dialog(madshelf_state_t* state, char* filename,
     edje_object_part_text_set(wnd, "title", gettext("Delete file?"));
     edje_object_part_text_set(wnd, "text",
                               gettext("Press \"OK\" to delete file<br><br>Press \"C\" to cancel"));
+
+    Ecore_Evas *window = ecore_evas_ecore_evas_get(canvas);
+    eoi_fullwindow_object_register(window, wnd);
 
     evas_object_move(wnd, 0, 0);
     int w, h;
