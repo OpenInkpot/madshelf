@@ -21,8 +21,6 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-__attribute__((noreturn)) void die(const char* fmt, ...);
-
 /*
  * Returns pointer to extension in filename. Warning! Returned string has the
  * same lifetime as passed one, being just a pointer to the middle of argument.

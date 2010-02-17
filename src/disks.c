@@ -25,6 +25,7 @@
 #include <libintl.h>
 #include <sys/stat.h>
 #include <libgen.h>
+#include <err.h>
 
 #include "utils.h"
 
@@ -78,7 +79,7 @@ static Eina_Bool _fill_cb(const Eina_Hash* hash, const void* key, void* data, vo
 
         const char* p = efreet_ini_string_get(config, "Path");
         if(!p)
-            die("No path found for disk entry %s\n", (char*)key);
+            errx(1, "No path found for disk entry %s\n", (char*)key);
 
         disk->copy_target = efreet_ini_boolean_get(config, "Copy-Target");
         disk->is_removable = efreet_ini_boolean_get(config, "Removable");

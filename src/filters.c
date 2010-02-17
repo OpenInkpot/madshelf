@@ -18,6 +18,8 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#include <err.h>
+
 #include <Ecore_File.h>
 #include <Efreet_Mime.h>
 
@@ -45,5 +47,5 @@ bool is_visible(madshelf_filter_t filter, const char* filename)
     if(filter == MADSHELF_FILTER_AUDIO)
         return openers->app_types & OPENERS_TYPE_AUDIO;
 
-    die("is_visible: Unknown filter type: %d", filter);
+    errx(1, "is_visible: Unknown filter type: %d", filter);
 }

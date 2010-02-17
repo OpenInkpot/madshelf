@@ -26,6 +26,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <err.h>
 
 #include <Ecore_File.h>
 #include <Edje.h>
@@ -313,7 +314,7 @@ static void _draw_item_handler(Evas_Object* choicebox, Evas_Object* item, int it
     else
         item_num -= 1;
 
-    die("_draw_item_handler: Unknown item: %d\n", item_num);
+    errx(1, "_draw_item_handler: Unknown item: %d\n", item_num);
 }
 
 void open_file_context_menu(madshelf_state_t* state,

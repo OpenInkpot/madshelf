@@ -26,6 +26,7 @@
 #include <limits.h>
 #include <string.h>
 #include <getopt.h>
+#include <err.h>
 
 #include <Evas.h>
 #include <Ecore.h>
@@ -421,9 +422,9 @@ int main(int argc, char** argv)
     }
 
     if(ecore_config_init("madshelf") != ECORE_CONFIG_ERR_SUCC)
-        die("Unable to initialize Ecore_Config");
+        errx(1, "Unable to initialize Ecore_Config");
     if(!ecore_init())
-        die("Unable to initialize Ecore");
+        errx(1, "Unable to initialize Ecore");
 
     if(check_running_instance(filter))
     {
@@ -435,11 +436,11 @@ int main(int argc, char** argv)
     ecore_x_io_error_handler_set(exit_app, NULL);
 
     if(!evas_init())
-        die("Unable to initialize Evas");
+        errx(1, "Unable to initialize Evas");
     if(!edje_init())
-        die("Unable to initialize Edje");
+        errx(1, "Unable to initialize Edje");
     if(!ecore_evas_init())
-        die("Unable to initialize Ecore_Evas");
+        errx(1, "Unable to initialize Ecore_Evas");
 
     fileinfo_init();
 
@@ -474,7 +475,7 @@ int main(int argc, char** argv)
     char* err = NULL;
     state.tags = tags_init(tags_db_filename, &err);
     if(!state.tags)
-        die("Unable to initialize tags database: %s", err);
+        errx(1, "Unable to initialize tags database: %s", err);
     free(err);
 
     /* End of state */

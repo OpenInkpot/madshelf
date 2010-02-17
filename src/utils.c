@@ -25,17 +25,6 @@
 
 #include "utils.h"
 
-void die(const char* fmt, ...)
-{
-    va_list ap;
-
-    va_start(ap, fmt);
-    vfprintf(stderr, fmt, ap);
-    va_end(ap);
-    fprintf(stderr, "\n");
-    exit(EXIT_FAILURE);
-}
-
 const char* file_ext(const char* f)
 {
     const char* c = strrchr(f, '.');
