@@ -171,7 +171,7 @@ is_mountpoint(const char *path)
     struct stat dir_s;
     struct stat par_s;
 
-    if (0 != stat(path, &dir_s))
+    if (stat(path, &dir_s) != 0)
         return false;
 
     char *p = strdup(path);
