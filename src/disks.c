@@ -32,17 +32,17 @@
 #define SECTION_PREFIX "X-Madshelf-Disk-"
 #define SECTION_PREFIX_LEN (sizeof(SECTION_PREFIX)/sizeof(char) - 1)
 
-static Eina_Bool _count_cb(const Eina_Hash* hash, const void* key, void* data, void* fdata)
+static Eina_Bool
+_count_cb(const Eina_Hash *hash, const void *key, void *data, void *fdata)
 {
-    int* count = (int*)fdata;
-
-    if(!strncmp(SECTION_PREFIX, key, SECTION_PREFIX_LEN))
+    int *count = (int *)fdata;
+    if (!strncmp(SECTION_PREFIX, key, SECTION_PREFIX_LEN))
         (*count)++;
-
     return true;
 }
 
-static int count_disks(Efreet_Ini* config)
+static int
+count_disks(Efreet_Ini *config)
 {
     int count = 0;
     eina_hash_foreach(config->data, &_count_cb, &count);
@@ -51,44 +51,49 @@ static int count_disks(Efreet_Ini* config)
 
 typedef struct
 {
-    Efreet_Ini* config;
-    madshelf_disks_t* disks;
+    Efreet_Ini *config;
+    madshelf_disks_t *disks;
 } _fill_param_t;
 
-static Eina_Bool _fill_cb(const Eina_Hash* hash, const void* key, void* data, void* fdata)
+static void
+cut_trailing_slash(char *s)
 {
-    Efreet_Ini* config = ((_fill_param_t*)fdata)->config;
-    madshelf_disks_t* disks = ((_fill_param_t*)fdata)->disks;
-    madshelf_disk_t* disk = disks->disk + disks->n;
+    char *c = strrchr(s, '/');
+    while (c && c > s && *c == '/')
+        *c-- = '\0';
+}
 
-    if(!strncmp(SECTION_PREFIX, key, SECTION_PREFIX_LEN))
-    {
+static Eina_Bool
+_fill_cb(const Eina_Hash *hash, const void *key, void *data, void *fdata)
+{
+    Efreet_Ini *config = ((_fill_param_t *)fdata)->config;
+    madshelf_disks_t *disks = ((_fill_param_t *)fdata)->disks;
+    madshelf_disk_t *disk = disks->disk + disks->n;
+
+    if (!strncmp(SECTION_PREFIX, key, SECTION_PREFIX_LEN)) {
         efreet_ini_section_set(config, key);
 
-        const char* sn = efreet_ini_localestring_get(config, "ShortName");
-        if(!sn) /* FIXME: warn */
-            disk->short_name = strdup((char*)key + SECTION_PREFIX_LEN);
+        const char *sn = efreet_ini_localestring_get(config, "ShortName");
+        if (!sn)
+            disk->short_name = strdup((char *)key + SECTION_PREFIX_LEN);
         else
             disk->short_name = strdup(sn);
 
-        const char* n = efreet_ini_localestring_get(config, "Name");
-        if(!n) /* FIXME: warn */
+        const char *n = efreet_ini_localestring_get(config, "Name");
+        if (!n)
             disk->name = strdup((char*)key + SECTION_PREFIX_LEN);
         else
             disk->name = strdup(n);
 
-        const char* p = efreet_ini_string_get(config, "Path");
-        if(!p)
+        const char *p = efreet_ini_localestring_get(config, "Path");
+        if (!p)
             errx(1, "No path found for disk entry %s\n", (char*)key);
 
         disk->copy_target = efreet_ini_boolean_get(config, "Copy-Target");
         disk->is_removable = efreet_ini_boolean_get(config, "Removable");
+        disk->path = strdup(p);
 
-        disk->path = strdup(efreet_ini_localestring_get(config, "Path"));
-
-        char* c = disk->path + strlen(disk->path) - 1;
-        while(c > disk->path && *c == '/')
-            *c-- = 0;
+        cut_trailing_slash(disk->path);
 
         disks->n++;
     }
@@ -96,17 +101,17 @@ static Eina_Bool _fill_cb(const Eina_Hash* hash, const void* key, void* data, vo
     return true;
 }
 
-madshelf_disks_t* fill_disks(Efreet_Ini* config)
+madshelf_disks_t *
+fill_disks(Efreet_Ini *config)
 {
-    madshelf_disks_t* disks = calloc(1, sizeof(madshelf_disks_t));
-    if(!disks)
+    madshelf_disks_t *disks = calloc(1, sizeof(madshelf_disks_t));
+    if (!disks)
         return NULL;
 
     int n = count_disks(config);
     disks->n = 0;
     disks->disk = calloc(1, n * sizeof(madshelf_disk_t));
-    if(!disks->disk)
-    {
+    if (!disks->disk) {
         free(disks);
         return NULL;
     }
@@ -118,10 +123,11 @@ madshelf_disks_t* fill_disks(Efreet_Ini* config)
     return disks;
 }
 
-madshelf_disks_t* fill_stub_disk()
+madshelf_disks_t *
+fill_stub_disk()
 {
-    madshelf_disks_t* disks = calloc(1, sizeof(madshelf_disks_t));
-    if(!disks)
+    madshelf_disks_t *disks = calloc(1, sizeof(madshelf_disks_t));
+    if (!disks)
         return NULL;
 
     disks->n = 1;
@@ -133,42 +139,44 @@ madshelf_disks_t* fill_stub_disk()
     return disks;
 }
 
-static bool is_path_prefix(const char* s, const char* t)
+static bool is_path_prefix(const char *s, const char *t)
 {
-    if(s[0] == '/' && s[1] == '\0' && t[0] == '/')
+    if (s[0] == '/' && s[1] == '\0' && t[0] == '/')
         return true;
 
-    while(*s)
-        if(*s++ != *t++) return false;
+    while (*s)
+        if (*s++ != *t++) return false;
     return *t == 0 || *t == '/';
 }
 
-bool in_disk(madshelf_disk_t* disk, const char* filename)
+bool
+in_disk(madshelf_disk_t *disk, const char *filename)
 {
     return is_path_prefix(disk->path, filename);
 }
 
-madshelf_disk_t* find_disk(madshelf_disks_t* disks, const char* filename)
+madshelf_disk_t *
+find_disk(madshelf_disks_t *disks, const char *filename)
 {
     int i;
-    for(i = 0; i < disks->n; ++i)
-        if(in_disk(disks->disk + i, filename))
+    for (i = 0; i < disks->n; ++i)
+        if (in_disk(disks->disk + i, filename))
             return disks->disk + i;
     return NULL;
 }
 
-static bool is_mountpoint(const char* path)
+static bool
+is_mountpoint(const char *path)
 {
     struct stat dir_s;
     struct stat par_s;
 
-    if(0 != stat(path, &dir_s))
+    if (0 != stat(path, &dir_s))
         return false;
 
-    char* p = strdup(path);
-    char* parent = dirname(p);
-    if(0 != stat(parent, &par_s))
-    {
+    char *p = strdup(path);
+    char *parent = dirname(p);
+    if (stat(parent, &par_s) != 0) {
         free(p);
         return false;
     }
@@ -177,19 +185,20 @@ static bool is_mountpoint(const char* path)
     return dir_s.st_dev != par_s.st_dev;
 }
 
-bool disk_mounted(madshelf_disk_t* disk)
+bool
+disk_mounted(madshelf_disk_t *disk)
 {
-    if(!disk->is_removable)
+    if (!disk->is_removable)
         return 1;
 
     return is_mountpoint(disk->path);
 }
 
-void free_disks(madshelf_disks_t* disks)
+void
+free_disks(madshelf_disks_t *disks)
 {
     int i;
-    for(i = 0; i < disks->n; ++i)
-    {
+    for (i = 0; i < disks->n; ++i) {
         free(disks->disk[i].path);
         free(disks->disk[i].short_name);
         free(disks->disk[i].name);
