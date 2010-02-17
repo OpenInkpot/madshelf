@@ -1,5 +1,16 @@
+/*
+ * sort-mode,<mode>
+ *   mode = none | name (by name) | namerev (by name, reversed) | date (by date)
+ *
+ */
+
 images {
-   image, "delete-confirm.png" COMP;
+    image, "delete-confirm.png" COMP;
+
+    image, "sort-none.png" COMP;
+    image, "sort-name.png" COMP;
+    image, "sort-namerev.png" COMP;
+    image, "sort-date.png" COMP;
 }
 
 styles {
@@ -142,6 +153,51 @@ collections {
             }
          }
       }
+   }
+   group {
+       name, "sort-icons";
+       parts {
+            part {
+                name, "sort-icon";
+                type, IMAGE;
+                mouse_events, 0;
+                description {
+                    state, "default" 0.0;
+                    rel1 { relative, 0.0 1.0; offset, 9 -40; }
+                    rel2 { relative, 0.0 1.0; offset, 39 -10; }
+                    image { normal, "sort-none.png"; }
+                }
+                description {
+                    state, "name" 0.0;
+                    inherit, "default" 0.0;
+                    image { normal, "sort-name.png"; }
+                }
+                description {
+                    state, "namerev" 0.0;
+                    inherit, "default" 0.0;
+                    image { normal, "sort-namerev.png"; }
+                }
+                description {
+                    state, "date" 0.0;
+                    inherit, "default" 0.0;
+                    image { normal, "sort-date.png"; }
+                }
+            }
+       }
+       programs {
+           program {
+               name, "sort-mode";
+               signal, "sort-mode,*";
+
+               script {
+                   new name_arg[100], name[100];
+                   getsarg(0, name_arg, 100);
+                   strcut(name, name_arg, 10, 100);
+
+                   set_state(PART:"sort-icon", name, 0.0);
+               }
+           }
+       }
    }
    group {
       name, "delete-confirm-window";

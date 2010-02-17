@@ -42,6 +42,7 @@
 #include <libeoi_help.h>
 #include <libeoi_clock.h>
 #include <libeoi_battery.h>
+#include <libeoi_themes.h>
 
 #include "madshelf.h"
 
@@ -497,6 +498,8 @@ int main(int argc, char** argv)
 
     eoi_fullwindow_object_register(main_win, main_edje);
 
+    /* Add "contents" choicebox */
+
     choicebox_info_t info = {
         NULL,
         "choicebox",
@@ -516,6 +519,16 @@ int main(int argc, char** argv)
     evas_object_event_callback_add(contents, EVAS_CALLBACK_KEY_UP, &contents_key_up, &state);
 
     eoi_register_fullscreen_choicebox(contents);
+
+    /* Add "sort" icons */
+
+    Evas_Object *sort_icons
+        = eoi_create_themed_edje(main_canvas, "madshelf", "sort-icons");
+    evas_object_name_set(sort_icons, "sort-icons");
+    evas_object_show(sort_icons);
+    edje_object_part_swallow(main_edje, "state-icons", sort_icons);
+
+    /* Let's go */
 
     go(&state, overview_make(&state));
 
@@ -568,6 +581,6 @@ static const char* _signals[] = {
 
 void set_sort_icon(const madshelf_state_t* state, madshelf_icon_sort_t icon)
 {
-    Evas_Object* main_edje = evas_object_name_find(state->canvas, "main_edje");
-    edje_object_signal_emit(main_edje, _signals[icon+1], "");
+    Evas_Object* sort_icons = evas_object_name_find(state->canvas, "sort-icons");
+    edje_object_signal_emit(sort_icons, _signals[icon+1], "");
 }
