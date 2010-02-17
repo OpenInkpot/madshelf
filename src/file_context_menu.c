@@ -83,22 +83,6 @@ static int get_fileop_targets_num(file_context_menu_info_t* info)
     return num;
 }
 
-static madshelf_disk_t* get_fileop_target(file_context_menu_info_t* info, int num)
-{
-    madshelf_disks_t* disks = info->state->disks;
-    madshelf_disk_t* cur_disk = find_disk(disks, info->filename);
-
-    int i;
-    for(i = 0; i < disks->n; ++i)
-    {
-        if(disks->disk + i == cur_disk) continue;
-        if(!disks->disk[i].copy_target) continue;
-        if(num-- == 0)
-            return disks->disk + i;
-    }
-    return NULL;
-}
-
 static void _return_focus_to_main_choicebox(Evas* canvas)
 {
     Evas_Object* main_choicebox = evas_object_name_find(canvas, "contents");
