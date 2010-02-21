@@ -24,22 +24,21 @@
 #include "handlers.h"
 #include "fileinfo.h"
 
-void run_default_handler(madshelf_state_t* state, const char* filename)
+void
+run_default_handler(madshelf_state_t *state, const char *filename)
 {
-    fileinfo_t* fileinfo = fileinfo_create(filename);
-    openers_t* handlers_list = openers_get(fileinfo->mime_type);
+    fileinfo_t *fileinfo = fileinfo_create(filename);
+    openers_t *handlers_list = openers_get(fileinfo->mime_type);
     fileinfo_destroy(fileinfo);
 
-    if(!handlers_list)
+    if (!handlers_list)
         return;
 
     tag_add(state->tags, "recent", filename);
 
     Efreet_Desktop* handler = eina_list_data_get(handlers_list->apps);
 
-    Eina_List* l = NULL;
-    l = eina_list_append(l, filename);
-
+    Eina_List *l = eina_list_append(NULL, filename);
     efreet_desktop_exec(handler, l, NULL);
 
     eina_list_free(l);
