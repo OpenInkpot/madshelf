@@ -20,6 +20,9 @@
 #ifndef TEXT_ESCAPE_H
 #define TEXT_ESCAPE_H
 
+/*
+ * Escape all symbols which have special meanings for Evas Textblock.
+ */
 char* textblock_escape_string(const char *text);
 
 #endif
