@@ -43,17 +43,17 @@
 static void _open_file_context_menu(madshelf_state_t* state, const char* filename);
 static void _open_screen_context_menu(madshelf_state_t* state, Evas_Object* choicebox);
 
-typedef struct
-{
+typedef struct {
     madshelf_loc_t loc;
 
-    Eina_Array* files;
+    Eina_Array *files;
     madshelf_favorites_type_t type;
 } favorites_loc_t;
 
-static void _update_files(favorites_loc_t* _loc, Eina_Array* files)
+static void
+_update_files(favorites_loc_t *_loc, Eina_Array *files)
 {
-    char* item;
+    char *item;
     Eina_Array_Iterator iterator;
     unsigned int i;
     EINA_ARRAY_ITER_NEXT(_loc->files, i, item, iterator)
@@ -63,29 +63,31 @@ static void _update_files(favorites_loc_t* _loc, Eina_Array* files)
     _loc->files = files;
 }
 
-static void _free(madshelf_state_t* state)
-{
-    favorites_loc_t* fav_loc = (favorites_loc_t*)state->loc;
+static void
+_free(madshelf_state_t *state) {
+    favorites_loc_t *fav_loc = (favorites_loc_t*)state->loc;
     _update_files(fav_loc, NULL);
     close_file_context_menu(state->canvas, false);
     close_screen_context_menu(state->canvas);
     free(fav_loc);
 }
 
-typedef struct
-{
-    Eina_Array* files;
+typedef struct {
+    Eina_Array *files;
     madshelf_filter_t filter;
     bool show_nonexistent;
 } fill_file_args_t;
 
-static void _fill_file(const char* filename, int serial, void* param)
+static void
+_fill_file(const char *filename, int serial, void *param)
 {
-    fill_file_args_t* args = (fill_file_args_t*)param;
+    fill_file_args_t *args = (fill_file_args_t *)param;
 
-    if((args->show_nonexistent || (!args->show_nonexistent && ecore_file_exists(filename)))
-       && is_visible(args->filter, filename))
+    if ((args->show_nonexistent
+         || (!args->show_nonexistent && ecore_file_exists(filename)))
+        && is_visible(args->filter, filename)) {
         eina_array_push(args->files, strdup(filename));
+    }
 }
 
 /*
@@ -94,36 +96,45 @@ static void _fill_file(const char* filename, int serial, void* param)
  * - state->tags
  * - loc->filter
  */
-static Eina_Array* _fill_files(const madshelf_state_t* state)
+static Eina_Array *
+_fill_files(const madshelf_state_t *state)
 {
-    Eina_Array* files = eina_array_new(10);
-    fill_file_args_t args = { files, state->filter, state->show_nonexistent_favorites };
-    tag_list(state->tags, "favorites", (tags_sort_t)state->favorites_sort, _fill_file, &args);
+    Eina_Array *files = eina_array_new(10);
+    fill_file_args_t args = {
+        files,
+        state->filter,
+        state->show_nonexistent_favorites
+    };
+    tag_list(state->tags, "favorites", (tags_sort_t)state->favorites_sort,
+             _fill_file, &args);
     return files;
 }
 
-static const char* titles[] = {
+static const char *titles[] = {
     _("Favorites"),
     _("Favorite books"),
     _("Favorite pictures"),
     _("Favorite music"),
 };
 
-static void _init_gui(const madshelf_state_t* state)
+static void
+_init_gui(const madshelf_state_t *state)
 {
-    Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
+    Evas_Object *choicebox = evas_object_name_find(state->canvas, "contents");
     choicebox_set_selection(choicebox, -1);
 }
 
-static void _update_gui(const madshelf_state_t* state)
+static void
+_update_gui(const madshelf_state_t *state)
 {
-    Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
-    Evas_Object* header = evas_object_name_find(state->canvas, "main_edje");
+    Evas_Object *choicebox = evas_object_name_find(state->canvas, "contents");
+    Evas_Object *header = evas_object_name_find(state->canvas, "main_edje");
 
-    favorites_loc_t* fav_loc = (favorites_loc_t*)state->loc;
+    favorites_loc_t *fav_loc = (favorites_loc_t *)state->loc;
 
     choicebox_set_size(choicebox, eina_array_count_get(fav_loc->files));
-    choicebox_invalidate_interval(choicebox, 0, eina_array_count_get(fav_loc->files));
+    choicebox_invalidate_interval(choicebox, 0,
+                                  eina_array_count_get(fav_loc->files));
 
     edje_object_part_text_set(header, "title",
                               gettext(titles[fav_loc->type]));
@@ -131,18 +142,16 @@ static void _update_gui(const madshelf_state_t* state)
     set_sort_icon(state, state->favorites_sort);
 }
 
-static bool _key_up(madshelf_state_t* state, Evas_Object* choicebox,
-                    Evas_Event_Key_Up* ev)
+static bool
+_key_up(madshelf_state_t *state, Evas_Object *choicebox, Evas_Event_Key_Up *ev)
 {
-    const char* action = keys_lookup(state->keys, "lists", ev->keyname);
+    const char *action = keys_lookup(state->keys, "lists", ev->keyname);
 
-    if(action && !strcmp(action, "ContextMenu"))
-    {
+    if (action && !strcmp(action, "ContextMenu")) {
         _open_screen_context_menu(state, choicebox);
         return true;
     }
-    if(action && !strcmp(action, "AltActivateCurrent"))
-    {
+    if (action && !strcmp(action, "AltActivateCurrent")) {
         choicebox_activate_current(choicebox, true);
         return true;
     }
@@ -150,19 +159,20 @@ static bool _key_up(madshelf_state_t* state, Evas_Object* choicebox,
     return false;
 }
 
-static void _request_exit(madshelf_state_t* state, Evas_Object* choicebox)
+static void
+_request_exit(madshelf_state_t *state, Evas_Object *choicebox)
 {
     go(state, overview_make(state));
 }
 
-static void _activate_file(madshelf_state_t* state, const char* filename)
+static void
+_activate_file(madshelf_state_t *state, const char *filename)
 {
-    if(!ecore_file_exists(filename))
+    if (!ecore_file_exists(filename))
         return;
 
-    if(ecore_file_is_dir(filename))
-    {
-        Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
+    if (ecore_file_is_dir(filename)) {
+        Evas_Object *choicebox = evas_object_name_find(state->canvas, "contents");
         choicebox_scroll_to(choicebox, 0);
         go(state, dir_make(state, filename));
         return;
@@ -171,34 +181,36 @@ static void _activate_file(madshelf_state_t* state, const char* filename)
     run_default_handler(state, filename);
 }
 
-static void _activate_item(madshelf_state_t* state, Evas_Object* choicebox,
-                           int item_num, bool is_alt)
+static void
+_activate_item(madshelf_state_t *state, Evas_Object *choicebox,
+               int item_num, bool is_alt)
 {
-    favorites_loc_t* fav_loc = (favorites_loc_t*)state->loc;
-    char* filename = eina_array_data_get(fav_loc->files, item_num);
+    favorites_loc_t *fav_loc = (favorites_loc_t *)state->loc;
+    char *filename = eina_array_data_get(fav_loc->files, item_num);
 
-    if(is_alt)
+    if (is_alt)
         _open_file_context_menu(state, filename);
     else
         _activate_file(state, filename);
 }
 
-static void _draw_item(const madshelf_state_t* state,
-                         Evas_Object* item, int item_num)
+static void
+_draw_item(const madshelf_state_t *state, Evas_Object *item, int item_num)
 {
     item_clear(item);
 
-    favorites_loc_t* fav_loc = (favorites_loc_t*)state->loc;
-    char* filename = eina_array_data_get(fav_loc->files, item_num);
+    favorites_loc_t *fav_loc = (favorites_loc_t *)state->loc;
+    char *filename = eina_array_data_get(fav_loc->files, item_num);
 
-    fileinfo_t* fileinfo = fileinfo_create(filename);
+    fileinfo_t *fileinfo = fileinfo_create(filename);
     fileinfo_render(item, fileinfo, !ecore_file_exists(filename));
     fileinfo_destroy(fileinfo);
 }
 
-static void _fs_updated(madshelf_state_t* state)
+static void
+_fs_updated(madshelf_state_t *state)
 {
-    favorites_loc_t* _loc = (favorites_loc_t*)state->loc;
+    favorites_loc_t *_loc = (favorites_loc_t *)state->loc;
     _update_files(_loc, _fill_files(state));
     _update_gui(state);
 }
@@ -214,14 +226,15 @@ static madshelf_loc_t loc = {
     &_fs_updated,
 };
 
-madshelf_loc_t* favorites_make(madshelf_state_t* state, madshelf_favorites_type_t type)
+madshelf_loc_t *favorites_make(madshelf_state_t *state,
+                               madshelf_favorites_type_t type)
 {
-    favorites_loc_t* fav_loc = malloc(sizeof(favorites_loc_t));
+    favorites_loc_t *fav_loc = malloc(sizeof(favorites_loc_t));
     fav_loc->loc = loc;
     fav_loc->type = type;
     fav_loc->files = _fill_files(state);
 
-    return (madshelf_loc_t*)fav_loc;
+    return (madshelf_loc_t *)fav_loc;
 }
 
 /* Item context menu */
