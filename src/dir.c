@@ -179,59 +179,51 @@ static Eina_Array* _fill_files(const madshelf_state_t* state, const char* dir, i
 
     /* First select directories */
     Eina_List* i;
-    for(i = ls; i; i = eina_list_next(i))
-    {
+    for (i = ls; i; i = eina_list_next(i)) {
         const char* file = eina_list_data_get(i);
         char* filename;
-        if(!asprintf(&filename, "%s/%s", !strcmp(dir, "/") ? "" : dir, file))
+        if (!asprintf(&filename, "%s/%s", !strcmp(dir, "/") ? "" : dir, file))
             err(1, "Whoops, out of memory");
 
-        if(!state->show_hidden && file_is_hidden(state, filename))
+        if (!ecore_file_is_dir(filename)) {
+            free(filename);
+            continue;
+        }
+
+        if (!state->show_hidden && file_is_hidden(state, filename))
         {
             free(filename);
             continue;
         }
 
-        if(ecore_file_is_dir(filename))
-        {
-            if(old_file && old_pos)
-                if(!strcmp(old_file, file))
-                    *old_pos = eina_array_count_get(files);
-            eina_array_push(files, filename);
-        }
-        else
-            free(filename);
+        if (old_file && old_pos)
+            if (!strcmp(old_file, file))
+                *old_pos = eina_array_count_get(files);
+        eina_array_push(files, filename);
     }
 
     /* Then files */
-    for(i = ls; i; i = eina_list_next(i))
-    {
+    for (i = ls; i; i = eina_list_next(i)) {
         const char* file = eina_list_data_get(i);
         char* filename;
-        if(!asprintf(&filename, "%s/%s", !strcmp(dir, "/") ? "" : dir, file))
+        if (!asprintf(&filename, "%s/%s", !strcmp(dir, "/") ? "" : dir, file))
             err(1, "Whoops, out of memory");
 
-        if(!state->show_hidden && file_is_hidden(state, filename))
+        if (ecore_file_is_dir(filename)) {
+            free(filename);
+            continue;
+        }
+
+        if (!state->show_hidden && file_is_hidden(state, filename))
         {
             free(filename);
             continue;
         }
 
-        if(!is_visible(state->filter, filename))
-        {
-            free(filename);
-            continue;
-        }
-
-        if(!ecore_file_is_dir(filename))
-        {
-            if(old_file && old_pos)
-                if(!strcmp(old_file, file))
-                    *old_pos = eina_array_count_get(files);
-            eina_array_push(files, filename);
-        }
-        else
-            free(filename);
+        if (old_file && old_pos)
+            if (!strcmp(old_file, file))
+                *old_pos = eina_array_count_get(files);
+        eina_array_push(files, filename);
     }
 
     char* s;
