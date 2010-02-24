@@ -1,3 +1,10 @@
+madshelf (0.2.45) zelazny; urgency=low
+
+  * Fixes for compatibility with newer libeoi.
+  * Code cleanup and code style.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Thu, 25 Feb 2010 05:07:49 +0600
+
 madshelf (0.2.44) zelazny; urgency=low
 
   * Fixed section (OI#399)
