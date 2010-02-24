@@ -27,6 +27,11 @@
  */
 const char* file_ext(const char* filename);
 
+/*
+ * Allocates and returns formatted string. Aborts on memory allocation errors.
+ */
+char *xasprintf(const char *fmt, ...);
+
 #ifdef DEBUG
 #include <Evas.h>
 void dump_evas_hier(Evas* canvas);

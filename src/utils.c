@@ -18,8 +18,11 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include <stdarg.h>
+#define _GNU_SOURCE
+
 #include <stdio.h>
+#include <err.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -32,6 +35,20 @@ const char* file_ext(const char* f)
         return c + 1;
     else
         return f + strlen(f);
+}
+
+char *xasprintf(const char *fmt, ...)
+{
+    char *res;
+    va_list ap;
+    va_start(ap, fmt);
+    int ret = vasprintf(&res, fmt, ap);
+    va_end(ap);
+    if (ret == -1) {
+        err(1, "xasprintf");
+        return NULL;
+    }
+    return res;
 }
 
 #ifdef DEBUG
@@ -62,3 +79,4 @@ void dump_evas_hier(Evas* canvas)
     }
 }
 #endif
+

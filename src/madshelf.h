@@ -104,7 +104,16 @@ struct madshelf_state_t
     madshelf_disks_t* disks;
     tags_t* tags;
     keys_t* keys;
+
+    /* Clipboard */
+    bool clipboard_active;
+    bool clipboard_copy;
+    char *clipboard_path; /* on heap */
 };
+
+bool is_clipboard_active(madshelf_state_t *state);
+void clipboard_paste(madshelf_state_t *state, char *dest);
+void clipboard_new(madshelf_state_t *state, char *src, bool copy);
 
 /* FIXME */
 

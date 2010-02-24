@@ -43,6 +43,7 @@
 #include "screen_context_menu.h"
 #include "run.h"
 #include "filters.h"
+#include "utils.h"
 
 static void _open_screen_context_menu(madshelf_state_t* state);
 static void _open_file_context_menu(madshelf_state_t* state, const char* filename);
@@ -478,8 +479,15 @@ static void draw_screen_context_action(const madshelf_state_t* state,
 {
     item_clear(item);
 
-    if(item_num == 2)
-    {
+    if (item_num == 3) {
+        char *msg = state->clipboard_copy
+            ? gettext("Copy '%s' here")
+            : gettext("Move '%s' here");
+
+        char *f = xasprintf(msg, basename(state->clipboard_path));
+        edje_object_part_text_set(item, "title", f);
+        free(f);
+    } else if(item_num == 2) {
         if(state->show_hidden)
             edje_object_part_text_set(item, "title", gettext("Do not show hidden files"));
         else
@@ -495,6 +503,11 @@ static void handle_screen_context_action(madshelf_state_t* state,
                                          int item_num,
                                          bool is_alt)
 {
+    _loc_t* _loc = (_loc_t*)state->loc;
+
+    if (item_num == 3) {
+        clipboard_paste(state, _loc->dir);
+    }
     if(item_num == 2)
     {
         set_show_hidden(state, !state->show_hidden);
@@ -518,7 +531,7 @@ static void _open_screen_context_menu(madshelf_state_t* state)
 {
     open_screen_context_menu(state,
                              gettext("Menu"),
-                             3,
+                             3 + (is_clipboard_active(state) ? 1 : 0),
                              draw_screen_context_action,
                              handle_screen_context_action,
                              screen_context_menu_closed);

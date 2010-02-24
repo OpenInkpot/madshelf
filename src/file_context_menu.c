@@ -252,8 +252,13 @@ static void _item_handler(Evas_Object* choicebox, int item_num, bool is_alt, voi
 
     /* Files-only ops */
 
-    if(item_num == 0)
-    {
+    if (item_num == 0) { /* Copy */
+        clipboard_new(info->state, info->filename, true);
+        close_file_context_menu(canvas, false);
+    } else if (item_num == 1) { /* Move */
+        clipboard_new(info->state, info->filename, false);
+        close_file_context_menu(canvas, false);
+    } else if (item_num == 2) { /* Delete */
         delete_handler_params_t* params = malloc(sizeof(delete_handler_params_t));
         params->state = info->state;
         params->action = info->delete_action;
@@ -263,8 +268,6 @@ static void _item_handler(Evas_Object* choicebox, int item_num, bool is_alt, voi
         close_file_context_menu(canvas, true);
         delete_file_dialog(state, filename, _delete_handler, params);
     }
-    else
-        item_num--;
 }
 
 static void _draw_item_handler(Evas_Object* choicebox, Evas_Object* item, int item_num,
@@ -306,13 +309,16 @@ static void _draw_item_handler(Evas_Object* choicebox, Evas_Object* item, int it
 
     /* Files-only ops */
 
-    if(item_num == 0) /* Delete */
-    {
+    if (item_num == 0) { /* Copy */
+        edje_object_part_text_set(item, "title", gettext("Copy"));
+        return;
+    } else if (item_num == 1) { /* Move */
+        edje_object_part_text_set(item, "title", gettext("Cut"));
+        return;
+    } else if (item_num == 2) { /* Delete */
         edje_object_part_text_set(item, "title", gettext("Delete"));
         return;
     }
-    else
-        item_num -= 1;
 
     errx(1, "_draw_item_handler: Unknown item: %d\n", item_num);
 }
@@ -379,14 +385,11 @@ void open_file_context_menu(madshelf_state_t* state,
     edje_object_part_swallow(main_edje, "right-overlay", file_context_menu);
 
     int actions_num = add_actions_num
-        + info->openers_num;
+        + info->openers_num
+        + 3; /* Copy, move, delete */
 
     if(!ecore_file_is_dir(filename))
-        actions_num +=
-//        + 2*info->fileop_targets /* Copy, move */
-            + (info->openers_num > 0 ? 1 : 0) /* Always open with */
-            + 1 /* Delete */
-            ;
+        actions_num += (info->openers_num > 0 ? 1 : 0); /* Always open with */
 
     choicebox_set_size(file_context_menu_choicebox, actions_num);
 
