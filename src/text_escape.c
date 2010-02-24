@@ -19,6 +19,8 @@
  */
 #include "text_escape.h"
 
+#include <string.h>
+
 #include <Ecore_Data.h>
 
 char *
