@@ -234,7 +234,7 @@ static void handle_file_context_action(madshelf_state_t* state, const char* file
 static void delete_file_context_action(madshelf_state_t* state, const char* filename)
 {
     tag_remove(state->tags, "recent", filename);
-    unlink(filename);
+    ecore_file_recursive_rm(filename);
     (*state->loc->fs_updated)(state);
 }
 
