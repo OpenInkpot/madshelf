@@ -74,8 +74,8 @@ _free(madshelf_state_t *state) {
 
 typedef struct {
     Eina_Array *files;
+    const madshelf_state_t *state;
     madshelf_filter_t filter;
-    bool show_nonexistent;
 } fill_file_args_t;
 
 static void
@@ -83,11 +83,8 @@ _fill_file(const char *filename, int serial, void *param)
 {
     fill_file_args_t *args = (fill_file_args_t *)param;
 
-    if ((args->show_nonexistent
-         || (!args->show_nonexistent && ecore_file_exists(filename)))
-        && is_visible(args->filter, filename)) {
+    if (args->state->show_hidden || !is_hidden(args->state, filename))
         eina_array_push(args->files, strdup(filename));
-    }
 }
 
 /*
@@ -102,8 +99,7 @@ _fill_files(const madshelf_state_t *state)
     Eina_Array *files = eina_array_new(10);
     fill_file_args_t args = {
         files,
-        state->filter,
-        state->show_nonexistent_favorites
+        state,
     };
     tag_list(state->tags, "favorites", (tags_sort_t)state->favorites_sort,
              _fill_file, &args);
@@ -203,7 +199,7 @@ _draw_item(const madshelf_state_t *state, Evas_Object *item, int item_num)
     char *filename = eina_array_data_get(fav_loc->files, item_num);
 
     fileinfo_t *fileinfo = fileinfo_create(filename);
-    fileinfo_render(item, fileinfo, !ecore_file_exists(filename));
+    fileinfo_render(item, fileinfo, is_hidden(state, filename));
     fileinfo_destroy(fileinfo);
 }
 
@@ -324,9 +320,9 @@ static void _scm_draw(const madshelf_state_t* state,
     if(item_num == 4)
     {
         edje_object_part_text_set(item, "title",
-                                  state->show_nonexistent_favorites
-                                  ? gettext("Hide absent files")
-                                  : gettext("Show absent files"));
+                                  state->show_hidden
+                                  ? gettext("Do not show hidden files")
+                                  : gettext("Show hidden files"));
     }
     else
         edje_object_part_text_set(item, "title", gettext(_scm_titles[item_num]));
@@ -342,7 +338,7 @@ static void _scm_handle(madshelf_state_t* state, int item_num, bool is_alt)
     else if(item_num == 3)
         tag_clear(state->tags, "favorites");
     else if (item_num == 4)
-        set_show_nonexistent_favorites(state, !state->show_nonexistent_favorites);
+        set_show_hidden(state, !state->show_hidden);
     else
         tag_remove_absent(state->tags, "favorites");
 

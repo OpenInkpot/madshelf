@@ -124,21 +124,6 @@ void set_disk_current_path(madshelf_disk_t* disk, const char* path)
     ecore_config_save();
 }
 
-void set_show_nonexistent_recent(madshelf_state_t* state, bool show_nonexistent)
-{
-    state->show_nonexistent_recent = show_nonexistent;
-    ecore_config_boolean_set("show-nonexistent-recent", show_nonexistent);
-    ecore_config_save();
-}
-
-void set_show_nonexistent_favorites(madshelf_state_t* state, bool show_nonexistent)
-{
-    state->show_nonexistent_favorites = show_nonexistent;
-    ecore_config_boolean_set("show-nonexistent-favorites", show_nonexistent);
-    ecore_config_save();
-}
-
-
 static void free_state(madshelf_state_t* state)
 {
     if(state->loc->free)
@@ -230,8 +215,6 @@ static void load_config(madshelf_state_t* state)
     if (state->recent_sort < 0 || state->recent_sort > MADSHELF_SORTEX_DATE)
         state->recent_sort = MADSHELF_SORTEX_DATE;
     state->show_hidden = ecore_config_boolean_get("show-hidden");
-    state->show_nonexistent_recent = ecore_config_boolean_get("show-nonexistent-recent");
-    state->show_nonexistent_favorites = ecore_config_boolean_get("show-nonexistent-favorites");
 
     int i;
     for(i = 0; i < state->disks->n; ++i)
