@@ -221,8 +221,14 @@ static void load_config(madshelf_state_t* state)
     ecore_config_load();
 
     state->sort = ecore_config_int_get("sort");
+    if (state->sort < 0 || state->sort > MADSHELF_SORT_NAMEREV)
+        state->sort = MADSHELF_SORT_NAME;
     state->favorites_sort = ecore_config_int_get("favorites-sort");
+    if (state->favorites_sort < 0 || state->favorites_sort > MADSHELF_SORTEX_DATE)
+        state->favorites_sort = MADSHELF_SORTEX_DATE;
     state->recent_sort = ecore_config_int_get("recent-sort");
+    if (state->recent_sort < 0 || state->recent_sort > MADSHELF_SORTEX_DATE)
+        state->recent_sort = MADSHELF_SORTEX_DATE;
     state->show_hidden = ecore_config_boolean_get("show-hidden");
     state->show_nonexistent_recent = ecore_config_boolean_get("show-nonexistent-recent");
     state->show_nonexistent_favorites = ecore_config_boolean_get("show-nonexistent-favorites");
