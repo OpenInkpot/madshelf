@@ -58,7 +58,7 @@ typedef struct
 static void
 cut_trailing_slash(char *s)
 {
-    char *c = strrchr(s, '/');
+    char *c = s + strlen(s) - 1;
     while (c && c > s && *c == '/')
         *c-- = '\0';
 }
