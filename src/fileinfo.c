@@ -120,8 +120,13 @@ static fileinfo_t* fileinfo_parse(const char* filename)
                 i->series_num = atoi(j->keyword);
         }
 
-        if(!i->mime_type)
-            i->mime_type = strdup(efreet_mime_type_get(i->filename));
+        if(!i->mime_type) {
+            const char *mime = efreet_mime_type_get(i->filename);
+            if (mime)
+                i->mime_type = strdup(mime);
+            else
+                i->mime_type = strdup("application/unknown");
+        }
 
         em_keywords_free(keywords);
     }
