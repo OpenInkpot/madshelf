@@ -481,8 +481,8 @@ static void draw_screen_context_action(const madshelf_state_t* state,
 
     if (item_num == 3) {
         char *msg = state->clipboard_copy
-            ? gettext("Copy '%s' here")
-            : gettext("Move '%s' here");
+            ? gettext("Copy file(s) here")
+            : gettext("Move file(s) here");
 
         char *f = xasprintf(msg, basename(state->clipboard_path));
         edje_object_part_text_set(item, "title", f);
