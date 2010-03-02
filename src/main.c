@@ -177,6 +177,22 @@ static void main_win_close_handler(Ecore_Evas* main_win)
     ecore_main_loop_quit();
 }
 
+static void update_gui_on_resize(Ecore_Evas *main_win __attribute__((unused)),
+                                Evas_Object *obj,
+                                int w,
+                                int h,
+                                void *param)
+{
+    /* Resize main edje, then update header/hooter, because
+       eoi_edje_text_trim_left() require object to be _already_ resized
+       properly
+
+       This hack still exists, until EDJE will be fixed
+       */
+    evas_object_resize(obj, w, h);
+    update_gui((madshelf_state_t *)param);
+}
+
 static void contents_key_up(void* param, Evas* e, Evas_Object* o, void* event_info)
 {
     madshelf_state_t* state = (madshelf_state_t*)param;
@@ -485,7 +501,13 @@ int main(int argc, char** argv)
     evas_object_move(main_edje, 0, 0);
     evas_object_resize(main_edje, 600, 800);
 
-    eoi_fullwindow_object_register(main_win, main_edje);
+    /* don't use eoi_fullwindow_object_register -- we need to preserve
+       order of edje resizing
+
+       This hack still exists, until EDJE will be fixed
+       */
+    eoi_resize_object_register(main_win, main_edje, update_gui_on_resize,
+            &state);
 
     /* Add "contents" choicebox */
 
