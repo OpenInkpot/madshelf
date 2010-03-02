@@ -247,6 +247,16 @@ static void _init_gui(const madshelf_state_t* state)
     choicebox_scroll_to(choicebox, _loc->old_pos == -1 ? 0 : _loc->old_pos);
 }
 
+
+/*
+   Important:
+       _update_gui() must be called after edje resize, because
+       (if called after resize event)
+        eoi_edje_text_trim_left() depend on it.
+
+       This hack still exists, until EDJE will be fixed
+
+ */
 static void _update_gui(const madshelf_state_t* state)
 {
     Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
@@ -259,13 +269,13 @@ static void _update_gui(const madshelf_state_t* state)
 
     madshelf_disk_t* d = find_disk(state->disks, _loc->dir);
 
-    char* header_txt;
-    if(!asprintf(&header_txt, "%s:%s", d->short_name, _loc->dir + strlen(d->path)))
-        err(1, "Whoops, out of memory");
-
-    edje_object_part_text_set(header, "title", header_txt);
-    free(header_txt);
-
+    char* prefix = xasprintf("%s:", d->short_name);
+    eoi_edje_text_trim_left(header,
+                            "title",
+                            prefix,
+                            _loc->dir + strlen(d->path),
+                            "");
+    free(prefix);
     set_sort_icon(state, state->sort);
 }
 
