@@ -5,6 +5,7 @@ madshelf (0.2.47) zelazny; urgency=low
   * Fixed segfault if directory contains unreadable file
   * Fixed sort-none.png icon to match grey background as well as black
     one.
+  * New translations: Chinese.
 
  -- Mikhail Gusarov <dottedmag@dottedmag.net>  Sat, 27 Feb 2010 06:06:13 +0600
 
