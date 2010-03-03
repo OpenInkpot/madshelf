@@ -51,6 +51,7 @@
 #include "utils.h"
 #include "handlers.h"
 #include "curdir.h"
+#include "dir.h"
 #include "app_defaults.h"
 
 #define SYS_CONFIG_DIR SYSCONFDIR "/madshelf"
@@ -308,7 +309,15 @@ static int _client_del(void* param, int ev_type, void* ev)
     }
     else if(msg->size != 1)
     {
-        fprintf(stderr, "Unknown filter type: %*s\n", msg->size, msg->msg);
+        if(msg->msg[0] == '/')
+        {
+            madshelf_state_t* state = (madshelf_state_t*)param;
+            char *folder = strndup(msg->msg, msg->size);
+            go(state, dir_make(state, folder));
+            free(folder);
+        }
+        else
+            fprintf(stderr, "Unknown filter type: %*s\n", msg->size, msg->msg);
     }
     else
     {
@@ -343,7 +352,24 @@ static int _client_data(void* param, int ev_type, void* ev)
     return 0;
 }
 
-static bool check_running_instance(madshelf_filter_t filter)
+static bool
+send_line_to_running_instance(const char *line)
+{
+    Ecore_Con_Server* server;
+    server = ecore_con_server_connect(ECORE_CON_LOCAL_USER,
+                                      "madshelf-singleton", 0, NULL);
+
+    if(!server)
+        return false;
+    ecore_con_server_send(server, line, strlen(line));
+    ecore_con_server_flush(server);
+    ecore_con_server_del(server);
+
+    return true;
+
+}
+
+static bool check_running_instance(madshelf_filter_t filter, const char *folder)
 {
     Ecore_Con_Server* server
         = ecore_con_server_add(ECORE_CON_LOCAL_USER, "madshelf-singleton", 0, NULL);
@@ -351,18 +377,13 @@ static bool check_running_instance(madshelf_filter_t filter)
     if(!server)
     {
         /* Somebody already listens there */
-        server = ecore_con_server_connect(ECORE_CON_LOCAL_USER,
-                                          "madshelf-singleton", 0, NULL);
-
-        if(!server)
-            return false;
 
         char a[16];
         snprintf(a, 16, "%d", (int)filter);
-        ecore_con_server_send(server, a, strlen(a));
-        ecore_con_server_flush(server);
-        ecore_con_server_del(server);
-
+        if(!send_line_to_running_instance(a))
+            return false;
+        if(folder)
+            return send_line_to_running_instance(folder);
         return true;
     }
 
@@ -409,6 +430,7 @@ static void exit_app(void* param)
 int main(int argc, char** argv)
 {
     madshelf_filter_t filter = MADSHELF_FILTER_NO;
+    char *folder = NULL;
 
     for(;;)
     {
@@ -438,12 +460,28 @@ int main(int argc, char** argv)
         return 1;
     }
 
+    if(optind < argc)
+    {
+        folder = argv[optind];
+        if(folder[0] != '/')
+        {
+            fprintf(stderr, "%s must me an absolute path", folder);
+            return 1;
+        }
+
+        if(!ecore_file_is_dir(folder))
+        {
+            fprintf(stderr, "%s must me a directory", folder);
+            return 1;
+        }
+    }
+
     if(ecore_config_init("madshelf") != ECORE_CONFIG_ERR_SUCC)
         errx(1, "Unable to initialize Ecore_Config");
     if(!ecore_init())
         errx(1, "Unable to initialize Ecore");
 
-    if(check_running_instance(filter))
+    if(check_running_instance(filter, folder))
     {
         ecore_con_shutdown();
         ecore_shutdown();
@@ -552,7 +590,10 @@ int main(int argc, char** argv)
 
     /* Let's go */
 
-    go(&state, overview_make(&state));
+    if(folder)
+        go(&state, dir_make(&state, folder));
+    else
+        go(&state, overview_make(&state));
 
     evas_object_show(contents);
     evas_object_show(main_edje);
