@@ -149,17 +149,6 @@ static int _namerev(const void* lhs, const void* rhs)
     return -_name(lhs, rhs);
 }
 
-static bool file_is_hidden(const madshelf_state_t* state, const char* filename)
-{
-    char* filename_copy = strdup(filename);
-    char* b = basename(filename_copy);
-
-    bool is_hidden = *b == '.' || has_tag(state->tags, "hidden", filename);
-    free(filename_copy);
-
-    return is_hidden;
-}
-
 /*
  * List depends on:
  *  - state->sort
@@ -167,32 +156,29 @@ static bool file_is_hidden(const madshelf_state_t* state, const char* filename)
  *  - state->filter
  *  - dir contents on FS
  */
-static Eina_Array* _fill_files(const madshelf_state_t* state, const char* dir, int* old_pos)
+static Eina_Array *
+_fill_files(const madshelf_state_t *state, const char *dir, int *old_pos)
 {
-    char* old_file = curdir_get(dir);
+    char *old_file = curdir_get(dir);
     if(old_pos) *old_pos = -1;
 
-    Eina_Array* files = eina_array_new(10);
+    Eina_Array *files = eina_array_new(10);
 
-    Eina_List* ls = ecore_file_ls(dir);
+    Eina_List *ls = ecore_file_ls(dir);
     ls = eina_list_sort(ls, eina_list_count(ls),
                         state->sort == MADSHELF_SORT_NAME ? &_name : &_namerev);
 
     /* First select directories */
-    Eina_List* i;
-    for (i = ls; i; i = eina_list_next(i)) {
-        const char* file = eina_list_data_get(i);
-        char* filename;
-        if (!asprintf(&filename, "%s/%s", !strcmp(dir, "/") ? "" : dir, file))
-            err(1, "Whoops, out of memory");
+    for (Eina_List *i = ls; i; i = eina_list_next(i)) {
+        const char *file = eina_list_data_get(i);
+        char *filename = xasprintf("%s/%s", !strcmp(dir, "/") ? "" : dir, file);
 
         if (!ecore_file_is_dir(filename)) {
             free(filename);
             continue;
         }
 
-        if (!state->show_hidden && file_is_hidden(state, filename))
-        {
+        if (!state->show_hidden && is_hidden(state, filename)) {
             free(filename);
             continue;
         }
@@ -204,19 +190,16 @@ static Eina_Array* _fill_files(const madshelf_state_t* state, const char* dir, i
     }
 
     /* Then files */
-    for (i = ls; i; i = eina_list_next(i)) {
-        const char* file = eina_list_data_get(i);
-        char* filename;
-        if (!asprintf(&filename, "%s/%s", !strcmp(dir, "/") ? "" : dir, file))
-            err(1, "Whoops, out of memory");
+    for (Eina_List *i = ls; i; i = eina_list_next(i)) {
+        const char *file = eina_list_data_get(i);
+        char *filename = xasprintf("%s/%s", !strcmp(dir, "/") ? "" : dir, file);
 
         if (ecore_file_is_dir(filename)) {
             free(filename);
             continue;
         }
 
-        if (!state->show_hidden && file_is_hidden(state, filename))
-        {
+        if (!state->show_hidden && is_hidden(state, filename)) {
             free(filename);
             continue;
         }
@@ -342,7 +325,7 @@ static void _draw_item(const madshelf_state_t* state, Evas_Object* item,
     char* filename = eina_array_data_get(_loc->files, item_num);
 
     fileinfo_t* fileinfo = fileinfo_create(filename);
-    fileinfo_render(item, fileinfo, file_is_hidden(state, filename));
+    fileinfo_render(item, fileinfo, is_hidden(state, filename));
     fileinfo_destroy(fileinfo);
 }
 

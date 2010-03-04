@@ -95,8 +95,6 @@ struct madshelf_state_t
     /* Preferences */
     madshelf_sort_t sort;
     bool show_hidden; /* FIXME: be more flexible */
-    bool show_nonexistent_recent; /* FIXME */
-    bool show_nonexistent_favorites; /* FIXME */
     madshelf_sortex_t favorites_sort;
     madshelf_sortex_t recent_sort;
 

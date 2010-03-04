@@ -23,6 +23,6 @@
 
 #include "madshelf.h"
 
-bool is_visible(madshelf_filter_t filter, const char* filename);
+bool is_hidden(const madshelf_state_t *state, const char* filename);
 
 #endif

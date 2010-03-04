@@ -1,3 +1,18 @@
+madshelf (0.2.47) zelazny; urgency=low
+
+  [ Mikhail Gusarov ]
+  * Fixed segfault if wrong value was read from config file
+  * Non-matching files are hidden, not removed completely (OI#393)
+  * Fixed segfault if directory contains unreadable file
+  * Fixed sort-none.png icon to match grey background as well as black
+    one.
+  * New translations: Chinese.
+  
+  [ Alexander Nikolaev ]
+  * Implement custom ellipsis in title (OI#657)
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Sat, 27 Feb 2010 06:06:13 +0600
+
 madshelf (0.2.46) zelazny; urgency=low
 
   * Fix dumb error which broke the disks menu.

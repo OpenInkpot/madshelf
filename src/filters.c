@@ -18,7 +18,11 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#define _GNU_SOURCE
+
 #include <err.h>
+#include <string.h>
+#include <libgen.h>
 
 #include <Ecore_File.h>
 #include <Efreet_Mime.h>
@@ -27,25 +31,37 @@
 #include "handlers.h"
 #include "utils.h"
 
-bool
-is_visible(madshelf_filter_t filter, const char *filename) {
-    if (filter == MADSHELF_FILTER_NO)
-        return true;
+static bool
+has_hidden_tag(const madshelf_state_t *state, const char *filename)
+{
+    char* filename_copy = strdup(filename);
+    char* b = basename(filename_copy);
+    bool is_hidden = *b == '.' || has_tag(state->tags, "hidden", filename);
+    free(filename_copy);
+    return is_hidden;
+}
 
+bool
+is_hidden(const madshelf_state_t *state, const char *filename)
+{
     if (!ecore_file_exists(filename)) return true;
-    if (ecore_file_is_dir(filename)) return true;
+    if (has_hidden_tag(state, filename)) return true;
+    if (ecore_file_is_dir(filename)) return false;
+
+    if (state->filter == MADSHELF_FILTER_NO)
+        return false;
 
     const char *mime_type = efreet_mime_type_get(filename);
     openers_t *openers = openers_get(mime_type);
     if (!openers)
         return false;
 
-    if (filter == MADSHELF_FILTER_BOOKS)
-        return openers->app_types & OPENERS_TYPE_BOOKS;
-    if (filter == MADSHELF_FILTER_IMAGE)
-        return openers->app_types & OPENERS_TYPE_IMAGE;
-    if (filter == MADSHELF_FILTER_AUDIO)
-        return openers->app_types & OPENERS_TYPE_AUDIO;
+    if (state->filter == MADSHELF_FILTER_BOOKS)
+        return !(openers->app_types & OPENERS_TYPE_BOOKS);
+    if (state->filter == MADSHELF_FILTER_IMAGE)
+        return !(openers->app_types & OPENERS_TYPE_IMAGE);
+    if (state->filter == MADSHELF_FILTER_AUDIO)
+        return !(openers->app_types & OPENERS_TYPE_AUDIO);
 
-    errx(1, "is_visible: Unknown filter type: %d", filter);
+    errx(1, "is_visible: Unknown filter type: %d", state->filter);
 }
