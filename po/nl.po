@@ -128,7 +128,6 @@ msgstr "Verwijderen"
 #: src/delete_file.c:81
 msgid "Delete file?"
 msgstr ""
-"\n"
 "Verwijder bestand"
 
 #: src/delete_file.c:83
