@@ -1,9 +1,9 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.0\n"
 "Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
-"POT-Creation-Date: 2009-11-05 02:43+0600\n"
+"POT-Creation-Date: 2010-03-13 04:02+0600\n"
 "PO-Revision-Date: 2010-01-18 15:19+0200\n"
 "Last-Translator: Alexey <lozhkinet@gmail.com>\n"
 "Language-Team: Russian <openinkpot-hackers@googlegroups.com>\n"
@@ -11,163 +11,159 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/favorites.c:106
-#: src/favorites.c:348
-#: src/overview.c:114
-#: src/favorites_menu.c:39
+#: src/favorites.c:110 src/favorites.c:357 src/favorites_menu.c:39
+#: src/overview.c:117
 msgid "Favorites"
 msgstr "Улюблене"
 
-#: src/favorites.c:107
+#: src/favorites.c:111
 msgid "Favorite books"
 msgstr "Улюблені книжки"
 
-#: src/favorites.c:108
+#: src/favorites.c:112
 msgid "Favorite pictures"
 msgstr "Улюблені зображення"
 
-#: src/favorites.c:109
+#: src/favorites.c:113
 msgid "Favorite music"
 msgstr "Улюблена музика"
 
-#: src/favorites.c:234
-#: src/dir.c:400
-#: src/recent.c:207
+#: src/favorites.c:243 src/recent.c:204 src/dir.c:386
 msgid "Open"
 msgstr "Відкрити"
 
-#: src/favorites.c:240
-#: src/dir.c:412
+#: src/favorites.c:249 src/dir.c:398
 msgid "Remove from favorites"
 msgstr "Видалити з улюбленого"
 
-#: src/favorites.c:286
-#: src/dir.c:467
-#: src/recent.c:258
+#: src/favorites.c:295 src/recent.c:255 src/dir.c:453
 msgid "Actions"
 msgstr "Дії"
 
-#: src/favorites.c:298
-#: src/recent.c:270
+#: src/favorites.c:307 src/recent.c:267
 msgid "Sort by name"
 msgstr "Сортувати за назвою"
 
-#: src/favorites.c:300
-#: src/recent.c:272
+#: src/favorites.c:308 src/recent.c:268
+msgid "Sort by name (reversed)"
+msgstr "Впорядкувати за назвою (навпаки)"
+
+#: src/favorites.c:309 src/recent.c:269
 msgid "Sort by date"
 msgstr "Сортувати за датою"
 
-#: src/favorites.c:301
+#: src/favorites.c:310
 msgid "Clear favorites"
 msgstr "Очистити перелік улюбленого"
 
-#: src/overview.c:39
-#: src/overview.c:40
+#: src/favorites.c:312 src/recent.c:272
+msgid "Remove absent files"
+msgstr "Видалити відсутні файли"
+
+#: src/favorites.c:324 src/recent.c:283 src/dir.c:485
+msgid "Do not show hidden files"
+msgstr "Не показувати приховане"
+
+#: src/favorites.c:325 src/recent.c:284 src/dir.c:487
+msgid "Show hidden files"
+msgstr "Показувати приховане"
+
+#: src/overview.c:40 src/overview.c:41 src/main.c:143
 msgid "Bookshelf"
 msgstr "Книжкова полиця"
 
-#: src/overview.c:41
+#: src/overview.c:42
 msgid "Pictures (navigation)"
 msgstr "Зображення (навігація)"
 
-#: src/overview.c:42
+#: src/overview.c:43
 msgid "Audio (navigation)"
 msgstr "Музика (навігація)"
 
-#: src/overview.c:117
-#: src/recent.c:103
-#: src/recent.c:319
+#: src/overview.c:120 src/recent.c:100 src/recent.c:316
 msgid "Recent files"
 msgstr "Історія"
 
-#: src/file_context_menu.c:308
+#: src/recent.c:210
+msgid "Remove from recent files"
+msgstr "Видалити з історії"
+
+#: src/recent.c:270
+msgid "Clear recent files"
+msgstr "Очистити історію"
+
+#: src/file_context_menu.c:191 src/file_context_menu.c:295
+msgid "Always open with..."
+msgstr "Завжди відкривати в..."
+
+#: src/file_context_menu.c:285
 #, c-format
 msgid "Open with %s"
 msgstr "Відкрити у %s"
 
-#: src/file_context_menu.c:308
+#: src/file_context_menu.c:285
 #, c-format
 msgid "Open (with %s)"
 msgstr "Відкрити (в %s)"
 
-#: src/file_context_menu.c:337
+#: src/file_context_menu.c:313
+msgid "Copy"
+msgstr ""
+
+#: src/file_context_menu.c:316
+msgid "Cut"
+msgstr ""
+
+#: src/file_context_menu.c:319
 msgid "Delete"
 msgstr "Видалити"
 
-#: src/disks.c:128
-msgid "Whole filesystem"
-msgstr "Усі носії"
-
-#: src/fileinfo_render.c:117
-msgid "Does not exist"
-msgstr "Відсутній"
-
-#: src/fileinfo_render.c:124
-msgid "Directory"
-msgstr "Каталог"
-
-#: src/dir.c:405
-msgid "Unhide"
-msgstr "Показати"
-
-#: src/dir.c:407
-msgid "Hide"
-msgstr "Сховати"
-
-#: src/dir.c:414
-msgid "Add to favorites"
-msgstr "Додати до улюбленого"
-
-#: src/dir.c:492
-msgid "Do not show hidden files"
-msgstr "Не показувати приховане"
-
-#: src/dir.c:494
-msgid "Show hidden files"
-msgstr "Показувати приховане"
-
-#: src/dir.c:528
-msgid "Menu"
-msgstr "Меню"
-
-#: src/recent.c:213
-msgid "Remove from recent files"
-msgstr "Видалити з історії"
-
-#: src/recent.c:273
-msgid "Clear recent files"
-msgstr "Очистити історію"
-
-#: src/delete_file.c:58
+#: src/delete_file.c:81
 msgid "Delete file?"
 msgstr "Видалити файл?"
 
-#: src/delete_file.c:60
+#: src/delete_file.c:83
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
 msgstr "Натисніть «OK» щоб видалити<br><br>Натисніть «C» для скасування"
 
-#: src/file_context_menu.c:217
-#: src/file_context_menu.c:318
-msgid "Always open with..."
-msgstr "Завжди відкривати в..."
+#: src/dir.c:391
+msgid "Unhide"
+msgstr "Показати"
 
-#: src/favorites.c:315
-#: src/recent.c:286
-msgid "Hide absent files"
-msgstr "Сховати відсутні файли"
+#: src/dir.c:393
+msgid "Hide"
+msgstr "Сховати"
 
-#: src/favorites.c:303
-#: src/recent.c:275
-msgid "Remove absent files"
-msgstr "Видалити відсутні файли"
+#: src/dir.c:400
+msgid "Add to favorites"
+msgstr "Додати до улюбленого"
 
-#: src/favorites.c:316
-#: src/recent.c:287
-msgid "Show absent files"
-msgstr "Показати відсутні файли"
+#: src/dir.c:477
+msgid "Copy file(s) here"
+msgstr ""
 
-#: src/favorites.c:299
-#: src/recent.c:271
-msgid "Sort by name (reversed)"
-msgstr "Впорядкувати за назвою (навпаки)"
+#: src/dir.c:478
+msgid "Move file(s) here"
+msgstr ""
 
+#: src/dir.c:526
+msgid "Menu"
+msgstr "Меню"
+
+#: src/disks.c:135
+msgid "Whole filesystem"
+msgstr "Усі носії"
+
+#: src/fileinfo_render.c:106
+msgid "Does not exist"
+msgstr "Відсутній"
+
+#: src/fileinfo_render.c:113
+msgid "Directory"
+msgstr "Каталог"
+
+#~ msgid "Hide absent files"
+#~ msgstr "Сховати відсутні файли"
+
+#~ msgid "Show absent files"
+#~ msgstr "Показати відсутні файли"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: madshelf 0.1\n"
 "Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
-"POT-Creation-Date: 2009-11-05 02:43+0600\n"
+"POT-Creation-Date: 2010-03-13 04:02+0600\n"
 "PO-Revision-Date: 2009-06-26 10:32+0200\n"
 "Last-Translator: Anrdás Csehi <acsehi@gmail.com>\n"
 "Language-Team: Hungarian\n"
@@ -16,152 +16,166 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/favorites.c:106 src/favorites.c:348 src/overview.c:114
-#: src/favorites_menu.c:39
+#: src/favorites.c:110 src/favorites.c:357 src/favorites_menu.c:39
+#: src/overview.c:117
 msgid "Favorites"
 msgstr "Kedvencek"
 
-#: src/favorites.c:107
+#: src/favorites.c:111
 msgid "Favorite books"
 msgstr "Kedvenc könyvek"
 
-#: src/favorites.c:108
+#: src/favorites.c:112
 msgid "Favorite pictures"
 msgstr "Kedvenc képek"
 
-#: src/favorites.c:109
+#: src/favorites.c:113
 msgid "Favorite music"
 msgstr "Kedvenc zenék"
 
-#: src/favorites.c:234 src/dir.c:400 src/recent.c:207
+#: src/favorites.c:243 src/recent.c:204 src/dir.c:386
 msgid "Open"
 msgstr "Megnyitás"
 
-#: src/favorites.c:240 src/dir.c:412
+#: src/favorites.c:249 src/dir.c:398
 msgid "Remove from favorites"
 msgstr "Eltávolítás a kedvencekből"
 
-#: src/favorites.c:286 src/dir.c:467 src/recent.c:258
+#: src/favorites.c:295 src/recent.c:255 src/dir.c:453
 msgid "Actions"
 msgstr "Műveletek"
 
-#: src/favorites.c:298 src/recent.c:270
+#: src/favorites.c:307 src/recent.c:267
 msgid "Sort by name"
 msgstr "Rendezés név szerint"
 
-#: src/favorites.c:299 src/recent.c:271
+#: src/favorites.c:308 src/recent.c:268
 msgid "Sort by name (reversed)"
 msgstr "Rendezés név szerint (fordított)"
 
-#: src/favorites.c:300 src/recent.c:272
+#: src/favorites.c:309 src/recent.c:269
 msgid "Sort by date"
 msgstr "Rendezés dátum szerint"
 
-#: src/favorites.c:301
+#: src/favorites.c:310
 msgid "Clear favorites"
 msgstr "Összes kedvenc törlése"
 
-#: src/favorites.c:303 src/recent.c:275
+#: src/favorites.c:312 src/recent.c:272
 #, fuzzy
 msgid "Remove absent files"
 msgstr "Eltávolitás a legutóbb használt fájlok listájából"
 
-#: src/favorites.c:315 src/recent.c:286
-#, fuzzy
-msgid "Hide absent files"
-msgstr "Legutóbbi fájlok"
+#: src/favorites.c:324 src/recent.c:283 src/dir.c:485
+msgid "Do not show hidden files"
+msgstr "Ne mutassa az rejtett fájlokat"
 
-#: src/favorites.c:316 src/recent.c:287
-#, fuzzy
-msgid "Show absent files"
+#: src/favorites.c:325 src/recent.c:284 src/dir.c:487
+msgid "Show hidden files"
 msgstr "Mutassa az rejtett fájlokat"
 
-#: src/overview.c:39 src/overview.c:40
+#: src/overview.c:40 src/overview.c:41 src/main.c:143
 msgid "Bookshelf"
 msgstr "Könyvespolc"
 
-#: src/overview.c:41
+#: src/overview.c:42
 msgid "Pictures (navigation)"
 msgstr "Képek (irányítás)"
 
-#: src/overview.c:42
+#: src/overview.c:43
 msgid "Audio (navigation)"
 msgstr "Hang  (irányítás)"
 
-#: src/overview.c:117 src/recent.c:103 src/recent.c:319
+#: src/overview.c:120 src/recent.c:100 src/recent.c:316
 msgid "Recent files"
 msgstr "Legutóbbi fájlok"
 
-#: src/file_context_menu.c:217 src/file_context_menu.c:318
+#: src/recent.c:210
+msgid "Remove from recent files"
+msgstr "Eltávolitás a legutóbb használt fájlok listájából"
+
+#: src/recent.c:270
+msgid "Clear recent files"
+msgstr "Legutóbb használt fájlok listájának törlése"
+
+#: src/file_context_menu.c:191 src/file_context_menu.c:295
 msgid "Always open with..."
 msgstr ""
 
-#: src/file_context_menu.c:308
+#: src/file_context_menu.c:285
 #, c-format
 msgid "Open with %s"
 msgstr "Megnyitás ezzel: %s"
 
-#: src/file_context_menu.c:308
+#: src/file_context_menu.c:285
 #, c-format
 msgid "Open (with %s)"
 msgstr "Megnyitás (ezzel %s)"
 
-#: src/file_context_menu.c:337
+#: src/file_context_menu.c:313
+msgid "Copy"
+msgstr ""
+
+#: src/file_context_menu.c:316
+msgid "Cut"
+msgstr ""
+
+#: src/file_context_menu.c:319
 msgid "Delete"
 msgstr "Törlés"
 
-#: src/disks.c:128
-msgid "Whole filesystem"
-msgstr "Teljes fájlrendszer"
-
-#: src/fileinfo_render.c:117
-msgid "Does not exist"
-msgstr "Nem létezik"
-
-#: src/fileinfo_render.c:124
-msgid "Directory"
-msgstr "Könyvtár"
-
-#: src/dir.c:405
-msgid "Unhide"
-msgstr "Elrejtés visszavonása"
-
-#: src/dir.c:407
-msgid "Hide"
-msgstr "Elrejtés"
-
-#: src/dir.c:414
-msgid "Add to favorites"
-msgstr "Hozzáadás kedvencekhez"
-
-#: src/dir.c:492
-msgid "Do not show hidden files"
-msgstr "Ne mutassa az rejtett fájlokat"
-
-#: src/dir.c:494
-msgid "Show hidden files"
-msgstr "Mutassa az rejtett fájlokat"
-
-#: src/dir.c:528
-msgid "Menu"
-msgstr "Menü"
-
-#: src/recent.c:213
-msgid "Remove from recent files"
-msgstr "Eltávolitás a legutóbb használt fájlok listájából"
-
-#: src/recent.c:273
-msgid "Clear recent files"
-msgstr "Legutóbb használt fájlok listájának törlése"
-
-#: src/delete_file.c:58
+#: src/delete_file.c:81
 msgid "Delete file?"
 msgstr "Törölhető a file?"
 
-#: src/delete_file.c:60
+#: src/delete_file.c:83
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
 msgstr ""
 "A file törléséhez nyomja meg az \"OK\" gombot, illetve a \"C\"-t, ha mégsem"
+
+#: src/dir.c:391
+msgid "Unhide"
+msgstr "Elrejtés visszavonása"
+
+#: src/dir.c:393
+msgid "Hide"
+msgstr "Elrejtés"
+
+#: src/dir.c:400
+msgid "Add to favorites"
+msgstr "Hozzáadás kedvencekhez"
+
+#: src/dir.c:477
+msgid "Copy file(s) here"
+msgstr ""
+
+#: src/dir.c:478
+msgid "Move file(s) here"
+msgstr ""
+
+#: src/dir.c:526
+msgid "Menu"
+msgstr "Menü"
+
+#: src/disks.c:135
+msgid "Whole filesystem"
+msgstr "Teljes fájlrendszer"
+
+#: src/fileinfo_render.c:106
+msgid "Does not exist"
+msgstr "Nem létezik"
+
+#: src/fileinfo_render.c:113
+msgid "Directory"
+msgstr "Könyvtár"
+
+#, fuzzy
+#~ msgid "Hide absent files"
+#~ msgstr "Legutóbbi fájlok"
+
+#, fuzzy
+#~ msgid "Show absent files"
+#~ msgstr "Mutassa az rejtett fájlokat"
 
 #~ msgid "Sort by order"
 #~ msgstr "Rendezés"
