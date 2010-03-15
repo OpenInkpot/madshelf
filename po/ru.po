@@ -114,12 +114,6 @@ msgstr "Удалить"
 msgid "Delete file?"
 msgstr "Удалить файл?"
 
-#: src/delete_file.c:83
-msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr ""
-"Нажмите \"OK\" чтобы удалить файл<br><br>\n"
-"Нажмите \"C\" для отмены"
-
 #: src/dir.c:391
 msgid "Unhide"
 msgstr "Перестать скрывать"
@@ -163,6 +157,10 @@ msgstr "Переместить"
 #: src/dir.c:477
 msgid "Copy file(s) here"
 msgstr "Вставить"
+
+#: src/delete_file.c:83
+msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
+msgstr "Нажмите \"OK\" чтобы удалить файл<br><br>Нажмите \"C\" для отмены"
 
 #~ msgid "Hide absent files"
 #~ msgstr "Скрыть отсутствующие файлы"
