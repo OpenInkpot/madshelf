@@ -1,4 +1,4 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.0\n"
@@ -106,14 +106,6 @@ msgstr "Открыть в %s"
 msgid "Open (with %s)"
 msgstr "Открыть (в %s)"
 
-#: src/file_context_menu.c:313
-msgid "Copy"
-msgstr ""
-
-#: src/file_context_menu.c:316
-msgid "Cut"
-msgstr ""
-
 #: src/file_context_menu.c:319
 msgid "Delete"
 msgstr "Удалить"
@@ -140,14 +132,6 @@ msgstr "Скрыть"
 msgid "Add to favorites"
 msgstr "Добавить в избранное"
 
-#: src/dir.c:477
-msgid "Copy file(s) here"
-msgstr ""
-
-#: src/dir.c:478
-msgid "Move file(s) here"
-msgstr ""
-
 #: src/dir.c:526
 msgid "Menu"
 msgstr "Меню"
@@ -163,6 +147,22 @@ msgstr "Отсутствует"
 #: src/fileinfo_render.c:113
 msgid "Directory"
 msgstr "Каталог"
+
+#: src/file_context_menu.c:313
+msgid "Copy"
+msgstr "Копировать"
+
+#: src/file_context_menu.c:316
+msgid "Cut"
+msgstr "Вырезать"
+
+#: src/dir.c:478
+msgid "Move file(s) here"
+msgstr "Переместить"
+
+#: src/dir.c:477
+msgid "Copy file(s) here"
+msgstr "Вставить"
 
 #~ msgid "Hide absent files"
 #~ msgstr "Скрыть отсутствующие файлы"
