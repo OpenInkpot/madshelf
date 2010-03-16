@@ -160,7 +160,7 @@ msgstr "Вставить"
 
 #: src/delete_file.c:83
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr "Нажмите \"OK\" чтобы удалить файл<br><br>Нажмите \"C\" для отмены"
+msgstr "Нажмите «OK» для удаления<br><br>Нажмите «C»/«↩» для отмены"
 
 #~ msgid "Hide absent files"
 #~ msgstr "Скрыть отсутствующие файлы"
