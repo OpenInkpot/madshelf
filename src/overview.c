@@ -101,23 +101,23 @@ static void _draw_item(const madshelf_state_t* state,
     if(item_num < state->disks->n)
     {
         if(disk_mounted(state->disks->disk + item_num))
-            edje_object_part_text_set(item, "title", state->disks->disk[item_num].name);
+            edje_object_part_text_set(item, "center-caption", state->disks->disk[item_num].name);
         else
         {
             char* d;
             if(!asprintf(&d, "<inactive>%s</inactive>", state->disks->disk[item_num].name))
                 err(1, "Whoops, out of memory");
 
-            edje_object_part_text_set(item, "title", d);
+            edje_object_part_text_set(item, "center-caption", d);
             free(d);
         }
     }
 
     if(item_num - state->disks->n == 0)
-        edje_object_part_text_set(item, "title", gettext("Favorites"));
+        edje_object_part_text_set(item, "center-caption", gettext("Favorites"));
 
     if(item_num - state->disks->n == 1)
-        edje_object_part_text_set(item, "title", gettext("Recent files"));
+        edje_object_part_text_set(item, "center-caption", gettext("Recent files"));
 }
 
 static void _fs_updated(madshelf_state_t* state)

@@ -1,0 +1,294 @@
+/*
+ * sort-mode,<mode>
+ *   mode = none | name (by name) | namerev (by name, reversed) | date (by date)
+ *
+ */
+
+#define XSTR(s) #s
+
+#define SI(name)                                         \
+    program {                                            \
+        signal, "set-icon";                              \
+        source, XSTR(name);                              \
+        script {                                         \
+            set_state(PART:"icon", XSTR(name), 0.0);     \
+            set_state(PART:"icon-margin", "default", 0.0); \
+        }                                                \
+    };                                                   \
+
+images {
+/*    image, "delete-confirm.png" COMP; */
+
+    image, "sort-none.png" COMP;
+    image, "sort-name.png" COMP;
+    image, "sort-namerev.png" COMP;
+    image, "sort-date.png" COMP;
+}
+
+styles {
+    style {
+        name, "big";
+        base, "font=DejaVu\\ Sans\\ Condensed:style=bold font_size=22 color=#000 ellipsis=right";
+        tag, "br" "\n";
+        tag, "inactive" "+color=#555";
+        tag, "/inactive" "-";
+    }
+    style {
+        name, "small";
+        base, "font=DejaVu\\ Sans\\ Condensed font_size=18 color=#000 ellipsis=right";
+    }
+    style {
+        name, "small-info";
+        base, "font=DejaVu\\ Sans\\ Condensed font_size=18 color=#000 align=right";
+        tag, "inactive" "+color=#555";
+        tag, "/inactive" "-";
+    };
+    style {
+        name, "small-info-bold";
+        base, "font=DejaVu\\ Sans\\ Condensed:style=bold font_size=18 color=#000 align=right";
+        tag, "inactive" "+color=#555";
+        tag, "/inactive" "-";
+    };
+    style {
+        name, "values";
+        base, "font=sans-serif font_size=20 color=#000 align=right";
+        tag, "inactive" "+color=#555";
+        tag, "/inactive" "-";
+    }
+    style {
+        name, "series-fields";
+        base, "font=sans-serif:italic font_size=20 color=#000 align=left";
+        tag, "inactive" "+color=#555";
+        tag, "/inactive" "-";
+    };
+    style {
+        name, "item-texts";
+        base, "font=sans-serif font_size=28 color=#000 align=left";
+        tag, "inactive" "+color=#555";
+        tag, "/inactive" "-";
+    }
+
+    style {
+       name, "textblock-style";
+       base, "font=sans-serif font_size=24 align=left color=#000 wrap=word";
+       tag, "br" "   \n";
+    }
+}
+
+collections {
+    group {
+        name, "fileitem";
+        parts {
+            part {
+                /* This rect is resized when icon is hidden/shown */
+                name, "icon-margin";
+                type, RECT;
+                description {
+                    state, "default" 0.0;
+                    color, 0 0 0 0;
+                    rel1 { relative, 1.0 0.0; offset, -52 0; }
+                    rel2 { offset, -51 0; }
+                }
+                description {
+                    state, "no-icon" 0.0;
+                    rel1 { relative, 1.0 0.0; }
+                }
+            }
+            part {
+                name, "center-caption";
+                type, TEXTBLOCK;
+                description {
+                    state, "default" 0.0;
+                    text {
+                        style, "big";
+                        max, 0 1;
+                    }
+                    rel1 { offset, 0 0; }
+                    rel2 { to, "type"; relative, 0.0 1.0; offset, -1 -1; }
+                }
+            }
+
+         part {
+            name, "title";
+            type, TEXTBLOCK;
+            description {
+               state, "default" 0.0;
+               text { style, "big"; }
+               rel1 { offset, 0 2; }
+               rel2 { to, "icon-margin"; offset, -13 -1; }
+            }
+         }
+         part {
+            name, "author";
+            type, TEXTBLOCK;
+            description {
+               state, "default" 0.0;
+               text { style, "small"; }
+               rel1 { offset, 0 27; }
+               rel2 { to, "icon-margin"; offset, -78 -1; }
+            }
+         }
+         part {
+            name, "series";
+            type, TEXTBLOCK;
+            description {
+               state, "default" 0.0;
+               text { style, "small"; }
+               rel1 { offset, 0 47; }
+               rel2 { to, "icon-margin"; offset, -78 -1; }
+            }
+         }
+         part {
+            name, "type";
+            type, TEXTBLOCK;
+            description {
+               state, "default" 0.0;
+               text { style, "small-info-bold"; }
+               rel1 { to, "icon-margin"; offset, -78 27; }
+               rel2 { to, "icon-margin"; offset, -13 -1; }
+            }
+         }
+         part {
+            name, "size";
+            type, TEXTBLOCK;
+            description {
+                state, "default" 0.0;
+                text { style, "small-info"; }
+                rel1 { to, "icon-margin"; offset, -78 47; }
+                rel2 { to, "icon-margin"; offset, -13 -1; }
+            }
+         }
+         part {
+             name, "icon";
+             images {
+                 image, "none.png" COMP;
+                 image, "dir.png" COMP;
+                 image, "unread-book.png" COMP;
+                 image, "open-book.png" COMP;
+                 image, "read-book.png" COMP;
+             }
+             description {
+                 state, "default" 0.0;
+                 min, 36 36;
+                 max, 36 36;
+                 rel1 { relative, 1.0 0.0; offset, -52 21; }
+                 rel2 { relative, 1.0 0.0; offset, -16 57; }
+                 image { normal, "none.png"; }
+             }
+             description {
+                 state, "dir" 0.0;
+                 inherit, "default" 0.0;
+                 image { normal, "dir.png"; }
+             }
+             description {
+                 state, "new" 0.0;
+                 inherit, "default" 0.0;
+                 image { normal, "unread-book.png"; }
+             }
+         }
+        }
+        programs {
+            program {
+                signal, "set-icon";
+                source, "none";
+                script {
+                    set_state(PART:"icon", "default", 0.0);
+                    set_state(PART:"icon-margin", "no-icon", 0.0);
+                }
+            }
+            SI(dir);
+            SI(new);
+            SI(open);
+            SI(read);
+        }
+    }
+   group {
+       name, "sort-icons";
+       parts {
+            part {
+                name, "sort-icon";
+                description {
+                    state, "default" 0.0;
+                    rel1 { relative, 0.0 1.0; offset, 9 -40; }
+                    rel2 { relative, 0.0 1.0; offset, 39 -10; }
+                    image { normal, "sort-none.png"; }
+                }
+                description {
+                    state, "name" 0.0;
+                    inherit, "default" 0.0;
+                    image { normal, "sort-name.png"; }
+                }
+                description {
+                    state, "namerev" 0.0;
+                    inherit, "default" 0.0;
+                    image { normal, "sort-namerev.png"; }
+                }
+                description {
+                    state, "date" 0.0;
+                    inherit, "default" 0.0;
+                    image { normal, "sort-date.png"; }
+                }
+            }
+       }
+       programs {
+           program {
+               name, "sort-mode";
+               signal, "sort-mode,*";
+
+               script {
+                   new name_arg[100], name[100];
+                   getsarg(0, name_arg, 100);
+                   strcut(name, name_arg, 10, 100);
+
+                   set_state(PART:"sort-icon", name, 0.0);
+               }
+           }
+       }
+   }
+
+   group {
+       name, "delete-confirm-text";
+       styles {
+           style {
+               name, "text";
+               base, "font=DejaVu\\ Sans\\ Condensed font_size=22 align=center color=#000 wrap=word";
+               tag, "b" "+font=DejaVu\\ Sans\\ Condensed:style=bold";
+               tag, "/b" "-";
+               tag, "br" "\n";
+           }
+       }
+       parts {
+           part {
+               name, "text";
+               type, TEXTBLOCK;
+               multiline, 1;
+               description {
+                   state, "default" 0.0;
+                   text {
+                       style, "text";
+                   }
+                   rel1 {
+                       offset, 0 25;
+                   }
+               }
+           }
+       }
+   }
+   group {
+       name, "delete-confirm-icon";
+       images {
+           image, "icon-delete.png" COMP;
+       }
+       parts {
+           part {
+               name, "icon";
+               description {
+                   state, "default" 0.0;
+                   image {
+                       normal, "icon-delete.png";
+                   }
+               }
+           }
+       }
+   }
+}

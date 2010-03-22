@@ -252,13 +252,13 @@ static void _update_gui(const madshelf_state_t* state)
 
     madshelf_disk_t* d = find_disk(state->disks, _loc->dir);
 
-    char* prefix = xasprintf("%s:", d->short_name);
-    eoi_edje_text_trim_left(header,
-                            "title",
-                            prefix,
-                            _loc->dir + strlen(d->path),
-                            "");
-    free(prefix);
+    char *text = xasprintf("<fixed>%s:</fixed>%s",
+                          d->short_name, _loc->dir + strlen(d->path));
+
+    edje_object_part_text_set(header, "title", text);
+
+    free(text);
+
     set_sort_icon(state, state->sort);
 }
 

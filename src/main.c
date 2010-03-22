@@ -64,6 +64,8 @@
 /* Uhm? */
 void item_clear(Evas_Object* item)
 {
+    edje_object_signal_emit(item, "set-icon", "none");
+    edje_object_part_text_set(item, "center-caption", "");
     edje_object_part_text_set(item, "title", "");
     edje_object_part_text_set(item, "author", "");
     edje_object_part_text_set(item, "series", "");
@@ -533,6 +535,8 @@ int main(int argc, char** argv)
     Evas* main_canvas = ecore_evas_get(main_win);
     state.canvas = main_canvas;
     Evas_Object* main_edje = eoi_main_window_create(main_canvas);
+    if (!main_edje)
+        errx(1, "Unable to load main window theme");
 
     evas_object_name_set(main_edje, "main_edje");
 
@@ -562,6 +566,9 @@ int main(int argc, char** argv)
     };
 
     Evas_Object* contents = choicebox_new(main_canvas, &info, &state);
+    if (!contents)
+        errx(1, "Unable to create choicebox. Bailing out.");
+
     evas_object_name_set(contents, "contents");
     edje_object_part_swallow(main_edje, "contents", contents);
     evas_object_focus_set(contents, true);
@@ -616,8 +623,8 @@ int main(int argc, char** argv)
     edje_collection_cache_set(0);
 
     ecore_evas_shutdown();
-    edje_shutdown();
     evas_shutdown();
+    edje_shutdown();
     ecore_shutdown();
     ecore_config_shutdown();
 

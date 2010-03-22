@@ -13,4 +13,4 @@ PKG_CHECK_MODULES(LIBCHOICEBOX, [libchoicebox])
 PKG_CHECK_MODULES(LIBEOI, [libeoi])
 PKG_CHECK_MODULES(LIBKEYS, [libkeys])
 
-AC_OUTPUT(Makefile src/Makefile themes/Makefile po/Makefile data/Makefile)
+AC_OUTPUT(Makefile src/Makefile themes/Makefile themes/default/Makefile themes/azbooka/Makefile po/Makefile data/Makefile)

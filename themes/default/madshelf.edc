@@ -16,38 +16,38 @@ images {
 styles {
     style {
         name, "titles";
-        base, "font=sans-serif font_size=20 color=#000 align=left valign=top";
+        base, "font=sans-serif font_size=20 color=#000 align=left";
         tag, "inactive" "+color=#555";
         tag, "/inactive" "-";
     };
     style {
         name, "ext-fields";
-        base, "font=sans-serif font_size=20 color=#000 align=right valign=top";
+        base, "font=sans-serif font_size=20 color=#000 align=right";
         tag, "inactive" "+color=#555";
         tag, "/inactive" "-";
     };
     style {
         name, "values";
-        base, "font=sans-serif font_size=20 color=#000 align=right valign=bottom";
+        base, "font=sans-serif font_size=20 color=#000 align=right";
         tag, "inactive" "+color=#555";
         tag, "/inactive" "-";
     }
     style {
         name, "series-fields";
-        base, "font=sans-serif:italic font_size=20 color=#000 align=left valign=bottom";
+        base, "font=sans-serif:italic font_size=20 color=#000 align=left";
         tag, "inactive" "+color=#555";
         tag, "/inactive" "-";
     };
     style {
         name, "item-texts";
-        base, "font=sans-serif font_size=28 color=#000 align=left valign=middle";
+        base, "font=sans-serif font_size=28 color=#000 align=left";
         tag, "inactive" "+color=#555";
         tag, "/inactive" "-";
     }
 
     style {
        name, "textblock-style";
-       base, "font=sans-serif font_size=24 align=left valign=middle color=#000 wrap=word";
+       base, "font=sans-serif font_size=24 align=left color=#000 wrap=word";
        tag, "br" "   \n";
     }
 }

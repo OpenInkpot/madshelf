@@ -26,8 +26,10 @@
 
 #include "delete_file.h"
 #include "dir.h"
+
 #include <libeoi.h>
 #include <libeoi_themes.h>
+#include <libeoi_dialog.h>
 
 typedef struct
 {
@@ -50,7 +52,18 @@ static void delete_key_up(void* param, Evas* e, Evas_Object* o, void* event_info
     else
         return;
 
+    Evas_Object *text = evas_object_name_find(e, "delete-confirm-text");
+    Evas_Object *icon = evas_object_name_find(e, "delete-confirm-icon");
+
     evas_object_focus_set(evas_object_name_find(e, "contents"), true);
+    evas_object_hide(o);
+
+    edje_object_part_unswallow(o, text);
+    evas_object_del(text);
+
+    edje_object_part_unswallow(o, icon);
+    evas_object_del(icon);
+
     evas_object_del(o);
 
     free(params->filename);
@@ -69,26 +82,31 @@ void delete_file_dialog(madshelf_state_t* state, char* filename,
 
     Evas* canvas = state->canvas;
 
-    Evas_Object* wnd = eoi_create_themed_edje(canvas, "madshelf", "delete-confirm-window");
-    if (!wnd)
-        errx(1, "Unable to open theme madshelf(delete-confirm-window)");
+    Evas_Object* text = eoi_create_themed_edje(canvas, "madshelf", "delete-confirm-text");
+    evas_object_name_set(text, "delete-confirm-text");
+    if (!text)
+        errx(1, "Unable to open theme madshelf(delete-confirm-text)");
 
-    evas_object_name_set(wnd, "delete-confirm-window");
-    evas_object_focus_set(wnd, true);
-    evas_object_event_callback_add(wnd, EVAS_CALLBACK_KEY_UP,
-                                   &delete_key_up, params);
-
-    edje_object_part_text_set(wnd, "title", gettext("Delete file?"));
-    edje_object_part_text_set(wnd, "text",
+    edje_object_part_text_set(text, "text",
                               gettext("Press \"OK\" to delete file<br><br>Press \"C\" to cancel"));
 
-    Ecore_Evas *window = ecore_evas_ecore_evas_get(canvas);
-    eoi_fullwindow_object_register(window, wnd);
+    Evas_Object *dlg = eoi_dialog_create("dlg", text);
+    eoi_dialog_title_set(dlg, gettext("Delete file?"));
+    evas_object_focus_set(dlg, true);
+    evas_object_event_callback_add(dlg, EVAS_CALLBACK_KEY_UP,
+                                   &delete_key_up, params);
 
-    evas_object_move(wnd, 0, 0);
+    Evas_Object *icon = eoi_create_themed_edje(canvas, "madshelf", "delete-confirm-icon");
+    evas_object_name_set(icon, "delete-confirm-icon");
+    edje_object_part_swallow(dlg, "icon", icon);
+
+    Ecore_Evas *window = ecore_evas_ecore_evas_get(canvas);
+    eoi_fullwindow_object_register(window, dlg);
+
+    evas_object_move(dlg, 0, 0);
     int w, h;
     evas_output_size_get(canvas, &w, &h);
-    evas_object_resize(wnd, w, h);
+    evas_object_resize(dlg, w, h);
 
-    evas_object_show(wnd);
+    evas_object_show(dlg);
 }
