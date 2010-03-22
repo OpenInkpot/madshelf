@@ -264,7 +264,7 @@ static void _open_file_context_menu(madshelf_state_t* state, const char* filenam
 /* Screen menu */
 
 static const char* _scm_titles[] = {
-    _("Sort by name"), /* Sort items should match madshelf_sortex_t */
+    _("Sort by name"), /* Sort items should match madshelf_sort_t */
     _("Sort by name (reversed)"),
     _("Sort by date"),
     _("Clear recent files"),
@@ -292,7 +292,7 @@ static void _scm_handle(madshelf_state_t* state, int item_num, bool is_alt)
     _loc_t* _loc = (_loc_t*)state->loc;
 
     if(item_num < 3)
-        set_recent_sort(state, (madshelf_sortex_t)item_num);
+        set_recent_sort(state, (madshelf_sort_t)item_num);
     else if(item_num == 3)
         tag_clear(state->tags, "recent");
     else if(item_num == 4)

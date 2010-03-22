@@ -39,19 +39,13 @@ typedef enum
     MADSHELF_FILTER_AUDIO,
 } madshelf_filter_t;
 
-typedef enum
-{
-    MADSHELF_SORT_NAME,
-    MADSHELF_SORT_NAMEREV
-} madshelf_sort_t;
-
 /* Should match database.h::db_list_sort_t */
 typedef enum
 {
-    MADSHELF_SORTEX_NAME,
-    MADSHELF_SORTEX_NAMEREV,
-    MADSHELF_SORTEX_DATE,
-} madshelf_sortex_t;
+    MADSHELF_SORT_NAME,
+    MADSHELF_SORT_NAMEREV,
+    MADSHELF_SORT_DATE,
+} madshelf_sort_t;
 
 typedef enum
 {
@@ -95,8 +89,8 @@ struct madshelf_state_t
     /* Preferences */
     madshelf_sort_t sort;
     bool show_hidden; /* FIXME: be more flexible */
-    madshelf_sortex_t favorites_sort;
-    madshelf_sortex_t recent_sort;
+    madshelf_sort_t favorites_sort;
+    madshelf_sort_t recent_sort;
 
     /* Data */
     madshelf_disks_t* disks;
@@ -121,10 +115,10 @@ void go(madshelf_state_t* state, madshelf_loc_t* loc);
 void item_clear(Evas_Object* item);
 
 /* FIXME */
-void set_favorites_sort(madshelf_state_t* state, madshelf_sortex_t sort);
+void set_favorites_sort(madshelf_state_t* state, madshelf_sort_t sort);
 
 /* FIXME */
-void set_recent_sort(madshelf_state_t* state, madshelf_sortex_t sort);
+void set_recent_sort(madshelf_state_t* state, madshelf_sort_t sort);
 
 /* FIXME */
 void set_disk_current_path(madshelf_disk_t* disk, const char* path);

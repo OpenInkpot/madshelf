@@ -105,14 +105,14 @@ void set_sort(madshelf_state_t* state, madshelf_sort_t sort)
     ecore_config_save();
 }
 
-void set_favorites_sort(madshelf_state_t* state, madshelf_sortex_t sort)
+void set_favorites_sort(madshelf_state_t* state, madshelf_sort_t sort)
 {
     state->favorites_sort = sort;
     ecore_config_int_set("favorites-sort", (int)sort);
     ecore_config_save();
 }
 
-void set_recent_sort(madshelf_state_t* state, madshelf_sortex_t sort)
+void set_recent_sort(madshelf_state_t* state, madshelf_sort_t sort)
 {
     state->recent_sort = sort;
     ecore_config_int_set("recent-sort", (int)sort);
@@ -218,8 +218,8 @@ static void contents_key_up(void* param, Evas* e, Evas_Object* o, void* event_in
 static void load_config(madshelf_state_t* state)
 {
     ecore_config_int_default("sort", (int)MADSHELF_SORT_NAME);
-    ecore_config_int_default("favorites-sort", (int)MADSHELF_SORTEX_DATE);
-    ecore_config_int_default("recent-sort", (int)MADSHELF_SORTEX_DATE);
+    ecore_config_int_default("favorites-sort", (int)MADSHELF_SORT_DATE);
+    ecore_config_int_default("recent-sort", (int)MADSHELF_SORT_DATE);
     ecore_config_boolean_default("show-hidden", false);
 
     ecore_config_load();
@@ -228,11 +228,11 @@ static void load_config(madshelf_state_t* state)
     if (state->sort < 0 || state->sort > MADSHELF_SORT_NAMEREV)
         state->sort = MADSHELF_SORT_NAME;
     state->favorites_sort = ecore_config_int_get("favorites-sort");
-    if (state->favorites_sort < 0 || state->favorites_sort > MADSHELF_SORTEX_DATE)
-        state->favorites_sort = MADSHELF_SORTEX_DATE;
+    if (state->favorites_sort < 0 || state->favorites_sort > MADSHELF_SORT_DATE)
+        state->favorites_sort = MADSHELF_SORT_DATE;
     state->recent_sort = ecore_config_int_get("recent-sort");
-    if (state->recent_sort < 0 || state->recent_sort > MADSHELF_SORTEX_DATE)
-        state->recent_sort = MADSHELF_SORTEX_DATE;
+    if (state->recent_sort < 0 || state->recent_sort > MADSHELF_SORT_DATE)
+        state->recent_sort = MADSHELF_SORT_DATE;
     state->show_hidden = ecore_config_boolean_get("show-hidden");
 
     int i;
