@@ -1,3 +1,12 @@
+madshelf (0.2.50) zelazny; urgency=low
+
+  * Added "Sort by date" sorting order to ordinary directories (OI#864)
+  * Disabled book icon, it takes too much space (OI#862)
+  * Do not show non-handled files in directories (OI#860)
+  * Code cleanups
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Tue, 23 Mar 2010 01:52:17 +0600
+
 madshelf (0.2.49) zelazny; urgency=low
 
   * New Azbooka theme
