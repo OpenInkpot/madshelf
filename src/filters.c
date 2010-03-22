@@ -54,7 +54,7 @@ is_hidden(const madshelf_state_t *state, const char *filename)
     const char *mime_type = efreet_mime_type_get(filename);
     openers_t *openers = openers_get(mime_type);
     if (!openers)
-        return false;
+        return true;
 
     if (state->filter == MADSHELF_FILTER_BOOKS)
         return !(openers->app_types & OPENERS_TYPE_BOOKS);
