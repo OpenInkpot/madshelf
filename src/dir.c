@@ -151,14 +151,22 @@ static int _namerev(const void* lhs, const void* rhs)
     return -_name(lhs, rhs);
 }
 
+
+
+/* ULGY! */
+
+/*
+ * We need to sort directory by date, and eina_list_sort does not accept
+ * parameter to be passed to sort function. So use this global variable and
+ * don't forget that _fill_files is no longer thread-safe.
+ */
+static char *cur_dir;
+
 static int
 _date(const void *lhs, const void *rhs)
 {
-    /* Ugh. UGLY! See the comment in _fill_files */
-
-    const char *dir = getenv("_MADSHELF_CUR_DIR");
-    char *lhsf = xasprintf("%s/%s", !strcmp(dir, "/") ? "" : dir, (const char *)lhs);
-    char *rhsf = xasprintf("%s/%s", !strcmp(dir, "/") ? "" : dir, (const char *)rhs);
+    char *lhsf = xasprintf("%s/%s", cur_dir, (const char *)lhs);
+    char *rhsf = xasprintf("%s/%s", cur_dir, (const char *)rhs);
 
     struct stat lstat;
     struct stat rstat;
@@ -208,25 +216,14 @@ _fill_files(const madshelf_state_t *state, const char *dir, int *old_pos)
 
     Eina_Array *files = eina_array_new(10);
 
-    /* ULGY! */
-
-    /*
-     * We need to sort directory by date, and eina_list_sort does not accept
-     * parameter to be passed to sort function, hence we can't push directory
-     * name by usual means. So let's just use the fact that there are
-     * environment variables and pass the string using this crude hack.
-     */
-
-    setenv("_MADSHELF_CUR_DIR", dir, true);
+    /* HACK: using global variable to pas state into sort function */
+    cur_dir = !strcmp(dir, "/") ? "" : dir;
 
     Eina_List *ls = ecore_file_ls(dir);
     ls = eina_list_sort(ls, eina_list_count(ls),
                         state->sort == MADSHELF_SORT_NAME ? &_name
                         : (state->sort == MADSHELF_SORT_NAMEREV ? &_namerev
                            : &_daterev));
-
-    /* UGLY! */
-    unsetenv("_MADSHELF_CUR_DIR");
 
     /* First select directories */
     for (Eina_List *i = ls; i; i = eina_list_next(i)) {
