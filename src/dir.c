@@ -26,6 +26,8 @@
 #include <libintl.h>
 #include <err.h>
 #include <unistd.h>
+#include <sys/stat.h>
+
 /* This is to mark statically-allocated strings as translatable */
 #define _(x) (x)
 
@@ -149,6 +151,47 @@ static int _namerev(const void* lhs, const void* rhs)
     return -_name(lhs, rhs);
 }
 
+static int
+_date(const void *lhs, const void *rhs)
+{
+    /* Ugh. UGLY! But there is no param to eina_list_sort callback */
+    const char *dir = getenv("_MADSHELF_CUR_DIR");
+    char *lhsf = xasprintf("%s/%s", !strcmp(dir, "/") ? "" : dir, (const char *)lhs);
+    char *rhsf = xasprintf("%s/%s", !strcmp(dir, "/") ? "" : dir, (const char *)rhs);
+
+    struct stat lstat;
+    struct stat rstat;
+
+    if (-1 == stat(lhsf, &lstat)) {
+        free(lhsf);
+        free(rhsf);
+        return -1;
+    }
+    if (-1 == stat(rhsf, &rstat)) {
+        free(lhsf);
+        free(rhsf);
+        return 1;
+    }
+
+    free(lhsf);
+    free(rhsf);
+
+    fprintf(stderr, "%s:%ud %s:%ubd\n", (char*)lhs, (unsigned)lstat.st_mtime,
+            (char*)rhs, (unsigned)rstat.st_mtime);
+
+    if (lstat.st_mtime < rstat.st_mtime)
+        return -1;
+    if (lstat.st_mtime > rstat.st_mtime)
+        return 1;
+    return 0;
+}
+
+static int
+_daterev(const void *lhs, const void *rhs)
+{
+    return -_date(lhs, rhs);
+}
+
 /*
  * List depends on:
  *  - state->sort
@@ -164,9 +207,18 @@ _fill_files(const madshelf_state_t *state, const char *dir, int *old_pos)
 
     Eina_Array *files = eina_array_new(10);
 
+    /* ULGY! */
+
+    setenv("_MADSHELF_CUR_DIR", dir, true);
+
     Eina_List *ls = ecore_file_ls(dir);
     ls = eina_list_sort(ls, eina_list_count(ls),
-                        state->sort == MADSHELF_SORT_NAME ? &_name : &_namerev);
+                        state->sort == MADSHELF_SORT_NAME ? &_name
+                        : (state->sort == MADSHELF_SORT_NAMEREV ? &_namerev
+                           : &_daterev));
+
+    /* UGLY! */
+    unsetenv("_MADSHELF_CUR_DIR");
 
     /* First select directories */
     for (Eina_List *i = ls; i; i = eina_list_next(i)) {
@@ -464,6 +516,7 @@ static void _open_file_context_menu(madshelf_state_t* state, const char* filenam
 static const char* _sc_titles[] = {
     "Sort by name", /* Sort items should match madshelf_sort_t */
     "Sort by name (reversed)",
+    "Sort by date",
 };
 
 static void draw_screen_context_action(const madshelf_state_t* state,
@@ -472,7 +525,7 @@ static void draw_screen_context_action(const madshelf_state_t* state,
 {
     item_clear(item);
 
-    if (item_num == 3) {
+    if (item_num == 4) {
         char *msg = state->clipboard_copy
             ? gettext("Copy file(s) here")
             : gettext("Move file(s) here");
@@ -480,7 +533,7 @@ static void draw_screen_context_action(const madshelf_state_t* state,
         char *f = xasprintf(msg, basename(state->clipboard_path));
         edje_object_part_text_set(item, "title", f);
         free(f);
-    } else if(item_num == 2) {
+    } else if(item_num == 3) {
         if(state->show_hidden)
             edje_object_part_text_set(item, "title", gettext("Do not show hidden files"));
         else
@@ -498,10 +551,10 @@ static void handle_screen_context_action(madshelf_state_t* state,
 {
     _loc_t* _loc = (_loc_t*)state->loc;
 
-    if (item_num == 3) {
+    if (item_num == 4) {
         clipboard_paste(state, _loc->dir);
     }
-    if(item_num == 2)
+    if(item_num == 3)
     {
         set_show_hidden(state, !state->show_hidden);
     }
