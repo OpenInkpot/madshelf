@@ -582,7 +582,7 @@ static void _open_screen_context_menu(madshelf_state_t* state)
 {
     open_screen_context_menu(state,
                              gettext("Menu"),
-                             3 + (is_clipboard_active(state) ? 1 : 0),
+                             4 + (is_clipboard_active(state) ? 1 : 0),
                              draw_screen_context_action,
                              handle_screen_context_action,
                              screen_context_menu_closed);
