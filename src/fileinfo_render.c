@@ -32,7 +32,6 @@
 #include "utils.h"
 #include "fileinfo_render.h"
 #include "text_escape.h"
-#include "handlers.h"
 
 #define KILOBYTE (1024)
 #define MEGABYTE (1024*1024)
@@ -120,10 +119,6 @@ void fileinfo_render(Evas_Object* item, fileinfo_t* fileinfo, bool is_dim)
         _draw_title(item, fileinfo->basename, is_dim,
                     !fileinfo->author && !fileinfo->series);
     }
-
-    openers_t *openers = openers_get(fileinfo->mime_type);
-    if (openers && (openers->app_types & OPENERS_TYPE_BOOKS))
-        edje_object_signal_emit(item, "set-icon", "new");
 
     if(fileinfo->author)
     {
