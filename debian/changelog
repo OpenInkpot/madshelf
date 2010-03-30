@@ -1,3 +1,10 @@
+madshelf (0.2.51) zelazny; urgency=low
+
+  * Implement parsing and displaying current position in file from FBReader (OI#586)
+  * Optionally move top-level "overview" screen to context menu (OI#687)
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Tue, 30 Mar 2010 18:38:47 +0700
+
 madshelf (0.2.50) zelazny; urgency=low
 
   * Added "Sort by date" sorting order to ordinary directories (OI#864)
