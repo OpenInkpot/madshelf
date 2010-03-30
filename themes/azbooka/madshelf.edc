@@ -159,6 +159,16 @@ collections {
             }
          }
          part {
+             name, "progress";
+             type, TEXTBLOCK;
+             description {
+                 state, "default" 0.0;
+                 text { style, "small-info"; }
+                 rel1 { to, "icon-margin"; offset, -78 2; }
+                 rel2 { to, "icon-margin"; offset, -13 -1; }
+             }
+         }
+         part {
              name, "icon";
              images {
                  image, "none.png" COMP;

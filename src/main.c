@@ -71,6 +71,7 @@ void item_clear(Evas_Object* item)
     edje_object_part_text_set(item, "series", "");
     edje_object_part_text_set(item, "type", "");
     edje_object_part_text_set(item, "size", "");
+    edje_object_part_text_set(item, "progress", "");
 }
 
 /* FIXME */

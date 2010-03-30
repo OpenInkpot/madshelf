@@ -149,6 +149,16 @@ void fileinfo_render(Evas_Object* item, fileinfo_t* fileinfo, bool is_dim)
         free(s);
     }
 
+    positions_t *positions = init_positions();
+    int pos = get_position(positions, fileinfo->filename);
+    free_positions(positions);
+
+    if (pos != -1) {
+        char *s = xasprintf("%d%%", pos);
+        edje_object_part_text_set(item, "progress", s);
+        free(s);
+    }
+
     /* FIXME: use MIME info */
     if(endswith(fileinfo->basename, ".fb2.zip"))
     {
