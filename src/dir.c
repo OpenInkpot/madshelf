@@ -160,7 +160,7 @@ static int _namerev(const void* lhs, const void* rhs)
  * parameter to be passed to sort function. So use this global variable and
  * don't forget that _fill_files is no longer thread-safe.
  */
-static char *cur_dir;
+static const char *cur_dir;
 
 static int
 _date(const void *lhs, const void *rhs)

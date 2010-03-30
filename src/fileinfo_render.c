@@ -32,19 +32,17 @@
 #include "utils.h"
 #include "fileinfo_render.h"
 #include "text_escape.h"
+#include "positions.h"
 
 #define KILOBYTE (1024)
 #define MEGABYTE (1024*1024)
 
 char* format_size(long long size)
 {
-    char* res;
-
     if(size >= MEGABYTE)
-        asprintf(&res, "%.1fM", ((double)size)/((double)MEGABYTE));
+        return xasprintf("%.1fM", ((double)size)/((double)MEGABYTE));
     else
-        asprintf(&res, "%dk", (int)(((double)size)/((double)KILOBYTE)+0.5));
-    return res;
+        return xasprintf("%dk", (int)(((double)size)/((double)KILOBYTE)+0.5));
 }
 
 bool endswith(const char* s, const char* t)
@@ -67,8 +65,7 @@ void count_files(const char* directory, int* files, int* directories)
     for(i = ls; i; i = eina_list_next(i))
     {
         const char* file = eina_list_data_get(i);
-        char* filename;
-        asprintf(&filename, "%s/%s", directory, file);
+        char* filename = xasprintf("%s/%s", directory, file);
 
         if(ecore_file_is_dir(filename))
             (*directories)++;
@@ -86,8 +83,7 @@ static void _draw_title(Evas_Object* item, const char* text, bool is_dim, bool s
     char* escaped_text = textblock_escape_string(text);
     if(is_dim)
     {
-        char* f;
-        asprintf(&f, "<inactive>%s</inactive>", escaped_text);
+        char* f = xasprintf("<inactive>%s</inactive>", escaped_text);
         edje_object_part_text_set(item, single ? "center-caption" : "title", f);
         free(f);
     }
@@ -132,8 +128,7 @@ void fileinfo_render(Evas_Object* item, fileinfo_t* fileinfo, bool is_dim)
         char* escaped_series = textblock_escape_string(fileinfo->series);
         if(fileinfo->series_num != -1)
         {
-            char* s;
-            asprintf(&s, "%s #%d", escaped_series, fileinfo->series_num);
+            char* s = xasprintf("%s #%d", escaped_series, fileinfo->series_num);
             edje_object_part_text_set(item, "series", s);
             free(s);
         }
