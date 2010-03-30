@@ -41,6 +41,8 @@ install: build
 
 	mkdir -p $(CURDIR)/debian/madshelf-settings-n516/etc/keys
 	install -m 0644 $(CURDIR)/debian/n516-keys.ini $(CURDIR)/debian/madshelf-settings-n516/etc/keys/madshelf.ini
+	mkdir -p $(CURDIR)/debian/madshelf-settings-n516/etc/madshelf
+	install -m 0644 $(CURDIR)/debian/n516-prefs.conf $(CURDIR)/debian/madshelf-settings-n516/etc/madshelf/prefs.conf
 
 binary-arch: build install
 	dh_testdir

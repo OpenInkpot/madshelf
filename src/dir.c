@@ -125,8 +125,12 @@ static void go_to_parent(madshelf_state_t* state)
 
     if(cur_disk != next_disk || !strcmp(_loc->dir, "/"))
     {
-        /* Top directory reached - move to "overview" screen */
-        go(state, overview_make(state));
+        if (state->menu_navigation) {
+            ecore_evas_hide(state->win);
+        } else {
+            /* Top directory reached - move to "overview" screen */
+            go(state, overview_make(state));
+        }
     }
     else
     {
@@ -399,8 +403,13 @@ static void _fs_updated(madshelf_state_t* state)
     _loc_t* _loc = (_loc_t*)state->loc;
     madshelf_disk_t* disk = find_disk(state->disks, _loc->dir);
 
-    if(!disk_mounted(disk))
-        go(state, overview_make(state));
+    if(!disk_mounted(disk)) {
+        if (state->menu_navigation) {
+            go_to_first_disk(state);
+        } else {
+            go(state, overview_make(state));
+        }
+    }
     else
         _update_filelist_gui(state);
 }

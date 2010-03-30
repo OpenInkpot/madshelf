@@ -158,7 +158,11 @@ _key_up(madshelf_state_t *state, Evas_Object *choicebox, Evas_Event_Key_Up *ev)
 static void
 _request_exit(madshelf_state_t *state, Evas_Object *choicebox)
 {
-    go(state, overview_make(state));
+    if (state->menu_navigation) {
+        ecore_evas_hide(state->win);
+    } else {
+        go(state, overview_make(state));
+    }
 }
 
 static void

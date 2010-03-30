@@ -59,6 +59,7 @@
 
 #define CURDIR_DB_NAME "dir-state.db"
 #define DISKS_CONFIG_NAME "disks.conf"
+#define PREFS_CONFIG_NAME "prefs.conf"
 #define TAGS_DB_NAME "tags.db"
 
 /* Uhm? */
@@ -272,6 +273,48 @@ static madshelf_disks_t* load_disks()
     return disks;
 }
 
+static bool
+load_prefs()
+{
+    char user_prefs_filename[PATH_MAX];
+    snprintf(user_prefs_filename, PATH_MAX,
+             "%s" USER_CONFIG_DIR "/" PREFS_CONFIG_NAME, getenv("HOME"));
+
+    Efreet_Ini *prefs_config = NULL;
+    if (ecore_file_exists(user_prefs_filename))
+        prefs_config = efreet_ini_new(user_prefs_filename);
+
+    if (!prefs_config && ecore_file_exists(SYS_CONFIG_DIR "/" PREFS_CONFIG_NAME))
+        prefs_config = efreet_ini_new(SYS_CONFIG_DIR "/" PREFS_CONFIG_NAME);
+
+    bool menu_navigation = false;
+
+    if (prefs_config) {
+        efreet_ini_section_set(prefs_config, "Interface");
+        menu_navigation = efreet_ini_boolean_get(prefs_config, "Menu-Navigation");
+        efreet_ini_free(prefs_config);
+    }
+
+    return menu_navigation;
+}
+
+void
+go_to_first_disk(madshelf_state_t *state)
+{
+    for (int i = 0; i < state->disks->n; ++i) {
+        madshelf_disk_t *disk = state->disks->disk + i;
+        if (disk_mounted(disk)) {
+            const char *path = disk->current_path ? disk->current_path : disk->path;
+            go(state, dir_make(state, path));
+            return;
+        }
+    }
+
+    /* Ugh. Let's use first disk */
+    const char *path = state->disks->disk->path;
+    go(state, dir_make(state, path));
+}
+
 typedef struct
 {
     char* msg;
@@ -320,7 +363,11 @@ static int _client_del(void* param, int ev_type, void* ev)
         if(filter >= MADSHELF_FILTER_NO && filter <= MADSHELF_FILTER_AUDIO)
         {
             state->filter = filter;
-            go(state, overview_make(state));
+            if (state->menu_navigation) {
+                go_to_first_disk(state);
+            } else {
+                go(state, overview_make(state));
+            }
 
             ecore_evas_show(win);
             ecore_evas_raise(win);
@@ -515,6 +562,7 @@ int main(int argc, char** argv)
     state.filter = filter;
     openers_init();
     state.disks = load_disks();
+    state.menu_navigation = load_prefs();
     state.keys = keys_alloc("madshelf");
 
     load_config(&state);
@@ -589,8 +637,13 @@ int main(int argc, char** argv)
 
     if(folder)
         go(&state, dir_make(&state, folder));
-    else
-        go(&state, overview_make(&state));
+    else {
+        if (state.menu_navigation) {
+            go_to_first_disk(&state);
+        } else {
+            go(&state, overview_make(&state));
+        }
+    }
 
     evas_object_show(contents);
     evas_object_show(main_edje);

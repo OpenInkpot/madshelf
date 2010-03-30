@@ -49,7 +49,40 @@ static void _item_handler(Evas_Object* choicebox, int item_num, bool is_alt, voi
     Evas_Object* menu = evas_object_name_find(canvas, "screen-context-menu");
     screen_context_menu_info_t* info = evas_object_data_get(menu, "info");
 
-    (*info->handle_action)(info->state, item_num, is_alt);
+    if (item_num < info->state->disks->n + 2) {
+        madshelf_state_t *state = info->state;
+
+        /* FIXME? stored paths for every disk? */
+        if(item_num < state->disks->n)
+        {
+            madshelf_disk_t* disk = state->disks->disk + item_num;
+            if(disk_mounted(disk))
+            {
+                const char* path = disk->current_path ? disk->current_path : disk->path;
+                close_screen_context_menu(canvas);
+                go(state, dir_make(state, path));
+                return;
+            }
+        }
+
+        if(item_num - state->disks->n == 0)
+        {
+            close_screen_context_menu(canvas);
+            /* Skip favorites menu as useless */
+            go(state,
+               favorites_make(state,
+                              (madshelf_favorites_type_t)state->filter));
+            return;
+        }
+
+        if(item_num - state->disks->n == 1) {
+            close_screen_context_menu(canvas);
+            go(state, recent_make(state));
+            return;
+        }
+    } else {
+        (*info->handle_action)(info->state, item_num - info->state->disks->n - 2, is_alt);
+    }
 }
 
 static void _draw_item_handler(Evas_Object* choicebox, Evas_Object* item, int item_num,
@@ -61,7 +94,32 @@ static void _draw_item_handler(Evas_Object* choicebox, Evas_Object* item, int it
     Evas_Object* menu = evas_object_name_find(canvas, "screen-context-menu");
     screen_context_menu_info_t* info = evas_object_data_get(menu, "info");
 
-    (*info->draw_action)(info->state, item, item_num);
+    if (item_num < info->state->disks->n + 2) {
+        item_clear(item);
+
+        if(item_num < info->state->disks->n)
+        {
+            if(disk_mounted(info->state->disks->disk + item_num))
+                edje_object_part_text_set(item, "title", info->state->disks->disk[item_num].name);
+            else
+            {
+                char* d;
+                if(!asprintf(&d, "<inactive>%s</inactive>", info->state->disks->disk[item_num].name))
+                    err(1, "Whoops, out of memory");
+
+                edje_object_part_text_set(item, "title", d);
+                free(d);
+            }
+        }
+
+        if(item_num - info->state->disks->n == 0)
+            edje_object_part_text_set(item, "title", gettext("Favorites"));
+
+        if(item_num - info->state->disks->n == 1)
+            edje_object_part_text_set(item, "title", gettext("Recent files"));
+    } else {
+        (*info->draw_action)(info->state, item, item_num - info->state->disks->n - 2);
+    }
 }
 
 static void _page_handler(Evas_Object* choicebox, int cur_page, int total_pages, void* param)
@@ -119,7 +177,7 @@ void open_screen_context_menu(madshelf_state_t* state,
     edje_object_part_swallow(screen_context_menu, "contents", screen_context_menu_choicebox);
     edje_object_part_swallow(main_edje, "left-overlay", screen_context_menu);
 
-    choicebox_set_size(screen_context_menu_choicebox, actions_num);
+    choicebox_set_size(screen_context_menu_choicebox, actions_num + 2 + state->disks->n);
 
     evas_object_show(screen_context_menu_choicebox);
     evas_object_show(screen_context_menu);

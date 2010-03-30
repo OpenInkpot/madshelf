@@ -134,7 +134,11 @@ static bool _key_up(madshelf_state_t* state, Evas_Object* choicebox,
 
 static void _request_exit(madshelf_state_t* state, Evas_Object* choicebox)
 {
-    go(state, overview_make(state));
+    if (state->menu_navigation) {
+        ecore_evas_hide(state->win);
+    } else {
+        go(state, overview_make(state));
+    }
 }
 
 static void _activate_item(madshelf_state_t* state, Evas_Object* choicebox,
