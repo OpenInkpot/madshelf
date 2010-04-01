@@ -39,6 +39,7 @@
 #include "run.h"
 #include "filters.h"
 #include "dir.h"
+#include "positions.h"
 
 static void _open_file_context_menu(madshelf_state_t* state, const char* filename);
 static void _open_screen_context_menu(madshelf_state_t* state, Evas_Object* choicebox);
@@ -48,6 +49,8 @@ typedef struct {
 
     Eina_Array *files;
     madshelf_favorites_type_t type;
+
+    void *watcher;
 } favorites_loc_t;
 
 static void
@@ -66,6 +69,7 @@ _update_files(favorites_loc_t *_loc, Eina_Array *files)
 static void
 _free(madshelf_state_t *state) {
     favorites_loc_t *fav_loc = (favorites_loc_t*)state->loc;
+    positions_update_unsubscribe(fav_loc->watcher);
     _update_files(fav_loc, NULL);
     close_file_context_menu(state->canvas, false);
     close_screen_context_menu(state->canvas);
@@ -114,13 +118,6 @@ static const char *titles[] = {
 };
 
 static void
-_init_gui(const madshelf_state_t *state)
-{
-    Evas_Object *choicebox = evas_object_name_find(state->canvas, "contents");
-    choicebox_set_selection(choicebox, -1);
-}
-
-static void
 _update_gui(const madshelf_state_t *state)
 {
     Evas_Object *choicebox = evas_object_name_find(state->canvas, "contents");
@@ -136,6 +133,23 @@ _update_gui(const madshelf_state_t *state)
                               gettext(titles[fav_loc->type]));
 
     set_sort_icon(state, state->favorites_sort);
+}
+
+static void
+_positions_updated(void *param)
+{
+    madshelf_state_t* state = param;
+    _update_gui(state);
+}
+
+static void
+_init_gui(const madshelf_state_t *state)
+{
+    Evas_Object *choicebox = evas_object_name_find(state->canvas, "contents");
+    choicebox_set_selection(choicebox, -1);
+
+    favorites_loc_t* _loc = state->loc;
+    _loc->watcher = positions_update_subscribe(_positions_updated, state);
 }
 
 static bool

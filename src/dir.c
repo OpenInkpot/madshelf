@@ -46,6 +46,7 @@
 #include "run.h"
 #include "filters.h"
 #include "utils.h"
+#include "positions.h"
 
 static void _open_screen_context_menu(madshelf_state_t* state);
 static void _open_file_context_menu(madshelf_state_t* state, const char* filename);
@@ -57,6 +58,8 @@ typedef struct
     Eina_Array* files;
     char* dir;
     int old_pos;
+
+    void *watcher;
 } _loc_t;
 
 static void _free_files(Eina_Array* files)
@@ -72,6 +75,8 @@ static void _free_files(Eina_Array* files)
 static void _free(madshelf_state_t* state)
 {
     _loc_t* _loc = (_loc_t*)state->loc;
+
+    positions_update_unsubscribe(_loc->watcher);
 
     if(_loc->dir)
     {
@@ -280,27 +285,6 @@ _fill_files(const madshelf_state_t *state, const char *dir, int *old_pos)
     return files;
 }
 
-static void _init_gui(const madshelf_state_t* state)
-{
-    Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
-
-    _loc_t* _loc = (_loc_t*)state->loc;
-    choicebox_set_size(choicebox, eina_array_count_get(_loc->files));
-    choicebox_set_selection(choicebox, -1);
-
-    choicebox_scroll_to(choicebox, _loc->old_pos == -1 ? 0 : _loc->old_pos);
-}
-
-
-/*
-   Important:
-       _update_gui() must be called after edje resize, because
-       (if called after resize event)
-        eoi_edje_text_trim_left() depend on it.
-
-       This hack still exists, until EDJE will be fixed
-
- */
 static void _update_gui(const madshelf_state_t* state)
 {
     Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
@@ -322,6 +306,27 @@ static void _update_gui(const madshelf_state_t* state)
 
     set_sort_icon(state, state->sort);
 }
+
+static void
+_positions_updated(void *param)
+{
+    madshelf_state_t* state = param;
+    _update_gui(state);
+}
+
+static void _init_gui(const madshelf_state_t* state)
+{
+    Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
+
+    _loc_t* _loc = (_loc_t*)state->loc;
+    choicebox_set_size(choicebox, eina_array_count_get(_loc->files));
+    choicebox_set_selection(choicebox, -1);
+
+    choicebox_scroll_to(choicebox, _loc->old_pos == -1 ? 0 : _loc->old_pos);
+
+    _loc->watcher = positions_update_subscribe(_positions_updated, state);
+}
+
 
 static bool _key_up(madshelf_state_t* state, Evas_Object* choicebox,
                       Evas_Event_Key_Up* ev)

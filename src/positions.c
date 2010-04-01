@@ -8,6 +8,8 @@
 
 #include <expat.h>
 
+#include <Ecore_File.h>
+
 #include <libeoi_utils.h>
 
 #include <stdio.h>
@@ -149,4 +151,42 @@ void
 free_positions(positions_t *positions)
 {
     free(positions);
+}
+
+typedef struct {
+    Ecore_File_Monitor *monitor;
+    positions_updated_cb callback;
+    void *param;
+} positions_updated_param;
+
+static void
+positions_updated(void *data, Ecore_File_Monitor *monitor,
+                  Ecore_File_Event event, const char *path)
+{
+    positions_updated_param* param = data;
+    (param->callback)(param->param);
+}
+
+void *
+positions_update_subscribe(positions_updated_cb callback, void *user_param)
+{
+    positions_updated_param *param = malloc(sizeof(positions_updated_param));
+    param->callback = callback;
+    param->param = user_param;
+
+    char *state_file = xasprintf("%s" FBREADER_STATE_FILE, getenv("HOME"));
+
+    param->monitor = ecore_file_monitor_add(state_file, positions_updated, param);
+
+    free(state_file);
+
+    return param;
+}
+
+void
+positions_update_unsubscribe(void *passed_param)
+{
+    positions_updated_param *param = passed_param;
+    ecore_file_monitor_del(param->monitor);
+    free(param);
 }

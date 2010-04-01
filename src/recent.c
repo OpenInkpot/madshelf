@@ -38,6 +38,7 @@
 #include "run.h"
 #include "filters.h"
 #include "dir.h"
+#include "positions.h"
 
 static void _open_screen_context_menu(madshelf_state_t* state);
 static void _open_file_context_menu(madshelf_state_t* state, const char* filename);
@@ -46,6 +47,7 @@ typedef struct
 {
     madshelf_loc_t loc;
     Eina_Array* files;
+    void *watcher;
 } _loc_t;
 
 static void _free_files(Eina_Array* files)
@@ -62,6 +64,7 @@ static void _free(madshelf_state_t* state)
 {
     _loc_t* _loc = (_loc_t*)state->loc;
 
+    positions_update_unsubscribe(_loc->watcher);
     _free_files(_loc->files);
     close_file_context_menu(state->canvas, false);
     close_screen_context_menu(state->canvas);
@@ -91,15 +94,6 @@ static Eina_Array *_fill_files(const madshelf_state_t* state)
     return files;
 }
 
-static void _init_gui(const madshelf_state_t* state)
-{
-    Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
-    Evas_Object* header = evas_object_name_find(state->canvas, "main_edje");
-
-    choicebox_set_selection(choicebox, -1);
-    edje_object_part_text_set(header, "title", gettext("Recent files"));
-}
-
 static void _update_gui(const madshelf_state_t* state)
 {
     Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
@@ -110,6 +104,26 @@ static void _update_gui(const madshelf_state_t* state)
     choicebox_invalidate_interval(choicebox, 0, eina_array_count_get(_loc->files));
 
     set_sort_icon(state, state->recent_sort);
+}
+
+
+static void
+_positions_updated(void *param)
+{
+    madshelf_state_t* state = param;
+    _update_gui(state);
+}
+
+static void _init_gui(const madshelf_state_t* state)
+{
+    Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
+    Evas_Object* header = evas_object_name_find(state->canvas, "main_edje");
+
+    choicebox_set_selection(choicebox, -1);
+    edje_object_part_text_set(header, "title", gettext("Recent files"));
+
+    _loc_t* _loc = state->loc;
+    _loc->watcher = positions_update_subscribe(_positions_updated, state);
 }
 
 static bool _key_up(madshelf_state_t* state, Evas_Object* choicebox,
