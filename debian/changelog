@@ -1,3 +1,12 @@
+madshelf (0.2.52) zelazny; urgency=low
+
+  * Added update of current position in file on-the-fly
+
+  * In mode without "overview" screen move to SD card if SD card is
+    inserted and we were browsing internal storage.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Fri, 02 Apr 2010 01:52:30 +0700
+
 madshelf (0.2.51) zelazny; urgency=low
 
   * Implement parsing and displaying current position in file from FBReader (OI#586)
