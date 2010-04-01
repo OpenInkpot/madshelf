@@ -415,8 +415,26 @@ static void _fs_updated(madshelf_state_t* state)
             go(state, overview_make(state));
         }
     }
-    else
-        _update_filelist_gui(state);
+    else {
+        if (state->menu_navigation) {
+            /* If we are in internal memory, and removable card has been
+             * inserted, move to it. */
+            madshelf_disk_t *disk = find_disk(state->disks, _loc->dir);
+            if (!disk->is_removable) {
+                for (int i = 0; i < state->disks->n; ++i) {
+                    if (state->disks->disk[i].is_removable) {
+                        if (disk_mounted(state->disks->disk + i)) {
+                            go(state, dir_make(state, state->disks->disk[i].path));
+                            return;
+                        }
+                    }
+                }
+            }
+            _update_filelist_gui(state);
+        } else {
+            _update_filelist_gui(state);
+        }
+    }
 }
 
 static madshelf_loc_t loc = {
