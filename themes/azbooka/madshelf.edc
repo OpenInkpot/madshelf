@@ -115,7 +115,7 @@ collections {
                state, "default" 0.0;
                text { style, "big"; }
                rel1 { offset, 0 2; }
-               rel2 { to, "icon-margin"; offset, -13 -1; }
+               rel2 { to, "progress"; relative, 0.0 1.0; offset, -1 -1; }
             }
          }
          part {
