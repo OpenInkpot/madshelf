@@ -2,7 +2,7 @@
 # Copyright (C) 2008 Marc Lajoie <manorapide@hotmail.com>
 # Copyright (C) 2008,2009 Mikhail Gusarov <dottedmag@dottedmag.net>
 # This file is in public domain
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: madshelf 0.1\n"
@@ -61,11 +61,6 @@ msgstr "Rendezés dátum szerint"
 msgid "Clear favorites"
 msgstr "Összes kedvenc törlése"
 
-#: src/favorites.c:312 src/recent.c:272
-#, fuzzy
-msgid "Remove absent files"
-msgstr "Eltávolitás a legutóbb használt fájlok listájából"
-
 #: src/favorites.c:324 src/recent.c:283 src/dir.c:485
 msgid "Do not show hidden files"
 msgstr "Ne mutassa az rejtett fájlokat"
@@ -98,10 +93,6 @@ msgstr "Eltávolitás a legutóbb használt fájlok listájából"
 msgid "Clear recent files"
 msgstr "Legutóbb használt fájlok listájának törlése"
 
-#: src/file_context_menu.c:191 src/file_context_menu.c:295
-msgid "Always open with..."
-msgstr ""
-
 #: src/file_context_menu.c:285
 #, c-format
 msgid "Open with %s"
@@ -111,14 +102,6 @@ msgstr "Megnyitás ezzel: %s"
 #, c-format
 msgid "Open (with %s)"
 msgstr "Megnyitás (ezzel %s)"
-
-#: src/file_context_menu.c:313
-msgid "Copy"
-msgstr ""
-
-#: src/file_context_menu.c:316
-msgid "Cut"
-msgstr ""
 
 #: src/file_context_menu.c:319
 msgid "Delete"
@@ -130,8 +113,7 @@ msgstr "Törölhető a file?"
 
 #: src/delete_file.c:83
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr ""
-"A file törléséhez nyomja meg az \"OK\" gombot, illetve a \"C\"-t, ha mégsem"
+msgstr "A file törléséhez nyomja meg az \"OK\" gombot, illetve a \"C\"-t, ha mégsem"
 
 #: src/dir.c:391
 msgid "Unhide"
@@ -144,14 +126,6 @@ msgstr "Elrejtés"
 #: src/dir.c:400
 msgid "Add to favorites"
 msgstr "Hozzáadás kedvencekhez"
-
-#: src/dir.c:477
-msgid "Copy file(s) here"
-msgstr ""
-
-#: src/dir.c:478
-msgid "Move file(s) here"
-msgstr ""
 
 #: src/dir.c:526
 msgid "Menu"
@@ -169,11 +143,33 @@ msgstr "Nem létezik"
 msgid "Directory"
 msgstr "Könyvtár"
 
-#, fuzzy
+#: src/favorites.c:312 src/recent.c:272
+msgid "Remove absent files"
+msgstr "Eltávolitás a legutóbb használtak közül"
+
+#: src/file_context_menu.c:313
+msgid "Copy"
+msgstr "Másolás"
+
+#: src/file_context_menu.c:316
+msgid "Cut"
+msgstr "Kivágás"
+
+#: src/file_context_menu.c:191 src/file_context_menu.c:295
+msgid "Always open with..."
+msgstr "Megnyitás mindig ezzel..."
+
+#: src/dir.c:478
+msgid "Move file(s) here"
+msgstr "File(-ok) mozgatása ide"
+
+#: src/dir.c:477
+msgid "Copy file(s) here"
+msgstr "File(-ok) másolása ide"
+
 #~ msgid "Hide absent files"
 #~ msgstr "Legutóbbi fájlok"
 
-#, fuzzy
 #~ msgid "Show absent files"
 #~ msgstr "Mutassa az rejtett fájlokat"
 
