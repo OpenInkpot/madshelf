@@ -403,10 +403,17 @@ static void _update_filelist_gui(madshelf_state_t* state)
     _update_gui(state);
 }
 
-static void _fs_updated(madshelf_state_t* state)
+static void
+_fs_updated(madshelf_state_t *state)
 {
-    _loc_t* _loc = (_loc_t*)state->loc;
-    madshelf_disk_t* disk = find_disk(state->disks, _loc->dir);
+    _update_filelist_gui(state);
+}
+
+static void
+_mounts_updated(madshelf_state_t *state)
+{
+    _loc_t *_loc = (_loc_t *)state->loc;
+    madshelf_disk_t *disk = find_disk(state->disks, _loc->dir);
 
     if(!disk_mounted(disk)) {
         if (state->menu_navigation) {
@@ -446,6 +453,7 @@ static madshelf_loc_t loc = {
     &_activate_item,
     &_draw_item,
     &_fs_updated,
+    &_mounts_updated,
 };
 
 madshelf_loc_t* dir_make(madshelf_state_t* state, const char* dir)

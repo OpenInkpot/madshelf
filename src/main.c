@@ -433,8 +433,8 @@ static int sighup_signal_handler(void* data, int type, void* event)
 {
     madshelf_state_t* state = (madshelf_state_t*)data;
 
-    if(state->loc->fs_updated)
-        (*state->loc->fs_updated)(state);
+    if(state->loc->mounts_updated)
+        (*state->loc->mounts_updated)(state);
 
     /* Purge "current position in directory" cache when SD card is inserted, as
      * it might have been out-of-date */

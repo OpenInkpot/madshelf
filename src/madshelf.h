@@ -76,6 +76,7 @@ typedef struct
     void (*activate_item)(madshelf_state_t* state, Evas_Object* choicebox, int item_num, bool is_alt);
     void (*draw_item)(const madshelf_state_t* state, Evas_Object* item, int item_num);
     void (*fs_updated)(madshelf_state_t* state);
+    void (*mounts_updated)(madshelf_state_t *state);
 } madshelf_loc_t;
 
 struct madshelf_state_t

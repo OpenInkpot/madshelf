@@ -229,6 +229,14 @@ _fs_updated(madshelf_state_t *state)
     _update_gui(state);
 }
 
+static void
+_mounts_updated(madshelf_state_t *state)
+{
+    favorites_loc_t *_loc = (favorites_loc_t *)state->loc;
+    _update_files(_loc, _fill_files(state));
+    _update_gui(state);
+}
+
 static madshelf_loc_t loc = {
     &_free,
     &_init_gui,
@@ -238,6 +246,7 @@ static madshelf_loc_t loc = {
     &_activate_item,
     &_draw_item,
     &_fs_updated,
+    &_mounts_updated,
 };
 
 madshelf_loc_t *favorites_make(madshelf_state_t *state,

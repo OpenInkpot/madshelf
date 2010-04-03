@@ -120,7 +120,15 @@ static void _draw_item(const madshelf_state_t* state,
         edje_object_part_text_set(item, "center-caption", gettext("Recent files"));
 }
 
-static void _fs_updated(madshelf_state_t* state)
+static void
+_fs_updated(madshelf_state_t *state)
+{
+    Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
+    choicebox_invalidate_interval(choicebox, 0, state->disks->n + 2);
+}
+
+static void
+_mounts_updated(madshelf_state_t *state)
 {
     Evas_Object* choicebox = evas_object_name_find(state->canvas, "contents");
     choicebox_invalidate_interval(choicebox, 0, state->disks->n + 2);
@@ -137,6 +145,7 @@ madshelf_loc_t* overview_make(madshelf_state_t* state)
         &_activate_item,
         &_draw_item,
         &_fs_updated,
+        &_mounts_updated,
     };
     return &loc;
 }
