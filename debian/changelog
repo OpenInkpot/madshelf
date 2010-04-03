@@ -1,3 +1,9 @@
+madshelf (0.2.54) zelazny; urgency=low
+
+  * Fixed switching to SD card after deleting file from internal memory.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Sat, 03 Apr 2010 21:52:29 +0700
+
 madshelf (0.2.53) zelazny; urgency=low
 
   * Do not overlap progress and title of book.
