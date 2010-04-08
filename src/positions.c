@@ -187,6 +187,7 @@ void
 positions_update_unsubscribe(void *passed_param)
 {
     positions_updated_param *param = passed_param;
-    ecore_file_monitor_del(param->monitor);
+    if (param->monitor)
+        ecore_file_monitor_del(param->monitor);
     free(param);
 }
