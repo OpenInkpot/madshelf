@@ -1,3 +1,9 @@
+madshelf (0.2.55) zelazny; urgency=low
+
+  * Do not crash if state.xml does not exist
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Fri, 09 Apr 2010 02:22:12 +0700
+
 madshelf (0.2.54) zelazny; urgency=low
 
   * Fixed switching to SD card after deleting file from internal memory.
