@@ -1,8 +1,8 @@
-# SOME DESCRIPTIVE TITLE.
+# madshelf.
 # This file is put in the public domain.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: madshelf 0.1\n"
@@ -82,7 +82,7 @@ msgstr "Bilder (navigation)"
 
 #: src/overview.c:43
 msgid "Audio (navigation)"
-msgstr "Audio (navigation)"
+msgstr "Ljudfiler (navigation)"
 
 #: src/overview.c:120 src/recent.c:100 src/recent.c:316
 msgid "Recent files"
@@ -90,7 +90,7 @@ msgstr "Senaste filer"
 
 #: src/recent.c:210
 msgid "Remove from recent files"
-msgstr "Radera från Senaste filer"
+msgstr "Radera fårn Senaste filer"
 
 #: src/recent.c:270
 msgid "Clear recent files"
