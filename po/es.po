@@ -1,4 +1,4 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
@@ -106,14 +106,6 @@ msgstr "Abrir con %s"
 msgid "Open (with %s)"
 msgstr "Abrir (con %s)"
 
-#: src/file_context_menu.c:313
-msgid "Copy"
-msgstr ""
-
-#: src/file_context_menu.c:316
-msgid "Cut"
-msgstr ""
-
 #: src/file_context_menu.c:319
 msgid "Delete"
 msgstr "Borrar"
@@ -124,8 +116,7 @@ msgstr "¿Borrar fichero?"
 
 #: src/delete_file.c:83
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr ""
-"Presiona \"OK\" para borrar el fichero<br><br>Presiona \"C\" para cancelar"
+msgstr "Presiona \"OK\" para borrar el fichero<br><br>Presiona \"C\" para cancelar"
 
 #: src/dir.c:391
 msgid "Unhide"
@@ -138,14 +129,6 @@ msgstr "Ocultar"
 #: src/dir.c:400
 msgid "Add to favorites"
 msgstr "Añadir a favoritos"
-
-#: src/dir.c:477
-msgid "Copy file(s) here"
-msgstr ""
-
-#: src/dir.c:478
-msgid "Move file(s) here"
-msgstr ""
 
 #: src/dir.c:526
 msgid "Menu"
@@ -162,6 +145,22 @@ msgstr "No existe"
 #: src/fileinfo_render.c:113
 msgid "Directory"
 msgstr "Directorio"
+
+#: src/file_context_menu.c:313
+msgid "Copy"
+msgstr "Copiar"
+
+#: src/file_context_menu.c:316
+msgid "Cut"
+msgstr "Cortar"
+
+#: src/dir.c:478
+msgid "Move file(s) here"
+msgstr "Mover fichero aquí"
+
+#: src/dir.c:477
+msgid "Copy file(s) here"
+msgstr "Copiar fichero aquí"
 
 #~ msgid "Hide absent files"
 #~ msgstr "Ocultar ficheros inexistentes"
