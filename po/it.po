@@ -1,6 +1,6 @@
 # translation of madshelf.po to italian
 # This file is put in the public domain.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
@@ -108,14 +108,6 @@ msgstr "Apri con %s"
 msgid "Open (with %s)"
 msgstr "Apri (con %s)"
 
-#: src/file_context_menu.c:313
-msgid "Copy"
-msgstr ""
-
-#: src/file_context_menu.c:316
-msgid "Cut"
-msgstr ""
-
 #: src/file_context_menu.c:319
 msgid "Delete"
 msgstr "Elimina"
@@ -140,14 +132,6 @@ msgstr "Nascondi"
 msgid "Add to favorites"
 msgstr "Aggiungi ai preferiti"
 
-#: src/dir.c:477
-msgid "Copy file(s) here"
-msgstr ""
-
-#: src/dir.c:478
-msgid "Move file(s) here"
-msgstr ""
-
 #: src/dir.c:526
 msgid "Menu"
 msgstr "Menu"
@@ -163,6 +147,22 @@ msgstr "Non esiste"
 #: src/fileinfo_render.c:113
 msgid "Directory"
 msgstr "Cartella"
+
+#: src/file_context_menu.c:313
+msgid "Copy"
+msgstr "Copia"
+
+#: src/file_context_menu.c:316
+msgid "Cut"
+msgstr "Taglia"
+
+#: src/dir.c:478
+msgid "Move file(s) here"
+msgstr "Sposta qui"
+
+#: src/dir.c:477
+msgid "Copy file(s) here"
+msgstr "Copia qui"
 
 #~ msgid "Hide absent files"
 #~ msgstr "Nascondi file mancanti"
