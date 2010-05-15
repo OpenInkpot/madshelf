@@ -5,7 +5,9 @@
  */
 
 images {
+/*
     image, "delete-confirm.png" COMP;
+*/
 
     image, "sort-none.png" COMP;
     image, "sort-name.png" COMP;
@@ -212,6 +214,7 @@ collections {
            }
        }
    }
+   /*
    group {
       name, "delete-confirm-window";
       parts {
@@ -266,5 +269,51 @@ collections {
             }
          }
       }
+   }
+   */
+   group {
+       name, "delete-confirm-text";
+       styles {
+           style {
+               name, "text";
+               base, "font=sans-serif font_size=28 align=center color=#000 wrap=word";
+               tag, "b" "+font=sans-serif:style=bold";
+               tag, "/b" "-";
+               tag, "br" "\n";
+           }
+       }
+       parts {
+           part {
+               name, "text";
+               type, TEXTBLOCK;
+               multiline, 1;
+               description {
+                   state, "default" 0.0;
+                   text {
+                       style, "text";
+                   }
+                   rel1 {
+                       offset, 0 25;
+                   }
+               }
+           }
+       }
+   }
+   group {
+       name, "delete-confirm-icon";
+       images {
+           image, "icon-delete.png" COMP;
+       }
+       parts {
+           part {
+               name, "icon";
+               description {
+                   state, "default" 0.0;
+                   image {
+                       normal, "icon-delete.png";
+                   }
+               }
+           }
+       }
    }
 }
