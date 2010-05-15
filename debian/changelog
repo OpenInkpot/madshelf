@@ -1,3 +1,31 @@
+madshelf (0.2.56) zelazny; urgency=low
+
+  [ Vasil Badev ]
+  * l10n: Updates to Bulgarian (bg) translation
+
+  [ Pclent ]
+  * l10n: Updates to French (fr) translation
+
+  [ András Csehi ]
+  * l10n: Updates to Hungarian (hu) translation
+
+  [ Tomasz Długosz ]
+  * l10n: initial swedish translation
+
+  [ Sven Bring ]
+  * l10n: Updates to Swedish (sv) translation
+
+  [ Shuntya ]
+  * l10n: Updates to Spanish (Castilian) (es) translation
+
+  [ mascal ]
+  * l10n: Updates to Italian (it) translation
+
+  [ Alexander Kerner ]
+  * Fix default theme.
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Sat, 15 May 2010 17:08:36 +0200
+
 madshelf (0.2.55) zelazny; urgency=low
 
   * Do not crash if state.xml does not exist
