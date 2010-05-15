@@ -2,7 +2,7 @@
 # Copyright (C) 2008 Marc Lajoie <manorapide@hotmail.com>
 # Copyright (C) 2008,2009 Mikhail Gusarov <dottedmag@dottedmag.net>
 # This file is in public domain
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: madshelf 0.1\n"
@@ -60,11 +60,6 @@ msgstr "Сортиране по дата"
 msgid "Clear favorites"
 msgstr "Изчистване на любимите"
 
-#: src/favorites.c:312 src/recent.c:272
-#, fuzzy
-msgid "Remove absent files"
-msgstr "Премахване от последните файлове"
-
 #: src/favorites.c:324 src/recent.c:283 src/dir.c:485
 msgid "Do not show hidden files"
 msgstr "Скритите файлове да не се виждат"
@@ -97,10 +92,6 @@ msgstr "Премахване от последните файлове"
 msgid "Clear recent files"
 msgstr "Изчистване на последните файлове"
 
-#: src/file_context_menu.c:191 src/file_context_menu.c:295
-msgid "Always open with..."
-msgstr ""
-
 #: src/file_context_menu.c:285
 #, c-format
 msgid "Open with %s"
@@ -110,14 +101,6 @@ msgstr "Отваряне с %s"
 #, c-format
 msgid "Open (with %s)"
 msgstr "Отваряне (с %s)"
-
-#: src/file_context_menu.c:313
-msgid "Copy"
-msgstr ""
-
-#: src/file_context_menu.c:316
-msgid "Cut"
-msgstr ""
 
 #: src/file_context_menu.c:319
 msgid "Delete"
@@ -143,14 +126,6 @@ msgstr "Скриване"
 msgid "Add to favorites"
 msgstr "Добавяне към любими"
 
-#: src/dir.c:477
-msgid "Copy file(s) here"
-msgstr ""
-
-#: src/dir.c:478
-msgid "Move file(s) here"
-msgstr ""
-
 #: src/dir.c:526
 msgid "Menu"
 msgstr "Меню"
@@ -167,11 +142,33 @@ msgstr "Не съществува"
 msgid "Directory"
 msgstr "Папка"
 
-#, fuzzy
+#: src/favorites.c:312 src/recent.c:272
+msgid "Remove absent files"
+msgstr "Премахване на липсващите файлове"
+
+#: src/file_context_menu.c:313
+msgid "Copy"
+msgstr "Копиране"
+
+#: src/file_context_menu.c:316
+msgid "Cut"
+msgstr "Отрязване"
+
+#: src/file_context_menu.c:191 src/file_context_menu.c:295
+msgid "Always open with..."
+msgstr "Винаги да се отваря с…"
+
+#: src/dir.c:478
+msgid "Move file(s) here"
+msgstr "Преместване"
+
+#: src/dir.c:477
+msgid "Copy file(s) here"
+msgstr "Поставяне"
+
 #~ msgid "Hide absent files"
 #~ msgstr "Последни файлове"
 
-#, fuzzy
 #~ msgid "Show absent files"
 #~ msgstr "Скритите файлове да се виждат"
 

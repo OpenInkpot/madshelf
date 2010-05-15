@@ -3,7 +3,7 @@
 # Copyright (C) 2008 Marc Lajoie <manorapide@hotmail.com>
 # Copyright (C) 2008,2009 Mikhail Gusarov <dottedmag@dottedmag.net>
 # This file is in public domain
-#
+# 
 # Louvre <diogenedebian@gmail.com>, 2009.
 msgid ""
 msgstr ""
@@ -113,14 +113,6 @@ msgstr "Ouvrir avec %s"
 msgid "Open (with %s)"
 msgstr "Ouvrir (avec %s)"
 
-#: src/file_context_menu.c:313
-msgid "Copy"
-msgstr ""
-
-#: src/file_context_menu.c:316
-msgid "Cut"
-msgstr ""
-
 #: src/file_context_menu.c:319
 msgid "Delete"
 msgstr "Effacer"
@@ -131,9 +123,7 @@ msgstr "Effacer le fichier ?"
 
 #: src/delete_file.c:83
 msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr ""
-"Appuyez sur « OK » pour effacer le fichier<br><br>Appuyez sur « C » pour "
-"annuler"
+msgstr "Appuyez sur « OK » pour effacer le fichier<br><br>Appuyez sur « C » pour annuler"
 
 #: src/dir.c:391
 msgid "Unhide"
@@ -146,14 +136,6 @@ msgstr "Cacher"
 #: src/dir.c:400
 msgid "Add to favorites"
 msgstr "Ajouter aux favoris"
-
-#: src/dir.c:477
-msgid "Copy file(s) here"
-msgstr ""
-
-#: src/dir.c:478
-msgid "Move file(s) here"
-msgstr ""
 
 #: src/dir.c:526
 msgid "Menu"
@@ -170,6 +152,22 @@ msgstr "N'existe pas"
 #: src/fileinfo_render.c:113
 msgid "Directory"
 msgstr "Répertoire"
+
+#: src/file_context_menu.c:313
+msgid "Copy"
+msgstr "Copier"
+
+#: src/file_context_menu.c:316
+msgid "Cut"
+msgstr "Couper"
+
+#: src/dir.c:478
+msgid "Move file(s) here"
+msgstr "Déplacer les fichiers ici"
+
+#: src/dir.c:477
+msgid "Copy file(s) here"
+msgstr "Copier les fichiers ici"
 
 #~ msgid "Hide absent files"
 #~ msgstr "Cacher les fichiers absents"

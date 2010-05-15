@@ -1,12 +1,16 @@
-# 
+# madshelf.
+# This file is put in the public domain.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: madshelf 0.1\n"
 "Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
 "POT-Creation-Date: 2010-03-13 04:02+0600\n"
-"PO-Revision-Date: 2008-10-02 12:42+0100\n"
-"Last-Translator: Miguel <ink@canteras.org>\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2010-04-27 11:51+0100\n"
+"Last-Translator: Sven Bring <sven.bring@yahoo.se>\n"
+"Language-Team: Swedish <openinkpot-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,186 +18,150 @@ msgstr ""
 #: src/favorites.c:110 src/favorites.c:357 src/favorites_menu.c:39
 #: src/overview.c:117
 msgid "Favorites"
-msgstr "Favoritos"
+msgstr "Favoriter"
 
 #: src/favorites.c:111
 msgid "Favorite books"
-msgstr "Libros favoritos"
+msgstr "Favoritböcker"
 
 #: src/favorites.c:112
 msgid "Favorite pictures"
-msgstr "Imágenes favoritas"
+msgstr "Favoritbilder"
 
 #: src/favorites.c:113
 msgid "Favorite music"
-msgstr "Música favorita"
+msgstr "Favoritmusik"
 
 #: src/favorites.c:243 src/recent.c:204 src/dir.c:386
 msgid "Open"
-msgstr "Abrir"
+msgstr "Öppna"
 
 #: src/favorites.c:249 src/dir.c:398
 msgid "Remove from favorites"
-msgstr "Eliminar de favoritos"
+msgstr "Radera från Favoriter"
 
 #: src/favorites.c:295 src/recent.c:255 src/dir.c:453
 msgid "Actions"
-msgstr "Acciones"
+msgstr "Åtgärder"
 
 #: src/favorites.c:307 src/recent.c:267
 msgid "Sort by name"
-msgstr "Ordenar por nombre"
+msgstr "Sortera efter namn"
 
 #: src/favorites.c:308 src/recent.c:268
 msgid "Sort by name (reversed)"
-msgstr "Ordenar por nombre (invertido)"
+msgstr "Sortera efter namn (omvänt)"
 
 #: src/favorites.c:309 src/recent.c:269
 msgid "Sort by date"
-msgstr "Ordenar por fecha"
+msgstr "Sortera efter datum"
 
 #: src/favorites.c:310
 msgid "Clear favorites"
-msgstr "Limpiar favoritos"
+msgstr "Töm Favoriter"
 
 #: src/favorites.c:312 src/recent.c:272
 msgid "Remove absent files"
-msgstr "Eliminar ficheros inexistentes"
+msgstr "Radera saknade filer"
 
 #: src/favorites.c:324 src/recent.c:283 src/dir.c:485
 msgid "Do not show hidden files"
-msgstr "No mostrar ficheros ocultos"
+msgstr "Visa inte dolda filer"
 
 #: src/favorites.c:325 src/recent.c:284 src/dir.c:487
 msgid "Show hidden files"
-msgstr "Mostrar ficheros ocultos"
+msgstr "Visa dolda filer"
 
 #: src/overview.c:40 src/overview.c:41 src/main.c:143
 msgid "Bookshelf"
-msgstr "Librería"
+msgstr "Bokhylla"
 
 #: src/overview.c:42
 msgid "Pictures (navigation)"
-msgstr "Imágenes (navegación)"
+msgstr "Bilder (navigation)"
 
 #: src/overview.c:43
 msgid "Audio (navigation)"
-msgstr "Audio (navegación)"
+msgstr "Ljudfiler (navigation)"
 
 #: src/overview.c:120 src/recent.c:100 src/recent.c:316
 msgid "Recent files"
-msgstr "Ficheros recientes"
+msgstr "Senaste filer"
 
 #: src/recent.c:210
 msgid "Remove from recent files"
-msgstr "Borrar de ficheros recientes"
+msgstr "Radera fårn Senaste filer"
 
 #: src/recent.c:270
 msgid "Clear recent files"
-msgstr "Limpiar ficheros recientes"
+msgstr "Töm Senaste filer"
 
 #: src/file_context_menu.c:191 src/file_context_menu.c:295
 msgid "Always open with..."
-msgstr "Abrir siempre con..."
+msgstr "Öppna alltid med..."
 
 #: src/file_context_menu.c:285
 #, c-format
 msgid "Open with %s"
-msgstr "Abrir con %s"
+msgstr "Öppna med %s"
 
 #: src/file_context_menu.c:285
 #, c-format
 msgid "Open (with %s)"
-msgstr "Abrir (con %s)"
-
-#: src/file_context_menu.c:319
-msgid "Delete"
-msgstr "Borrar"
-
-#: src/delete_file.c:81
-msgid "Delete file?"
-msgstr "¿Borrar fichero?"
-
-#: src/delete_file.c:83
-msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr "Presiona \"OK\" para borrar el fichero<br><br>Presiona \"C\" para cancelar"
-
-#: src/dir.c:391
-msgid "Unhide"
-msgstr "Desocultar"
-
-#: src/dir.c:393
-msgid "Hide"
-msgstr "Ocultar"
-
-#: src/dir.c:400
-msgid "Add to favorites"
-msgstr "Añadir a favoritos"
-
-#: src/dir.c:526
-msgid "Menu"
-msgstr "Menú"
-
-#: src/disks.c:135
-msgid "Whole filesystem"
-msgstr "Sistema de ficheros entero"
-
-#: src/fileinfo_render.c:106
-msgid "Does not exist"
-msgstr "No existe"
-
-#: src/fileinfo_render.c:113
-msgid "Directory"
-msgstr "Directorio"
+msgstr "Öppna (med %s)"
 
 #: src/file_context_menu.c:313
 msgid "Copy"
-msgstr "Copiar"
+msgstr "Kopiera"
 
 #: src/file_context_menu.c:316
 msgid "Cut"
-msgstr "Cortar"
+msgstr "Klipp ut"
 
-#: src/dir.c:478
-msgid "Move file(s) here"
-msgstr "Mover fichero aquí"
+#: src/file_context_menu.c:319
+msgid "Delete"
+msgstr "Radera"
+
+#: src/delete_file.c:81
+msgid "Delete file?"
+msgstr "Radera fil"
+
+#: src/delete_file.c:83
+msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
+msgstr "Tryck \"OK\" för att radera fil<br><br>Tryck \"C\" för att avbryta"
+
+#: src/dir.c:391
+msgid "Unhide"
+msgstr "Visa"
+
+#: src/dir.c:393
+msgid "Hide"
+msgstr "Dölj"
+
+#: src/dir.c:400
+msgid "Add to favorites"
+msgstr "Lägg till Favoriter"
 
 #: src/dir.c:477
 msgid "Copy file(s) here"
-msgstr "Copiar fichero aquí"
+msgstr "Kopiera fil(er) hit"
 
-#~ msgid "Hide absent files"
-#~ msgstr "Ocultar ficheros inexistentes"
+#: src/dir.c:478
+msgid "Move file(s) here"
+msgstr "Flytta fil(er) hit"
 
-#~ msgid "Show absent files"
-#~ msgstr "Mostrar ficheros inexistentes"
+#: src/dir.c:526
+msgid "Menu"
+msgstr "Meny"
 
-#~ msgid "Sort by order"
-#~ msgstr "Ordenar por nombre"
+#: src/disks.c:135
+msgid "Whole filesystem"
+msgstr "Hela filsystemet"
 
-#~ msgid "reverse-sorted by name"
-#~ msgstr "ordenado al revés por nombre"
+#: src/fileinfo_render.c:106
+msgid "Does not exist"
+msgstr "Existerar inte"
 
-#~ msgid "sorted by name"
-#~ msgstr "ordenado por nombre"
-
-#~ msgid "reverse-sorted by time"
-#~ msgstr "ordenado al revés por hora"
-
-#~ msgid "sorted by time"
-#~ msgstr "ordenado por hora"
-
-#~ msgid "Sort by Time"
-#~ msgstr "Ordenar por Hora"
-
-#~ msgid "Reverse Sort Order"
-#~ msgstr "Ordenar al Revés"
-
-#~ msgid "Language Settings"
-#~ msgstr "Configuración de Idioma"
-
-#~ msgid "Go to"
-#~ msgstr "Ir a"
-
-#~ msgid "Scripts"
-#~ msgstr "Scripts"
+#: src/fileinfo_render.c:113
+msgid "Directory"
+msgstr "Mapp"
