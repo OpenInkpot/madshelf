@@ -16,7 +16,7 @@ images {
 styles {
     style {
         name, "titles";
-        base, "font=sans-serif font_size=20 color=#000 align=left";
+        base, "font=sans-serif font_size=20 color=#000 align=left ellipsis=right";
         tag, "inactive" "+color=#555";
         tag, "/inactive" "-";
     };
@@ -34,13 +34,13 @@ styles {
     }
     style {
         name, "series-fields";
-        base, "font=sans-serif:italic font_size=20 color=#000 align=left";
+        base, "font=sans-serif:italic font_size=20 color=#000 align=left ellipsis=right";
         tag, "inactive" "+color=#555";
         tag, "/inactive" "-";
     };
     style {
         name, "item-texts";
-        base, "font=sans-serif font_size=28 color=#000 align=left";
+        base, "font=sans-serif font_size=28 color=#000 align=left ellipsis=right";
         tag, "inactive" "+color=#555";
         tag, "/inactive" "-";
     }
@@ -56,6 +56,19 @@ collections {
    group {
       name, "fileitem";
       parts {
+          part {
+              name, "center-caption";
+              type, TEXTBLOCK;
+              description {
+                  state, "default" 0.0;
+                  text {
+                      style, "item-texts";
+                      max, 0 1;
+                  }
+                  rel1 { offset, 14 0; }
+                  rel2 { offset, -18 -1; }
+              }
+          }
          part {
             name, "title";
             type, TEXTBLOCK;
