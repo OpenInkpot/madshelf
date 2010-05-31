@@ -105,6 +105,7 @@ struct madshelf_state_t
 
     /* Customization */
     bool menu_navigation;
+    bool menu_navigation_prefs;
 };
 
 bool is_clipboard_active(madshelf_state_t *state);
@@ -140,7 +141,7 @@ void set_show_nonexistent_recent(madshelf_state_t* state, bool show_nonexistent)
 void set_show_nonexistent_favorites(madshelf_state_t* state, bool show_nonexistent);
 
 /* FIXME */
-void go_to_first_disk(madshelf_state_t *state);
+madshelf_loc_t*  go_to_first_disk(madshelf_state_t *state);
 
 typedef enum
 {

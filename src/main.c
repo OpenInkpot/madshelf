@@ -30,6 +30,7 @@
 
 #include <Evas.h>
 #include <Ecore.h>
+#include <Ecore_Str.h>
 #include <Ecore_Evas.h>
 #include <Ecore_File.h>
 #include <Ecore_Config.h>
@@ -53,6 +54,9 @@
 #include "curdir.h"
 #include "dir.h"
 #include "app_defaults.h"
+#include "recent.h"
+#include "favorites.h"
+#include "favorites_menu.h"
 
 #define SYS_CONFIG_DIR SYSCONFDIR "/madshelf"
 #define USER_CONFIG_DIR "/.e/apps/madshelf"
@@ -298,21 +302,20 @@ load_prefs()
     return menu_navigation;
 }
 
-void
+madshelf_loc_t*
 go_to_first_disk(madshelf_state_t *state)
 {
     for (int i = 0; i < state->disks->n; ++i) {
         madshelf_disk_t *disk = state->disks->disk + i;
         if (disk_mounted(disk)) {
             const char *path = disk->current_path ? disk->current_path : disk->path;
-            go(state, dir_make(state, path));
-            return;
+            return dir_make(state, path);
         }
     }
 
     /* Ugh. Let's use first disk */
     const char *path = state->disks->disk->path;
-    go(state, dir_make(state, path));
+    return dir_make(state, path);
 }
 
 typedef struct
@@ -338,43 +341,73 @@ static int _client_del(void* param, int ev_type, void* ev)
 
     /* Handle */
 
-    if(!msg->msg[0])
-    {
-        /* Skip it: ecore-con internal bug */
-    }
-    else if(msg->size != 1)
-    {
-        if(msg->msg[0] == '/')
-        {
-            madshelf_state_t* state = (madshelf_state_t*)param;
-            char *folder = strndup(msg->msg, msg->size);
-            go(state, dir_make(state, folder));
-            free(folder);
-        }
-        else
-            fprintf(stderr, "Unknown filter type: %*s\n", msg->size, msg->msg);
-    }
-    else
-    {
-        madshelf_state_t* state = (madshelf_state_t*)param;
-        Ecore_Evas* win = state->win;
+    char *cmdline = strndup(msg->msg, msg->size);
+    char **cmds = ecore_str_split(cmdline ,"\n", 0);
+    free(cmdline);
+    madshelf_loc_t* location = NULL;
+    madshelf_loc_type_t loc_type = MADSHELF_LOC_DIR;
+    madshelf_state_t* state = (madshelf_state_t*)param;
 
-        madshelf_filter_t filter = msg->msg[0] - '0';
-        if(filter >= MADSHELF_FILTER_NO && filter <= MADSHELF_FILTER_AUDIO)
-        {
-            state->filter = filter;
-            if (state->menu_navigation) {
-                go_to_first_disk(state);
-            } else {
-                go(state, overview_make(state));
-            }
+    /* restore navigation state */
+    state->menu_navigation = state->menu_navigation_prefs;
 
-            ecore_evas_show(win);
-            ecore_evas_raise(win);
+    char *folder = NULL;
+    int i=0;
+    while(cmds[i])
+    {
+        char *cmd = cmds[i];
+        if(!strcmp(cmd, "books"))
+            state->filter = MADSHELF_FILTER_BOOKS;
+        else if(!strcmp(cmd, "audio"))
+            state->filter = MADSHELF_FILTER_AUDIO;
+        else if(!strcmp(cmd, "image"))
+            state->filter = MADSHELF_FILTER_IMAGE;
+        else if(cmd[0] == '/')
+        {
+            folder = strdup(cmd);
+            loc_type = MADSHELF_LOC_DIR;
         }
-        else
-            fprintf(stderr, "Unknown filter type: %*s\n", msg->size, msg->msg);
+        else if(!strcmp(cmd, "recent"))
+            loc_type = MADSHELF_LOC_RECENT;
+        else if(!strcmp(cmd, "favorites"))
+            loc_type = MADSHELF_LOC_FAVORITES;
+        else if(!strcmp(cmd, "overview"))
+            loc_type = MADSHELF_LOC_OVERVIEW;
+        i++;
     }
+
+    switch(loc_type) {
+        case MADSHELF_LOC_FAVORITES:
+            location = favorites_make(state, state->filter);
+            state->menu_navigation = true;
+            break;
+
+        case MADSHELF_LOC_RECENT:
+            location = recent_make(state);
+            state->menu_navigation = true;
+            break;
+
+        default:  /* case MADSHELF_LOC_DIR: */
+            if(folder)
+                location = dir_make(state, folder);
+            else
+                if (state->menu_navigation) {
+                    location = go_to_first_disk(state);
+                } else {
+                    location =  overview_make(state);
+                }
+            break;
+    }
+    if(location)
+        go(state, location);
+    free(folder);
+    free(*cmds);
+    free(cmds);
+
+    Ecore_Evas* win = state->win;
+
+    ecore_evas_show(win);
+    ecore_evas_raise(win);
 
     free(msg->msg);
     free(msg);
@@ -408,21 +441,34 @@ send_line_to_running_instance(const char *line)
 
 }
 
-static bool check_running_instance(madshelf_filter_t filter, const char *folder)
+static bool check_running_instance(madshelf_filter_t filter,
+    const char *folder, madshelf_loc_type_t default_location)
 {
     Ecore_Con_Server* server
         = ecore_con_server_add(ECORE_CON_LOCAL_USER, "madshelf-singleton", 0, NULL);
 
+    const char *filters[] = {
+        "no", "books", "image", "audio",
+    };
+
+    const char *locs[] = {
+        "overview", "dir", "favmenu", "favorites", "recent",
+    };
+
     if(!server)
     {
         /* Somebody already listens there */
+        char *str;
+        size_t strsize = 0;
+        FILE *file = open_memstream(&str, &strsize);
 
-        char a[16];
-        snprintf(a, 16, "%d", (int)filter);
-        if(!send_line_to_running_instance(a))
-            return false;
+        fprintf(file, "%s\n%s", filters[filter], locs[default_location]);
         if(folder)
-            return send_line_to_running_instance(folder);
+            fprintf(file, "\n%s", folder);
+
+        fclose(file);
+        if(!send_line_to_running_instance(str))
+            return false;
         return true;
     }
 
@@ -446,6 +492,9 @@ static int sighup_signal_handler(void* data, int type, void* event)
 }
 
 static struct option options[] = {
+    { "overview", false, NULL, 'O'},
+    { "recent", false, NULL, 'R'},
+    { "favorites", false, NULL, 'F'},
     { "filter", true, NULL, 'f' },
     { NULL, 0, 0, 0 }
 };
@@ -469,14 +518,22 @@ static void exit_app(void* param)
 int main(int argc, char** argv)
 {
     madshelf_filter_t filter = MADSHELF_FILTER_NO;
+    madshelf_loc_type_t default_location = MADSHELF_LOC_DIR;
     char *folder = NULL;
 
-    for(;;)
+    int option_index = 0;
+    while(1)
     {
-        int c = getopt_long(argc, argv, "f:", options, NULL);
-        if(c == -1) break;
-
-        if(c == 'f')
+        int c = getopt_long(argc, argv, "f:RFO", options, &option_index);
+        if(c == -1)
+            break;
+        if(c == 'R')
+            default_location = MADSHELF_LOC_RECENT;
+        else if(c == 'F')
+            default_location = MADSHELF_LOC_FAVORITES;
+        else if(c == 'O')
+            default_location = MADSHELF_LOC_OVERVIEW;
+        else if(c == 'f')
         {
             if(!strcmp(optarg, "books"))
                 filter = MADSHELF_FILTER_BOOKS;
@@ -489,18 +546,21 @@ int main(int argc, char** argv)
                 fprintf(stderr, "Unknown filter type: %s\n", optarg);
                 return 1;
             }
-            break;
         }
 
-        if(c == '?')
+        else if(c == '?')
             return 1;
-
-        fprintf(stderr, "Unexpected getopt return code: %d\n", c);
-        return 1;
+        else
+        {
+            fprintf(stderr, "Unexpected getopt return code: %d (%c)\n", c, c);
+            return 1;
+        }
     }
-
     if(optind < argc)
     {
+        int old_optind =optind;
+        while(old_optind < argc)
+            printf("arg=%s\n", argv[old_optind++]);
         folder = argv[optind];
         if(folder[0] != '/')
         {
@@ -520,7 +580,7 @@ int main(int argc, char** argv)
     if(!ecore_init())
         errx(1, "Unable to initialize Ecore");
 
-    if(check_running_instance(filter, folder))
+    if(check_running_instance(filter, folder, default_location))
     {
         ecore_con_shutdown();
         ecore_shutdown();
@@ -562,7 +622,8 @@ int main(int argc, char** argv)
     state.filter = filter;
     openers_init();
     state.disks = load_disks();
-    state.menu_navigation = load_prefs();
+    state.menu_navigation_prefs = load_prefs();
+    state.menu_navigation = state.menu_navigation_prefs;
     state.keys = keys_alloc("madshelf");
 
     load_config(&state);
@@ -638,10 +699,30 @@ int main(int argc, char** argv)
     if(folder)
         go(&state, dir_make(&state, folder));
     else {
-        if (state.menu_navigation) {
-            go_to_first_disk(&state);
-        } else {
-            go(&state, overview_make(&state));
+
+        switch(default_location)
+        {
+            case MADSHELF_LOC_OVERVIEW:
+                state.menu_navigation = false;
+                go(&state, overview_make(&state));
+                break;
+
+            case MADSHELF_LOC_RECENT:
+                state.menu_navigation = true;
+                go(&state, recent_make(&state));
+                break;
+
+            case MADSHELF_LOC_FAVORITES:
+                state.menu_navigation = true;
+                go(&state, favorites_make(&state, state.filter));
+                break;
+
+            default:
+                if (state.menu_navigation) {
+                    go(&state, go_to_first_disk(&state));
+                } else {
+                    go(&state, overview_make(&state));
+                }
         }
     }
 
