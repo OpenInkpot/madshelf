@@ -1,3 +1,9 @@
+madshelf (0.2.57) zelazny; urgency=low
+
+  * Added --recent && --favorites
+
+ -- Alexander V. Nikolaev <avn@daemon.hole.ru>  Mon, 31 May 2010 20:34:33 +0300
+
 madshelf (0.2.56) zelazny; urgency=low
 
   [ Vasil Badev ]
