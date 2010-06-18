@@ -303,7 +303,7 @@ load_prefs()
 }
 
 madshelf_loc_t*
-go_to_first_disk(madshelf_state_t *state)
+find_first_mounted_disk(madshelf_state_t *state)
 {
     for (int i = 0; i < state->disks->n; ++i) {
         madshelf_disk_t *disk = state->disks->disk + i;
@@ -392,7 +392,7 @@ static int _client_del(void* param, int ev_type, void* ev)
                 location = dir_make(state, folder);
             else
                 if (state->menu_navigation) {
-                    location = go_to_first_disk(state);
+                    location = find_first_mounted_disk(state);
                 } else {
                     location =  overview_make(state);
                 }
@@ -719,7 +719,7 @@ int main(int argc, char** argv)
 
             default:
                 if (state.menu_navigation) {
-                    go(&state, go_to_first_disk(&state));
+                    go(&state, find_first_mounted_disk(&state));
                 } else {
                     go(&state, overview_make(&state));
                 }

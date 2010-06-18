@@ -417,7 +417,7 @@ _mounts_updated(madshelf_state_t *state)
 
     if(!disk_mounted(disk)) {
         if (state->menu_navigation) {
-            go_to_first_disk(state);
+            go(state, find_first_mounted_disk(state));
         } else {
             go(state, overview_make(state));
         }

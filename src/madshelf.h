@@ -141,7 +141,7 @@ void set_show_nonexistent_recent(madshelf_state_t* state, bool show_nonexistent)
 void set_show_nonexistent_favorites(madshelf_state_t* state, bool show_nonexistent);
 
 /* FIXME */
-madshelf_loc_t*  go_to_first_disk(madshelf_state_t *state);
+madshelf_loc_t* find_first_mounted_disk(madshelf_state_t *state);
 
 typedef enum
 {
