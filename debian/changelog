@@ -1,3 +1,9 @@
+madshelf (0.2.58~bradbury.1) bradbury; urgency=low
+
+  * Backport to bradbury.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Tue, 22 Jun 2010 21:35:41 +0700
+
 madshelf (0.2.58) zelazny; urgency=low
 
   * Fix SIGHUP handling accidentally broken in 0.2.57
