@@ -148,8 +148,8 @@ _init_gui(const madshelf_state_t *state)
     Evas_Object *choicebox = evas_object_name_find(state->canvas, "contents");
     choicebox_set_selection(choicebox, -1);
 
-    favorites_loc_t* _loc = state->loc;
-    _loc->watcher = positions_update_subscribe(_positions_updated, state);
+    favorites_loc_t* _loc = (favorites_loc_t*)state->loc;
+    _loc->watcher = positions_update_subscribe(_positions_updated, (void*)state);
 }
 
 static bool

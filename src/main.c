@@ -30,7 +30,6 @@
 
 #include <Evas.h>
 #include <Ecore.h>
-#include <Ecore_Str.h>
 #include <Ecore_Evas.h>
 #include <Ecore_File.h>
 #include <Ecore_Config.h>
@@ -324,7 +323,7 @@ typedef struct
     int size;
 } client_data_t;
 
-static int _client_add(void* param, int ev_type, void* ev)
+static Eina_Bool _client_add(void* param, int ev_type, void* ev)
 {
     Ecore_Con_Event_Client_Add* e = ev;
     client_data_t* msg = malloc(sizeof(client_data_t));
@@ -334,7 +333,7 @@ static int _client_add(void* param, int ev_type, void* ev)
     return 0;
 }
 
-static int _client_del(void* param, int ev_type, void* ev)
+static Eina_Bool _client_del(void* param, int ev_type, void* ev)
 {
     Ecore_Con_Event_Client_Del* e = ev;
     client_data_t* msg = ecore_con_client_data_get(e->client);
@@ -342,7 +341,7 @@ static int _client_del(void* param, int ev_type, void* ev)
     /* Handle */
 
     char *cmdline = strndup(msg->msg, msg->size);
-    char **cmds = ecore_str_split(cmdline ,"\n", 0);
+    char **cmds = eina_str_split(cmdline ,"\n", 0);
     free(cmdline);
     madshelf_loc_t* location = NULL;
     madshelf_loc_type_t loc_type = MADSHELF_LOC_DIR;
@@ -414,7 +413,7 @@ static int _client_del(void* param, int ev_type, void* ev)
     return 0;
 }
 
-static int _client_data(void* param, int ev_type, void* ev)
+static Eina_Bool _client_data(void* param, int ev_type, void* ev)
 {
     Ecore_Con_Event_Client_Data* e = ev;
     client_data_t* msg = ecore_con_client_data_get(e->client);
@@ -475,7 +474,7 @@ static bool check_running_instance(madshelf_filter_t filter,
     return false;
 }
 
-static int sighup_signal_handler(void* data, int type, void* event)
+static Eina_Bool sighup_signal_handler(void* data, int type, void* event)
 {
     madshelf_state_t* state = (madshelf_state_t*)data;
 
@@ -504,7 +503,7 @@ static void exit_all(void *param)
     ecore_main_loop_quit();
 }
 
-static int exit_handler(void *param, int ev_type, void *event)
+static Eina_Bool exit_handler(void *param, int ev_type, void *event)
 {
    ecore_main_loop_quit();
    return 1;

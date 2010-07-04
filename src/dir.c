@@ -324,7 +324,7 @@ static void _init_gui(const madshelf_state_t* state)
 
     choicebox_scroll_to(choicebox, _loc->old_pos == -1 ? 0 : _loc->old_pos);
 
-    _loc->watcher = positions_update_subscribe(_positions_updated, state);
+    _loc->watcher = positions_update_subscribe(_positions_updated, (void*)state);
 }
 
 

@@ -122,8 +122,8 @@ static void _init_gui(const madshelf_state_t* state)
     choicebox_set_selection(choicebox, -1);
     edje_object_part_text_set(header, "title", gettext("Recent files"));
 
-    _loc_t* _loc = state->loc;
-    _loc->watcher = positions_update_subscribe(_positions_updated, state);
+    _loc_t* _loc = (_loc_t*)state->loc;
+    _loc->watcher = positions_update_subscribe(_positions_updated, (void*)state);
 }
 
 static bool _key_up(madshelf_state_t* state, Evas_Object* choicebox,

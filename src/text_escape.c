@@ -21,7 +21,7 @@
 
 #include <string.h>
 
-#include <Ecore_Data.h>
+#include <Eina.h>
 
 char *
 textblock_escape_string(const char *text)
@@ -29,17 +29,17 @@ textblock_escape_string(const char *text)
     if (!text)
         return NULL;
 
-    Ecore_Strbuf *buf = ecore_strbuf_new();
-    ecore_strbuf_append(buf, text);
+    Eina_Strbuf *buf = eina_strbuf_new();
+    eina_strbuf_append(buf, text);
 
-    ecore_strbuf_replace_all(buf, "\n", "<br>");
-    ecore_strbuf_replace_all(buf, "\t", "<\t>");
-    ecore_strbuf_replace_all(buf, "<", "&lt;");
-    ecore_strbuf_replace_all(buf, ">", "&gt;");
-    ecore_strbuf_replace_all(buf, "&", "&amp;");
+    eina_strbuf_replace_all(buf, "\n", "<br>");
+    eina_strbuf_replace_all(buf, "\t", "<\t>");
+    eina_strbuf_replace_all(buf, "<", "&lt;");
+    eina_strbuf_replace_all(buf, ">", "&gt;");
+    eina_strbuf_replace_all(buf, "&", "&amp;");
 
-    char *res = strdup(ecore_strbuf_string_get(buf));
-    ecore_strbuf_free(buf);
+    char *res = strdup(eina_strbuf_string_get(buf));
+    eina_strbuf_free(buf);
 
     return res;
 }

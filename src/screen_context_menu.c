@@ -18,6 +18,11 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <libintl.h>
+#include <err.h>
+
 #include "screen_context_menu.h"
 
 #include <string.h>
@@ -27,6 +32,9 @@
 #include <libeoi.h>
 
 #include "utils.h"
+#include "dir.h"
+#include "favorites.h"
+#include "recent.h"
 
 typedef struct
 {
