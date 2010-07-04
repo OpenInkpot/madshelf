@@ -1,3 +1,9 @@
+madshelf (0.2.59) zelazny; urgency=low
+
+  * Adjustment to ecore API changes
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Sun, 04 Jul 2010 23:35:02 +0200
+
 madshelf (0.2.58) zelazny; urgency=low
 
   * Fix SIGHUP handling accidentally broken in 0.2.57
