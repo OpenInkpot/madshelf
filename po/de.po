@@ -3,7 +3,7 @@
 # Copyright (C) 2008 Marc Lajoie <manorapide@hotmail.com>
 # Copyright (C) 2008,2009 Mikhail Gusarov <dottedmag@dottedmag.net>
 # This file is in public domain
-#
+# 
 # Louvre <diogenedebian@gmail.com>, 2009.
 msgid ""
 msgstr ""
@@ -63,11 +63,6 @@ msgstr "Nach Datum sortieren"
 msgid "Clear favorites"
 msgstr "Favoritenliste leeren"
 
-#: src/favorites.c:312 src/recent.c:272
-#, fuzzy
-msgid "Remove absent files"
-msgstr "Aus letzten Dateien entfernen"
-
 #: src/favorites.c:324 src/recent.c:283 src/dir.c:485
 msgid "Do not show hidden files"
 msgstr "Versteckte Dateien nicht anzeigen"
@@ -114,14 +109,6 @@ msgstr "Öffnen mit %s"
 msgid "Open (with %s)"
 msgstr "Öffnen (mit %s)"
 
-#: src/file_context_menu.c:313
-msgid "Copy"
-msgstr ""
-
-#: src/file_context_menu.c:316
-msgid "Cut"
-msgstr ""
-
 #: src/file_context_menu.c:319
 msgid "Delete"
 msgstr "Löschen"
@@ -146,14 +133,6 @@ msgstr "Verstecken"
 msgid "Add to favorites"
 msgstr "Zu Favoriten hinzufügen"
 
-#: src/dir.c:477
-msgid "Copy file(s) here"
-msgstr ""
-
-#: src/dir.c:478
-msgid "Move file(s) here"
-msgstr ""
-
 #: src/dir.c:526
 msgid "Menu"
 msgstr "Menü"
@@ -170,11 +149,29 @@ msgstr "Existiert nicht"
 msgid "Directory"
 msgstr "Verzeichnis"
 
-#, fuzzy
+#: src/favorites.c:312 src/recent.c:272
+msgid "Remove absent files"
+msgstr "Nicht mehr vorhandene Dateien entfernen"
+
+#: src/file_context_menu.c:313
+msgid "Copy"
+msgstr "Kopieren"
+
+#: src/file_context_menu.c:316
+msgid "Cut"
+msgstr "Ausschneiden"
+
+#: src/dir.c:478
+msgid "Move file(s) here"
+msgstr "Datei(en) hierher verschieben"
+
+#: src/dir.c:477
+msgid "Copy file(s) here"
+msgstr "Datei(en) hierher kopieren"
+
 #~ msgid "Hide absent files"
 #~ msgstr "Letzte Dateien"
 
-#, fuzzy
 #~ msgid "Show absent files"
 #~ msgstr "Versteckte Dateien anzeigen"
 
