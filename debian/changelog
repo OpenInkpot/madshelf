@@ -1,3 +1,17 @@
+madshelf (0.2.60) zelazny; urgency=low
+
+  [ jekhor ]
+  * l10n: Updates to Belarusian (be) translation
+
+  [ Hideki Yoshida ]
+  * l10n: Updates to Japanese (ja) translation
+
+  [ Alexander Kerner ]
+  * Use 8bpp engine
+  * l10n: Updates to German (de) translation
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Thu, 19 Aug 2010 09:44:57 +0200
+
 madshelf (0.2.59) zelazny; urgency=low
 
   * Adjustment to ecore API changes
