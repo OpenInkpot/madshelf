@@ -2,8 +2,8 @@ Source: madshelf
 Section: gui
 Maintainer: Mikhail Gusarov <dottedmag@dottedmag.net>
 XCS-Cross-Host-Build-Depends: debhelper (>= 7), autoconf, automake, pkg-config, libedje-bin
-XCS-Cross-Build-Depends: libextractor-mini-dev, libsqlite3-dev, libeina-dev, libecore-dev, libefreet-dev, libedje-dev, libkeys-dev, libeoi-dev (>= 0.2.1), libevas-dev (>= 0.9.9.063-9)
-Build-Depends: debhelper (>= 7), autoconf, automake, pkg-config, libextractor-mini-dev, libsqlite3-dev, libeina-dev, libecore-dev, libefreet-dev, libedje-dev, libkeys-dev, libeoi-dev (>= 0.2.1), libedje-bin, libevas-dev (>= 0.9.9.063-9)
+XCS-Cross-Build-Depends: libextractor-mini-dev, libsqlite3-dev, libeina-dev, libecore-dev (>= 0.9.9.49898-5), libefreet-dev, libedje-dev, libkeys-dev, libeoi-dev (>= 0.2.1), libevas-dev (>= 0.9.9.063-9)
+Build-Depends: debhelper (>= 7), autoconf, automake, pkg-config, libextractor-mini-dev, libsqlite3-dev, libeina-dev, libecore-dev (>= 0.9.9.49898-5), libefreet-dev, libedje-dev, libkeys-dev, libeoi-dev (>= 0.2.1), libedje-bin, libevas-dev (>= 0.9.9.063-9)
 Priority: optional
 Standards-Version: 3.8.3
 
