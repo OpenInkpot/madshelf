@@ -87,14 +87,6 @@ msgstr "Images (navigation)"
 msgid "Audio (navigation)"
 msgstr "Audio (navigation)"
 
-#: src/overview.c:120 src/recent.c:100 src/recent.c:316
-msgid "Recent files"
-msgstr "Fichiers récents"
-
-#: src/recent.c:210
-msgid "Remove from recent files"
-msgstr "Enlever des fichiers récents"
-
 #: src/recent.c:270
 msgid "Clear recent files"
 msgstr "Effacer les fichiers récents"
@@ -112,6 +104,14 @@ msgstr "Ouvrir avec %s"
 #, c-format
 msgid "Open (with %s)"
 msgstr "Ouvrir (avec %s)"
+
+#: src/file_context_menu.c:313
+msgid "Copy"
+msgstr "Copier"
+
+#: src/file_context_menu.c:316
+msgid "Cut"
+msgstr "Couper"
 
 #: src/file_context_menu.c:319
 msgid "Delete"
@@ -137,6 +137,14 @@ msgstr "Cacher"
 msgid "Add to favorites"
 msgstr "Ajouter aux favoris"
 
+#: src/dir.c:477
+msgid "Copy file(s) here"
+msgstr "Copier les fichiers ici"
+
+#: src/dir.c:478
+msgid "Move file(s) here"
+msgstr "Déplacer les fichiers ici"
+
 #: src/dir.c:526
 msgid "Menu"
 msgstr "Menu"
@@ -153,21 +161,13 @@ msgstr "N'existe pas"
 msgid "Directory"
 msgstr "Répertoire"
 
-#: src/file_context_menu.c:313
-msgid "Copy"
-msgstr "Copier"
+#: src/recent.c:210
+msgid "Remove from recent files"
+msgstr "Retirer des fichiers récents"
 
-#: src/file_context_menu.c:316
-msgid "Cut"
-msgstr "Couper"
-
-#: src/dir.c:478
-msgid "Move file(s) here"
-msgstr "Déplacer les fichiers ici"
-
-#: src/dir.c:477
-msgid "Copy file(s) here"
-msgstr "Copier les fichiers ici"
+#: src/overview.c:120 src/recent.c:100 src/recent.c:316
+msgid "Recent files"
+msgstr "Consultations récentes"
 
 #~ msgid "Hide absent files"
 #~ msgstr "Cacher les fichiers absents"
