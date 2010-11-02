@@ -144,9 +144,7 @@ void fileinfo_render(Evas_Object* item, fileinfo_t* fileinfo, bool is_dim)
         free(s);
     }
 
-    positions_t *positions = init_positions();
-    int pos = get_position(positions, fileinfo->filename);
-    free_positions(positions);
+    int pos = positions_get(fileinfo->filename);
 
     if (pos != -1) {
         char *s = xasprintf("%d%%", pos);

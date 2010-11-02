@@ -595,6 +595,7 @@ int main(int argc, char** argv)
     if(!ecore_evas_init())
         errx(1, "Unable to initialize Ecore_Evas");
 
+    position_engine_init();
     fileinfo_init();
 
     setlocale(LC_ALL, "");
@@ -749,8 +750,10 @@ int main(int argc, char** argv)
     openers_fini();
     curdir_fini();
     fileinfo_fini();
+    position_engine_fini();
 
     appdef_fini();
+
 
     /* Keep valgrind happy */
     edje_file_cache_set(0);

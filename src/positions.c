@@ -1,193 +1,255 @@
+#define _GNU_SOURCE
+#include <dlfcn.h>
+#include <dirent.h>
+#include <err.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <libintl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#define _(x) x
+#include <Evas.h>
+#include <Edje.h>
+#include <Ecore_File.h>
+#include <Efreet.h>
+#include <Ecore.h>
+#include <libchoicebox.h>
+#include <libeoi_utils.h>
 #include "positions.h"
 
-#include <stdbool.h>
-#include <string.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <unistd.h>
-
-#include <expat.h>
-
-#include <Ecore_File.h>
-
-#include <libeoi_utils.h>
-
-#include <stdio.h>
-#include <stdarg.h>
-static void
-dbg(const char *fmt, ...)
-{
-    if (getenv("MADSHELF_DEBUG")) {
-        fprintf(stderr, "madshelf: ");
-        va_list ap;
-        va_start(ap, fmt);
-        vfprintf(stderr, fmt, ap);
-        va_end(ap);
-        fprintf(stderr, "\n");
-    }
-}
-
-/*
- * FIXME: this "positions" stuff works only for FBReader. Needs updating to be
- * pluggable like libextractor.
- */
-
-#define FBREADER_STATE_FILE "/.FBReader/state.xml"
-
-struct positions_t {
-    char *state_file;
+typedef struct position_callback_t position_callback_t;
+struct position_callback_t {
+    void (*callback)(void *);
+    void *param;
 };
 
-positions_t *
-init_positions()
-{
-    positions_t *positions = calloc(1, sizeof(positions_t));
-    positions->state_file = xasprintf("%s" FBREADER_STATE_FILE, getenv("HOME"));
 
-    return positions;
-}
+/* not API, private structure */
+typedef struct madshelf_plugin_t  madshelf_plugin_t;
+struct madshelf_plugin_t {
+    void *module;
+    const madshelf_plugin_methods_t *methods;
+    void *instance;
+};
 
-typedef struct {
-    XML_Parser parser;
-    const char *search;
-    int pos;
-    bool needed_group;
-} _callback_t;
+typedef struct position_engine_t position_engine_t;
+struct position_engine_t {
+    Eina_List *plugins;
+    Eina_List *callbacks;
+};
+static position_engine_t *engine;
+
+#define PLUGINS_DIR  "/usr/lib/madshelf/positions"
 
 static const char *
-get_attribute(const char *name, const XML_Char **attrs)
+get_plugins_dir()
 {
-    while (*attrs && strcmp(name, *attrs))
-        attrs += 2;
-    return *(attrs + 1);
+    return getenv("MADSHELF_PLUGINS_DIR")
+        ? getenv("MADSHELF_PLUGINS_DIR") :
+        PLUGINS_DIR;
 }
 
-static void
-_start_element(void *param, const XML_Char *name, const XML_Char **attrs)
+
+static int filter_files(const struct dirent* d)
 {
-    _callback_t *ctx = param;
+    unsigned short int len = _D_EXACT_NAMLEN(d);
+    return (len > 2) && !strcmp(d->d_name + len - 3, ".so");
+}
 
-    dbg(" start_element: %s", name);
+static madshelf_plugin_t *
+make_plugin(const madshelf_plugin_methods_t *methods, void *module)
+{
+    madshelf_plugin_t *plugin=calloc(1, sizeof(madshelf_plugin_t));
+    if(!plugin)
+        err(1, "Out of memory while loading plugin\n");
 
-    if (!strcmp(name, "group")) {
-        const char *f = get_attribute("name", attrs);
-        if (!f) {
-            ctx->needed_group = false;
-            return;
-        }
-        dbg("  name: %s", f);
-        char *filename = strdup(f);
-        char *c = strchr(filename, ':');
-        if (c)
-            *c = '\0';
-        dbg("  filename: %s", filename);
-        ctx->needed_group = !strcmp(ctx->search, filename);
-        return;
+    plugin->methods = methods;
+    if(plugin->methods->load)
+        plugin->instance = plugin->methods->load();
+
+    plugin->module = module; /* save, to unload later */
+
+    return plugin;
+}
+
+static madshelf_plugin_t *
+load_single_plugin(char *name)
+{
+    char *libname = xasprintf("%s/%s", get_plugins_dir(), name);
+    if(!libname)
+        err(1, "Out of memory while load configlet %s\n", name);
+
+    void *libhandle = dlopen(libname, RTLD_NOW | RTLD_LOCAL);
+    if(!libhandle)
+    {
+        fprintf(stderr, "unable to load %s: %s\n", libname, dlerror());
+        free(libname);
+        return NULL;
+    };
+
+    /* Remove '.so' from filename */
+    name[strlen(name)-3] = 0;
+
+    char *plugin_name = xasprintf("madshelf_plugin_%s", name);
+    if(!plugin_name)
+        err(1, "Out of memory while load configlet %s\n", name);
+
+    madshelf_plugin_constructor_t ctor =
+        dlsym(libhandle, plugin_name);
+
+    if(!ctor)
+    {
+        fprintf(stderr, "Unable to get entry point in %s: %s", name, dlerror());
+        free(plugin_name);
+        free(libname);
+        dlclose(libhandle);
+        return NULL;
     }
 
-    if (ctx->needed_group) {
-        if (!strcmp(name, "option")) {
-            dbg("  option");
-            const char *n = get_attribute("name", attrs);
-            if (!strcmp(n, "Position")) {
-                const char *v = get_attribute("value", attrs);
-                if (v) {
-                    ctx->pos = atoi(v);
-                    dbg("   position: %s->%d", v, ctx->pos);
-                    XML_StopParser(ctx->parser,false);
-                    return;
-                }
-            }
-        }
-    }
+    free(plugin_name);
+    free(libname);
+    const madshelf_plugin_methods_t *methods =  ctor();
+    return make_plugin(methods, libhandle);
 }
 
-int
-get_position(positions_t *p, const char *filename)
+static Eina_List *
+load_plugins()
 {
-    dbg("Checking current position of %s", filename);
+    Eina_List *lst = NULL;
+    int i;
+    struct dirent **files;
+    int nfiles = scandir(get_plugins_dir(),
+            &files, &filter_files,  &versionsort);
 
-    int fd = open(p->state_file, O_RDONLY);
-    if (fd == -1)
-        return -1;
-
-    XML_Parser parser = XML_ParserCreate(NULL);
-    XML_SetStartElementHandler(parser, _start_element);
-
-    _callback_t ctx = { .pos = -1, .search = filename, .parser = parser };
-
-    XML_SetUserData(parser, &ctx);
-
-    dbg("Parsing");
-
-    char buffer[4096];
-    for (;;) {
-        int read_ = read(fd, buffer, 4096);
-        dbg("Read %d bytes from state.xml: %.*s", read_, read_, buffer);
-        if (read_ < 0) {
-            dbg("Got error %s", strerror(errno));
-            if (errno == EINTR || errno == EAGAIN)
-                continue;
-            else
-                break;
-        } else {
-            int res = XML_Parse(parser, buffer, read_, read_ == 0);
-            dbg("Got %d (%d: %s, %d:%d) from XML_Parse", res, XML_GetErrorCode(parser),
-                XML_ErrorString(XML_GetErrorCode(parser)),
-                XML_GetCurrentLineNumber(parser),
-                XML_GetCurrentColumnNumber(parser));
-            if (read_ == 0 || res == XML_STATUS_ERROR)
-                break;
-        }
+    if(nfiles == -1)
+    {
+        fprintf(stderr, "Unable to load configlets from %s: %s\n",
+            get_plugins_dir(), strerror(errno));
+        return NULL;
     }
 
-    dbg("Position of %s: %d", filename, ctx.pos);
-
-    close(fd);
-    return ctx.pos;
-}
-
-void
-free_positions(positions_t *positions)
-{
-    free(positions);
-}
-
-typedef struct {
-    Ecore_File_Monitor *monitor;
-    positions_updated_cb callback;
-    void *param;
-} positions_updated_param;
-
-static void
-positions_updated(void *data, Ecore_File_Monitor *monitor,
-                  Ecore_File_Event event, const char *path)
-{
-    positions_updated_param* param = data;
-    (param->callback)(param->param);
+    for(i = 0; i != nfiles; ++i)
+    {
+        madshelf_plugin_t *plugin = load_single_plugin(files[i]->d_name);
+        if(plugin)
+            lst = eina_list_append(lst, plugin);
+    }
+    return lst;
 }
 
 void *
 positions_update_subscribe(positions_updated_cb callback, void *user_param)
 {
-    positions_updated_param *param = malloc(sizeof(positions_updated_param));
-    param->callback = callback;
-    param->param = user_param;
-
-    char *state_file = xasprintf("%s" FBREADER_STATE_FILE, getenv("HOME"));
-
-    param->monitor = ecore_file_monitor_add(state_file, positions_updated, param);
-
-    free(state_file);
-
-    return param;
+    position_callback_t *cb = calloc(1, sizeof(position_callback_t));
+    cb->callback = callback;
+    cb->param = user_param;
+    engine->callbacks = eina_list_append(engine->callbacks, cb);
+    return cb;
 }
 
 void
 positions_update_unsubscribe(void *passed_param)
 {
-    positions_updated_param *param = passed_param;
-    if (param->monitor)
-        ecore_file_monitor_del(param->monitor);
-    free(param);
+    Eina_List *item = eina_list_data_find(engine->callbacks, passed_param);
+    if(item)
+    {
+        engine->callbacks = eina_list_remove(engine->callbacks, item);
+        free(passed_param);
+    }
+}
+
+void
+positions_update_fire_event()
+{
+    Eina_List *item;
+    position_callback_t *cb;
+    EINA_LIST_FOREACH(engine->callbacks, item, cb)
+        cb->callback(cb->param);
+}
+
+int
+positions_get(const char *filename)
+{
+    int value = -1;
+    Eina_List *item = engine->plugins;
+    while(item)
+    {
+        madshelf_plugin_t *plugin = eina_list_data_get(item);
+        int next_value = plugin->methods->get_position(plugin->instance,
+                                                        filename);
+        if(next_value > value)
+            value = next_value;
+        item = eina_list_next(item);
+    }
+    return value;
+}
+
+void
+position_engine_fini()
+{
+    madshelf_plugin_t *plugin;
+    Eina_List *list = engine->plugins;
+    EINA_LIST_FREE(list, plugin)
+    {
+        if(plugin->instance)
+            plugin->methods->unload(plugin->instance);
+        if(plugin->module)
+            dlclose(plugin->module);
+        free(plugin);
+    }
+
+    position_callback_t *callback;
+    EINA_LIST_FREE(list, callback)
+        free(callback);
+    ecore_file_shutdown();
+}
+
+void
+position_engine_init()
+{
+    ecore_file_init();
+    engine = calloc(1, sizeof(position_engine_t));
+    engine->plugins = load_plugins();
+}
+
+/* internal API for plugins */
+
+typedef struct cache_item_t cache_item_t;
+struct cache_item_t {
+    const char *filename;
+    int pos;
+};
+
+Eina_List *
+position_cache_append(Eina_List *list, const char *filename, int pos)
+{
+    cache_item_t *item = calloc(1, sizeof(cache_item_t));
+    item->filename = strdup(filename);
+    item->pos = pos;
+    return eina_list_append(list, item);
+}
+
+int
+position_cache_find(Eina_List *list, const char *filename)
+{
+    while(list)
+    {
+        cache_item_t *item = eina_list_data_get(list);
+        if(!strcmp(filename, item->filename))
+            return item->pos;
+        list = eina_list_next(list);
+    }
+    return -1;
+}
+
+void
+position_cache_free(Eina_List *list)
+{
+    cache_item_t *ptr;
+    EINA_LIST_FREE(list, ptr)
+        free(ptr);
 }
