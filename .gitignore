@@ -1,5 +1,8 @@
 *.o
 *.mo
+*.la
+*.lo
+.libs
 *~
 .deps
 INSTALL
