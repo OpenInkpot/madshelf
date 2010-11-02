@@ -109,7 +109,7 @@ parse_position(Eina_List **cache, const char *filename, const char *state_file)
     XML_Parser parser = XML_ParserCreate(NULL);
     XML_SetStartElementHandler(parser, _start_element);
 
-    _context_t ctx = { .cache = cache, .filename = filename, .parser = parser };
+    _context_t ctx = { .cache = cache, .filename = NULL, .parser = parser };
 
     XML_SetUserData(parser, &ctx);
 
