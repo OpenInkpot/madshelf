@@ -12,7 +12,7 @@
 #include <eina_list.h>
 
 #include <libeoi_utils.h>
-#include "positions.h"
+#include "madshelf_positions.h"
 
 static void
 dbg(const char *fmt, ...)

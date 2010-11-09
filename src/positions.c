@@ -19,7 +19,7 @@
 #include <Ecore.h>
 #include <libchoicebox.h>
 #include <libeoi_utils.h>
-#include "positions.h"
+#include "madshelf_positions.h"
 
 typedef struct position_callback_t position_callback_t;
 struct position_callback_t {
@@ -43,14 +43,12 @@ struct position_engine_t {
 };
 static position_engine_t *engine;
 
-#define PLUGINS_DIR  "/usr/lib/madshelf/positions"
-
 static const char *
 get_plugins_dir()
 {
     return getenv("MADSHELF_PLUGINS_DIR")
         ? getenv("MADSHELF_PLUGINS_DIR") :
-        PLUGINS_DIR;
+        MADSHELF_PLUGINS_DIR;
 }
 
 

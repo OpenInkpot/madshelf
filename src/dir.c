@@ -46,7 +46,7 @@
 #include "run.h"
 #include "filters.h"
 #include "utils.h"
-#include "positions.h"
+#include "madshelf_positions.h"
 
 static void _open_screen_context_menu(madshelf_state_t* state);
 static void _open_file_context_menu(madshelf_state_t* state, const char* filename);

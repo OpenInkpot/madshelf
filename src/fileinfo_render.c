@@ -32,7 +32,7 @@
 #include "utils.h"
 #include "fileinfo_render.h"
 #include "text_escape.h"
-#include "positions.h"
+#include "madshelf_positions.h"
 
 #define KILOBYTE (1024)
 #define MEGABYTE (1024*1024)
