@@ -18,7 +18,8 @@
 static void
 dbg(const char *fmt, ...)
 {
-    if (getenv("MADSHELF_DEBUG")) {
+    if (getenv("MADSHELF_DEBUG"))
+    {
         fprintf(stderr, "madshelf: ");
         va_list ap;
         va_start(ap, fmt);
@@ -75,7 +76,6 @@ struct plugin_t {
 };
 
 
-static void nothing(void *ptr __attribute__((unused))) {};
 
 
 typedef struct {
@@ -114,7 +114,8 @@ fill_byte_encoding_table(const char *encoding, XML_Encoding *info)
     if (ic == (iconv_t)-1)
         return XML_STATUS_ERROR;
 
-    for (i = 0; i < 256; ++i) {
+    for (i = 0; i < 256; ++i)
+    {
         char from[1] = { i };
         unsigned char to[4];
 
@@ -125,10 +126,12 @@ fill_byte_encoding_table(const char *encoding, XML_Encoding *info)
 
         size_t res = iconv(ic, &fromp, &fromleft, (char **)&top, &toleft);
 
-        if (res == (size_t) -1 && errno == EILSEQ) {
+        if (res == (size_t) -1 && errno == EILSEQ)
+        {
             info->map[i] = -1;
         }
-        else if (res == (size_t) -1) {
+        else if (res == (size_t) -1)
+        {
             iconv_close(ic);
             return XML_STATUS_ERROR;
         }
@@ -179,11 +182,14 @@ _start_element(void *param, const XML_Char *name, const XML_Char **attrs)
     if(!strcmp(name, "doc-filepath"))
         ctx->doc_dirname_flag = true;
 
-    if (!strcmp(name, "bookmark")) {
+    if (!strcmp(name, "bookmark"))
+    {
         const char *bookmark_type = get_attribute("type", attrs);
-        if (!strcmp(bookmark_type, "lastpos")) {
+        if (!strcmp(bookmark_type, "lastpos"))
+        {
             const char *percent = get_attribute("percent", attrs);
-            if(!percent||!*percent) {
+            if(!percent||!*percent)
+            {
                 ctx->pos = -1;
                 return;
             }
@@ -202,7 +208,8 @@ _end_element(void *param, const XML_Char *name)
         ctx->doc_filename_flag = false;
     if(!strcmp(name, "doc-filepath"))
         ctx->doc_dirname_flag = false;
-    if(!strcmp(name, "file")) {
+    if(!strcmp(name, "file"))
+    {
         char *filename = xasprintf("%s%s",
             str_get(&ctx->dirname), str_get(&ctx->filename));
 
@@ -238,18 +245,23 @@ parse_position(Eina_List **cache, const char *filename, const char *state_file)
     dbg("Parsing");
 
     char buffer[4096];
-    for (;;) {
+    for (;;)
+    {
         int read_ = read(fd, buffer, 4096);
-        dbg("Read %d bytes from state.xml: %.*s", read_, read_, buffer);
-        if (read_ < 0) {
+        dbg("Read %d bytes from %s: %.*s", read_, filename, read_, buffer);
+        if (read_ < 0)
+        {
             dbg("Got error %s", strerror(errno));
             if (errno == EINTR || errno == EAGAIN)
                 continue;
             else
                 break;
-        } else {
+        }
+        else
+        {
             int res = XML_Parse(parser, buffer, read_, read_ == 0);
-            dbg("Got %d (%d: %s, %d:%d) from XML_Parse", res, XML_GetErrorCode(parser),
+            dbg("Got %d (%d: %s, %d:%d) from XML_Parse",
+                res, XML_GetErrorCode(parser),
                 XML_ErrorString(XML_GetErrorCode(parser)),
                 XML_GetCurrentLineNumber(parser),
                 XML_GetCurrentColumnNumber(parser));

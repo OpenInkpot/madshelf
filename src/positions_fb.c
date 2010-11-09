@@ -17,7 +17,8 @@
 static void
 dbg(const char *fmt, ...)
 {
-    if (getenv("MADSHELF_DEBUG")) {
+    if (getenv("MADSHELF_DEBUG"))
+    {
         fprintf(stderr, "madshelf: ");
         va_list ap;
         va_start(ap, fmt);
@@ -36,9 +37,6 @@ struct plugin_t {
     Eina_List *cache;
     Ecore_File_Monitor *monitor;
 };
-
-
-static void nothing(void *ptr __attribute__((unused))) {};
 
 
 typedef struct {
@@ -62,11 +60,11 @@ _start_element(void *param, const XML_Char *name, const XML_Char **attrs)
 
     dbg(" start_element: %s", name);
 
-    if (!strcmp(name, "group")) {
+    if (!strcmp(name, "group"))
+    {
         const char *f = get_attribute("name", attrs);
-        if (!f) {
+        if (!f)
             return;
-        }
         dbg("  name: %s", f);
         char *filename = strdup(f);
         char *c = strchr(filename, ':');
@@ -77,13 +75,17 @@ _start_element(void *param, const XML_Char *name, const XML_Char **attrs)
         return;
     }
 
-    if (ctx->filename) {
-        if (!strcmp(name, "option")) {
+    if (ctx->filename)
+    {
+        if (!strcmp(name, "option"))
+        {
             dbg("  option");
             const char *n = get_attribute("name", attrs);
-            if (!strcmp(n, "Position")) {
+            if (!strcmp(n, "Position"))
+            {
                 const char *v = get_attribute("value", attrs);
-                if (v) {
+                if (v)
+                {
                     int pos = atoi(v);
                     dbg("   position: %s->%d", v, pos);
                     *ctx->cache = position_cache_append(*ctx->cache,
@@ -116,16 +118,20 @@ parse_position(Eina_List **cache, const char *filename, const char *state_file)
     dbg("Parsing");
 
     char buffer[4096];
-    for (;;) {
+    for (;;)
+    {
         int read_ = read(fd, buffer, 4096);
         dbg("Read %d bytes from state.xml: %.*s", read_, read_, buffer);
-        if (read_ < 0) {
+        if (read_ < 0)
+        {
             dbg("Got error %s", strerror(errno));
             if (errno == EINTR || errno == EAGAIN)
                 continue;
             else
                 break;
-        } else {
+        }
+        else
+        {
             int res = XML_Parse(parser, buffer, read_, read_ == 0);
             dbg("Got %d (%d: %s, %d:%d) from XML_Parse", res, XML_GetErrorCode(parser),
                 XML_ErrorString(XML_GetErrorCode(parser)),
