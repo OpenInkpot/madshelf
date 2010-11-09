@@ -1,5 +1,5 @@
-#ifndef POSITIONS_H
-#define POSITIONS_H
+#ifndef MADSHELF_POSITIONS_H
+#define MADSHELF_POSITIONS_H
 
 typedef struct madshelf_plugin_methods_t madshelf_plugin_methods_t;
 struct madshelf_plugin_methods_t {
