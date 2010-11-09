@@ -14,6 +14,24 @@ Conflicts: madshelf-settings-v3 (<< 0.2), madshelf-settings-n516 (<< 0.2)
 Description: Bookshelf application
  Bookshelf application.
 
+Package: madshelf-positions-fbreader
+Architecture: any
+Depends: ${shlibs:Depends}, madshelf
+Description: Bookshelf application -- FBReader integration
+ Bookshelf application.
+ .
+ This package contains plugin for retrieve "last read" position
+ from FBReader status file
+
+Package: madshelf-positions-cr3
+Architecture: any
+Depends: ${shlibs:Depends}, madshelf
+Description: Bookshelf application -- CoolReader integration
+ Bookshelf application.
+ .
+ This package contains plugin for retrieve "last read" position
+ from CoolReader bookmarks file.
+
 Package: madshelf-settings-n516
 Architecture: all
 Description: Bookshelf application -- N516-specific configuration
@@ -29,3 +47,12 @@ Description: Bookshelf application -- debugging symbols
  Bookshelf application.
  .
  This package contains debugging symbols.
+
+Package: madshelf-dev
+Architecture: any
+Priority: extra
+Depends: madshelf (= ${binary:Version})
+Description: Bookshelf application -- header files
+ Bookshelf application.
+ .
+ This package contains header files, for plugins development
