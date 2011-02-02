@@ -1,0 +1,8 @@
+[main]
+host = transifex.net
+
+[oi.madshelf]
+file_filter = po/<lang>.po
+source_file = po/madshelf.pot
+source_lang = en
+
