@@ -39,6 +39,13 @@ Description: Bookshelf application -- N516-specific configuration
  .
  This package contains key bindings for N516.
 
+Package: madshelf-settings-prs505
+Architecture: all
+Description: Bookshelf application -- PRS505-specific configuration
+ Bookshelf application.
+ .
+ This package contains key bindings for PRS505.
+
 Package: madshelf-dbg
 Architecture: any
 Priority: extra
