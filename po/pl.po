@@ -1,76 +1,127 @@
+# SOME DESCRIPTIVE TITLE.
+# This file is put in the public domain.
 # 
+# Translators:
+# Mikhail Gusarov <dottedmag@dottedmag.net>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.0\n"
-"Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
-"POT-Creation-Date: 2010-03-13 04:02+0600\n"
-"PO-Revision-Date: 2009-06-26 12:18+0100\n"
-"Last-Translator: Tomasz Długosz <tomek3d@gmail.com>\n"
-"Language-Team: \n"
+"Project-Id-Version: OpenInkpot\n"
+"Report-Msgid-Bugs-To: http://openinkpot.org/report/\n"
+"POT-Creation-Date: 2011-02-02 06:15+0300\n"
+"PO-Revision-Date: 2011-03-22 15:44+0000\n"
+"Last-Translator: dottedmag <dottedmag@dottedmag.net>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pl\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
-#: src/favorites.c:110 src/favorites.c:357 src/favorites_menu.c:39
-#: src/overview.c:117
-msgid "Favorites"
-msgstr "Ulubione"
+#: src/recent.c:123 src/recent.c:344 src/overview.c:120
+#: src/screen_context_menu.c:119
+msgid "Recent files"
+msgstr "Ostatnio otwierane"
 
-#: src/favorites.c:111
-msgid "Favorite books"
-msgstr "Ulubione książki"
-
-#: src/favorites.c:112
-msgid "Favorite pictures"
-msgstr "Ulubione obrazy"
-
-#: src/favorites.c:113
-msgid "Favorite music"
-msgstr "Ulubiona muzyka"
-
-#: src/favorites.c:243 src/recent.c:204 src/dir.c:386
+#: src/recent.c:232 src/dir.c:483 src/favorites.c:270
 msgid "Open"
 msgstr "Otwórz"
 
-#: src/favorites.c:249 src/dir.c:398
-msgid "Remove from favorites"
-msgstr "Usuń z ulubionych"
+#: src/recent.c:238
+msgid "Remove from recent files"
+msgstr "Usuń z ostatnio otwieranych"
 
-#: src/favorites.c:295 src/recent.c:255 src/dir.c:453
+#: src/recent.c:283 src/dir.c:550 src/favorites.c:322
 msgid "Actions"
 msgstr "Czynności"
 
-#: src/favorites.c:307 src/recent.c:267
+#: src/recent.c:295 src/favorites.c:334
 msgid "Sort by name"
 msgstr "Ustaw w kolejności alfabetycznej"
 
-#: src/favorites.c:308 src/recent.c:268
+#: src/recent.c:296 src/favorites.c:335
 msgid "Sort by name (reversed)"
 msgstr "Ustaw w odwrotnej kolejności alfabetycznej"
 
-#: src/favorites.c:309 src/recent.c:269
+#: src/recent.c:297 src/favorites.c:336
 msgid "Sort by date"
 msgstr "Ustaw według daty"
 
-#: src/favorites.c:310
-msgid "Clear favorites"
-msgstr "Wyczyść ulubione"
+#: src/recent.c:298
+msgid "Clear recent files"
+msgstr "Wyczyść listę ostatnio otwieranych"
 
-#: src/favorites.c:312 src/recent.c:272
+#: src/recent.c:300 src/favorites.c:339
 msgid "Remove absent files"
 msgstr "Usuń niedostępne pliki"
 
-#: src/favorites.c:324 src/recent.c:283 src/dir.c:485
+#: src/recent.c:311 src/dir.c:583 src/favorites.c:351
 msgid "Do not show hidden files"
 msgstr "Nie pokazuj ukrytych plików"
 
-#: src/favorites.c:325 src/recent.c:284 src/dir.c:487
+#: src/recent.c:312 src/dir.c:585 src/favorites.c:352
 msgid "Show hidden files"
 msgstr "Pokazuj ukryte pliki"
 
-#: src/overview.c:40 src/overview.c:41 src/main.c:143
+#: src/main.c:151 src/overview.c:40 src/overview.c:41
 msgid "Bookshelf"
 msgstr "Biblioteka"
+
+#: src/dir.c:488
+msgid "Unhide"
+msgstr "Nie ukrywaj"
+
+#: src/dir.c:490
+msgid "Hide"
+msgstr "Ukryj"
+
+#: src/dir.c:495 src/favorites.c:276
+msgid "Remove from favorites"
+msgstr "Usuń z ulubionych"
+
+#: src/dir.c:497
+msgid "Add to favorites"
+msgstr "Dodaj do ulubionych"
+
+#: src/dir.c:575
+msgid "Copy file(s) here"
+msgstr "Wklej tu pliki"
+
+#: src/dir.c:576
+msgid "Move file(s) here"
+msgstr "Przenieś tu pliki"
+
+#: src/dir.c:624
+msgid "Menu"
+msgstr "Menu"
+
+#: src/favorites.c:114 src/favorites.c:384 src/overview.c:117
+#: src/screen_context_menu.c:116 src/favorites_menu.c:39
+msgid "Favorites"
+msgstr "Ulubione"
+
+#: src/favorites.c:115
+msgid "Favorite books"
+msgstr "Ulubione książki"
+
+#: src/favorites.c:116
+msgid "Favorite pictures"
+msgstr "Ulubione obrazy"
+
+#: src/favorites.c:117
+msgid "Favorite music"
+msgstr "Ulubiona muzyka"
+
+#: src/favorites.c:337
+msgid "Clear favorites"
+msgstr "Wyczyść ulubione"
+
+#: src/delete_file.c:91
+msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
+msgstr "Wciśnij \"OK\" aby usunąć<br><br>Wciśnij \"C\" aby anulować"
+
+#: src/delete_file.c:94
+msgid "Delete file?"
+msgstr "Usunąć plik?"
 
 #: src/overview.c:42
 msgid "Pictures (navigation)"
@@ -79,18 +130,6 @@ msgstr "Obrazy (nawigacja)"
 #: src/overview.c:43
 msgid "Audio (navigation)"
 msgstr "Dźwięki (nawigacja)"
-
-#: src/overview.c:120 src/recent.c:100 src/recent.c:316
-msgid "Recent files"
-msgstr "Ostatnio otwierane"
-
-#: src/recent.c:210
-msgid "Remove from recent files"
-msgstr "Usuń z ostatnio otwieranych"
-
-#: src/recent.c:270
-msgid "Clear recent files"
-msgstr "Wyczyść listę ostatnio otwieranych"
 
 #: src/file_context_menu.c:191 src/file_context_menu.c:295
 msgid "Always open with..."
@@ -106,46 +145,6 @@ msgstr "Otwórz w %s"
 msgid "Open (with %s)"
 msgstr "Otwórz (w %s)"
 
-#: src/file_context_menu.c:319
-msgid "Delete"
-msgstr "Usuń"
-
-#: src/delete_file.c:81
-msgid "Delete file?"
-msgstr "Usunąć plik?"
-
-#: src/delete_file.c:83
-msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr "Wciśnij \"OK\" aby usunąć<br><br>Wciśnij \"C\" aby anulować"
-
-#: src/dir.c:391
-msgid "Unhide"
-msgstr "Nie ukrywaj"
-
-#: src/dir.c:393
-msgid "Hide"
-msgstr "Ukryj"
-
-#: src/dir.c:400
-msgid "Add to favorites"
-msgstr "Dodaj do ulubionych"
-
-#: src/dir.c:526
-msgid "Menu"
-msgstr "Menu"
-
-#: src/disks.c:135
-msgid "Whole filesystem"
-msgstr "Cały system plików"
-
-#: src/fileinfo_render.c:106
-msgid "Does not exist"
-msgstr "Brak pliku"
-
-#: src/fileinfo_render.c:113
-msgid "Directory"
-msgstr "Katalog"
-
 #: src/file_context_menu.c:313
 msgid "Copy"
 msgstr "Kopiuj"
@@ -154,19 +153,12 @@ msgstr "Kopiuj"
 msgid "Cut"
 msgstr "Wytnij"
 
-#: src/dir.c:478
-msgid "Move file(s) here"
-msgstr "Przenieś tu pliki"
+#: src/file_context_menu.c:319
+msgid "Delete"
+msgstr "Usuń"
 
-#: src/dir.c:477
-msgid "Copy file(s) here"
-msgstr "Wklej tu pliki"
+#: src/disks.c:135
+msgid "Whole filesystem"
+msgstr "Cały system plików"
 
-#~ msgid "Hide absent files"
-#~ msgstr "Ukrywaj niedostępne pliki"
 
-#~ msgid "Show absent files"
-#~ msgstr "Pokazuj niedostępne pliki"
-
-#~ msgid "Sort by order"
-#~ msgstr "Ustaw po kolei"

@@ -1,82 +1,133 @@
-# madshelf - OpenInkpot bookshelf application
-# Copyright (C) 2008 Marc Lajoie <manorapide@hotmail.com>
-# Copyright (C) 2008,2009 Mikhail Gusarov <dottedmag@dottedmag.net>
-# This file is in public domain
+# SOME DESCRIPTIVE TITLE.
+# This file is put in the public domain.
 # 
+# Translators:
+# Mikhail Gusarov <dottedmag@dottedmag.net>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: madshelf 0.1\n"
-"Report-Msgid-Bugs-To: quickhand@openinkpot.org\n"
-"POT-Creation-Date: 2010-03-13 04:02+0600\n"
-"PO-Revision-Date: 2010-01-04 13:33+0900\n"
-"Last-Translator: Hideki Yoshida <hideki@acm.org>\n"
-"Language-Team: Japanese <openinkpot-l10n@openinkpot.org>\n"
+"Project-Id-Version: OpenInkpot\n"
+"Report-Msgid-Bugs-To: http://openinkpot.org/report/\n"
+"POT-Creation-Date: 2011-02-02 06:15+0300\n"
+"PO-Revision-Date: 2011-03-22 15:44+0000\n"
+"Last-Translator: dottedmag <dottedmag@dottedmag.net>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 
-#: src/favorites.c:110 src/favorites.c:357 src/favorites_menu.c:39
-#: src/overview.c:117
-msgid "Favorites"
-msgstr "お気に入り"
+#: src/recent.c:123 src/recent.c:344 src/overview.c:120
+#: src/screen_context_menu.c:119
+msgid "Recent files"
+msgstr "最近表示したファイル"
 
-#: src/favorites.c:111
-msgid "Favorite books"
-msgstr "お気に入りの本"
-
-#: src/favorites.c:112
-msgid "Favorite pictures"
-msgstr "お気に入りの画像"
-
-#: src/favorites.c:113
-msgid "Favorite music"
-msgstr "お気に入りの音楽"
-
-#: src/favorites.c:243 src/recent.c:204 src/dir.c:386
+#: src/recent.c:232 src/dir.c:483 src/favorites.c:270
 msgid "Open"
 msgstr "開く"
 
-#: src/favorites.c:249 src/dir.c:398
-msgid "Remove from favorites"
-msgstr "お気に入りから削除"
+#: src/recent.c:238
+msgid "Remove from recent files"
+msgstr ""
+"最近表示したファイル\n"
+"から削除"
 
-#: src/favorites.c:295 src/recent.c:255 src/dir.c:453
+#: src/recent.c:283 src/dir.c:550 src/favorites.c:322
 msgid "Actions"
 msgstr "アクション"
 
-#: src/favorites.c:307 src/recent.c:267
+#: src/recent.c:295 src/favorites.c:334
 msgid "Sort by name"
 msgstr "名前で整列"
 
-#: src/favorites.c:308 src/recent.c:268
+#: src/recent.c:296 src/favorites.c:335
 msgid "Sort by name (reversed)"
 msgstr "名前で整列 (逆順)"
 
-#: src/favorites.c:309 src/recent.c:269
+#: src/recent.c:297 src/favorites.c:336
 msgid "Sort by date"
 msgstr "日付で整列"
 
-#: src/favorites.c:310
-msgid "Clear favorites"
-msgstr "お気に入りを空にする"
+#: src/recent.c:298
+msgid "Clear recent files"
+msgstr ""
+"最近表示したファイル\n"
+"を空にする"
 
-#: src/favorites.c:312 src/recent.c:272
+#: src/recent.c:300 src/favorites.c:339
 msgid "Remove absent files"
 msgstr ""
 "存在しないファイルを\n"
 "削除"
 
-#: src/favorites.c:324 src/recent.c:283 src/dir.c:485
+#: src/recent.c:311 src/dir.c:583 src/favorites.c:351
 msgid "Do not show hidden files"
 msgstr "隠しファイルは表示しない"
 
-#: src/favorites.c:325 src/recent.c:284 src/dir.c:487
+#: src/recent.c:312 src/dir.c:585 src/favorites.c:352
 msgid "Show hidden files"
 msgstr "隠しファイルも表示する"
 
-#: src/overview.c:40 src/overview.c:41 src/main.c:143
+#: src/main.c:151 src/overview.c:40 src/overview.c:41
 msgid "Bookshelf"
 msgstr "本棚"
+
+#: src/dir.c:488
+msgid "Unhide"
+msgstr "表示する"
+
+#: src/dir.c:490
+msgid "Hide"
+msgstr "表示しない"
+
+#: src/dir.c:495 src/favorites.c:276
+msgid "Remove from favorites"
+msgstr "お気に入りから削除"
+
+#: src/dir.c:497
+msgid "Add to favorites"
+msgstr "お気に入りに追加"
+
+#: src/dir.c:575
+msgid "Copy file(s) here"
+msgstr "ファイルをここへコピー"
+
+#: src/dir.c:576
+msgid "Move file(s) here"
+msgstr "ファイルをここへ移動"
+
+#: src/dir.c:624
+msgid "Menu"
+msgstr "メニュー"
+
+#: src/favorites.c:114 src/favorites.c:384 src/overview.c:117
+#: src/screen_context_menu.c:116 src/favorites_menu.c:39
+msgid "Favorites"
+msgstr "お気に入り"
+
+#: src/favorites.c:115
+msgid "Favorite books"
+msgstr "お気に入りの本"
+
+#: src/favorites.c:116
+msgid "Favorite pictures"
+msgstr "お気に入りの画像"
+
+#: src/favorites.c:117
+msgid "Favorite music"
+msgstr "お気に入りの音楽"
+
+#: src/favorites.c:337
+msgid "Clear favorites"
+msgstr "お気に入りを空にする"
+
+#: src/delete_file.c:91
+msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
+msgstr "\"OK\" - ファイル削除<br><br>\"C\" - キャンセル"
+
+#: src/delete_file.c:94
+msgid "Delete file?"
+msgstr "ファイルを削除しますか?"
 
 #: src/overview.c:42
 msgid "Pictures (navigation)"
@@ -85,22 +136,6 @@ msgstr "画像 (ナビゲーション)"
 #: src/overview.c:43
 msgid "Audio (navigation)"
 msgstr "音楽 (ナビゲーション)"
-
-#: src/overview.c:120 src/recent.c:100 src/recent.c:316
-msgid "Recent files"
-msgstr "最近表示したファイル"
-
-#: src/recent.c:210
-msgid "Remove from recent files"
-msgstr ""
-"最近表示したファイル\n"
-"から削除"
-
-#: src/recent.c:270
-msgid "Clear recent files"
-msgstr ""
-"最近表示したファイル\n"
-"を空にする"
 
 #: src/file_context_menu.c:191 src/file_context_menu.c:295
 msgid "Always open with..."
@@ -116,46 +151,6 @@ msgstr "%sで開く"
 msgid "Open (with %s)"
 msgstr "%sで開く"
 
-#: src/file_context_menu.c:319
-msgid "Delete"
-msgstr "削除"
-
-#: src/delete_file.c:81
-msgid "Delete file?"
-msgstr "ファイルを削除しますか?"
-
-#: src/delete_file.c:83
-msgid "Press \"OK\" to delete file<br><br>Press \"C\" to cancel"
-msgstr "\"OK\" - ファイル削除<br><br>\"C\" - キャンセル"
-
-#: src/dir.c:391
-msgid "Unhide"
-msgstr "表示する"
-
-#: src/dir.c:393
-msgid "Hide"
-msgstr "表示しない"
-
-#: src/dir.c:400
-msgid "Add to favorites"
-msgstr "お気に入りに追加"
-
-#: src/dir.c:526
-msgid "Menu"
-msgstr "メニュー"
-
-#: src/disks.c:135
-msgid "Whole filesystem"
-msgstr "ファイルシステム全体"
-
-#: src/fileinfo_render.c:106
-msgid "Does not exist"
-msgstr "存在しません"
-
-#: src/fileinfo_render.c:113
-msgid "Directory"
-msgstr "ディレクトリ"
-
 #: src/file_context_menu.c:313
 msgid "Copy"
 msgstr "コピー"
@@ -164,20 +159,12 @@ msgstr "コピー"
 msgid "Cut"
 msgstr "カット"
 
-#: src/dir.c:478
-msgid "Move file(s) here"
-msgstr "ファイルをここへ移動"
+#: src/file_context_menu.c:319
+msgid "Delete"
+msgstr "削除"
 
-#: src/dir.c:477
-msgid "Copy file(s) here"
-msgstr "ファイルをここへコピー"
+#: src/disks.c:135
+msgid "Whole filesystem"
+msgstr "ファイルシステム全体"
 
-#~ msgid "Hide absent files"
-#~ msgstr ""
-#~ "存在しないファイルは\n"
-#~ "表示しない"
 
-#~ msgid "Show absent files"
-#~ msgstr ""
-#~ "存在しないファイルも\n"
-#~ "表示する"
