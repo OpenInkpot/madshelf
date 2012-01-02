@@ -1,3 +1,9 @@
+madshelf (0.2.64) zelazny; urgency=low
+
+  * Do not segfault on sartup.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Mon, 02 Jan 2012 23:30:26 +0100
+
 madshelf (0.2.63) zelazny; urgency=low
 
   * Do not fail if SIGUSR1/SIGUSR2 is received from mdev during madshelf
