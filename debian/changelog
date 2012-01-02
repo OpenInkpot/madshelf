@@ -1,3 +1,10 @@
+madshelf (0.2.63) zelazny; urgency=low
+
+  * Do not fail if SIGUSR1/SIGUSR2 is received from mdev during madshelf
+    startup.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Mon, 02 Jan 2012 21:46:57 +0100
+
 madshelf (0.2.62) zelazny; urgency=low
 
   * Update translations
