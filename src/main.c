@@ -588,6 +588,9 @@ int main(int argc, char** argv)
 
     if(ecore_config_init("madshelf") != ECORE_CONFIG_ERR_SUCC)
         errx(1, "Unable to initialize Ecore_Config");
+
+    if (!ecore_x_init(NULL))
+        errx(1, "Unable to initialize Ecore_X, maybe missing DISPLAY");
     if(!ecore_init())
         errx(1, "Unable to initialize Ecore");
 
@@ -595,6 +598,7 @@ int main(int argc, char** argv)
     {
         ecore_con_shutdown();
         ecore_shutdown();
+        ecore_x_shutdown();
         return 0;
     }
 
@@ -648,7 +652,11 @@ int main(int argc, char** argv)
 
     /* End of state */
 
-    Ecore_Evas* main_win = ecore_evas_software_x11_8_new(0, 0, 0, 0, 600, 800);
+    int width, height;
+    Ecore_X_Screen *screen = ecore_x_default_screen_get();
+    ecore_x_screen_size_get(screen, &width, &height);
+
+    Ecore_Evas* main_win = ecore_evas_software_x11_8_new(0, 0, 0, 0, width, height);
     state.win = main_win;
     ecore_evas_title_set(main_win, "Madshelf");
     ecore_evas_name_class_set(main_win, "Madshelf", "Madshelf");
@@ -663,7 +671,7 @@ int main(int argc, char** argv)
     evas_object_name_set(main_edje, "main_edje");
 
     evas_object_move(main_edje, 0, 0);
-    evas_object_resize(main_edje, 600, 800);
+    evas_object_resize(main_edje, width, height);
 
     /* don't use eoi_fullwindow_object_register -- we need to preserve
        order of edje resizing
@@ -776,6 +784,7 @@ int main(int argc, char** argv)
     edje_shutdown();
     ecore_shutdown();
     ecore_config_shutdown();
+    ecore_x_shutdown();
 
     return 0;
 }
