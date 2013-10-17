@@ -7,7 +7,7 @@ AM_PROG_LIBTOOL
 
 PKG_PROG_PKG_CONFIG
 
-PKG_CHECK_MODULES(EFL, [eina-0 ecore-evas ecore-config efreet efreet-mime edje])
+PKG_CHECK_MODULES(EFL, [eina ecore-evas ecore-file ecore-con efreet efreet-mime edje])
 PKG_CHECK_MODULES(EXTRACT, [libextractor_mini])
 PKG_CHECK_MODULES(SQLITE, [sqlite3])
 PKG_CHECK_MODULES(LIBCHOICEBOX, [libchoicebox])

@@ -32,7 +32,7 @@
 #include <Ecore.h>
 #include <Ecore_Evas.h>
 #include <Ecore_File.h>
-#include <Ecore_Config.h>
+/* #include <Ecore_Config.h> */
 #include <Ecore_Con.h>
 #include <Ecore_X.h>
 #include <Edje.h>
@@ -99,37 +99,47 @@ void go(madshelf_state_t* state, madshelf_loc_t* loc)
 void set_show_hidden(madshelf_state_t* state, bool show_hidden)
 {
     state->show_hidden = show_hidden;
+	/*
     ecore_config_boolean_set("show-hidden", show_hidden);
     ecore_config_save();
+	*/
 }
 
 void set_sort(madshelf_state_t* state, madshelf_sort_t sort)
 {
     state->sort = sort;
+	/*
     ecore_config_int_set("sort", (int)sort);
     ecore_config_save();
+	*/
 }
 
 void set_favorites_sort(madshelf_state_t* state, madshelf_sort_t sort)
 {
     state->favorites_sort = sort;
+	/*
     ecore_config_int_set("favorites-sort", (int)sort);
     ecore_config_save();
+	*/
 }
 
 void set_recent_sort(madshelf_state_t* state, madshelf_sort_t sort)
 {
     state->recent_sort = sort;
+	/*
     ecore_config_int_set("recent-sort", (int)sort);
     ecore_config_save();
+	*/
 }
 
 void set_disk_current_path(madshelf_disk_t* disk, const char* path)
 {
     free(disk->current_path);
     disk->current_path = strdup(path);
+	/*
     ecore_config_string_set(disk->path, disk->current_path);
     ecore_config_save();
+	*/
 }
 
 static void free_state(madshelf_state_t* state)
@@ -223,6 +233,7 @@ static void contents_key_up(void* param, Evas* e, Evas_Object* o, void* event_in
 
 static void load_config(madshelf_state_t* state)
 {
+	/*
     ecore_config_int_default("sort", (int)MADSHELF_SORT_NAME);
     ecore_config_int_default("favorites-sort", (int)MADSHELF_SORT_DATE);
     ecore_config_int_default("recent-sort", (int)MADSHELF_SORT_DATE);
@@ -250,6 +261,13 @@ static void load_config(madshelf_state_t* state)
         else
             state->disks->disk[i].current_path = NULL;
     }
+	*/
+	state->sort = MADSHELF_SORT_NAME;
+	state->favorites_sort = MADSHELF_SORT_DATE;
+	state->recent_sort = MADSHELF_SORT_DATE;
+	int i;
+	for(i = 0; i < state->disks->n; ++i)
+		state->disks->disk[i].current_path = NULL;
 }
 
 static madshelf_disks_t* load_disks()
@@ -587,8 +605,10 @@ int main(int argc, char** argv)
         }
     }
 
+	/*
     if(ecore_config_init("madshelf") != ECORE_CONFIG_ERR_SUCC)
         errx(1, "Unable to initialize Ecore_Config");
+	*/
 
     if (!ecore_x_init(NULL))
         errx(1, "Unable to initialize Ecore_X, maybe missing DISPLAY");
@@ -764,7 +784,7 @@ int main(int argc, char** argv)
 
     ecore_main_loop_begin();
 
-    ecore_config_save();
+    /* ecore_config_save(); */
 
     free_state(&state);
 
@@ -784,8 +804,8 @@ int main(int argc, char** argv)
     evas_shutdown();
     edje_shutdown();
     ecore_shutdown();
-    ecore_config_shutdown();
     ecore_x_shutdown();
+    //ecore_config_shutdown();
 
     return 0;
 }
