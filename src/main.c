@@ -178,6 +178,7 @@ static void contents_close_handler(Evas_Object* choicebox, void* param)
     madshelf_state_t* state = (madshelf_state_t*)param;
     if(state->loc->request_exit)
         (*state->loc->request_exit)(state, choicebox);
+    ecore_main_loop_quit();
 }
 
 static void main_win_close_handler(Ecore_Evas* main_win)
