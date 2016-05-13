@@ -34,7 +34,6 @@
 #include <Ecore_File.h>
 /* #include <Ecore_Config.h> */
 #include <Ecore_Con.h>
-#include <Ecore_X.h>
 #include <Edje.h>
 #include <Efreet.h>
 #include <libchoicebox.h>
@@ -517,20 +516,10 @@ static struct option options[] = {
     { NULL, 0, 0, 0 }
 };
 
-static void exit_all(void *param)
-{
-    ecore_main_loop_quit();
-}
-
 static Eina_Bool exit_handler(void *param, int ev_type, void *event)
 {
    ecore_main_loop_quit();
    return 1;
-}
-
-static void exit_app(void* param)
-{
-    exit(1);
 }
 
 int main(int argc, char** argv)
@@ -610,23 +599,12 @@ int main(int argc, char** argv)
         errx(1, "Unable to initialize Ecore_Config");
 	*/
 
-    if (!ecore_x_init(NULL))
-        errx(1, "Unable to initialize Ecore_X, maybe missing DISPLAY");
-    if(!ecore_init())
-        errx(1, "Unable to initialize Ecore");
-
     if(check_running_instance(filter, folder, default_location))
     {
         ecore_con_shutdown();
-        ecore_shutdown();
-        ecore_x_shutdown();
         return 0;
     }
 
-    ecore_x_io_error_handler_set(exit_app, NULL);
-
-    if(!evas_init())
-        errx(1, "Unable to initialize Evas");
     if(!edje_init())
         errx(1, "Unable to initialize Edje");
     if(!ecore_evas_init())
@@ -674,10 +652,11 @@ int main(int argc, char** argv)
     /* End of state */
 
     int width, height;
-    Ecore_X_Screen *screen = ecore_x_default_screen_get();
-    ecore_x_screen_size_get(screen, &width, &height);
 
-    Ecore_Evas* main_win = ecore_evas_software_x11_8_new(0, 0, 0, 0, width, height);
+    Ecore_Evas* main_win = ecore_evas_new(NULL, 0, 0, 1, 1, NULL);
+    ecore_evas_screen_geometry_get(main_win, NULL, NULL, &width, &height);
+    ecore_evas_resize(main_win, width, height);
+
     state.win = main_win;
     ecore_evas_title_set(main_win, "Madshelf");
     ecore_evas_name_class_set(main_win, "Madshelf", "Madshelf");
@@ -774,7 +753,6 @@ int main(int argc, char** argv)
     eoi_run_clock(main_edje);
     eoi_run_battery(main_edje);
 
-    ecore_x_io_error_handler_set(exit_all, NULL);
     ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_handler, NULL);
     ecore_event_handler_add(ECORE_EVENT_SIGNAL_HUP, sighup_signal_handler, &state);
 
@@ -801,10 +779,7 @@ int main(int argc, char** argv)
     edje_collection_cache_set(0);
 
     ecore_evas_shutdown();
-    evas_shutdown();
     edje_shutdown();
-    ecore_shutdown();
-    ecore_x_shutdown();
     //ecore_config_shutdown();
 
     return 0;
