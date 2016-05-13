@@ -594,6 +594,11 @@ int main(int argc, char** argv)
         }
     }
 
+    if(!ecore_evas_init())
+        errx(1, "Unable to initialize Ecore_Evas");
+    if(!edje_init())
+        errx(1, "Unable to initialize Edje");
+
 	/*
     if(ecore_config_init("madshelf") != ECORE_CONFIG_ERR_SUCC)
         errx(1, "Unable to initialize Ecore_Config");
@@ -604,11 +609,6 @@ int main(int argc, char** argv)
         ecore_con_shutdown();
         return 0;
     }
-
-    if(!edje_init())
-        errx(1, "Unable to initialize Edje");
-    if(!ecore_evas_init())
-        errx(1, "Unable to initialize Ecore_Evas");
 
     position_engine_init();
     fileinfo_init();
@@ -778,8 +778,8 @@ int main(int argc, char** argv)
     edje_file_cache_set(0);
     edje_collection_cache_set(0);
 
-    ecore_evas_shutdown();
     edje_shutdown();
+    ecore_evas_shutdown();
     //ecore_config_shutdown();
 
     return 0;
