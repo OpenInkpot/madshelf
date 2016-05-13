@@ -13,7 +13,7 @@ madshelf_LDFLAGS = -Wl,--as-needed -export-dynamic
 libpositions_LTLIBRARIES = positions_fb.la positions_cr3.la
 
 positions_fb_la_SOURCES = positions_fb.c
-positions_fb_la_LDFLAGS = -module -avoid-version -nostatic
+positions_fb_la_LDFLAGS = -module -avoid-version -shared
 
 positions_cr3_la_SOURCES = positions_cr3.c
-positions_cr3_la_LDFLAGS = -module -avoid-version -nostatic
+positions_cr3_la_LDFLAGS = -module -avoid-version -shared
