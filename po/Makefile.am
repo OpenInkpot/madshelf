@@ -2,8 +2,8 @@ top_builddir = ..
 
 # -- Build
 
-POFILES = $(wildcard *.po)
-MOFILES = $(patsubst %.po,%.mo,$(POFILES)) 
+POFILES = $(wildcard $(srcdir)/*.po)
+MOFILES = $(patsubst %.po,%.mo,$(notdir $(POFILES)))
 
 CLEANFILES = $(MOFILES)
 
